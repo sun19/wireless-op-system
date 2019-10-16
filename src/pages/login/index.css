@@ -1,0 +1,37 @@
+.bg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0%;
+  left: 0%;
+  background: no-repeat url('../../assets/login/bg.png');
+}
+
+.titleContainer {
+  position: relative;
+  top: 106px;
+}
+
+.title {
+  font-size: 77px;
+  font-family: Source Han Sans CN;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 1);
+  text-shadow: 0px 5px 5px rgba(9, 48, 80, 0.75);
+  background: linear-gradient(0deg, rgba(0, 147, 174, 1) 0%, rgba(186, 237, 246, 1) 100%);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.content {
+  position: relative;
+  top: 100px;
+}
+
+.loginPanel {
+  position: relative;
+  width: 710px;
+  height: 600px;
+  background: url(../../assets/login/kuang-bg.png);
+  background-size: cover;
+}
