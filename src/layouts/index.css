@@ -5,3 +5,23 @@
   background: url(../assets/login/bg.png) !important;
   background-size: cover;
 }
+
+.header {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.content {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.logo {
+  width: 200px;
+}
+
+.siderBar {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.sideMenu {
+  background-color: rgba(0, 0, 0, 0);
+}
