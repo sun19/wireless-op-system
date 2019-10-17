@@ -1,7 +1,11 @@
 import React, { Component, Props } from 'react';
 import { Row, Col, Radio, Input, Icon } from 'antd';
 import styles from './index.css';
+// import { Icon } from 'antd';
 
+const IconFont = Icon.createFromIconfontCN({
+  scriptUrl: '//at.alicdn.com/t/font_1464236_mya4evtbh9i.js',
+});
 export default class Login extends Component {
   constructor(props: any) {
     super(props);
@@ -13,7 +17,10 @@ export default class Login extends Component {
         <div className={styles.titleContainer}>
           <Row>
             <Col span={12} offset={6}>
-              <div className={styles.title}>无线光频定位管理系统</div>
+              {/* <div className={styles.title}>无线光频定位管理系统</div> */}
+              <div >
+                <img src={require('../../assets/login/02-title.png')}></img>
+              </div>
             </Col>
           </Row>
         </div>
@@ -30,6 +37,8 @@ export default class Login extends Component {
                 </div>
                 <div>
                   <Input placeholder="登录名" prefix={<Icon type="" />}></Input>
+                  <Icon type="smile" theme="outlined" />
+                  <IconFont type="wireless-icon_caozuo-1" />
                 </div>
               </div>
             </Col>
