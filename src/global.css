@@ -1,5 +1,6 @@
-@import './assets/iconFont/iconfont.css';
-html, body, #root {
+html,
+body,
+#root {
   height: 100%;
 }
 
