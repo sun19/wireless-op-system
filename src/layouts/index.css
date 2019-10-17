@@ -6,6 +6,11 @@
   background-size: cover;
 }
 
+.no_background {
+  background-color: rgba(0, 0, 0, 0);
+  color: red;
+}
+
 .header {
   background-color: rgba(0, 0, 0, 0);
 }

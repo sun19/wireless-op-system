@@ -1,36 +1,21 @@
 import React from 'react';
 import { Layout, Breadcrumb } from 'antd';
 
-import LeftMenuLayout from './LeftMenuLayout';
+import AppTitle from '../components/AppTitle';
 import styles from './index.css';
 
-const { Header, Content, Sider } = Layout;
+const { Header, Content, Sider, Footer } = Layout;
 
 const BasicLayout: React.FC = props => {
   return (
-    <Layout className={styles.layout}>
-      <Header className={styles.header}>
-        <div className="logo" />
-      </Header>
-      <LeftMenuLayout />
-
-      <Layout className={styles.content}>
-        <Layout style={{ padding: '0 24px 24px' }}>
-          <Breadcrumb style={{ margin: '16px 0' }}>
-            <Breadcrumb.Item>Home</Breadcrumb.Item>
-            <Breadcrumb.Item>List</Breadcrumb.Item>
-            <Breadcrumb.Item>App</Breadcrumb.Item>
-          </Breadcrumb>
-          <Content
-            style={{
-              padding: 24,
-              margin: 0,
-              minHeight: 280,
-            }}
-          >
-            Content
-          </Content>
-        </Layout>
+    <Layout className={[`${styles.layout}`, `${styles.no_background}`].join(' ')}>
+      <Sider className={[`${styles.no_background}`].join(' ')}>
+        <AppTitle />
+      </Sider>
+      <Layout className={[`${styles.no_background}`].join(' ')}>
+        <Header className={[`${styles.no_background}`].join(' ')}>Header</Header>
+        <Content className={[`${styles.no_background}`].join(' ')}>Content</Content>
+        <Footer className={[`${styles.no_background}`].join(' ')}>Footer</Footer>
       </Layout>
     </Layout>
   );
