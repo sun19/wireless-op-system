@@ -1,0 +1,35 @@
+.no_background {
+  background-color: rgba(0, 0, 0, 0);
+  font-family: Source Han Sans CN;
+  font-weight: 400;
+  color: rgba(229, 229, 229, 1);
+}
+
+:global(.ant-menu-submenu-title) {
+  width: 193px;
+  height: 56px !important;
+  padding-left: 46px !important;
+  line-height: 56px !important;
+  background: url(../assets/homepage/03-chose.png);
+  background-size: cover;
+}
+
+.sub_menu_list {
+  position: relative;
+  width: 205px;
+  left: 10%;
+}
+
+.sub_menu_list .ant-menu-submenu-arrow {
+  transform: translateX(-34px) translateY(-10px);
+}
+
+.no_background ul {
+  background-color: rgba(0, 0, 0, 0) !important ;
+}
+.no_background li {
+  background-color: rgba(0, 0, 0, 0);
+  font-family: Source Han Sans CN;
+  font-weight: 400;
+  color: rgba(229, 229, 229, 1);
+}

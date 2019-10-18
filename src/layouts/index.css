@@ -11,6 +11,10 @@
   color: red;
 }
 
+.left_bar_bg {
+  background: url(../assets/homepage/2--menu.png);
+}
+
 .header {
   background-color: rgba(0, 0, 0, 0);
 }
