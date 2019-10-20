@@ -51,7 +51,7 @@ export default class MainContent extends React.Component {
             </div>
           </Form>
         </div>
-        <div className={styles.table_list_panel}>
+        <div className={[`${styles.table_list_panel}`, `${styles.padding_top_20}`].join(' ')}>
           <EditableFormTable />
         </div>
       </Content>

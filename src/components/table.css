@@ -1,0 +1,25 @@
+:global(.ant-table-thead th) {
+  background: rgba(0, 0, 0, 0) !important;
+}
+
+:global(.ant-table-thead > tr > th) {
+  color: rgba(94, 180, 254, 1);
+  border-bottom: 1px solid rgba(67, 154, 255, 0.21);
+}
+
+:global(.ant-table-tbody > tr > td) {
+  color: rgba(229, 229, 229, 0.8);
+  border-bottom: 1px solid rgba(67, 154, 255, 0.21);
+  border-bottom-style: dashed;
+}
+
+:global(.ant-table-tbody
+    > tr:hover:not(.ant-table-expanded-row):not(.ant-table-row-selected)
+    > td) {
+  background: rgba(94, 180, 254, 0.6);
+}
+:global(.ant-table-thead
+    > tr:hover:not(.ant-table-expanded-row):not(.ant-table-row-selected)
+    > td) {
+  background: rgba(94, 180, 254, 0.4);
+}

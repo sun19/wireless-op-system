@@ -1,13 +1,24 @@
 import React from 'react';
-import { Table, Input, InputNumber, Popconfirm, Form } from 'antd';
+import { Table, Input, InputNumber, Popconfirm, Form, Icon, Pagination } from 'antd';
+
+import { ICON_FONTS_URL } from '../config/constants';
+import styles from './table.css';
+
+const IconFont = Icon.createFromIconfontCN({
+  scriptUrl: ICON_FONTS_URL,
+});
 
 const data = [];
 for (let i = 0; i < 100; i++) {
   data.push({
     key: i.toString(),
-    name: `Edrward ${i}`,
-    age: 32,
-    address: `London Park no. ${i}`,
+    index: i,
+    loginName: `sz100${i}`,
+    name: `开发者${i}号`,
+    type: '系统管理员',
+    gender: '男',
+    tip: '-',
+    loginTime: new Date().toDateString(),
   });
 }
 const EditableContext = React.createContext();
@@ -34,7 +45,7 @@ class EditableCell extends React.Component {
     return (
       <td {...restProps}>
         {editing ? (
-          <Form.Item style={{ margin: 0 }}>
+          <Form.Item style={{ margin: 0 }} className={styles.table_item}>
             {getFieldDecorator(dataIndex, {
               rules: [
                 {
@@ -63,25 +74,49 @@ export default class EditableTable extends React.Component {
     this.state = { data, editingKey: '' };
     this.columns = [
       {
-        title: 'name',
+        title: '序号',
+        dataIndex: 'index',
+        width: '5%',
+        editable: false,
+      },
+      {
+        title: '登录名',
+        dataIndex: 'loginName',
+        width: '10%',
+        editable: true,
+      },
+      {
+        title: '姓名',
         dataIndex: 'name',
+        width: '10%',
+        editable: true,
+      },
+      {
+        title: '人员类型',
+        dataIndex: 'type',
         width: '25%',
         editable: true,
       },
       {
-        title: 'age',
-        dataIndex: 'age',
-        width: '15%',
+        title: '性别',
+        dataIndex: 'gender',
+        width: '10%',
         editable: true,
       },
       {
-        title: 'address',
-        dataIndex: 'address',
-        width: '40%',
+        title: '备注',
+        dataIndex: 'tip',
+        width: '10%',
         editable: true,
       },
       {
-        title: 'operation',
+        title: '登录时间',
+        dataIndex: 'loginTime',
+        width: '20%',
+        editable: false,
+      },
+      {
+        title: '操作',
         dataIndex: 'operation',
         render: (text, record) => {
           const { editingKey } = this.state;
@@ -90,19 +125,31 @@ export default class EditableTable extends React.Component {
             <span>
               <EditableContext.Consumer>
                 {form => (
-                  <a onClick={() => this.save(form, record.key)} style={{ marginRight: 8 }}>
-                    Save
-                  </a>
+                  <IconFont
+                    type="icon-save1"
+                    onClick={() => this.save(form, record.key)}
+                    style={{ marginRight: 8 }}
+                  />
                 )}
               </EditableContext.Consumer>
-              <Popconfirm title="Sure to cancel?" onConfirm={() => this.cancel(record.key)}>
-                <a>Cancel</a>
+              <Popconfirm
+                title="确定要取消吗?"
+                onConfirm={() => this.cancel(record.key)}
+                okText="确定"
+                cancelText="取消"
+              >
+                <IconFont type="icon-cancel" />
               </Popconfirm>
             </span>
           ) : (
-            <a disabled={editingKey !== ''} onClick={() => this.edit(record.key)}>
-              Edit
-            </a>
+            <span>
+              <IconFont
+                type="icon-edit"
+                style={{ marginRight: '8px' }}
+                onClick={() => this.edit(record.key)}
+              />
+              <IconFont type="icon-delete" />
+            </span>
           );
         },
       },
@@ -167,19 +214,30 @@ export default class EditableTable extends React.Component {
       <EditableContext.Provider value={this.props.form}>
         <Table
           components={components}
-          bordered={true}
+          bordered={false}
           dataSource={this.state.data}
           columns={columns}
           rowClassName="editable-row"
           pagination={{
-            onChange: this.cancel,
+            size: 'small',
+            // showSizeChanger: true,
+            showQuickJumper: {
+              goButton: '跳转',
+            },
+            showTotal: () => `每页10条，共10条`,
+            itemRender: (current, type, originalElement) => {
+              console.log(type, current, originalElement, 'type');
+              if (type === 'prev') {
+                return <span className={styles.prev_page}>上一页</span>;
+              }
+              if (type === 'next') {
+                return <span className={styles.next_page}>下一页</span>;
+              }
+              return originalElement;
+            },
           }}
         />
       </EditableContext.Provider>
     );
   }
 }
-
-// const EditableFormTable = Form.create()(EditableTable);
-
-// ReactDOM.render(<EditableFormTable />, mountNode);
