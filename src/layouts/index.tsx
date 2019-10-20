@@ -25,7 +25,7 @@ const BasicLayout: React.FC = (props: any) => {
       <Layout className={[`${styles.no_background}`].join(' ')}>
         <TopHeader />
         <MainContent />
-        <Footer className={[`${styles.no_background}`].join(' ')}>Footer</Footer>
+        {/* <Footer className={[`${styles.no_background}`].join(' ')} /> */}
       </Layout>
     </Layout>
   );
