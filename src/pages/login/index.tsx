@@ -1,7 +1,11 @@
 import React, { Component, Props } from 'react';
-import { Row, Col, Radio, Input, Icon } from 'antd';
+import { Row, Col, Radio, Input, Icon, Layout, Form } from 'antd';
+
+import WrappedNormalLoginForm from './components/LoginForm';
 import styles from './index.css';
 // import { Icon } from 'antd';
+
+const { Header, Content, Footer } = Layout;
 
 const IconFont = Icon.createFromIconfontCN({
   scriptUrl: '//at.alicdn.com/t/font_1464236_mya4evtbh9i.js',
@@ -13,38 +17,40 @@ export default class Login extends Component {
 
   render() {
     return (
-      <div className={styles.bg}>
-        <div className={styles.titleContainer}>
-          <Row>
-            <Col span={12} offset={6}>
-              {/* <div className={styles.title}>无线光频定位管理系统</div> */}
-              <div >
-                <img src={require('../../assets/login/02-title.png')}></img>
-              </div>
+      <Layout className={styles.bg}>
+        <div className={styles.right_top_panel}>
+          <div className={styles.date_string}>2019/8/5</div>
+          <div className={styles.time_string}>
+            <span>1</span>
+            <span>5</span>:<span>5</span>
+            <span>8</span>
+          </div>
+        </div>
+        <Header className={[`${styles.no_bg}`].join(' ')}>
+          <Row
+            type="flex"
+            justify="center"
+            align="middle"
+            style={{ position: 'relative', top: '30px' }}
+          >
+            <Col span={12}>
+              <div className={styles.system_name} />
             </Col>
           </Row>
-        </div>
-        <div className={styles.content}>
-          <Row type="flex" justify="center">
-            <Col>
+        </Header>
+        <Content className={[`${styles.no_bg}`].join(' ')}>
+          <Row type="flex" justify="center" style={{ height: '100%' }}>
+            <Col span={12}>
               <div className={styles.loginPanel}>
-                <div className={styles.login_title}>欢迎登录</div>
-                <div>
-                  <Radio.Group>
-                    <Radio value={1}>系统管理员</Radio>
-                    <Radio value={2}>值班员</Radio>
-                  </Radio.Group>
-                </div>
-                <div>
-                  <Input placeholder="登录名" prefix={<Icon type="" />}></Input>
-                  <Icon type="smile" theme="outlined" />
-                  <IconFont type="wireless-icon_caozuo-1" />
-                </div>
+                <WrappedNormalLoginForm />
               </div>
             </Col>
           </Row>
-        </div>
-      </div>
+        </Content>
+        <Footer className={[`${styles.no_bg}`].join(' ')}>
+          <div className={styles.foot_text}>©智谷光频产业研究院</div>
+        </Footer>
+      </Layout>
     );
   }
 }

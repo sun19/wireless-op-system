@@ -9,7 +9,13 @@ import styles from './index.css';
 
 const { Header, Content, Sider, Footer } = Layout;
 
-const BasicLayout: React.FC = props => {
+const ignoreLayout = ['/login', '/login/'];
+
+const BasicLayout: React.FC = (props: any) => {
+  let routeName = props.location.pathname;
+  if (ignoreLayout.includes(routeName)) {
+    return <div>{props.children}</div>;
+  }
   return (
     <Layout className={[`${styles.layout}`, `${styles.no_background}`].join(' ')}>
       <Sider className={[`${styles.left_bar_bg}`].join(' ')} width="258">
