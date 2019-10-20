@@ -7,3 +7,15 @@ body,
 body {
   margin: 0;
 }
+
+:global(.ant-menu-submenu-open.ant-menu-submenu-inline
+    > .ant-menu-submenu-title
+    .ant-menu-submenu-arrow::before) {
+  background-image: linear-gradient(to right, rgba(251, 117, 52, 1), rgba(251, 117, 52, 1));
+}
+
+:global(.ant-menu-submenu-open.ant-menu-submenu-inline
+    > .ant-menu-submenu-title
+    .ant-menu-submenu-arrow::after) {
+  background-image: linear-gradient(to right, rgba(251, 117, 52, 1), rgba(251, 117, 52, 1));
+}

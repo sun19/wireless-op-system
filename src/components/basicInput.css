@@ -1,0 +1,24 @@
+.basic_input_box {
+  position: absolute;
+  display: inline-block;
+  /* display: flex; */
+  max-width: 400px;
+}
+
+.input_label {
+  /* width: 51px; */
+  width: 80px;
+  height: 17px;
+  line-height: 34px;
+  text-align: center;
+  font-family: Source Han Sans CN;
+  font-weight: 400;
+  color: rgba(94, 180, 254, 1);
+}
+
+:global(.ant-layout-content .ant-input) {
+  background: rgba(2, 10, 34, 0.5);
+  border: 1px solid rgba(73, 141, 183, 0.79);
+  color: rgba(229, 229, 229, 1);
+  /* background-image: url(../assets/homepage/); */
+}

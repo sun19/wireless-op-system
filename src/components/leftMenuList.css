@@ -3,26 +3,56 @@
   font-family: Source Han Sans CN;
   font-weight: 400;
   color: rgba(229, 229, 229, 1);
+  border-width: 0;
 }
 
 :global(.ant-menu-submenu-title) {
   width: 193px;
   height: 56px !important;
-  padding-left: 46px !important;
+  padding-left: 40px !important;
   line-height: 56px !important;
+  /* 动态修改 */
   background: url(../assets/homepage/03-chose.png);
+  color: rgba(251, 117, 52, 1);
   background-size: cover;
 }
 
+:global(.ant-menu-submenu-open.ant-menu-submenu-inline
+    > .ant-menu-submenu-title
+    .ant-menu-submenu-arrow) {
+  transform: translateY(-2px) translateX(-25px);
+}
+
+/* menu右边图标展开关闭样式覆盖 */
+:global(.ant-menu-submenu-open.ant-menu-submenu-inline
+    > .ant-menu-submenu-title
+    .ant-menu-submenu-arrow::before) {
+  background-image: linear-gradient(to right, rgba(251, 117, 52, 1), rgba(251, 117, 52, 1));
+}
+
+:global(.ant-menu-submenu-open.ant-menu-submenu-inline
+    > .ant-menu-submenu-title
+    .ant-menu-submenu-arrow::after) {
+  background-image: linear-gradient(to right, rgba(251, 117, 52, 1), rgba(251, 117, 52, 1));
+}
+
+/* menu选中覆盖样式 */
+:global(.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected) {
+  background: rgba(0, 0, 0, 0);
+}
+
+:global(.ant-menu-inline .ant-menu-item::after) {
+  border-width: 0;
+}
 .sub_menu_list {
   position: relative;
   width: 205px;
   left: 10%;
 }
 
-.sub_menu_list .ant-menu-submenu-arrow {
+/* .sub_menu_list .ant-menu-submenu-arrow {
   transform: translateX(-34px) translateY(-10px);
-}
+} */
 
 .no_background ul {
   background-color: rgba(0, 0, 0, 0) !important ;
@@ -32,4 +62,21 @@
   font-family: Source Han Sans CN;
   font-weight: 400;
   color: rgba(229, 229, 229, 1);
+}
+
+/* .menu_item {
+  padding-left: 60px !important ;
+} */
+
+.menu_item_underline_active {
+  font-family: Source Han Sans CN;
+  font-weight: 400;
+  color: rgba(251, 117, 52, 1) !important ;
+
+  border-bottom-style: dashed;
+  border-image: url(../assets/homepage/21-light.png) 20 20 stretch;
+
+  border-image-slice: 30% 0%;
+  background-size: repeat;
+  padding-bottom: 3px;
 }

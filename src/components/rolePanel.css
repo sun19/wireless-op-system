@@ -1,0 +1,11 @@
+.role_panel_box {
+  /* position: absolute; */
+  float: right;
+  font-family: Source Han Sans CN;
+  font-weight: 400;
+  color: rgba(94, 180, 254, 1);
+}
+
+.role_panel_box_span {
+  margin-right: 4px;
+}

@@ -3,6 +3,8 @@ import { Layout, Breadcrumb } from 'antd';
 
 import AppTitle from '../components/AppTitle';
 import LeftMenuList from '../components/LeftMenuList';
+import TopHeader from '../components/TopHeader';
+import MainContent from '../components/MainContent';
 import styles from './index.css';
 
 const { Header, Content, Sider, Footer } = Layout;
@@ -15,8 +17,8 @@ const BasicLayout: React.FC = props => {
         <LeftMenuList />
       </Sider>
       <Layout className={[`${styles.no_background}`].join(' ')}>
-        <Header className={[`${styles.no_background}`].join(' ')}>Header</Header>
-        <Content className={[`${styles.no_background}`].join(' ')}>Content</Content>
+        <TopHeader />
+        <MainContent />
         <Footer className={[`${styles.no_background}`].join(' ')}>Footer</Footer>
       </Layout>
     </Layout>

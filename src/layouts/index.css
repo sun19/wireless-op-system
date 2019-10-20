@@ -8,7 +8,7 @@
 
 .no_background {
   background-color: rgba(0, 0, 0, 0);
-  color: red;
+  /* color: red; */
 }
 
 .left_bar_bg {

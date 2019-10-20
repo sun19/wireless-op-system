@@ -1,0 +1,25 @@
+.bread_box {
+  position: absolute;
+  height: 54px;
+  line-height: 54px;
+  /* background: rgba(2, 29, 61, 1); */
+  /* opacity: 0.5; */
+}
+
+.bread_box .ant-breadcrumb {
+  top: 18px;
+}
+.prev_item {
+  font-family: Source Han Sans CN;
+  font-weight: 400;
+  color: rgba(229, 229, 229, 1);
+}
+.current_item {
+  font-family: Source Han Sans CN;
+  font-weight: 400;
+  color: rgba(0, 204, 255, 1);
+}
+
+:global(.ant-layout-header > .ant-breadcrumb .ant-breadcrumb-separator) {
+  color: rgba(229, 229, 229, 1);
+}
