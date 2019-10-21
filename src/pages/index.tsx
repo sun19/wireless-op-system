@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from 'antd';
-import styles from './index.css';
+import styles from './index.less';
 import { formatMessage } from 'umi-plugin-locale';
 
 export default function() {

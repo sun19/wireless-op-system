@@ -2,7 +2,7 @@ import React, { Component, Props } from 'react';
 import { Row, Col, Radio, Input, Icon, Layout, Form } from 'antd';
 
 import WrappedNormalLoginForm from './components/LoginForm';
-import styles from './index.css';
+import styles from './index.less';
 // import { Icon } from 'antd';
 
 const { Header, Content, Footer } = Layout;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Icon } from 'antd';
 
-import styles from './rolePanel.css';
+import styles from './rolePanel.less';
 
 export default class RolePanel extends React.Component {
   render() {

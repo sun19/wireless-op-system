@@ -7,7 +7,7 @@ import AppTitle from '../components/AppTitle';
 import LeftMenuList from '../components/LeftMenuList';
 import TopHeader from '../components/TopHeader';
 import MainContent from '../components/MainContent';
-import styles from './index.css';
+import styles from './index.less';
 
 const { Header, Content, Sider, Footer } = Layout;
 

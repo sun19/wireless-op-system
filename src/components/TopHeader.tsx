@@ -3,7 +3,7 @@ import { Layout } from 'antd';
 
 import MenuBreadCrumb from './menuBreadCrumb';
 import RolePanel from './RolePanel';
-import styles from './topHeader.css';
+import styles from './topHeader.less';
 
 const { Header } = Layout;
 

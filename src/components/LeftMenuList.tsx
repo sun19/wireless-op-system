@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Menu, Icon } from 'antd';
 
-import styles from './leftMenuList.css';
+import styles from './leftMenuList.less';
 
 const { SubMenu } = Menu;
 

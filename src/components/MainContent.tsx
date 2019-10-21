@@ -1,7 +1,7 @@
 import React from 'react';
 import { Layout, Form, Input, Row, Col, Button, Icon } from 'antd';
 
-import styles from './mainContent.css';
+import styles from './mainContent.less';
 import EditableTable from './EditorableTable';
 
 const { Content } = Layout;

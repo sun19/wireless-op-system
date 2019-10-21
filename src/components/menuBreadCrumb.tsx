@@ -1,7 +1,7 @@
 import React from 'react';
 import { Breadcrumb } from 'antd';
 
-import styles from './menuBreadCrumb.css';
+import styles from './menuBreadCrumb.less';
 
 export default class MenuBreadCrumb extends React.Component {
   render() {

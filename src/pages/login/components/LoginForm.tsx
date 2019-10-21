@@ -4,7 +4,7 @@ import router from 'umi/router';
 import { Form, Icon, Input, Row, Col, Radio, message } from 'antd';
 import { ICON_FONTS_URL } from '../../../config/constants';
 import request from '../../../utils/request';
-import styles from '../index.css';
+import styles from '../index.less';
 
 const IconFont = Icon.createFromIconfontCN({
   scriptUrl: ICON_FONTS_URL,
