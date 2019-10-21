@@ -13,10 +13,6 @@ const IconFont = Icon.createFromIconfontCN({
 class NormalLoginForm extends React.Component {
   constructor(props: any) {
     super(props);
-    // this.state={
-    //   userName:'',
-    //   passWord:'',
-    // }
   }
   handleSubmit = e => {
     e.preventDefault();
@@ -27,16 +23,16 @@ class NormalLoginForm extends React.Component {
           password: values.password,
         };
 
-        const resp = await request(
-          `http://47.96.112.31:8085/jeecg-boot/intf/location/login?username=${data.username}&password=${data.password}`,
-          {
-            method: 'GET',
-          },
-        );
-        if (resp.data.code === 200 && resp.data.success) {
-          alert('登录成功');
-          router.push('/index');
-        }
+        // const resp = await request(
+        //   `http://47.96.112.31:8085/jeecg-boot/intf/location/login?username=${data.username}&password=${data.password}`,
+        //   {
+        //     method: 'GET',
+        //   },
+        // );
+        // if (resp.data.code === 200 && resp.data.success) {
+        alert('登录成功');
+        router.push('index');
+        // }
         // var myRequest = new Request(data, myInit);
         // console.log('Received values of form: ', values);
       }

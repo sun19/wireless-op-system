@@ -10,20 +10,58 @@ const { Header, Content, Footer } = Layout;
 const IconFont = Icon.createFromIconfontCN({
   scriptUrl: '//at.alicdn.com/t/font_1464236_mya4evtbh9i.js',
 });
+
+interface State {
+  year: string;
+  time: string[];
+}
+
 export default class Login extends Component {
+  private timer;
   constructor(props: any) {
     super(props);
+    const time = new Date();
+    this.state = {
+      year: this.getYear(time),
+      time: this.getTime(time),
+    } as State;
+  }
+
+  getYear = time => {
+    return `${time.getFullYear()}/${time.getMonth() + 1}/${time.getDate()}`;
+  };
+
+  getTime = time => {
+    return time
+      .toLocaleTimeString()
+      .substr(0, 5)
+      .split('')
+      .filter(str => str !== ':');
+  };
+  componentDidMount() {
+    this.timer = setInterval(() => {
+      const time = new Date();
+      this.setState({
+        year: this.getYear(time),
+        time: this.getTime(time),
+      });
+    }, 1000);
+  }
+
+  componentWillUnmount() {
+    this.timer = null;
   }
 
   render() {
+    const state: State = this.state as State;
     return (
       <Layout className={styles.bg}>
         <div className={styles.right_top_panel}>
-          <div className={styles.date_string}>2019/8/5</div>
+          <div className={styles.date_string}>{(this.state as State).year}</div>
           <div className={styles.time_string}>
-            <span>1</span>
-            <span>5</span>:<span>5</span>
-            <span>8</span>
+            <span>{state.time[0]}</span>
+            <span>{state.time[1]}</span>:<span>{state.time[2]}</span>
+            <span>{state.time[3]}</span>
           </div>
         </div>
         <Header className={[`${styles.no_bg}`].join(' ')}>

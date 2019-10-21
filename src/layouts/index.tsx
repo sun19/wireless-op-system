@@ -1,5 +1,7 @@
 import React from 'react';
 import { Layout, Breadcrumb } from 'antd';
+import withRouter from 'umi/withRouter';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 import AppTitle from '../components/AppTitle';
 import LeftMenuList from '../components/LeftMenuList';
@@ -31,4 +33,10 @@ const BasicLayout: React.FC = (props: any) => {
   );
 };
 
-export default BasicLayout;
+export default withRouter(props => (
+  <TransitionGroup>
+    <CSSTransition key={props.location.pathname} classNames="fade" timeout={300}>
+      <BasicLayout {...props} />
+    </CSSTransition>
+  </TransitionGroup>
+));
