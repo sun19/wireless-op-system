@@ -68,13 +68,7 @@
   padding: 20px 0;
 }
 
-:global(.login_form .ant-input-affix-wrapper .ant-input) {
-  font-size: 18px;
-  border-width: 0;
-  border-bottom: 1px solid rgba(0, 212, 250, 1);
-  border-radius: 1px;
-  background: rgba(0, 0, 0, 0);
-}
+
 
 :global(.login_form .ant-radio-inner) {
   background: rgba(0, 0, 0, 0);
@@ -147,4 +141,23 @@
   padding: 4px 8px;
   margin: 4px 4px;
   border: 1px solid rgba(54, 152, 194, 1);
+}
+:global(.has-error .ant-input-affix-wrapper .ant-input:focus){
+  border-right-width: 1px !important;
+    border: 0px;
+    border-bottom: 2px solid #ff4d4f;
+    outline: 0;
+    background: rgba(0, 0, 0, 0);
+    box-shadow: 0 0 0 0px rgba(245, 34, 45, 0.2);
+}
+:global(
+.ant-input:focus){
+      box-shadow: 0 0 0 0px rgba(24, 144, 255, 0.2);
+}
+:global(.login_form .ant-input-affix-wrapper .ant-input) {
+  font-size: 18px;
+  border: 0;
+  border-bottom: 1px solid rgba(0, 212, 250, 1);
+  border-radius: 1px;
+  background: rgba(0, 0, 0, 0) !important;
 }
