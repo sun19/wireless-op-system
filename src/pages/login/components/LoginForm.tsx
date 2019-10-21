@@ -1,7 +1,7 @@
 import React from 'react';
 import router from 'umi/router';
 
-import { Form, Icon, Input, Row, Col, Radio, Button } from 'antd';
+import { Form, Icon, Input, Row, Col, Radio, message } from 'antd';
 import { ICON_FONTS_URL } from '../../../config/constants';
 import request from '../../../utils/request';
 import styles from '../index.css';
@@ -10,9 +10,17 @@ const IconFont = Icon.createFromIconfontCN({
   scriptUrl: ICON_FONTS_URL,
 });
 
+interface State {
+  value: number;
+}
+
 class NormalLoginForm extends React.Component {
+  state: State;
   constructor(props: any) {
     super(props);
+    this.state = {
+      value: 1,
+    };
   }
   handleSubmit = e => {
     e.preventDefault();
@@ -22,20 +30,39 @@ class NormalLoginForm extends React.Component {
           username: values.username,
           password: values.password,
         };
-
-        // const resp = await request(
-        //   `http://47.96.112.31:8085/jeecg-boot/intf/location/login?username=${data.username}&password=${data.password}`,
-        //   {
-        //     method: 'GET',
-        //   },
-        // );
-        // if (resp.data.code === 200 && resp.data.success) {
-        alert('登录成功');
-        router.push('index');
-        // }
-        // var myRequest = new Request(data, myInit);
-        // console.log('Received values of form: ', values);
+        this.showLoadingMessage();
+        const resp = await request(
+          `http://47.96.112.31:8085/jeecg-boot/intf/location/login?username=${data.username}&password=${data.password}`,
+          {
+            method: 'GET',
+          },
+        );
+        if (resp.data.code === 200 && resp.data.success) {
+          router.push('/index');
+        }
       }
+    });
+  };
+
+  showLoadingMessage() {
+    message.loading('努力登录中...', 0);
+  }
+
+  showMessage() {
+    message.success('恭喜您，登录成功!');
+  }
+
+  showErrorMessage(msg: string) {
+    message.error(msg);
+  }
+
+  componentWillUnmount() {
+    message.destroy();
+  }
+
+  onChange = e => {
+    this.setState({
+      value: e.target.value,
     });
   };
 
@@ -46,12 +73,15 @@ class NormalLoginForm extends React.Component {
         <div className={styles.login_title}>欢迎登陆</div>
         <Form onSubmit={this.handleSubmit} className="login-form">
           <Form.Item>
-            {getFieldDecorator('radio-group')(
+            {getFieldDecorator('radio-group', {
+              initialValue: 1,
+              setFieldsValue: this.onChange,
+            })(
               <Radio.Group>
-                <Radio value="a">
+                <Radio value={1}>
                   <span className={styles.rolename}>系统管理员 </span>
                 </Radio>
-                <Radio value="b">
+                <Radio value={2}>
                   <span className={styles.rolename}>值班员</span>
                 </Radio>
               </Radio.Group>,

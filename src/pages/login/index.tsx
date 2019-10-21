@@ -32,8 +32,11 @@ export default class Login extends Component {
   };
 
   getTime = time => {
-    return time
-      .toLocaleTimeString()
+    const _time =
+      time.toLocaleTimeString().length === 10
+        ? `0${time.toLocaleTimeString()}`
+        : time.toLocaleTimeString();
+    return _time
       .substr(0, 5)
       .split('')
       .filter(str => str !== ':');
@@ -49,6 +52,7 @@ export default class Login extends Component {
   }
 
   componentWillUnmount() {
+    clearInterval(this.timer);
     this.timer = null;
   }
 
