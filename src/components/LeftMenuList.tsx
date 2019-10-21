@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import { Menu, Icon } from 'antd';
 import { ICON_FONTS_URL } from '../config/constants';
-import styles from './leftMenuList.css';
+// import styles from './leftMenuList.css';
 // import '../assets/iconFont/iconfont.css';
+
+import styles from './leftMenuList.less';
+
 const { SubMenu } = Menu;
 const IconFont = Icon.createFromIconfontCN({
   scriptUrl: ICON_FONTS_URL,

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Input } from 'antd';
 
-import styles from './basicInput.css';
+import styles from './basicInput.less';
 
 export default class BasicInput extends React.Component {
   constructor(props: any) {

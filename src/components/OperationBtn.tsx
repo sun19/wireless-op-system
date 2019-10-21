@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from 'antd';
 
-import styles from './operationBtn.css';
+import styles from './operationBtn.less';
 
 export default class OperationButton extends React.Component {
   constructor(props: any) {

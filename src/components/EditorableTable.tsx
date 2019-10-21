@@ -2,7 +2,7 @@ import React from 'react';
 import { Table, Input, InputNumber, Popconfirm, Form, Icon, Pagination } from 'antd';
 
 import { ICON_FONTS_URL } from '../config/constants';
-import styles from './table.css';
+import styles from './table.less';
 
 const IconFont = Icon.createFromIconfontCN({
   scriptUrl: ICON_FONTS_URL,
@@ -127,14 +127,14 @@ export default class EditableTable extends React.Component {
                 {form => (
                   <IconFont
                     type="icon-save1"
-                    onClick={() => this.save(form, record.key)}
+                    onClick={this.onSave.bind(this, form, record)}
                     style={{ marginRight: 8 }}
                   />
                 )}
               </EditableContext.Consumer>
               <Popconfirm
                 title="确定要取消吗?"
-                onConfirm={() => this.cancel(record.key)}
+                onConfirm={this.onCancel.bind(this, record)}
                 okText="确定"
                 cancelText="取消"
               >
@@ -146,7 +146,7 @@ export default class EditableTable extends React.Component {
               <IconFont
                 type="icon-edit"
                 style={{ marginRight: '8px' }}
-                onClick={() => this.edit(record.key)}
+                onClick={this.onClick.bind(this, record)}
               />
               <IconFont type="icon-delete" />
             </span>
@@ -187,6 +187,17 @@ export default class EditableTable extends React.Component {
     this.setState({ editingKey: key });
   }
 
+  onSave = (form, record) => {
+    this.save(form, record.key);
+  };
+  onCancel = record => {
+    this.cancel(record.key);
+  };
+
+  onClick = record => {
+    this.edit(record.key);
+  };
+
   render() {
     const components = {
       body: {
@@ -226,7 +237,6 @@ export default class EditableTable extends React.Component {
             },
             showTotal: () => `每页10条，共10条`,
             itemRender: (current, type, originalElement) => {
-              console.log(type, current, originalElement, 'type');
               if (type === 'prev') {
                 return <span className={styles.prev_page}>上一页</span>;
               }

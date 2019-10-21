@@ -1,11 +1,13 @@
 import React from 'react';
 import { Layout, Breadcrumb } from 'antd';
+import withRouter from 'umi/withRouter';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 import AppTitle from '../components/AppTitle';
 import LeftMenuList from '../components/LeftMenuList';
 import TopHeader from '../components/TopHeader';
 import MainContent from '../components/MainContent';
-import styles from './index.css';
+import styles from './index.less';
 
 const { Header, Content, Sider, Footer } = Layout;
 
@@ -31,4 +33,10 @@ const BasicLayout: React.FC = (props: any) => {
   );
 };
 
-export default BasicLayout;
+export default withRouter(props => (
+  <TransitionGroup>
+    <CSSTransition key={props.location.pathname} classNames="fade" timeout={300}>
+      <BasicLayout {...props} />
+    </CSSTransition>
+  </TransitionGroup>
+));
