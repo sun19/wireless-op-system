@@ -31,6 +31,10 @@ const config: IConfig = {
       },
     ],
   ],
+  base: './',
+  publicPath: './',
+  hash: true,
+  history: 'hash',
 };
 
 export default config;
