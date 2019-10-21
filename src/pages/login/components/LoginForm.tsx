@@ -1,7 +1,9 @@
 import React from 'react';
+import router from 'umi/router';
 
 import { Form, Icon, Input, Row, Col, Radio, Button } from 'antd';
 import { ICON_FONTS_URL } from '../../../config/constants';
+import request from '../../../utils/request';
 import styles from '../index.css';
 
 const IconFont = Icon.createFromIconfontCN({
@@ -18,39 +20,29 @@ class NormalLoginForm extends React.Component {
   }
   handleSubmit = e => {
     e.preventDefault();
-    this.props.form.validateFields((err, values) => {
+    this.props.form.validateFields(async (err, values) => {
       if (!err) {
         let data = {
           username: values.username,
           password: values.password,
         };
-        var myInit = {
-          method: 'GET',
-          url: `http://47.96.112.31:8085/jeecg-boot/intf/location/login?username=jeecg&password=123456`,
-          // headers: {
-          //   'Content-Type': 'image/jpeg'
-          // },
-          // mode: 'cors',
-          // cache: 'default'
-        };
-        fetch().then(function(response) {
 
-        });
+        const resp = await request(
+          `http://47.96.112.31:8085/jeecg-boot/intf/location/login?username=${data.username}&password=${data.password}`,
+          {
+            method: 'GET',
+          },
+        );
+        if (resp.data.code === 200 && resp.data.success) {
+          alert('登录成功');
+          router.push('/index');
+        }
         // var myRequest = new Request(data, myInit);
         // console.log('Received values of form: ', values);
       }
     });
   };
-  // loginBtn=()=>{
-  //   console.log('2',this.props.form.validateFields)
-  //   this.props.form.validateFields((err, values) => {
-  //     console.log(values)
-  //     if (!err) {
-  //       console.log('Received values of form: ', values);
-  //     }
-  //   });
-  //   console.log('ffff1')
-  // }
+
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
@@ -86,9 +78,9 @@ class NormalLoginForm extends React.Component {
             <Row type="flex" justify="center" style={{ height: '100%' }}>
               <Col span={12}>
                 {/* className={styles.login_btn} onClick={this.loginBtn()} */}
-                <Button className={styles.login_btn} onClick={this.handleSubmit}>
+                <div className={styles.login_btn} onClick={this.handleSubmit}>
                   登录
-                </Button>
+                </div>
               </Col>
             </Row>
           </Form.Item>
