@@ -1,15 +1,14 @@
 import React from 'react';
-import { Layout, Breadcrumb } from 'antd';
+import { Layout } from 'antd';
 import withRouter from 'umi/withRouter';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 import AppTitle from '../components/AppTitle';
 import LeftMenuList from '../components/LeftMenuList';
 import TopHeader from '../components/TopHeader';
-import MainContent from '../components/MainContent';
 import styles from './index.less';
 
-const { Header, Content, Sider, Footer } = Layout;
+const { Sider } = Layout;
 
 const ignoreLayout = ['/login', '/login/'];
 
@@ -26,8 +25,7 @@ const BasicLayout: React.FC = (props: any) => {
       </Sider>
       <Layout className={[`${styles.no_background}`].join(' ')}>
         <TopHeader />
-        <MainContent />
-        {/* <Footer className={[`${styles.no_background}`].join(' ')} /> */}
+        {props.children}
       </Layout>
     </Layout>
   );
