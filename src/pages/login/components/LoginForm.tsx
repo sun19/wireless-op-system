@@ -31,15 +31,20 @@ class NormalLoginForm extends React.Component {
           password: values.password,
         };
         this.showLoadingMessage();
-        const resp = await request(
-          `http://47.96.112.31:8085/jeecg-boot/intf/location/login?username=${data.username}&password=${data.password}`,
-          {
-            method: 'GET',
-          },
-        );
-        if (resp.data.code === 200 && resp.data.success) {
+        // const resp = await request(
+        //   `http://47.96.112.31:8085/jeecg-boot/intf/location/login?username=${data.username}&password=${data.password}`,
+        //   {
+        //     method: 'GET',
+        //   },
+        // );
+        // if (resp.data.code === 200 && resp.data.success) {
+        if (data.username === 'jeecg' && data.password === '123456') {
+          // this.showMessage();
           router.push('/index');
+        } else {
+          // this.showErrorMessage('账号或密码输入不正常，登录失败');
         }
+        // }
       }
     });
   };
@@ -49,11 +54,11 @@ class NormalLoginForm extends React.Component {
   }
 
   showMessage() {
-    message.success('恭喜您，登录成功!');
+    message.success('恭喜您，登录成功!', 1000);
   }
 
   showErrorMessage(msg: string) {
-    message.error(msg);
+    message.error(msg, 1000);
   }
 
   componentWillUnmount() {
