@@ -6,82 +6,51 @@
   border-width: 0;
 }
 
-:global(.ant-menu-submenu-title) {
-  width: 193px;
-  height: 52px !important;
-  padding-left: 40px !important;
-  /* line-height: 52px !important; */
-  /* 动态修改 */
-  background: url(../assets/homepage/04-normal.png);
+:global(.ant-menu-inline .ant-menu-submenu-title) {
+  width: 206px;
+  height: 60px !important;
+  padding-left: 40px !important ;
+  background: no-repeat url(../assets/homepage/04-normal.png);
   color: #00d8ff;
-  /* rgba(251, 117, 52, 1); */
-  background-size: cover;
-}
-:global(.ant-menu-submenu-open .ant-menu-submenu-title) {
-  background: url(../assets/homepage/03-chose.png);
-  background-position: center;
-  background-repeat: no-repeat;
-  color: rgba(251, 117, 52, 1);
-}
+  background-size: 206px 60px;
 
-:global(.ant-menu-submenu-open .anticon) {
-  color: rgba(251, 117, 52, 1);
+  // background-size: cover;
 }
+:global(.ant-menu-submenu-open) {
+  :global(.ant-menu-submenu-title) {
+    width: 206px;
+    height: 60px !important;
+    padding-left: 40px !important ;
+    background: no-repeat url(../assets/homepage/03-chose.png);
+    color: rgba(251, 117, 52, 1);
+    background-size: 206px 60px;
 
-.ant-menu-submenu-title span {
-  padding-bottom: 10px;
+    :global(:visited) {
+      background: url(../assets/homepage/03-chose.png);
+      color: rgba(251, 117, 52, 1);
+      background-size: 206px 60px;
+    }
+   
+    span {
+      padding-bottom: 10px;
+    }
+  }
+}
+ :global(.ant-menu-submenu-title:hover) {
+      color:white;
+    }
+:global(.ant-menu-item:active) {
+  background: rgba(0, 0, 0, 0);
 }
 :global(.ant-menu-submenu-inline > .ant-menu-submenu-title .ant-menu-submenu-arrow) {
   display: none;
 }
-:global(.ant-menu-submenu-title:hover) {
-  color: rgba(251, 117, 52, 1);
-}
-/* .ant-menu-submenu-arrow:hover {
-  color: rgba(251, 117, 52, 1);
-  background-image: linear-gradient(to right, rgba(251, 117, 52, 1), rgba(251, 117, 52, 1)) !important;
-    
-} */
-/* menu右边图标展开关闭样式覆盖 */
-/* :global(.ant-menu-submenu-open.ant-menu-submenu-inline
-    > .ant-menu-submenu-title
-    .ant-menu-submenu-arrow::before) {
-  background-image: linear-gradient(to right, rgba(0, 216, 255, 1), rgba(0, 216, 255, 1));
-} */
-/* :global(.ant-menu-submenu-open.ant-menu-submenu-inline
-    > .ant-menu-submenu-title
-    .ant-menu-submenu-arrow:hover::after) {
-  background-image: linear-gradient(to right, rgba(251, 117, 52, 1),rgba(251, 117, 52, 1));
-} */
-/* :global(.ant-menu-submenu-open.ant-menu-submenu-inline
-    > .ant-menu-submenu-title
-    .ant-menu-submenu-arrow::after) {
-  background-image: linear-gradient(to right, rgba(0, 216, 255, 1), rgba(0, 216, 255, 1));
-} */
-/* :global( 
-  .ant-menu-submenu-arrow:hover::after) {
-background-image: linear-gradient(to right, rgba(251, 117, 52, 1), rgba(251, 117, 52, 1)) !important;
-    } */
-/* :global( 
-  .ant-menu-submenu-arrow:hover::before) {
-background-image: linear-gradient(to right, rgba(251, 117, 52, 1), rgba(251, 117, 52, 1)) !important;
-    } */
-/* :global( 
-  .ant-menu-submenu-arrow::before) {
-background-image: linear-gradient(to right,  rgba(0, 216, 255, 1), rgba(0, 216, 255, 1)) !important;
-    } */
-/* :global( 
-    .ant-menu-submenu-arrow::after) {
-background-image: linear-gradient(to right,  rgba(0, 216, 255, 1), rgba(0, 216, 255, 1)) !important;
-    } */
 :global(.ant-menu-submenu-title:active) {
-  background: rgba(0, 0, 0, 0);
+  background: url(../assets/homepage/04-normal.png);
+  background-size: 206px 60px;
   border: 0px;
 }
 
-/* menu右边图标展开关闭样式覆盖  结束 */
-
-/* menu选中覆盖样式 */
 :global(.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected) {
   background: rgba(0, 0, 0, 0);
 }
@@ -95,10 +64,6 @@ background-image: linear-gradient(to right,  rgba(0, 216, 255, 1), rgba(0, 216, 
   left: 10%;
 }
 
-/* .sub_menu_list .ant-menu-submenu-arrow {
-  transform: translateX(-34px) translateY(-10px);
-} */
-
 .no_background ul {
   background-color: rgba(0, 0, 0, 0) !important ;
 }
@@ -108,10 +73,6 @@ background-image: linear-gradient(to right,  rgba(0, 216, 255, 1), rgba(0, 216, 
   font-weight: 400;
   color: rgba(229, 229, 229, 1);
 }
-
-/* .menu_item {
-  padding-left: 60px !important ;
-} */
 
 .menu_item_underline_active {
   font-family: Source Han Sans CN;
