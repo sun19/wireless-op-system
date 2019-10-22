@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { Menu, Icon } from 'antd';
 import { ICON_FONTS_URL } from '../config/constants';
-// import styles from './leftMenuList.css';
-// import '../assets/iconFont/iconfont.css';
 
 import styles from './leftMenuList.less';
 
@@ -44,7 +42,12 @@ class LeftMenuList extends Component {
             <span>
               <Icon type="setting" />
               <span>系统设置</span>
-              <IconFont className={`${styles.icon_down}`} type="icon-down-blue-copy"theme="twoTone" twoToneColor="#52c41a" />
+              <IconFont
+                className={`${styles.icon_down}`}
+                type="icon-down-blue-copy"
+                theme="twoTone"
+                twoToneColor="#52c41a"
+              />
               {/* <span className="wireless-guanbicuowu"></span> */}
             </span>
           }
