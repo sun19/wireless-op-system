@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { Menu, Icon } from 'antd';
 import { ICON_FONTS_URL } from '../config/constants';
-// import styles from './leftMenuList.css';
-// import '../assets/iconFont/iconfont.css';
 
 import styles from './leftMenuList.less';
 
@@ -12,12 +10,13 @@ const IconFont = Icon.createFromIconfontCN({
 });
 class LeftMenuList extends Component {
   rootSubmenuKeys = ['sub1', 'sub2', 'sub4'];
-
+  showUp = false;
   state = {
     openKeys: ['sub1'],
   };
 
   onOpenChange = (openKeys: any) => {
+    this.showUp = (openKeys.length )> 0 ? true : false;
     const latestOpenKey = openKeys.find((key: any) => this.state.openKeys.indexOf(key) === -1);
     if (this.rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
       this.setState({ openKeys });
@@ -44,8 +43,10 @@ class LeftMenuList extends Component {
             <span>
               <Icon type="setting" />
               <span>系统设置</span>
-              <IconFont className={`${styles.icon_down}`} type="icon-down-blue-copy"theme="twoTone" twoToneColor="#52c41a" />
-              {/* <span className="wireless-guanbicuowu"></span> */}
+              <IconFont
+                className={`${styles.icon_down}`}
+                type={this.showUp === false ? 'icon-down1' : 'icon-up1'}
+              />
             </span>
           }
         >
