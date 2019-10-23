@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Menu, Icon } from 'antd';
 import { ICON_FONTS_URL } from '../config/constants';
+import router from 'umi/router';
 
 import styles from './leftMenuList.less';
 
@@ -13,10 +14,17 @@ class LeftMenuList extends Component {
   showUp = false;
   state = {
     openKeys: ['sub1'],
+    current: '1',
   };
-
+  handleClick = value => {
+    // console.log(value);
+    this.setState({
+      current: value.key,
+    });
+    //  router.push('/index');
+  };
   onOpenChange = (openKeys: any) => {
-    this.showUp = (openKeys.length )> 0 ? true : false;
+    this.showUp = openKeys.length > 0 ? true : false;
     const latestOpenKey = openKeys.find((key: any) => this.state.openKeys.indexOf(key) === -1);
     if (this.rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
       this.setState({ openKeys });
@@ -31,6 +39,9 @@ class LeftMenuList extends Component {
     return (
       <Menu
         mode="inline"
+        defaultOpenKeys={['sub1']}
+        onClick={this.handleClick}
+        selectedKeys={[this.state.current]}
         openKeys={this.state.openKeys}
         onOpenChange={this.onOpenChange}
         style={{ width: 256 }}
@@ -51,9 +62,8 @@ class LeftMenuList extends Component {
           }
         >
           <Menu.Item key="1">
-            <span
-              className={[`${styles.menu_item}`, `${styles.menu_item_underline_active}`].join(' ')}
-            >
+            <span className={`${styles.menu_item}`}>
+              {/* `${styles.menu_item_underline_active}` */}
               用户管理
             </span>
           </Menu.Item>

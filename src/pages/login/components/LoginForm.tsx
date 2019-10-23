@@ -75,7 +75,7 @@ class NormalLoginForm extends React.Component {
     const { getFieldDecorator } = this.props.form;
     return (
       <div className="login_form">
-        <div className={styles.login_title}>欢迎登陆</div>
+        <div className={styles.login_title}>欢迎登录</div>
         <Form onSubmit={this.handleSubmit} className="login-form">
           <Form.Item>
             {getFieldDecorator('radio-group', {
