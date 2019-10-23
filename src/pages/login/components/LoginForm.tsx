@@ -5,6 +5,7 @@ import { Form, Icon, Input, Row, Col, Radio, message } from 'antd';
 import { ICON_FONTS_URL } from '../../../config/constants';
 import request from '../../../utils/request';
 import styles from '../index.less';
+import { fromStringWithSourceMap } from 'source-list-map';
 
 const IconFont = Icon.createFromIconfontCN({
   scriptUrl: ICON_FONTS_URL,
@@ -75,7 +76,7 @@ class NormalLoginForm extends React.Component {
     const { getFieldDecorator } = this.props.form;
     return (
       <div className="login_form">
-        <div className={styles.login_title}>欢迎登陆</div>
+        <div className={styles.login_title}>欢迎登录</div>
         <Form onSubmit={this.handleSubmit} className="login-form">
           <Form.Item>
             {getFieldDecorator('radio-group', {
