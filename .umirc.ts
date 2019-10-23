@@ -33,7 +33,6 @@ const config: IConfig = {
   ],
   base: './',
   publicPath: './',
-  hash: true,
   history: 'hash',
 };
 
