@@ -1,11 +1,12 @@
 import React from 'react';
 import Konva from 'konva';
-import { Stage, Layer, Image as ImageLayer, Rect } from 'react-konva';
+import { Stage, Layer, Image as ImageLayer } from 'react-konva';
 
 import styles from './index.less';
 
 interface State {
   mapImage: any | null;
+  icon: any;
   width: number;
   height: number;
   lamps: Lamp[];
@@ -38,6 +39,7 @@ export default class MapManager extends React.Component<Props, State> {
     this.map = React.createRef<HTMLDivElement>();
     this.state = {
       mapImage: null,
+      icon: null,
       width: 0,
       height: 0,
       lamps: defaultLamps,
@@ -46,12 +48,13 @@ export default class MapManager extends React.Component<Props, State> {
 
   //异步加载图片，保证渲染到canvas上时是已经OK的
   async componentDidMount() {
-    const mapImage = await this.dynamicLoadImage('./assets/map.png');
-    const iconImage = await this.dynamicLoadImage('./assets/baoan.svg');
+    const mapImage = await this.dynamicLoadMapImage();
+    const iconImage = await this.dynamicLoadIconImage();
     const { clientWidth, clientHeight } = this.map.current;
     const currentLamps = this.setupLampData(this.state.lamps, clientWidth, clientHeight);
     this.setState({
       mapImage,
+      icon: iconImage,
       width: clientWidth,
       height: clientHeight,
       lamps: currentLamps,
@@ -70,21 +73,38 @@ export default class MapManager extends React.Component<Props, State> {
   createLamps() {
     const lamps = this.state.lamps;
     return lamps.map((lamp, index) => (
-      <Rect x={lamp.x - 25} y={lamp.y - 25} width={50} height={50} fill={'red'} key={index} />
+      <ImageLayer
+        image={this.state.icon}
+        x={lamp.x - 16}
+        y={lamp.y - 16}
+        width={32}
+        height={32}
+        key={index}
+      />
     ));
   }
 
   componentWillUnmount() {}
 
-  dynamicLoadImage(path) {
+  dynamicLoadMapImage() {
     return new Promise(resolve => {
       const mapImage = new Image();
-      mapImage.src = require(path);
+      mapImage.src = require('./assets/map.png');
       mapImage.onload = function() {
         resolve(mapImage);
       };
     });
   }
+  dynamicLoadIconImage() {
+    return new Promise(resolve => {
+      const mapImage = new Image();
+      mapImage.src = require('./assets/baoan.png');
+      mapImage.onload = function() {
+        resolve(mapImage);
+      };
+    });
+  }
+
   render() {
     const { mapImage, width, height } = this.state;
     const lamps = this.createLamps();
