@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Menu, Icon } from 'antd';
 import { ICON_FONTS_URL } from '../config/constants';
+// import { Menus } from '../config/menus';
+
 import router from 'umi/router';
 
 import styles from './leftMenuList.less';
@@ -10,6 +12,7 @@ const IconFont = Icon.createFromIconfontCN({
   scriptUrl: ICON_FONTS_URL,
 });
 class LeftMenuList extends Component {
+ 
   rootSubmenuKeys = ['sub1', 'sub2', 'sub4'];
   showUp = false;
   state = {
@@ -43,10 +46,13 @@ class LeftMenuList extends Component {
         onClick={this.handleClick}
         selectedKeys={[this.state.current]}
         openKeys={this.state.openKeys}
-        onOpenChange={this.onOpenChange}
+        // onOpenChange={this.onOpenChange}
         style={{ width: 256 }}
         className={[`${styles.no_background}`, `${styles.menu_bar}`].join(' ')}
       >
+        {/* <For >
+
+        </For> */}
         <SubMenu
           key="sub1"
           className={[`${styles.no_background}`, `${styles.sub_menu_list}`].join(' ')}
