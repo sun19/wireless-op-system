@@ -12,7 +12,6 @@ const IconFont = Icon.createFromIconfontCN({
   scriptUrl: ICON_FONTS_URL,
 });
 class LeftMenuList extends Component {
- 
   rootSubmenuKeys = ['sub1', 'sub2', 'sub4'];
   showUp = false;
   state = {
@@ -59,7 +58,7 @@ class LeftMenuList extends Component {
           title={
             <span>
               <Icon type="setting" />
-              <span>系统设置</span>
+              <span>大屏展示</span>
               <IconFont
                 className={`${styles.icon_down}`}
                 type={this.showUp === false ? 'icon-down1' : 'icon-up1'}
@@ -70,17 +69,17 @@ class LeftMenuList extends Component {
           <Menu.Item key="1">
             <span className={`${styles.menu_item}`}>
               {/* `${styles.menu_item_underline_active}` */}
-              用户管理
+              大屏展示
             </span>
           </Menu.Item>
           <Menu.Item key="2">
-            <span className={[`${styles.menu_item}`].join(' ')}>人员类型</span>
+            <span className={[`${styles.menu_item}`].join(' ')}>数据</span>
           </Menu.Item>
           <Menu.Item key="3" className={styles.menu_item}>
-            <span className={[`${styles.menu_item}`].join(' ')}>信息牌设置</span>
+            <span className={[`${styles.menu_item}`].join(' ')}>主界面</span>
           </Menu.Item>
           <Menu.Item key="4" className={styles.menu_item}>
-            <span className={[`${styles.menu_item}`].join(' ')}>超级管理员设置</span>
+            <span className={[`${styles.menu_item}`].join(' ')}>应用</span>
           </Menu.Item>
         </SubMenu>
       </Menu>

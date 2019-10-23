@@ -41,7 +41,7 @@ class NormalLoginForm extends React.Component {
         // if (resp.data.code === 200 && resp.data.success) {
         if (data.username === 'jeecg' && data.password === '123456') {
           // this.showMessage();
-          router.push('/index');
+          router.push('/map-manager');
         } else {
           // this.showErrorMessage('账号或密码输入不正常，登录失败');
         }
