@@ -73,7 +73,7 @@ export default class Login extends Component {
             type="flex"
             justify="center"
             align="middle"
-            style={{ position: 'relative', top: '30px' }}
+            style={{ position: 'relative', top: '1rem' }}
           >
             <Col span={12}>
               <div className={styles.system_name} />
@@ -82,7 +82,7 @@ export default class Login extends Component {
         </Header>
         <Content className={[`${styles.no_bg}`].join(' ')}>
           <Row type="flex" justify="center" style={{ height: '100%' }}>
-            <Col span={12}>
+            <Col span={10}>
               <div className={styles.loginPanel}>
                 <WrappedNormalLoginForm />
               </div>
