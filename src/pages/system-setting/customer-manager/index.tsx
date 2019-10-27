@@ -3,7 +3,7 @@ import { Layout, Form, Input, Row, Col, Button, Icon } from 'antd';
 
 import MainContent from '../components/MainContent';
 import styles from './index.less';
-import publicStyles from './index.less';
+import publicStyles from '../index.less';
 
 const { Content } = Layout;
 const FormItem = Form.Item;
@@ -13,14 +13,10 @@ export default class UserManager extends React.Component {
     super(props);
   }
   render() {
-    // const {
-    //   form: { getFieldDecorator },
-    // } = this.props as any;
-
     return (
-      <div className={styles.customerManager}>
+      <div className={publicStyles.public_hight}>
         <Content className={publicStyles.bg}>
-          <div className={styles.padding_top_20}>
+          <div className={styles.public_hight_40}>
             <Form layout="inline">
               <Row
                 type="flex"
@@ -43,11 +39,9 @@ export default class UserManager extends React.Component {
               </Row>
             </Form>
           </div>
+          <MainContent />
         </Content>
-        <MainContent />
       </div>
     );
   }
 }
-
-// export default UserManager;
