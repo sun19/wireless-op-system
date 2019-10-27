@@ -11,11 +11,9 @@ interface State {
   height: number;
   lamps: Lamp[];
 }
-
 interface Props {
   [key: string]: any;
 }
-
 interface Lamp {
   x: number;
   y: number;
@@ -49,7 +47,6 @@ export default class MapManager extends React.Component<Props, State> {
       lamps: [],
     };
   }
-
   //异步加载图片，保证渲染到canvas上时是已经OK的
   async componentDidMount() {
     const mapImage = await this.dynamicLoadMapImage();
@@ -63,7 +60,6 @@ export default class MapManager extends React.Component<Props, State> {
       height: clientHeight,
     });
   }
-
   connectWs() {
     const { clientWidth, clientHeight } = this.map.current;
     this.ws = new WebSocket('ws://47.96.112.31:8084/jeecg-boot/websocket/1');
@@ -79,10 +75,8 @@ export default class MapManager extends React.Component<Props, State> {
         lamps: currentLamps,
       });
     };
-
     this.ws.onclose = () => {};
   }
-
   setupLampData = (data, currentWidth, currentHeight) => {
     const defaultWidth = 1920;
     const defaultHeight = 1080;
@@ -91,7 +85,6 @@ export default class MapManager extends React.Component<Props, State> {
       y: (item.y / defaultHeight) * currentHeight,
     }));
   };
-
   createLamps() {
     const lamps = this.state.lamps;
     return lamps.map((lamp, index) => (
@@ -105,9 +98,7 @@ export default class MapManager extends React.Component<Props, State> {
       />
     ));
   }
-
   componentWillUnmount() {}
-
   dynamicLoadMapImage() {
     return new Promise(resolve => {
       const mapImage = new Image();
@@ -126,7 +117,6 @@ export default class MapManager extends React.Component<Props, State> {
       };
     });
   }
-
   render() {
     const { mapImage, width, height } = this.state;
     const lamps = this.createLamps();
