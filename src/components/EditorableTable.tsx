@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Input, InputNumber, Popconfirm, Form, Icon, Pagination } from 'antd';
+import { Table, Button, Input, InputNumber, Popconfirm, Form, Icon, Pagination } from 'antd';
 
 import { ICON_FONTS_URL } from '../config/constants';
 import styles from './table.less';
@@ -224,13 +224,16 @@ export default class EditableTable extends React.Component {
     return (
       <EditableContext.Provider value={this.props.form}>
         <Table
+          className={styles.tablePagination}
           components={components}
           bordered={false}
+          size="middle"
           dataSource={this.state.data}
           columns={columns}
           rowClassName="editable-row"
           pagination={{
             size: 'small',
+            // simple:true,
             // showSizeChanger: true,
             showQuickJumper: {
               goButton: '跳转',
@@ -238,10 +241,18 @@ export default class EditableTable extends React.Component {
             showTotal: () => `每页10条，共10条`,
             itemRender: (current, type, originalElement) => {
               if (type === 'prev') {
-                return <span className={styles.prev_page}>上一页</span>;
+                return (
+                  <Button size="small" className={styles.next_page}>
+                    上一页
+                  </Button>
+                );
               }
               if (type === 'next') {
-                return <span className={styles.next_page}>下一页</span>;
+                return (
+                  <Button size="small" className={styles.next_page}>
+                    下一页
+                  </Button>
+                );
               }
               return originalElement;
             },
