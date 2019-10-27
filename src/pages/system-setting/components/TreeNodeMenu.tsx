@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Tree, Icon } from 'antd';
+import { Tree } from 'antd';
 import { TreeProps } from 'antd/lib/tree';
 
 const { TreeNode } = Tree;
