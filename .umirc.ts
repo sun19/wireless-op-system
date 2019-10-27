@@ -33,7 +33,7 @@ const config: IConfig = {
   ],
   // base: './',
   // publicPath: '',
-  // history: 'hash',
+  history: 'hash',
 };
 
 export default config;

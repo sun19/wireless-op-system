@@ -2,6 +2,7 @@ import React from 'react';
 import { Layout } from 'antd';
 import withRouter from 'umi/withRouter';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import { connect } from 'dva';
 
 import AppTitle from '../components/AppTitle';
 import LeftMenuList from '../components/LeftMenuList';
