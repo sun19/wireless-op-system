@@ -1,10 +1,11 @@
 import React from 'react';
 
 import MainContent from '../components/MainContent';
+import styles from './index.less';
 
 const UserManager: React.FC = props => {
   return (
-    <div style={{ color: 'red' }}>
+    <div className={styles.customerManager}>
       <MainContent />
     </div>
   );

@@ -40,22 +40,23 @@ export default class MainContent extends React.Component {
                   {getFieldDecorator('name')(<Input placeholder="请输入姓名" />)}
                 </FormItem>
               </Col>
-            </Row>
-            <div style={{ overflow: 'hidden' }}>
-              <div>
+              <Col>
                 <Button className={styles.bg_button}>查询</Button>
+              </Col>
+              <Col>
                 <Button className={styles.bg_button} style={{ marginLeft: 37 }}>
                   清空
                 </Button>
-              </div>
-              <div className={styles.div_button_bg} />
-            </div>
+              </Col>
+            </Row>
           </Form>
         </div>
-        <div className={[`${styles.table_list_panel}`, `${styles.padding_top_20}`].join(' ')}>
-          <ContentBorder>
-            <EditableFormTable />
-          </ContentBorder>
+        <div className={styles.table_list}>
+          <div className={styles.table_list_panel}>
+            <ContentBorder>
+              <EditableFormTable />
+            </ContentBorder>
+          </div>
         </div>
       </Content>
     );
