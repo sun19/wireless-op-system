@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Tree, Icon } from 'antd';
+import { Tree } from 'antd';
 import { TreeProps } from 'antd/lib/tree';
 
 const { TreeNode } = Tree;
@@ -63,7 +63,7 @@ const defaultMenuNodes = [
   },
 ];
 
-export default class TreeNodeMenu extends Component {
+export default class TreeNodeMenu extends Component<Props> {
   createTreeNodes = nodes => {
     if (nodes.children) {
       return (
