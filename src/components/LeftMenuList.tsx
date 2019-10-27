@@ -81,7 +81,6 @@ class LeftMenuList extends Component {
                     return (
                       <Menu.Item key={childrens.name}>
                         <Link className={`${styles.menu_item}`} to={childrens.path}>{childrens.name}</Link>
-                        {/* <span className={`${styles.menu_item}`}>{childrens.name}</span> */}
                       </Menu.Item>
                     );
                   })

@@ -55,14 +55,14 @@
   background: rgba(0, 0, 0, 0);
 
   .menu_item {
-    font-family: Source Han Sans CN;
-    font-weight: 400;
+       font-family: Source Han Sans CN;
+    padding: 0px;
     border-image-slice: 30% 0%;
     background-size: repeat;
     padding-bottom: 3px;
-    color: rgba(251, 117, 52, 1) !important ;
+    color: #fb7534 !important;
     border-bottom-style: dashed;
-    border-image: url(../assets/homepage/21-light.png) 5 stretch;
+    border-image: url(../assets/homepage/21-light.png) 15 stretch;
   }
 }
 
@@ -83,12 +83,13 @@
   font-family: Source Han Sans CN;
   font-weight: 400;
   color: rgba(229, 229, 229, 1);
+  a{
+  color: rgba(229, 229, 229, 1);
+      display: inline-block;
+    height: 32px;
+
+  }
 }
-
-// .menu_item_underline_active {
-
-// }
-// .ant-menu-item .anticon .icon_title, 
  .icon_title  {
  
     display: inline-block;
@@ -103,6 +104,11 @@
     margin-top: 15px;
   font-size: 6px !important;
 }
- :global( .menu_item .ant-menu-item > a){
-    color: rgba(251, 117, 52, 1) !important ;
-    }
+ul.ant-menu{
+ li.ant-menu-item{
+a.menu_item {
+    display: block;
+ color: rgba(251, 117, 52, 1) !important ;
+}
+}
+}
