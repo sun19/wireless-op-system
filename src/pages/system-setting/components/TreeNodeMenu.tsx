@@ -63,7 +63,7 @@ const defaultMenuNodes = [
   },
 ];
 
-export default class TreeNodeMenu extends Component {
+export default class TreeNodeMenu extends Component<Props> {
   createTreeNodes = nodes => {
     if (nodes.children) {
       return (
