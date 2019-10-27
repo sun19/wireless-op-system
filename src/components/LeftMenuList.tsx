@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
 import { Menu, Icon } from 'antd';
 import { ICON_FONTS_URL } from '../config/constants';
-// import { Menus } from '../config/menus';
-
-import router from 'umi/router';
-
 import styles from './leftMenuList.less';
 
 const { SubMenu } = Menu;
@@ -45,7 +41,7 @@ class LeftMenuList extends Component {
         onClick={this.handleClick}
         selectedKeys={[this.state.current]}
         openKeys={this.state.openKeys}
-        // onOpenChange={this.onOpenChange}
+        onOpenChange={this.onOpenChange}
         style={{ width: 256 }}
         className={[`${styles.no_background}`, `${styles.menu_bar}`].join(' ')}
       >
