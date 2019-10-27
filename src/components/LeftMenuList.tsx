@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { Menu, Icon } from 'antd';
 import { ICON_FONTS_URL } from '../config/constants';
-import { LEFT_MENUS } from '../config/menus';
+import { leftMenus } from '../config/menus';
 import router from 'umi/router';
 import Link from 'umi/link';
 import styles from './leftMenuList.less';
-const leftMenu = LEFT_MENUS;
+const leftMenu = leftMenus;
 const { SubMenu } = Menu;
 const IconFont = Icon.createFromIconfontCN({
   scriptUrl: ICON_FONTS_URL,
@@ -28,10 +28,11 @@ class LeftMenuList extends Component {
     let leftpath = leftMenu.find(() => {
       return { name: value.key };
     });
-    this.setState({
-      openKeys: [value.keyPath[1]],
-    });
-    // console.log(this.state.openKeys);
+      this.setState({
+        openKeys: [value.keyPath[1]],
+      });
+      // console.log(this.state.openKeys);
+    
   };
   onOpenChange = (openKeys: any) => {
     this.showUp = openKeys.length > 0 ? true : false;
@@ -47,7 +48,7 @@ class LeftMenuList extends Component {
   };
 
   render() {
-    // console.log(this.state.openKeys);
+      // console.log(this.state.openKeys);
     return (
       <Menu
         mode="inline"
@@ -79,10 +80,7 @@ class LeftMenuList extends Component {
                 ? leftMenuItem.children.map(childrens => {
                     return (
                       <Menu.Item key={childrens.name}>
-                        <Link className={`${styles.menu_item}`} to={childrens.path}>
-                          {childrens.name}
-                        </Link>
-                        {/* <span className={`${styles.menu_item}`}>{childrens.name}</span> */}
+                        <Link className={`${styles.menu_item}`} to={childrens.path}>{childrens.name}</Link>
                       </Menu.Item>
                     );
                   })
