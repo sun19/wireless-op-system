@@ -1,9 +1,12 @@
 import React from 'react';
-import { Form, Row, Col, Input } from 'antd';
+import { Form, Row, Col } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 
 import InputText from '../components/InputText';
 import SelectText from '../components/SelectText';
+import AreaText from '../components/AreaText';
+import FormButton from '../components/FormButton';
+import ContentBorder from '../../../components/ContentBorder';
 import styles from './index.less';
 
 interface Props extends FormComponentProps {}
@@ -33,64 +36,89 @@ const defaultGenderType = [
 const AddUser: React.FC<Props> = (props: Props) => {
   const { getFieldDecorator } = props.form;
   return (
-    <Form layout="inline">
-      <Row type="flex" justify="center" align="middle" className={styles.add}>
-        <Col span={12}>
-          <div className="add__inner--container">
-            <Row type="flex" justify="space-between">
-              <Col span={12}>
-                <Form.Item label="登录名">
-                  {getFieldDecorator('登录名', {
-                    rules: [
-                      {
-                        message: '请输入登录名',
-                      },
-                    ],
-                  })(<InputText placeholder="请输入登录名" />)}
-                </Form.Item>
-              </Col>
-              <Col span={12}>
-                <Form.Item label="姓名">
-                  {getFieldDecorator('姓名', {
-                    rules: [
-                      {
-                        message: '请输入姓名',
-                      },
-                    ],
-                  })(<InputText placeholder="请输入姓名" />)}
-                </Form.Item>
-              </Col>
-            </Row>
-            <Row type="flex" justify="space-between">
-              <Col span={12} className={styles.select_padding_left}>
-                <Form.Item label="人员类型">
-                  {getFieldDecorator('人员类型', {
-                    rules: [
-                      {
-                        message: '请选择人员类型',
-                      },
-                    ],
-                    initialValue: '开发者',
-                  })(<SelectText options={defaultUserTypes} />)}
-                </Form.Item>
-              </Col>
-              <Col span={12}>
-                <Form.Item label="性别">
-                  {getFieldDecorator('性别', {
-                    initialValue: '男',
-                    rules: [
-                      {
-                        message: '请选择性别',
-                      },
-                    ],
-                  })(<SelectText options={defaultGenderType} />)}
-                </Form.Item>
-              </Col>
-            </Row>
-          </div>
-        </Col>
-      </Row>
-    </Form>
+    <ContentBorder className={styles.add_root}>
+      <Form layout="inline" style={{ marginTop: '0.57rem' }}>
+        <Row type="flex" justify="center" align="middle" className={styles.add}>
+          <Col span={12}>
+            <div className="add__inner--container">
+              <Row type="flex" justify="space-between">
+                <Col span={12}>
+                  <Form.Item label="登录名">
+                    {getFieldDecorator('登录名', {
+                      rules: [
+                        {
+                          message: '请输入登录名',
+                        },
+                      ],
+                    })(<InputText placeholder="请输入登录名" />)}
+                  </Form.Item>
+                </Col>
+                <Col span={12}>
+                  <Form.Item label="姓名">
+                    {getFieldDecorator('姓名', {
+                      rules: [
+                        {
+                          message: '请输入姓名',
+                        },
+                      ],
+                    })(<InputText placeholder="请输入姓名" />)}
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Row type="flex" justify="space-between">
+                <Col
+                  span={12}
+                  className={styles.select_padding_left}
+                  style={{ marginLeft: '-0.18rem' }}
+                >
+                  <Form.Item label="人员类型">
+                    {getFieldDecorator('人员类型', {
+                      rules: [
+                        {
+                          message: '请选择人员类型',
+                        },
+                      ],
+                      initialValue: '开发者',
+                    })(<SelectText options={defaultUserTypes} style={{ width: '2.4rem' }} />)}
+                  </Form.Item>
+                </Col>
+                <Col span={12}>
+                  <Form.Item label="性别">
+                    {getFieldDecorator('性别', {
+                      initialValue: '男',
+                      rules: [
+                        {
+                          message: '请选择性别',
+                        },
+                      ],
+                    })(<SelectText options={defaultGenderType} style={{ width: '2.4rem' }} />)}
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Row type="flex" justify="space-between">
+                <Col span={23}>
+                  <Form.Item label="备注">
+                    {getFieldDecorator('备注')(<AreaText autoSize={{ minRows: 6, maxRows: 8 }} />)}
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Row type="flex" justify="center" style={{ marginTop: '0.35rem' }}>
+                <Col span={6}>
+                  <Form.Item>
+                    <FormButton title="确认" />
+                  </Form.Item>
+                </Col>
+                <Col span={6} className={styles.select_padding_left}>
+                  <Form.Item>
+                    <FormButton title="返回" />
+                  </Form.Item>
+                </Col>
+              </Row>
+            </div>
+          </Col>
+        </Row>
+      </Form>
+    </ContentBorder>
   );
 };
 

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Input } from 'antd';
+import { InputProps } from 'antd/lib/input';
 
 import styles from '../index.less';
-import { InputProps } from 'antd/lib/input';
 
 interface Props extends InputProps {}
 

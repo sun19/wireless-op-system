@@ -27,7 +27,11 @@ export default class SelectText extends React.Component<Props> {
   render() {
     const options = this.setupOptions();
     return (
-      <Select defaultValue={this.props.value} style={{ width: 169 }} className={styles.select_text}>
+      <Select
+        defaultValue={this.props.value}
+        style={Object.assign({ width: 169 }, this.props.style)}
+        className={styles.select_text}
+      >
         {options}
       </Select>
     );
