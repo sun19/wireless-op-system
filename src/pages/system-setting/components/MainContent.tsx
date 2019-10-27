@@ -2,7 +2,8 @@ import React from 'react';
 import { Layout, Form, Input, Row, Col, Button, Icon } from 'antd';
 
 import styles from './mainContent.less';
-import EditableTable from './EditorableTable';
+import EditableTable from '../../../components/EditorableTable';
+import ContentBorder from '../../../components/ContentBorder';
 
 const { Content } = Layout;
 const FormItem = Form.Item;
@@ -52,7 +53,9 @@ export default class MainContent extends React.Component {
           </Form>
         </div>
         <div className={[`${styles.table_list_panel}`, `${styles.padding_top_20}`].join(' ')}>
-          <EditableFormTable />
+          <ContentBorder>
+            <EditableFormTable />
+          </ContentBorder>
         </div>
       </Content>
     );
