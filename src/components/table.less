@@ -23,3 +23,49 @@
     > td) {
   background: rgba(94, 180, 254, 0.4);
 }
+:global(.ant-table-pagination.ant-pagination) {
+  display: inline-block;
+  position: fixed;
+  margin-left: 4.2rem;
+max-width: 7rem;
+    width: 7rem;
+
+  bottom: 30px;
+  color: #1890ff;
+  font-size: 12px;
+}
+:global(.ant-btn.ant-btn-sm) {
+  margin-right: 3px;
+  color: #1890ff;
+  border-color: #1890ff;
+  font-size: 12px;
+  background: rgba(0, 0, 0, 0);
+}
+:global(.ant-pagination-item) {
+  a{
+ color: #1890ff;
+  }
+ 
+}
+:global(.ant-pagination-item-active) {
+  background: #054780;
+  color: white;
+  font-size: 12px;
+}
+:global(.ant-pagination.mini .ant-pagination-options-quick-jumper) {
+  color: rgba(0, 0, 0, 0);
+  user-select: none;
+  margin-left: -30px;
+  span {
+    border: 1px solid #1890ff;
+    border-radius: 4px;
+    font-size: 12px;
+    padding: 3px 7px;
+    color: #1890ff;
+    cursor: pointer;
+  }
+  input{
+    background: rgba(0, 0, 0, 0);
+    border-color:#1890ff;
+  }
+}
