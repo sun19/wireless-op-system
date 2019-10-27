@@ -17,31 +17,19 @@ class LeftMenuList extends Component<any> {
       type: 'menu/clickMenuItem',
       payload: {
         current: value.key,
-        defaultSelectedKeys: value.key,
         openKeys: [value.keyPath[1]],
       },
     });
   };
-  onOpenChange = (openKeys: any) => {
-    const { rootKeys } = this.props;
-    //最近展开的`submenu`.
-    const latestOpenKey = openKeys.find((key: any) => rootKeys[0].indexOf(key) === -1);
-    //关掉
-    if (rootKeys.indexOf(latestOpenKey) === -1) {
-      this.props.dispatch({
-        type: 'menu/changeOpen',
-        payload: {
-          openKeys,
-        },
-      });
-    } else {
-      this.props.dispatch({
-        type: 'menu/changeOpen',
-        payload: {
-          openKeys: latestOpenKey ? [latestOpenKey] : [],
-        },
-      });
-    }
+  onOpenChange = (openKeys: string[]) => {
+    openKeys = openKeys.length > 0 ? openKeys.slice(-1) : [];
+    // TODO:暂时不做点击`menu`切换路由操作
+    this.props.dispatch({
+      type: 'menu/changeOpen',
+      payload: {
+        openKeys,
+      },
+    });
   };
 
   renderLeftMenu = () => {
@@ -79,16 +67,16 @@ class LeftMenuList extends Component<any> {
   };
 
   render() {
-    const { defaultSelectedKeys, rootKeys, current } = this.props;
+    const { rootKeys, current, openKeys } = this.props;
     const LeftMenu = this.renderLeftMenu();
     return (
       <Menu
         mode="inline"
         defaultOpenKeys={[rootKeys[0]]}
-        defaultSelectedKeys={[defaultSelectedKeys]}
+        defaultSelectedKeys={openKeys}
         onClick={this.handleClick}
         selectedKeys={[current]}
-        openKeys={rootKeys[0]}
+        openKeys={openKeys}
         onOpenChange={this.onOpenChange}
         style={{ width: 256 }}
         className={[`${styles.no_background}`, `${styles.menu_bar}`].join(' ')}

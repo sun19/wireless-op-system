@@ -6,8 +6,7 @@ export default {
     menus: LEFT_MENUS,
     rootKeys: LEFT_MENUS.map(item => item.name),
     current: '1',
-    defaultSelectedKeys: '用户管理',
-    openKeys: LEFT_MENUS.map(item => item.name)[0],
+    openKeys: LEFT_MENUS.map(item => item.name).slice(0, 1),
   },
   reducers: {
     changeOpen(state, { payload }) {
