@@ -180,13 +180,18 @@ export const LEFT_MENUS = [
     key: '28',
     path: '/big-screen',
     component: './pages/big-screen',
-    // children: [
-    //     {
-    //         name: '大屏展示',
-    //         path: 'big-screen/info-card-list',
-    //         component: './pages/users/index.tsx'
-    //     },
-    // ]
+    children: [
+      {
+        name: '首页',
+        path: '/big-screen/homepage',
+        component: './pages/big-screen/homepage',
+      },
+      {
+        name: '数据',
+        path: '/big-screen/dataview',
+        component: './pages/big-screen/dataview',
+      },
+    ],
   },
   {
     name: '统计查询',
