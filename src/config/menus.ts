@@ -1,13 +1,8 @@
 export const LEFT_MENUS = [
-  // {
-  //     name: 'login',
-  //     path: '/',
-  //     // component: './pages/index.tsx'
-  // },
   {
     name: '系统设置',
     key: '01',
-    path: '',
+    path: '/system-setting',
     component: './pages/system-setting',
     children: [
       {

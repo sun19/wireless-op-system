@@ -51,11 +51,11 @@ class LeftMenuList extends Component<any> {
           }
         >
           {leftMenuItem.children && leftMenuItem.children.length > 0
-            ? leftMenuItem.children.map(childrens => {
+            ? leftMenuItem.children.map(item => {
                 return (
-                  <Menu.Item key={childrens.name}>
-                    <Link className={`${styles.menu_item}`} to={childrens.path}>
-                      {childrens.name}
+                  <Menu.Item key={item.name}>
+                    <Link className={`${styles.menu_item}`} to={item.path}>
+                      {item.name}
                     </Link>
                   </Menu.Item>
                 );

@@ -31,7 +31,7 @@ const config: IConfig = {
       },
     ],
   ],
-  // base: './',
+  base: '/#/',
   // publicPath: '',
   history: 'hash',
 };
