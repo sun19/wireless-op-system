@@ -4,7 +4,6 @@ import React from 'react';
 import MainContent from '../components/MainContent';
 import publicStyles from '../index.less';
 
-
 export default class MessageCard extends React.Component {
   constructor(props: any) {
     super(props);
@@ -13,7 +12,7 @@ export default class MessageCard extends React.Component {
     return (
       <div className={publicStyles.public_hight}>
         <div className={publicStyles.bg}>
-          <div className={publicStyles.public_hight_40}/>
+          <div className={publicStyles.public_hight_40} />
           <MainContent />
         </div>
       </div>

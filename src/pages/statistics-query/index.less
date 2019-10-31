@@ -1,3 +1,7 @@
+.map_manager {
+	width: 100%;
+	height: 100%;
+}
 .bg {
 	height: 100%;
 }
@@ -6,6 +10,36 @@
 }
 .public_hight_40 {
 	height: 40px;
+}
+
+.authInner {
+	color: rgba(94, 180, 254, 1);
+	font-size: 0.16rem;
+	font-family: Source Han Sans CN;
+	font-weight: 400;
+	.timePicker {
+		display: inline-block;
+		margin: 0px 10px;
+	}
+	:global {
+		.ant-time-picker {
+			width: 1.6rem;
+			.ant-time-picker-input {
+				width: 1.6rem;
+				height: 0.4rem;
+				background: url(../../assets/shared/文本.png);
+				border-width: 0;
+				background-size: 1.6rem 0.4rem;
+				color: rgba(255, 255, 255, 0.8);
+			}
+			.ant-time-picker-icon {
+				color: rgba(94, 180, 254, 1);
+				.ant-time-picker-clock-icon {
+					color: rgba(94, 180, 254, 1);
+				}
+			}
+		}
+	}
 }
 
 .input_text {
@@ -87,8 +121,8 @@
 }
 
 :global {
+	.ant-row.ant-form-item,
 	.add__inner--container,
-	.ant-form-item,
 	.auth__inner--container {
 		input {
 			color: rgba(255, 255, 255, 0.8);
@@ -110,7 +144,7 @@
 			background-size: 100% 100%;
 			background-repeat: no-repeat;
 			border-width: 0;
-			color: rgba(94, 180, 254, 1);
+			color: rgba(94, 180, 254, 1) !important;
 		}
 		.ant-select-arrow {
 			color: rgba(5, 205, 244, 1);
@@ -137,6 +171,7 @@
 		}
 	}
 }
+
 .button_type {
 	display: inline-block;
 	// padding-top: 2px;

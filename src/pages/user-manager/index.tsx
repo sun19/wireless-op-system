@@ -3,8 +3,8 @@ import { Button } from 'antd';
 
 export default function() {
   return (
-    <div >
-      <div/>
+    <div>
+      <div />
       <ul>
         <li>
           To get started, edit <code>src/pages/index.js</code> and save to reload.
