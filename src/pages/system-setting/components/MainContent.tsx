@@ -5,7 +5,6 @@ import styles from './mainContent.less';
 import EditableTable from '../../../components/EditorableTable';
 import ContentBorder from '../../../components/ContentBorder';
 
-
 @Form.create()
 export default class MainContent extends React.Component {
   constructor(props: any) {

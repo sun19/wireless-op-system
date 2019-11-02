@@ -16,7 +16,8 @@
     "react-dom": "^16.8.6",
     "react-konva": "^16.10.1-0",
     "react-router-breadcrumbs-hoc": "^3.2.3",
-    "react-transition-group": "^4.3.0"
+    "react-transition-group": "^4.3.0",
+    "umi-request": "^1.2.8"
   },
   "devDependencies": {
     "@types/jest": "^23.3.12",

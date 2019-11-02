@@ -3,9 +3,9 @@ import router from 'umi/router';
 
 import { Form, Icon, Input, Row, Col, Radio, message } from 'antd';
 import { ICON_FONTS_URL } from '../../../config/constants';
-import request from '../../../utils/request';
+// import request from '../../../utils/request';
+import request from 'umi-request';
 import styles from '../index.less';
-import { fromStringWithSourceMap } from 'source-list-map';
 
 const IconFont = Icon.createFromIconfontCN({
   scriptUrl: ICON_FONTS_URL,
@@ -32,20 +32,17 @@ class NormalLoginForm extends React.Component {
           password: values.password,
         };
         this.showLoadingMessage();
-        // const resp = await request(
-        //   `http://47.96.112.31:8085/jeecg-boot/intf/location/login?username=${data.username}&password=${data.password}`,
-        //   {
-        //     method: 'GET',
-        //   },
-        // );
-        // if (resp.data.code === 200 && resp.data.success) {
-        if (data.username === 'jeecg' && data.password === '123456') {
-          // this.showMessage();
-          router.push('/map-manager');
+        const resp = await request(
+          `http://47.95.195.189:8086/jeecg-boot/intf/location/login?username=${data.username}&password=${data.password}`,
+          {
+            method: 'GET',
+          },
+        );
+        if (resp.data.code === 200 && resp.data.success) {
+          router.push('/system-setting/customer-manager');
         } else {
-          // this.showErrorMessage('账号或密码输入不正常，登录失败');
+          this.showErrorMessage('账号或密码输入不正常，登录失败');
         }
-        // }
       }
     });
   };
