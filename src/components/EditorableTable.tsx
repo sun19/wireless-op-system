@@ -119,7 +119,6 @@ export default class EditableTable extends React.Component {
         title: '操作',
         dataIndex: 'operation',
         render: (text, record) => {
-          const { editingKey } = this.state;
           const editable = this.isEditing(record);
           return editable ? (
             <span>
