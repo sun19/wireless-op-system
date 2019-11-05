@@ -40,7 +40,7 @@ const columns = [
 type StateProps = ReturnType<typeof mapState>;
 type Props = StateProps & UmiComponentProps;
 
-class PeopelType extends React.Component<Props> {
+class InfoCardSetting extends React.Component<Props> {
   constructor(props: any) {
     super(props);
     this.getUserTypes = this.getUserTypes.bind(this);
@@ -119,4 +119,4 @@ const mapState = ({ systemSetting }) => {
   };
 };
 
-export default connect(mapState)(PeopelType);
+export default connect(mapState)(InfoCardSetting);

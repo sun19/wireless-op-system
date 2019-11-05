@@ -1,12 +1,14 @@
-import React, { ReactEventHandler } from 'react';
+import React from 'react';
 import { UmiComponentProps } from '@/common/type';
 import { Layout, Form, Input, Row, Col, Button, Icon } from 'antd';
 import { connect } from 'dva';
 import * as _ from 'lodash';
+import router from 'umi/router';
 
 import MainContent from '../components/MainContent';
 import { ICON_FONTS_URL } from '@/config/constants';
 import { getUserList, updateUserInfo, deleteUser } from '../services';
+import { DeleteUser } from '../services/index.interfaces';
 
 import styles from './index.less';
 import publicStyles from '../index.less';
@@ -75,6 +77,7 @@ class UserManager extends React.Component<Props, State> {
   constructor(props: any) {
     super(props);
     this.updateData = this.updateData.bind(this);
+    this.deleteColumn = this.deleteColumn.bind(this);
     this.state = {
       loginName: '',
       name: '',
@@ -107,10 +110,15 @@ class UserManager extends React.Component<Props, State> {
     this.getUserListData();
   };
 
-  async deleteColumn(item) {
-    // console.log(arguments, 'xx,,,');
+  addUser = () => {
+    router.push('/system-setting/customer-manager/add');
+  };
+
+  async deleteColumn(item: DeleteUser) {
     //TODO:修改人ID
-    // await deleteUser();
+    await deleteUser({ id: item.id });
+    //重新请求数据重绘
+    this.getUserListData();
   }
 
   async componentDidMount() {
@@ -139,7 +147,7 @@ class UserManager extends React.Component<Props, State> {
   render() {
     const { userList } = this.props;
     if (_.isEmpty(userList)) return null;
-    let { records } = userList;
+    let { records, total } = userList;
     records = records.map(item => {
       return _.assign(item, { key: item.id, remark: item.remark ? item.remark : '-' });
     });
@@ -182,6 +190,7 @@ class UserManager extends React.Component<Props, State> {
                     ' ',
                   )}
                   style={{ marginLeft: 37 }}
+                  onClick={this.addUser}
                 >
                   <IconFont type="icon-plus" />
                 </span>
@@ -193,6 +202,7 @@ class UserManager extends React.Component<Props, State> {
             columns={columns}
             updateData={this.updateData}
             deleteColumn={this.deleteColumn}
+            total={total}
           />
         </Content>
       </div>

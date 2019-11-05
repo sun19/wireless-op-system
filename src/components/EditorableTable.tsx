@@ -169,8 +169,8 @@ export default class EditableTable extends React.Component<Props, State> {
       goButton: '跳转',
     },
     showTotal: () => {
-      const { data } = this.props;
-      return `每页10条，共${data.length}条`;
+      const { total } = this.props;
+      return `每页10条，共${total}条`;
     },
     itemRender: (current, type, originalElement) => {
       if (type === 'prev') {
@@ -189,6 +189,7 @@ export default class EditableTable extends React.Component<Props, State> {
       }
       return originalElement;
     },
+    defaultCurrent: 1,
   });
 
   render() {

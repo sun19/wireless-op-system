@@ -19,5 +19,21 @@ export interface UpdateUserInfo {
 
 export interface DeleteUser {
   id: string;
-  updateId: string;
+  updateId?: string;
+}
+
+export interface GetUserTypesParams {
+  pageSize?: number;
+  pageNo?: number;
+}
+
+export interface UpdateUserTypeParams {
+  roleName: string;
+  roleCode: string;
+  remark: string;
+}
+
+export interface DeleteUserTypeParams {
+  id: string;
+  updateId?: string;
 }
