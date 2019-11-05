@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Row, Col } from 'antd';
+import { Form, Row, Col, Button, Input } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 
 import ContentBorder from '../../../components/ContentBorder';
@@ -26,7 +26,7 @@ const UserAuth: React.FC<Props> = (props: Props) => {
                           message: '请输入角色名称',
                         },
                       ],
-                    })(<InputText placeholder="请输入角色名称" />)}
+                    })(<Input placeholder="请输入角色名称" />)}
                   </Form.Item>
                 </Col>
                 <Col span={12}>
@@ -37,7 +37,7 @@ const UserAuth: React.FC<Props> = (props: Props) => {
                           message: '请输入英文名称',
                         },
                       ],
-                    })(<InputText placeholder="请输入英文名称" />)}
+                    })(<Input placeholder="请输入英文名称" />)}
                   </Form.Item>
                 </Col>
               </Row>
@@ -45,6 +45,18 @@ const UserAuth: React.FC<Props> = (props: Props) => {
                 <Col span={23}>
                   <Form.Item label="人员类型">
                     {getFieldDecorator('人员类型')(<TreeNodeMenu />)}
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Row type="flex" justify="center" style={{ marginTop: '0.35rem' }}>
+                <Col span={6}>
+                  <Form.Item className={styles.button_type}>
+                    <Button className={styles.form_btn}>确认</Button>
+                  </Form.Item>
+                </Col>
+                <Col span={6} className={styles.select_padding_left}>
+                  <Form.Item>
+                    <Button className={styles.form_btn}>返回</Button>
                   </Form.Item>
                 </Col>
               </Row>

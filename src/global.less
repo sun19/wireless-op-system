@@ -1,32 +1,86 @@
 html,
 body,
 #root {
-  height: 100%;
-  color: red;
+	height: 100%;
+	color: red;
 }
 
 body {
-  margin: 0;
+	margin: 0;
 }
 
-:global(.ant-menu-submenu-open.ant-menu-submenu-inline
-    > .ant-menu-submenu-title
-    .ant-menu-submenu-arrow::before) {
-  background-image: linear-gradient(to right, rgba(251, 117, 52, 1), rgba(251, 117, 52, 1));
+:global(.ant-menu-submenu-open.ant-menu-submenu-inline > .ant-menu-submenu-title .ant-menu-submenu-arrow::before) {
+	background-image: linear-gradient(to right, rgba(251, 117, 52, 1), rgba(251, 117, 52, 1));
 }
 
-:global(.ant-menu-submenu-open.ant-menu-submenu-inline
-    > .ant-menu-submenu-title
-    .ant-menu-submenu-arrow::after) {
-  background-image: linear-gradient(to right, rgba(251, 117, 52, 1), rgba(251, 117, 52, 1));
+:global(.ant-menu-submenu-open.ant-menu-submenu-inline > .ant-menu-submenu-title .ant-menu-submenu-arrow::after) {
+	background-image: linear-gradient(to right, rgba(251, 117, 52, 1), rgba(251, 117, 52, 1));
 }
 
 .fade-enter {
-  opacity: 0;
-  z-index: 1;
+	opacity: 0;
+	z-index: 1;
 }
 
 .fade-enter.fade-enter-active {
-  opacity: 1;
-  transition: opacity 250ms ease-in;
+	opacity: 1;
+	transition: opacity 250ms ease-in;
+}
+.ant-form-item-control-wrapper {
+	.ant-form-item-control {
+		.ant-form-item-children {
+			input {
+				background: url(./assets/shared/文本.png);
+				border-width: 0;
+				background-size: 2rem 0.4rem;
+				width: 2rem;
+				height: 0.4rem;
+			}
+			//  选择框
+			.ant-select.ant-select-enabled {
+				width: 2rem;
+				height: 0.4rem;
+				background: url(./assets/shared/文本.png);
+				border-width: 0;
+				background-size: 2rem 0.4rem;
+				color: rgba(255, 255, 255, 0.8);
+				.ant-select-selection.ant-select-selection--single {
+					background: rgba(0, 0, 0, 0);
+					border: 0px;
+					.ant-select-selection__rendered {
+						height: 0.4rem;
+					}
+				}
+			}
+		}
+	}
+}
+// textarea
+.textarea {
+	.ant-row.ant-form-item {
+		width: 100%;
+		.ant-form-item-control-wrapper {
+			width: calc(100% - 2.1rem);
+			.ant-form-item-control {
+				textarea {
+					background: url(./assets/shared/文本.png);
+					border-width: 0;
+					background-size: 100% 100%;
+					color: rgba(255, 255, 255, 0.8);
+					width: 6.47rem;
+					height: 1.68rem;
+					margin-left: 0.1rem;
+				}
+			}
+		}
+	}
+}
+.auth__inner--container {
+	.ant-row-flex.ant-row-flex-space-between {
+		.ant-row.ant-form-item {
+			.ant-form-item-label {
+				width: 1.1rem;
+			}
+		}
+	}
 }

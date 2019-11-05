@@ -1,8 +1,7 @@
 import React from 'react';
-import { Form, Row, Col } from 'antd';
+import { Form, Row, Col, Input } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 
-import InputText from '../components/InputText';
 import SelectText from '../components/SelectText';
 import AreaText from '../components/AreaText';
 import FormButton from '../components/FormButton';
@@ -10,6 +9,8 @@ import ContentBorder from '../../../components/ContentBorder';
 import styles from './index.less';
 
 interface Props extends FormComponentProps {}
+
+const { TextArea } = Input;
 
 const defaultUserTypes = [
   {
@@ -50,7 +51,7 @@ const AddUser: React.FC<Props> = (props: Props) => {
                           message: '请输入登录名',
                         },
                       ],
-                    })(<InputText placeholder="请输入登录名" />)}
+                    })(<Input placeholder="请输入登录名" />)}
                   </Form.Item>
                 </Col>
                 <Col span={12}>
@@ -61,7 +62,7 @@ const AddUser: React.FC<Props> = (props: Props) => {
                           message: '请输入姓名',
                         },
                       ],
-                    })(<InputText placeholder="请输入姓名" />)}
+                    })(<Input placeholder="请输入姓名" />)}
                   </Form.Item>
                 </Col>
               </Row>
@@ -79,7 +80,7 @@ const AddUser: React.FC<Props> = (props: Props) => {
                         },
                       ],
                       initialValue: '开发者',
-                    })(<SelectText options={defaultUserTypes} style={{ width: '2.4rem' }} />)}
+                    })(<SelectText options={defaultUserTypes} style={{ width: '2rem' }} />)}
                   </Form.Item>
                 </Col>
                 <Col span={12}>
@@ -91,26 +92,26 @@ const AddUser: React.FC<Props> = (props: Props) => {
                           message: '请选择性别',
                         },
                       ],
-                    })(<SelectText options={defaultGenderType} style={{ width: '2.4rem' }} />)}
+                    })(<SelectText options={defaultGenderType} style={{ width: '2rem' }} />)}
                   </Form.Item>
                 </Col>
               </Row>
               <Row type="flex" justify="space-between">
-                <Col span={23}>
+                <Col span={24} className="textarea">
                   <Form.Item label="备注">
-                    {getFieldDecorator('备注')(<AreaText autoSize={{ minRows: 6, maxRows: 8 }} />)}
+                    {getFieldDecorator('备注')(<TextArea autoSize={{ minRows: 6, maxRows: 8 }} />)}
                   </Form.Item>
                 </Col>
               </Row>
               <Row type="flex" justify="center" style={{ marginTop: '0.35rem' }}>
                 <Col span={6}>
-                  <Form.Item>
-                    <FormButton title="确认" />
+                  <Form.Item className={styles.button_type}>
+                    <FormButton title="确认" className={styles.form_btn} />
                   </Form.Item>
                 </Col>
                 <Col span={6} className={styles.select_padding_left}>
                   <Form.Item>
-                    <FormButton title="返回" />
+                    <FormButton className={styles.button_type} title="返回" />
                   </Form.Item>
                 </Col>
               </Row>
