@@ -6,25 +6,14 @@ import router from 'umi/router';
 
 import MainContent from '../components/MainContent';
 import { ICON_FONTS_URL } from '@/config/constants';
+import { UmiComponentProps } from '@/common/type';
+import { getBuList, updateMessageCard, deleteMessageCard } from '../services';
 import publicStyles from '../index.less';
 
 const { Content } = Layout;
 const IconFont = Icon.createFromIconfontCN({
   scriptUrl: ICON_FONTS_URL,
 });
-
-// import React from 'react';
-// import { Layout, Form, Input, Row, Col, Button, Icon } from 'antd';
-// import { connect } from 'dva';
-// import * as _ from 'lodash';
-// import router from 'umi/router';
-
-// import { ICON_FONTS_URL } from '../../../config/constants';
-// import MainContent from '../components/MainContent';
-import { getUserTypes, updateUserType, deleteUserType } from '../services';
-// import styles from './index.less';
-// import publicStyles from '../index.less';
-// import { UmiComponentProps } from '@/common/type';
 
 const columns = [
   {
@@ -34,14 +23,14 @@ const columns = [
     editable: false,
   },
   {
-    title: '人员类型',
-    dataIndex: 'roleName',
+    title: '部门',
+    dataIndex: 'name',
     width: '30%',
     editable: true,
   },
   {
-    title: '英文名称',
-    dataIndex: 'roleCode',
+    title: '颜色',
+    dataIndex: 'color',
     width: '40%',
     editable: true,
   },
@@ -53,54 +42,50 @@ type Props = StateProps & UmiComponentProps;
 class MessageCard extends React.Component<Props> {
   constructor(props: any) {
     super(props);
-    this.getUserTypes = this.getUserTypes.bind(this);
+    this.getBuList = this.getBuList.bind(this);
     this.updateData = this.updateData.bind(this);
     this.deleteColumn = this.deleteColumn.bind(this);
   }
 
-  async getUserTypes() {
-    const userTypes = await getUserTypes({ pageSize: 10, pageNo: 1 });
+  async getBuList() {
+    const buList = await getBuList({ pageSize: 10, pageNo: 1 });
     this.props.dispatch({
       type: 'systemSetting/update',
       payload: {
-        peopleType: userTypes.result,
+        infoCard: buList,
       },
     });
   }
 
   async updateData(data, item) {
-    const resp = await updateUserType(item);
+    const resp = await updateMessageCard(item);
     if (resp) {
       this.props.dispatch({
         type: 'systemSetting/update',
-        payload: { peopleType: { records: data } },
+        payload: { infoCard: { records: data } },
       });
     }
   }
 
   async deleteColumn(item) {
     //TODO:修改人ID
-    await deleteUserType({ id: item.id });
+    await deleteMessageCard({ id: item.id });
     //重新请求数据重绘
-    this.getUserTypes();
-  }
-
-  addUserType() {
-    router.push('/system-setting/people-type/auth');
+    this.getBuList();
   }
 
   componentDidMount() {
-    this.getUserTypes();
+    this.getBuList();
   }
 
   render() {
-    const { userTypes } = this.props;
-    if (_.isEmpty(userTypes)) return null;
-    let { records, total } = userTypes;
+    const { infoCard } = this.props;
+    if (_.isEmpty(infoCard)) return null;
+    let { records, total } = infoCard;
     records = records.map(item => {
       return _.assign(item, { key: item.id });
     });
-
+    //TODO:渲染颜色块
     return (
       <div className={publicStyles.public_hight}>
         <div className={publicStyles.bg}>
@@ -119,9 +104,9 @@ class MessageCard extends React.Component<Props> {
 }
 
 const mapState = ({ systemSetting }) => {
-  const resp = systemSetting.peopleType;
+  const resp = systemSetting.infoCard;
   return {
-    userTypes: resp,
+    infoCard: resp,
   };
 };
 

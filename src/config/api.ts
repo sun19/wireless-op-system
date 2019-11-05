@@ -47,3 +47,20 @@ export const UPDATE_USER_TYPE = 'http://47.95.195.189:8086/jeecg-boot/intf/locat
  * 人员类型删除
  */
 export const DELETE_USER_TYPE = 'http://47.95.195.189:8086/jeecg-boot/intf/location/deleteRoleById';
+
+/**
+ * 获取部门列表
+ */
+export const GET_BU_LIST = 'http://47.95.195.189:8086/jeecg-boot/intf/location/listDepartment';
+
+/**
+ * 编辑信息牌
+ */
+export const EDIT_MESSAGE_CARD =
+  'http://47.95.195.189:8086/jeecg-boot/intf/location/editDepartment';
+
+/**
+ * 删除信息牌
+ */
+export const DELETE_MESSAGE_CARD =
+  'http://47.95.195.189:8086/jeecg-boot/intf/location/deleteDepartment';

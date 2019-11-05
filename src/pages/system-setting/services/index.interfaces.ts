@@ -37,3 +37,22 @@ export interface DeleteUserTypeParams {
   id: string;
   updateId?: string;
 }
+
+export interface BulistParams {
+  pageSize?: number;
+  pageNo?: number;
+}
+
+export interface UpdateMessageCardParams {
+  id: string;
+  name: string;
+  color: string;
+  sort: string;
+  remark: string;
+  updateId: string;
+}
+
+export interface DeleteMessageCardParams {
+  id: string;
+  updateId?: string;
+}

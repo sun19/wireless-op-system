@@ -1,6 +1,5 @@
 import request from 'umi-request';
 
-
 import {
   GET_USER_LIST,
   UPDATE_USER_INFO,
@@ -10,6 +9,9 @@ import {
   ADD_USER_TYPE,
   UPDATE_USER_TYPE,
   DELETE_USER_TYPE,
+  GET_BU_LIST,
+  EDIT_MESSAGE_CARD,
+  DELETE_MESSAGE_CARD,
 } from '@/config/api';
 import {
   GetUserListParams,
@@ -18,6 +20,9 @@ import {
   GetUserTypesParams,
   UpdateUserTypeParams,
   DeleteUserTypeParams,
+  BulistParams,
+  UpdateMessageCardParams,
+  DeleteMessageCardParams,
 } from './index.interfaces';
 
 export async function getUserList(params: GetUserListParams) {
@@ -64,5 +69,20 @@ export async function updateUserType(params: UpdateUserTypeParams) {
 
 export async function deleteUserType(params: DeleteUserTypeParams) {
   const resp = await request.delete(DELETE_USER_TYPE, { data: params });
+  return resp.success === true && resp.code === 200;
+}
+
+export async function getBuList(params: BulistParams) {
+  const resp = await request.get(GET_BU_LIST, { params: params });
+  return resp.result;
+}
+
+export async function updateMessageCard(params: UpdateMessageCardParams) {
+  const resp = await request.get(EDIT_MESSAGE_CARD, { params });
+  return resp.success === true && resp.code === 200;
+}
+
+export async function deleteMessageCard(params: DeleteMessageCardParams) {
+  const resp = await request.delete(DELETE_MESSAGE_CARD, { data: params });
   return resp.success === true && resp.code === 200;
 }

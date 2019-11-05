@@ -69,8 +69,7 @@ export default class EditableTable extends React.Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = { editingKey: '' };
-    // this.columns = this.props.columns.concat([
-    this.columns = [
+    this.columns = this.props.columns.concat([
       {
         title: '操作',
         dataIndex: 'operation',
@@ -108,7 +107,7 @@ export default class EditableTable extends React.Component<Props, State> {
           );
         },
       },
-    ];
+    ]);
   }
 
   isEditing = record => record.key === this.state.editingKey;
