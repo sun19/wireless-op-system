@@ -4,6 +4,7 @@ export default {
     customManager: {},
     peopleType: {},
     infoCard: {},
+    superAdmin: {},
   },
   reducers: {
     update(state, { payload }) {

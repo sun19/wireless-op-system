@@ -56,3 +56,25 @@ export interface DeleteMessageCardParams {
   id: string;
   updateId?: string;
 }
+
+export interface GetSuperAdminListParams {
+  type?: string;
+  remark?: string;
+  pageNo?: number;
+  pageSize?: number;
+}
+
+export interface UpdateSuperAdminParams {
+  id: string;
+  dictName: string;
+  dictValue: string;
+  type: string;
+  remark: string;
+  sort: string;
+  updateId: string;
+}
+
+export interface DeleteSuperAdminParams {
+  id: string;
+  updateId?: string;
+}

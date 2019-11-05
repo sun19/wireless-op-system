@@ -12,6 +12,11 @@ import {
   GET_BU_LIST,
   EDIT_MESSAGE_CARD,
   DELETE_MESSAGE_CARD,
+  GET_SUPER_ADMIN_LIST,
+  ADD_SUPER_ADMIN,
+  EDIT_SUPER_ADMIN,
+  DELETE_SUPER_ADMIN,
+  UPLOAD_SUPER_ADMIN,
 } from '@/config/api';
 import {
   GetUserListParams,
@@ -23,6 +28,9 @@ import {
   BulistParams,
   UpdateMessageCardParams,
   DeleteMessageCardParams,
+  GetSuperAdminListParams,
+  UpdateSuperAdminParams,
+  DeleteSuperAdminParams,
 } from './index.interfaces';
 
 export async function getUserList(params: GetUserListParams) {
@@ -84,5 +92,20 @@ export async function updateMessageCard(params: UpdateMessageCardParams) {
 
 export async function deleteMessageCard(params: DeleteMessageCardParams) {
   const resp = await request.delete(DELETE_MESSAGE_CARD, { data: params });
+  return resp.success === true && resp.code === 200;
+}
+
+export async function getSuperAdminList(params: GetSuperAdminListParams) {
+  const resp = await request.get(GET_SUPER_ADMIN_LIST, { params });
+  return resp.result;
+}
+
+export async function updateSuperAdmin(params: UpdateSuperAdminParams) {
+  const resp = await request.post(EDIT_SUPER_ADMIN, { data: params });
+  return resp.success === true && resp.code === 200;
+}
+
+export async function deleteSuperAdmin(params: DeleteSuperAdminParams) {
+  const resp = await request.delete(DELETE_SUPER_ADMIN, { data: params });
   return resp.success === true && resp.code === 200;
 }

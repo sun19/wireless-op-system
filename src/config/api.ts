@@ -48,6 +48,8 @@ export const UPDATE_USER_TYPE = 'http://47.95.195.189:8086/jeecg-boot/intf/locat
  */
 export const DELETE_USER_TYPE = 'http://47.95.195.189:8086/jeecg-boot/intf/location/deleteRoleById';
 
+// ----------------------系统设置：信息牌设置——————————————————————————————
+
 /**
  * 获取部门列表
  */
@@ -64,3 +66,31 @@ export const EDIT_MESSAGE_CARD =
  */
 export const DELETE_MESSAGE_CARD =
   'http://47.95.195.189:8086/jeecg-boot/intf/location/deleteDepartment';
+
+// ----------------------系统设置：超级管理员——————————————————————————————
+
+/**
+ * 获取超级管理员列表
+ */
+export const GET_SUPER_ADMIN_LIST = 'http://47.95.195.189:8086/jeecg-boot/intf/location/listDict';
+
+/**
+ * 添加超级管理员
+ */
+export const ADD_SUPER_ADMIN = 'http://47.95.195.189:8086/jeecg-boot/intf/location/addDict';
+
+/**
+ * 修改超级管理员
+ */
+export const EDIT_SUPER_ADMIN = 'http://47.95.195.189:8086/jeecg-boot/intf/location/editDict';
+
+/**
+ * 删除超级管理员
+ */
+export const DELETE_SUPER_ADMIN = 'http://47.95.195.189:8086/jeecg-boot/intf/location/deleteDict';
+
+/**
+ * 导入超级管理员
+ */
+export const UPLOAD_SUPER_ADMIN =
+  'http://47.95.195.189:8086/jeecg-boot/intf/location/importExcelDict';
