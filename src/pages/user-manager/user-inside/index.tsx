@@ -1,5 +1,7 @@
 import React from 'react';
 import { Layout, Form, Input, Row, Col, Select, Button, Icon } from 'antd';
+import router from 'umi/router';
+
 
 import MainContent from '../components/MainContent';
 import { ICON_FONTS_URL } from '../../../config/constants';
@@ -16,6 +18,10 @@ export default class UserInside extends React.Component {
   constructor(props: any) {
     super(props);
   }
+  addUser = () => {
+    router.push('/user-manager/user-inside/add');
+  };
+
   render() {
     return (
       <div className={publicStyles.public_hight}>
@@ -42,7 +48,10 @@ export default class UserInside extends React.Component {
                   </Button>
                 </span>
                 <span className={[`${publicStyles.form_btns}`].join(' ')}>
-                  <span className={[`${publicStyles.form_btn_add}`].join('')}>
+                  <span
+                    className={[`${publicStyles.form_btn_add}`].join('')}
+                    onClick={this.addUser}
+                  >
                     <IconFont type="icon-plus" />
                   </span>
                   <span className={[`${publicStyles.form_btn_add}`].join('')}>

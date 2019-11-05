@@ -21,7 +21,7 @@ const IconFont = Icon.createFromIconfontCN({
 
 // import { ICON_FONTS_URL } from '../../../config/constants';
 // import MainContent from '../components/MainContent';
-// import { getUserTypes, updateUserType, deleteUserType } from '../services';
+import { getUserTypes, updateUserType, deleteUserType } from '../services';
 // import styles from './index.less';
 // import publicStyles from '../index.less';
 // import { UmiComponentProps } from '@/common/type';

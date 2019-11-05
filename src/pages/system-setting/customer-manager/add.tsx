@@ -12,7 +12,7 @@ import { OptionValue } from '../components/SelectText';
 import { updateUserInfo } from '../services';
 import { InputText, TreeNodeMenu } from '../components';
 
-import styles from './index.less';
+import styles from '../index.less';
 
 interface UserType {
   key?: string;
@@ -149,7 +149,7 @@ class AddUser extends React.Component<Props, State> {
                       })(
                         <SelectText
                           options={this.state.userTypes as OptionValue[]}
-                          style={{ width: '2.4rem' }}
+                          style={{ width: '2rem' }}
                         />,
                       )}
                     </Form.Item>
@@ -163,12 +163,12 @@ class AddUser extends React.Component<Props, State> {
                             message: '请选择性别',
                           },
                         ],
-                      })(<SelectText options={defaultGenderType} style={{ width: '2.4rem' }} />)}
+                      })(<SelectText options={defaultGenderType} style={{ width: '2rem' }} />)}
                     </Form.Item>
                   </Col>
                 </Row>
                 <Row type="flex" justify="space-between">
-                  <Col span={23}>
+                  <Col span={23} className={styles.text_areas}>
                     <Form.Item label="备注">
                       {getFieldDecorator('remark')(
                         <AreaText

@@ -21,23 +21,32 @@ const UserAuth: React.FC<Props> = (props: Props) => {
           <div className={styles.input_body}>
             <Row type="flex" justify="space-between">
               <Col span={24}>
-                <Form.Item label="编号">
-                  {getFieldDecorator('编号', {
+                <Form.Item label="地图名称">
+                  {getFieldDecorator('地图名称', {
                     rules: [
                       {
-                        message: '请输入编号',
+                        message: '请输入地图名称',
                       },
                     ],
-                  })(<Input placeholder="请输入编号" />)}
+                  })(<Input placeholder="请输入地图名称" />)}
                 </Form.Item>
-                <Form.Item label="型号">
-                  {getFieldDecorator('型号', {
+                <Form.Item label="巡检点名称">
+                  {getFieldDecorator('巡检点名称', {
                     rules: [
                       {
-                        message: '请输入型号',
+                        message: '请输入巡检点名称',
                       },
                     ],
-                  })(<Input placeholder="请输入型号" />)}
+                  })(<Input placeholder="请输入巡检点名称" />)}
+                </Form.Item>
+                <Form.Item label="巡检点位置">
+                  {getFieldDecorator('巡检点位置', {
+                    rules: [
+                      {
+                        message: '请输入巡检点位置',
+                      },
+                    ],
+                  })(<Input placeholder="请输入巡检点位置" />)}
                 </Form.Item>
                 <Form.Item label="横坐标" className={styles.small_style}>
                   {getFieldDecorator('横坐标', {
@@ -67,34 +76,34 @@ const UserAuth: React.FC<Props> = (props: Props) => {
                     />,
                   )}
                 </Form.Item>
-                <Form.Item label="区域">
-                  {getFieldDecorator('区域', {
+              </Col>
+            </Row>
+
+            <Row type="flex" justify="space-between">
+              <Col span={24}>
+                <Form.Item label="开始时间">
+                  {getFieldDecorator('开始时间', {
                     rules: [
                       {
-                        message: '请输入区域',
+                        message: '请输入开始时间',
                       },
                     ],
-                  })(<Input placeholder="请输入区域" />)}
+                  })(<Input placeholder="请输入开始时间" />)}
+                </Form.Item>
+                <Form.Item label="结束时间">
+                  {getFieldDecorator('结束时间', {
+                    rules: [
+                      {
+                        message: '请输入结束时间',
+                      },
+                    ],
+                  })(<Input placeholder="请输入结束时间" />)}
                 </Form.Item>
               </Col>
             </Row>
 
             <Row type="flex" justify="space-between">
               <Col span={24}>
-                <Form.Item label="出入口" className={styles.area_style}>
-                  {getFieldDecorator('出入口', {
-                    rules: [
-                      {
-                        message: '出入口',
-                      },
-                    ],
-                  })(
-                    <Select placeholder="出入口" defaultValue="lucy">
-                      <Option value="jack">Jack</Option>
-                      <Option value="lucy">Lucy</Option>
-                    </Select>,
-                  )}
-                </Form.Item>
                 <Form.Item className={styles.area_style} label="备注">
                   {getFieldDecorator('备注', {
                     rules: [
@@ -105,7 +114,7 @@ const UserAuth: React.FC<Props> = (props: Props) => {
                   })(
                     <Input
                       placeholder="请输入备注"
-                      style={{ width: '8.6rem', backgroundSize: '8.6rem 0.4rem' }}
+                      style={{ width: '12.3rem', backgroundSize: '12.3rem 0.4rem' }}
                     />,
                   )}
                 </Form.Item>
