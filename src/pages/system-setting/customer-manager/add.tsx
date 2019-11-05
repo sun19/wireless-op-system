@@ -13,6 +13,7 @@ import { updateUserInfo } from '../services';
 import { InputText, TreeNodeMenu } from '../components';
 
 import styles from '../index.less';
+import './index.less';
 
 interface UserType {
   key?: string;

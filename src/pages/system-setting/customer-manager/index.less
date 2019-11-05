@@ -7,13 +7,22 @@
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
 }
-// .textarea{
-// :global{
-// .ant-row.ant-form-item{
-//     width: 100%;
-// .ant-form-item-control-wrapper{
-//    width: calc(100% - 2.1rem);
-// }
-// }
-// }
-// }
+.text_areas {
+	background: red;
+	:global(.ant-row.ant-form-item) {
+		width: 100%;
+	}
+
+	:global(.ant-row.ant-form-item .ant-form-item-control-wrapper) {
+		width: calc(100% - 2.1rem) !important;
+	}
+	:global(.ant-row.ant-form-item .ant-form-item-control-wrapper textarea) {
+		background: url(../../../assets/shared/文本.png);
+		border-width: 0;
+		background-size: 100% 100%;
+		color: rgba(255, 255, 255, 0.8);
+		width: 6.47rem;
+		height: 1.68rem;
+		margin-left: 0.1rem;
+	}
+}
