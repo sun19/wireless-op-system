@@ -27,8 +27,8 @@
   display: inline-block;
   position: fixed;
   margin-left: 4.2rem;
-max-width: 7rem;
-    width: 7rem;
+  max-width: 7rem;
+  width: 7rem;
 
   bottom: 30px;
   color: #1890ff;
@@ -42,10 +42,9 @@ max-width: 7rem;
   background: rgba(0, 0, 0, 0);
 }
 :global(.ant-pagination-item) {
-  a{
- color: #1890ff;
+  a {
+    color: #1890ff;
   }
- 
 }
 :global(.ant-pagination-item-active) {
   background: #054780;
@@ -64,8 +63,27 @@ max-width: 7rem;
     color: #1890ff;
     cursor: pointer;
   }
-  input{
+  input {
     background: rgba(0, 0, 0, 0);
-    border-color:#1890ff;
+    border-color: #1890ff;
+  }
+}
+
+:global {
+  .editor_table--root {
+    .ant-form-item {
+      input {
+        color: rgba(94, 180, 254, 1);
+      }
+    }
+    .ant-table-placeholder {
+      background: rgba(0, 0, 0, 0);
+    }
+    .ant-table-placeholder {
+      border-width: 0;
+    }
+    .ant-empty-description {
+      color: rgba(94, 180, 254, 1);
+    }
   }
 }

@@ -6,7 +6,7 @@ import styles from '../index.less';
 
 const { Option } = Select;
 
-interface OptionValue {
+export interface OptionValue {
   key: string;
   value: string;
 }

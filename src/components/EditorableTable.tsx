@@ -8,22 +8,9 @@ const IconFont = Icon.createFromIconfontCN({
   scriptUrl: ICON_FONTS_URL,
 });
 
-const data = [];
-for (let i = 0; i < 100; i++) {
-  data.push({
-    key: i.toString(),
-    index: i,
-    loginName: `sz100${i}`,
-    name: `开发者${i}号`,
-    type: '系统管理员',
-    gender: '男',
-    tip: '-',
-    loginTime: new Date().toDateString(),
-  });
-}
 const EditableContext = React.createContext();
 
-class EditableCell extends React.Component {
+class EditableCell extends React.Component<any> {
   getInput = () => {
     if (this.props.inputType === 'number') {
       return <InputNumber />;
@@ -38,14 +25,14 @@ class EditableCell extends React.Component {
       title,
       inputType,
       record,
-      index,
+      key,
       children,
       ...restProps
     } = this.props;
     return (
       <td {...restProps}>
         {editing ? (
-          <Form.Item style={{ margin: 0 }} className={styles.table_item}>
+          <Form.Item style={{ margin: 0 }} className={styles.table_item} key={key}>
             {getFieldDecorator(dataIndex, {
               rules: [
                 {
@@ -68,58 +55,25 @@ class EditableCell extends React.Component {
   }
 }
 
-export default class EditableTable extends React.Component {
+interface State {
+  editingKey: string;
+}
+
+interface Props {
+  data: any[];
+  [key: string]: any;
+}
+@Form.create()
+export default class EditableTable extends React.Component<Props, State> {
+  columns: any[];
   constructor(props) {
     super(props);
-    this.state = { data, editingKey: '' };
-    this.columns = [
-      {
-        title: '序号',
-        dataIndex: 'index',
-        width: '5%',
-        editable: false,
-      },
-      {
-        title: '登录名',
-        dataIndex: 'loginName',
-        width: '10%',
-        editable: true,
-      },
-      {
-        title: '姓名',
-        dataIndex: 'name',
-        width: '10%',
-        editable: true,
-      },
-      {
-        title: '人员类型',
-        dataIndex: 'type',
-        width: '25%',
-        editable: true,
-      },
-      {
-        title: '性别',
-        dataIndex: 'gender',
-        width: '10%',
-        editable: true,
-      },
-      {
-        title: '备注',
-        dataIndex: 'tip',
-        width: '10%',
-        editable: true,
-      },
-      {
-        title: '登录时间',
-        dataIndex: 'loginTime',
-        width: '20%',
-        editable: false,
-      },
+    this.state = { editingKey: '' };
+    this.columns = this.props.columns.concat([
       {
         title: '操作',
         dataIndex: 'operation',
         render: (text, record) => {
-          const { editingKey } = this.state;
           const editable = this.isEditing(record);
           return editable ? (
             <span>
@@ -148,12 +102,12 @@ export default class EditableTable extends React.Component {
                 style={{ marginRight: '8px' }}
                 onClick={this.onClick.bind(this, record)}
               />
-              <IconFont type="icon-delete" />
+              <IconFont type="icon-delete" onClick={this.onDelete.bind(this, record)} />
             </span>
           );
         },
       },
-    ];
+    ]);
   }
 
   isEditing = record => record.key === this.state.editingKey;
@@ -167,18 +121,23 @@ export default class EditableTable extends React.Component {
       if (error) {
         return;
       }
-      const newData = [...this.state.data];
+      const newData = [...this.props.data];
       const index = newData.findIndex(item => key === item.key);
+      //修改场景
       if (index > -1) {
         const item = newData[index];
-        newData.splice(index, 1, {
+        const newItem = {
           ...item,
           ...row,
-        });
-        this.setState({ data: newData, editingKey: '' });
+        };
+        newData.splice(index, 1, newItem);
+        this.props.updateData(newData, newItem);
+        this.setState({ editingKey: '' });
       } else {
+        //新增场景
         newData.push(row);
-        this.setState({ data: newData, editingKey: '' });
+        this.props.updateData(newData, row);
+        this.setState({ editingKey: '' });
       }
     });
   }
@@ -190,13 +149,48 @@ export default class EditableTable extends React.Component {
   onSave = (form, record) => {
     this.save(form, record.key);
   };
-  onCancel = record => {
-    this.cancel(record.key);
+  onCancel = () => {
+    this.cancel();
   };
 
   onClick = record => {
     this.edit(record.key);
   };
+
+  onDelete = record => {
+    this.props.deleteColumn(record);
+  };
+
+  setRowClassName = () => 'editable-row';
+
+  setPagination = () => ({
+    size: 'small',
+    showQuickJumper: {
+      goButton: '跳转',
+    },
+    showTotal: () => {
+      const { total } = this.props;
+      return `每页10条，共${total}条`;
+    },
+    itemRender: (current, type, originalElement) => {
+      if (type === 'prev') {
+        return (
+          <Button size="small" className={styles.next_page}>
+            上一页
+          </Button>
+        );
+      }
+      if (type === 'next') {
+        return (
+          <Button size="small" className={styles.next_page}>
+            下一页
+          </Button>
+        );
+      }
+      return originalElement;
+    },
+    defaultCurrent: 1,
+  });
 
   render() {
     const components = {
@@ -220,43 +214,17 @@ export default class EditableTable extends React.Component {
         }),
       };
     });
-
     return (
       <EditableContext.Provider value={this.props.form}>
         <Table
-          className={styles.tablePagination}
+          className="editor_table--root"
           components={components}
           bordered={false}
           size="middle"
-          dataSource={this.state.data}
+          dataSource={this.props.data}
           columns={columns}
-          rowClassName="editable-row"
-          pagination={{
-            size: 'small',
-            // simple:true,
-            // showSizeChanger: true,
-            showQuickJumper: {
-              goButton: '跳转',
-            },
-            showTotal: () => `每页10条，共10条`,
-            itemRender: (current, type, originalElement) => {
-              if (type === 'prev') {
-                return (
-                  <Button size="small" className={styles.next_page}>
-                    上一页
-                  </Button>
-                );
-              }
-              if (type === 'next') {
-                return (
-                  <Button size="small" className={styles.next_page}>
-                    下一页
-                  </Button>
-                );
-              }
-              return originalElement;
-            },
-          }}
+          rowClassName={this.setRowClassName}
+          pagination={this.setPagination()}
         />
       </EditableContext.Provider>
     );

@@ -38,7 +38,9 @@ class NormalLoginForm extends React.Component {
             method: 'GET',
           },
         );
-        if (resp.data.code === 200 && resp.data.success) {
+        if (resp.code === 200 && resp.success) {
+          const token = resp.result.token;
+          localStorage.setItem('token', token);
           router.push('/system-setting/customer-manager');
         } else {
           this.showErrorMessage('账号或密码输入不正常，登录失败');
