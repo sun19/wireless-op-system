@@ -10,6 +10,8 @@ import ContentBorder from '../../../components/ContentBorder';
 import { getAllRoles } from '../services';
 import { OptionValue } from '../components/SelectText';
 import { updateUserInfo } from '../services';
+import { InputText, TreeNodeMenu } from '../components';
+
 import styles from './index.less';
 
 interface UserType {
