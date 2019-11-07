@@ -1,10 +1,19 @@
 import React from 'react';
 import router from 'umi/router';
-
 import { Form, Icon, Input, Row, Col, Radio, message } from 'antd';
-import { ICON_FONTS_URL } from '../../../config/constants';
-// import request from '../../../utils/request';
 import request from 'umi-request';
+import { connect } from 'dva';
+
+import { ICON_FONTS_URL } from '../../../config/constants';
+import {
+  getAllMap,
+  getAllArea,
+  getAllRoles,
+  getAllLevels,
+  getAllUserInfo,
+  getAllFencingTypes,
+} from '../login.service';
+import { UmiComponentProps } from '@/common/type';
 import styles from '../index.less';
 
 const IconFont = Icon.createFromIconfontCN({
@@ -15,15 +24,19 @@ interface State {
   value: number;
 }
 
-class NormalLoginForm extends React.Component {
+type StateProps = ReturnType<typeof mapState>;
+type Props = StateProps & UmiComponentProps;
+
+class NormalLoginForm extends React.Component<Props> {
   state: State;
   constructor(props: any) {
     super(props);
     this.state = {
       value: 1,
     };
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
-  handleSubmit = e => {
+  async handleSubmit(e) {
     e.preventDefault();
     this.props.form.validateFields(async (err, values) => {
       if (!err) {
@@ -41,13 +54,35 @@ class NormalLoginForm extends React.Component {
         if (resp.code === 200 && resp.success) {
           const token = resp.result.token;
           localStorage.setItem('token', token);
+          await this.preFetchAllCommonState();
           router.push('/system-setting/customer-manager');
         } else {
           this.showErrorMessage('账号或密码输入不正常，登录失败');
         }
       }
     });
-  };
+  }
+
+  async preFetchAllCommonState() {
+    const mapResp = await getAllMap();
+    const areasResp = await getAllArea();
+    const rolesResp = await getAllRoles();
+    const levelsResp = await getAllLevels();
+    const userInfoResp = await getAllUserInfo();
+    const fencingTypesResp = await getAllFencingTypes();
+
+    this.props.dispatch({
+      type: 'commonState/update',
+      payload: {
+        allUserInfo: userInfoResp.result,
+        allMap: mapResp.result,
+        allRoles: rolesResp.result,
+        allLevels: levelsResp.result,
+        allFencingTypes: fencingTypesResp.result,
+        allAreas: areasResp.result,
+      },
+    });
+  }
 
   showLoadingMessage() {
     message.loading('努力登录中...', 0);
@@ -123,4 +158,11 @@ class NormalLoginForm extends React.Component {
 
 const WrappedNormalLoginForm = Form.create({ name: 'normal_login' })(NormalLoginForm);
 
-export default WrappedNormalLoginForm;
+const mapState = ({ commonState }) => {
+  const resp = commonState;
+  return {
+    commonState: resp,
+  };
+};
+
+export default connect(mapState)(WrappedNormalLoginForm);

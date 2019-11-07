@@ -1,4 +1,5 @@
 import request from 'umi-request';
+import { message } from 'antd';
 
 import {
   GET_USER_LIST,
@@ -42,6 +43,9 @@ export async function updateUserInfo(data: UpdateUserInfo) {
   const resp = await request.post(UPDATE_USER_INFO, {
     data,
   });
+  resp.success === true && resp.code === 200
+    ? message.success(resp.message)
+    : message.error(resp.message);
   return resp.success === true && resp.code === 200;
 }
 
@@ -49,6 +53,9 @@ export async function deleteUser(data: DeleteUser) {
   const resp = await request.delete(DELETE_USER, {
     data,
   });
+  resp.success === true && resp.code === 200
+    ? message.success(resp.message)
+    : message.error(resp.message);
   return resp.success === true && resp.code === 200;
 }
 
@@ -72,11 +79,17 @@ export async function updateUserType(params: UpdateUserTypeParams) {
   const resp = await request.post(UPDATE_USER_TYPE, {
     data: params,
   });
+  resp.success === true && resp.code === 200
+    ? message.success(resp.message)
+    : message.error(resp.message);
   return resp.success === true && resp.code === 200;
 }
 
 export async function deleteUserType(params: DeleteUserTypeParams) {
   const resp = await request.delete(DELETE_USER_TYPE, { data: params });
+  resp.success === true && resp.code === 200
+    ? message.success(resp.message)
+    : message.error(resp.message);
   return resp.success === true && resp.code === 200;
 }
 
@@ -87,11 +100,17 @@ export async function getBuList(params: BulistParams) {
 
 export async function updateMessageCard(params: UpdateMessageCardParams) {
   const resp = await request.get(EDIT_MESSAGE_CARD, { params });
+  resp.success === true && resp.code === 200
+    ? message.success(resp.message)
+    : message.error(resp.message);
   return resp.success === true && resp.code === 200;
 }
 
 export async function deleteMessageCard(params: DeleteMessageCardParams) {
   const resp = await request.delete(DELETE_MESSAGE_CARD, { data: params });
+  resp.success === true && resp.code === 200
+    ? message.success(resp.message)
+    : message.error(resp.message);
   return resp.success === true && resp.code === 200;
 }
 
@@ -102,10 +121,16 @@ export async function getSuperAdminList(params: GetSuperAdminListParams) {
 
 export async function updateSuperAdmin(params: UpdateSuperAdminParams) {
   const resp = await request.post(EDIT_SUPER_ADMIN, { data: params });
+  resp.success === true && resp.code === 200
+    ? message.success(resp.message)
+    : message.error(resp.message);
   return resp.success === true && resp.code === 200;
 }
 
 export async function deleteSuperAdmin(params: DeleteSuperAdminParams) {
   const resp = await request.delete(DELETE_SUPER_ADMIN, { data: params });
+  resp.success === true && resp.code === 200
+    ? message.success(resp.message)
+    : message.error(resp.message);
   return resp.success === true && resp.code === 200;
 }

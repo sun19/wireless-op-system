@@ -36,7 +36,7 @@ class EditableCell extends React.Component<any> {
             {getFieldDecorator(dataIndex, {
               rules: [
                 {
-                  required: true,
+                  // required: true,
                   message: `Please Input ${title}!`,
                 },
               ],
