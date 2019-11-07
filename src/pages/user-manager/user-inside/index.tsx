@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, Form, Input, Row, Col, Select, Button, Icon } from 'antd';
+import { Layout, Form, Input, Row, Col, Select, Button, Icon, message } from 'antd';
 import router from 'umi/router';
 import { connect } from 'dva';
 import * as _ from 'lodash';
@@ -7,7 +7,7 @@ import * as _ from 'lodash';
 import MainContent from '../components/MainContent';
 import { ICON_FONTS_URL } from '../../../config/constants';
 import { UmiComponentProps } from '@/common/type';
-import { getUserList, updateUser, deleteUser } from '../services';
+import { getUserList, updateUser, deleteUser, addCardNoInfo } from '../services';
 import styles from './index.less';
 import publicStyles from '../index.less';
 
@@ -19,12 +19,12 @@ const IconFont = Icon.createFromIconfontCN({
 });
 
 const columns = [
-  {
-    title: '序号',
-    dataIndex: 'id',
-    width: '10%',
-    editable: false,
-  },
+  // {
+  //   title: '序号',
+  //   dataIndex: 'id',
+  //   width: '10%',
+  //   editable: false,
+  // },
   {
     title: '姓名',
     dataIndex: 'name',
@@ -97,23 +97,68 @@ const columns = [
 type StateProps = ReturnType<typeof mapState>;
 type Props = StateProps & UmiComponentProps;
 
-class UserInside extends React.Component<Props> {
+interface State {
+  name?: string;
+  cardNo?: string;
+  sex?: string;
+  address?: string;
+  phone?: string;
+  departmentId?: string;
+  departmentName?: string;
+  positionId?: string;
+  positionName?: string;
+  securityLevelId?: string;
+  securityLevelName?: string;
+  informationBoardId?: string;
+  informationBoardName?: string;
+}
+
+class UserInside extends React.Component<Props, State> {
   constructor(props: any) {
     super(props);
     this.getUserList = this.getUserList.bind(this);
     this.updateData = this.updateData.bind(this);
     this.deleteColumn = this.deleteColumn.bind(this);
+    this.getCardNoInfo = this.getCardNoInfo.bind(this);
+    this.state = {
+      name: '',
+      cardNo: '',
+    };
   }
   addUser = () => {
     router.push('/user-manager/user-inside/add');
   };
 
+  onNameChange = e => {
+    this.setState({ name: e.target.value });
+  };
+  onCardNoChange = e => {
+    this.setState({
+      cardNo: e.target.value,
+    });
+  };
+  onSearch = () => {
+    this.getUserList();
+  };
+  onClearResult = () => {
+    this.setState({ name: '', cardNo: '' });
+    this.forceUpdate(() => this.getUserList());
+  };
+
   async getUserList() {
-    const userList = await getUserList({});
+    const params = {};
+    const { name, cardNo } = this.state;
+    if (name !== '') {
+      params['name'] = name;
+    }
+    if (cardNo !== '') {
+      params['cardNo'] = cardNo;
+    }
+    const userList = await getUserList(params);
     this.props.dispatch({
       type: 'userManager/update',
       payload: {
-        peopleType: userList.result,
+        innerUserList: userList.result,
       },
     });
   }
@@ -123,7 +168,7 @@ class UserInside extends React.Component<Props> {
     if (resp) {
       this.props.dispatch({
         type: 'userManager/update',
-        payload: { peopleType: { records: data } },
+        payload: { innerUserList: { records: data } },
       });
     }
   }
@@ -135,12 +180,25 @@ class UserInside extends React.Component<Props> {
     this.getUserList();
   }
 
+  async getCardNoInfo() {
+    await addCardNoInfo();
+  }
+
+  exportUser = () => {
+    message.success('人员导出成功');
+  };
+
   componentDidMount() {
     this.getUserList();
   }
 
+  componentWillUnmount() {
+    message.destroy();
+  }
+
   render() {
     const { innerUserList } = this.props;
+    const { name, cardNo } = this.state;
     if (_.isEmpty(innerUserList)) return null;
     let { records, total } = innerUserList;
     records = records.map(item => {
@@ -160,14 +218,30 @@ class UserInside extends React.Component<Props> {
                 gutter={16}
               >
                 <FormItem label="姓名">
-                  <Input className={publicStyles.input_text} placeholder="请输入姓名" />
+                  <Input
+                    className={publicStyles.input_text}
+                    placeholder="请输入姓名"
+                    value={name}
+                    onChange={this.onNameChange}
+                  />
                 </FormItem>
                 <FormItem label="身份证号">
-                  <Input className={publicStyles.input_text} placeholder="请输入姓名" />
+                  <Input
+                    className={publicStyles.input_text}
+                    placeholder="请输入身份证号"
+                    value={cardNo}
+                    onChange={this.onCardNoChange}
+                  />
                 </FormItem>
                 <span className={publicStyles.button_type}>
-                  <Button className={publicStyles.form_btn}>查询</Button>
-                  <Button className={publicStyles.form_btn} style={{ marginLeft: 37 }}>
+                  <Button className={publicStyles.form_btn} onClick={this.onSearch}>
+                    查询
+                  </Button>
+                  <Button
+                    className={publicStyles.form_btn}
+                    style={{ marginLeft: 37 }}
+                    onClick={this.onClearResult}
+                  >
                     清空
                   </Button>
                 </span>
@@ -179,10 +253,10 @@ class UserInside extends React.Component<Props> {
                     <IconFont type="icon-plus" />
                   </span>
                   <span className={[`${publicStyles.form_btn_add}`].join('')}>
-                    <IconFont type="icon-download-simple" />
+                    <IconFont type="icon-download-simple" onClick={this.exportUser} />
                   </span>
                   <span className={[`${publicStyles.form_btn_add}`].join('')}>
-                    <IconFont type="icon-upload-light" />
+                    <IconFont type="icon-upload-light" onClick={this.getCardNoInfo} />
                   </span>
                 </span>
               </Row>
