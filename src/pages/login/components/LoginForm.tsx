@@ -1,6 +1,6 @@
 import React from 'react';
 import router from 'umi/router';
-import { Form, Icon, Input, Row, Col, Radio, message } from 'antd';
+import { Form, Icon, Input, Row, Col, Radio, Button,message } from 'antd';
 import request from 'umi-request';
 import { connect } from 'dva';
 
@@ -109,24 +109,19 @@ class NormalLoginForm extends React.Component<Props> {
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
-      <div className="login_form">
+      <div className={styles.login_form}>
         <div className={styles.login_title}>欢迎登录</div>
-        <Form onSubmit={this.handleSubmit} className="login-form">
-          <Form.Item>
-            {getFieldDecorator('radio-group', {
-              initialValue: 1,
-              setFieldsValue: this.onChange,
-            })(
-              <Radio.Group>
-                <Radio value={1}>
-                  <span className={styles.rolename}>系统管理员 </span>
-                </Radio>
-                <Radio value={2}>
-                  <span className={styles.rolename}>值班员</span>
-                </Radio>
-              </Radio.Group>,
-            )}
-          </Form.Item>
+        <Form onSubmit={this.handleSubmit} className={styles.login_main}>
+          <div className={styles.redio_style}>
+            <Radio.Group>
+              <Radio value={1}>
+                <span className={styles.rolename}>系统管理员 </span>
+              </Radio>
+              <Radio value={2}>
+                <span className={styles.rolename}>值班员</span>
+              </Radio>
+            </Radio.Group>
+          </div>
           <Form.Item>
             {getFieldDecorator('username', {
               rules: [{ required: true, message: 'Please input your username!' }],
@@ -138,15 +133,16 @@ class NormalLoginForm extends React.Component<Props> {
             })(<Input prefix={<IconFont type="icon-key" />} type="password" placeholder="密码" />)}
           </Form.Item>
           <Form.Item>
-            {/* <Button type="primary" htmlType="submit" className="login-form-button">
-              登录
-            </Button> */}
             <Row type="flex" justify="center" style={{ height: '100%' }}>
               <Col span={12}>
-                {/* className={styles.login_btn} onClick={this.loginBtn()} */}
-                <div className={styles.login_btn} onClick={this.handleSubmit}>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  onClick={this.handleSubmit}
+                  className={styles.login_button}
+                >
                   登录
-                </div>
+                </Button>
               </Col>
             </Row>
           </Form.Item>

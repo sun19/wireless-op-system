@@ -14,7 +14,7 @@
 
 .system_name {
 	background: url(../../assets/login/02-title.png);
-	background-size: 2rem 0.4rem;
+	background-size: 100%;
 	height: 1.28rem;
 	background-repeat: no-repeat;
 	background-position: center;
@@ -37,7 +37,6 @@
 	text-shadow: 0px 5px 5px rgba(9, 48, 80, 0.75);
 	width: 50%;
 	height: 30px;
-	/* background: linear-gradient(0deg, rgba(0, 147, 174, 1) 0%, rgba(186, 237, 246, 1) 100%); */
 	background: url(../../assets/login/02-title.png);
 	background-clip: text;
 	-webkit-text-fill-color: transparent;
@@ -50,66 +49,79 @@
 
 .loginPanel {
 	position: relative;
-	height: 100%;
+	height: calc(100% - 180px);
+	margin: 1.6rem 0.5rem 0px 0.5rem;
+}
+.login_form {
+	width: 100%;
+	// min-width: 700px;
+	height: 6.5rem;
 	background: url(../../assets/login/kuang-bg.png);
-	background-size: 2rem 0.4rem;
 	background-repeat: no-repeat;
 	background-position: center;
-	padding: 10% 20%;
-}
+	background-size: 100%;
+	.login_title {
+		font-size: 0.42rem;
+		font-family: Source Han Sans CN;
+		color: rgba(0, 216, 255, 1);
+		text-align: center;
+		padding: 55px 0 20px 0px;
+		position: relative;
+	}
+	.redio_style {
+		padding: 0px 0px 0.4rem 0px;
+	}
+	:global(.ant-form-item-control-wrapper) {
+		width: 100%;
+	}
+	:global(.ant-radio-wrapper) {
+		padding: 0px 20px;
+	}
+	:global(.ant-radio-inner) {
+		background: rgba(0, 0, 0, 0);
+		border-color: rgba(0, 216, 255, 1);
+	}
+	.login_main {
+		width: 5rem;
+		margin: 0px auto;
+		:global(.ant-form-item input.ant-input) {
+			width: 100%;
+			font-size: 0.3rem;
+			color: #00d4fa;
+			background: rgba(0, 0, 0, 0);
+			border-bottom: 1px solid #00d4fa;
+			border-radius: 0px;
+			    margin: 0.15rem 0px;
+		}
+		:global(.ant-form-item input.ant-input:focus) {
+			box-shadow: 0 0 0 0px rgba(24, 144, 255, 0.2);
 
-.login_title {
-	font-size: 0.4rem;
-	font-family: Source Han Sans CN;
-	font-weight: 400;
-	color: rgba(0, 216, 255, 1);
-	text-align: center;
-	vertical-align: middle;
-	padding: 20px 0;
-	position: relative;
-	top: 1rem;
-}
-
-:global(.login_form .ant-radio-inner) {
-	margin-top: 1rem;
-	background: rgba(0, 0, 0, 0);
-	border-color: rgba(0, 216, 255, 1);
-	/* border-image: linear-gradient(135deg, rgba(92, 175, 222, 0.79), rgba(0, 216, 255, 0.79)) 1 1; */
-	/* box-shadow: 0px 0px 56px 1px rgba(12, 21, 48, 0.69); */
-	/* border-radius: 50%; */
+			border-right-width: 0px !important;
+			border-bottom: 1px solid #00d4fa;
+		}
+		:global(.ant-form-item input.ant-input:hover) {
+			box-shadow: 0 0 0 0px rgba(24, 144, 255, 0.2);
+			border-right-width: 0px !important;
+			border-bottom: 1px solid #00d4fa;
+		}
+		:global(.has-error .ant-input-affix-wrapper input.ant-input:focus) {
+			box-shadow: 0 0 0 0px rgba(24, 144, 255, 0.2);
+			border-bottom: 1px solid #00d4fa;
+		}
+		.login_button {
+			font-size: 0.4rem;
+			width:2.78rem;
+height:0.65rem;
+// margin :0.1rem 0rem;
+		}
+	}
 }
 
 .rolename {
-	font-size: 16px;
+	font-size: 0.32rem;
 	font-family: Source Han Sans CN;
 	font-weight: normal;
 	color: rgba(115, 234, 255, 1);
-}
-
-:global(.login_form .ant-form-item-children .ant-radio-group.ant-radio-group-outline) {
-	display: flex;
-	justify-content: space-between;
-}
-
-:global(.login_form .login-form .ant-row.ant-form-item) {
-	margin: 7% 0;
-}
-
-.login_btn {
-	font-size: 20px;
-	font-family: Source Han Sans CN;
-	font-weight: 400;
-	color: rgba(255, 255, 255, 1);
-	letter-spacing: 5px;
-	text-align: center;
-	background: url(../../assets/login/04-btn.png);
-	background-size: 2rem 0.4rem;
-	background-position: center;
-	background-repeat: no-repeat;
-	height: 60px;
-	line-height: 60px;
-	text-shadow: 0px 2px 0px rgba(0, 0, 0, 0.61);
-	cursor: pointer;
 }
 
 .foot_text {
@@ -123,11 +135,11 @@
 	right: 25px;
 	top: 30px;
 	color: rgba(255, 255, 255, 1);
-
-	/* color: red; */
 }
 
 .date_string {
+	font-size: 0.28rem;
+
 	font-family: Source Han Sans CN;
 	font-weight: 400;
 	color: rgba(255, 255, 255, 0.8);
@@ -137,29 +149,11 @@
 }
 
 .time_string span {
+	font-size: 0.26rem;
 	font-family: Source Han Sans CN;
 	font-weight: bold;
 	color: rgba(255, 255, 255, 1);
 	padding: 4px 8px;
 	margin: 4px 4px;
 	border: 1px solid rgba(54, 152, 194, 1);
-}
-:global(.has-error .ant-input-affix-wrapper .ant-input:focus) {
-	border-right-width: 1px !important;
-	border: 0px;
-	border-bottom: 2px solid #ff4d4f;
-	outline: 0;
-	background: rgba(0, 0, 0, 0);
-	box-shadow: 0 0 0 0px rgba(245, 34, 45, 0.2);
-}
-:global(.ant-input:focus) {
-	box-shadow: 0 0 0 0px rgba(24, 144, 255, 0.2);
-}
-:global(.login_form .ant-input-affix-wrapper .ant-input) {
-	font-size: 18px;
-	border: 0;
-	color: white;
-	border-bottom: 1px solid rgba(0, 212, 250, 1);
-	border-radius: 1px;
-	background: rgba(0, 0, 0, 0) !important;
 }
