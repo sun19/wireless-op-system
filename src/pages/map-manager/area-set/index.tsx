@@ -6,7 +6,8 @@ import * as _ from 'lodash';
 import MainContent from '../components/MainContent';
 import { ICON_FONTS_URL } from '../../../config/constants';
 import { UmiComponentProps } from '@/common/type';
-import { getMapArea } from '../services';
+import { getMapArea, updateMapArea, deleteMapArea } from '../services';
+import { getAllLevels } from '@/pages/login/login.service';
 import { GetMapAreaParams } from '../services/index.interface';
 import styles from './index.less';
 import publicStyles from '../index.less';
@@ -49,12 +50,20 @@ const columns = [
 type StateProps = ReturnType<typeof mapState>;
 type Props = StateProps & UmiComponentProps;
 
-class AreaSet extends React.Component<Props> {
-  constructor(props: any) {
+interface State {
+  area: string;
+  level?: string;
+}
+
+class AreaSet extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props);
     this.getMapArea = this.getMapArea.bind(this);
     this.updateData = this.updateData.bind(this);
     this.deleteColumn = this.deleteColumn.bind(this);
+    this.state = {
+      area: '',
+    };
   }
 
   async getMapArea(params: GetMapAreaParams = {}) {
@@ -68,7 +77,7 @@ class AreaSet extends React.Component<Props> {
   }
 
   async updateData(data, item) {
-    const resp = await updateUser(item);
+    const resp = await updateMapArea(item);
     if (resp) {
       this.props.dispatch({
         type: 'userManager/update',
@@ -79,14 +88,72 @@ class AreaSet extends React.Component<Props> {
 
   async deleteColumn(item) {
     //TODO:修改人ID
-    await deleteUser({ id: item.id });
+    await deleteMapArea({ id: item.id });
     //重新请求数据重绘
-    this.getUserList();
+    this.getMapArea();
+  }
+
+  setupAreaLevelSelect = () => {
+    const { areaLevels } = this.props;
+    return (
+      <Select
+        className={publicStyles.select_text}
+        defaultValue={areaLevels[0].name}
+        onSelect={this.onLevelSelectChange}
+      >
+        {areaLevels.map((level, index) => (
+          <Option value={level.id} key={index}>
+            {level.name}
+          </Option>
+        ))}
+      </Select>
+    );
+  };
+  onAreaInputChange = e => {
+    this.setState({
+      area: e.target.value,
+    });
+  };
+
+  onLevelSelectChange = value => {
+    this.setState({
+      level: value,
+    });
+  };
+
+  onSearch = () => {
+    const { area, level } = this.state;
+    this.getMapArea({
+      regionName: area,
+      regionalLevelId: level,
+    });
+  };
+
+  onClear = () => {
+    this.setState({
+      level: '',
+      area: '',
+    });
+    this.getMapArea();
+  };
+
+  async componentDidMount() {
+    this.getMapArea();
+    const levels = await getAllLevels();
+    this.props.dispatch({
+      type: 'commonState/update',
+      payload: {
+        allLevels: levels.result,
+      },
+    });
+    this.setState({
+      level: this.props.areaLevels[0].id,
+    });
   }
 
   render() {
-    const { mapArea } = this.props;
-    if (_.isEmpty(mapArea)) return null;
+    const { mapArea, areaLevels } = this.props;
+    if (_.isEmpty(mapArea) || _.isEmpty(areaLevels)) return null;
     let { records, total } = mapArea;
     records = records.map(item => {
       return _.assign(item, { key: item.id });
@@ -104,23 +171,31 @@ class AreaSet extends React.Component<Props> {
                 gutter={16}
               >
                 <FormItem label="区域">
-                  <Input className={publicStyles.input_text} placeholder="请输入姓名" />
+                  <Input
+                    className={publicStyles.input_text}
+                    placeholder="请输入区域"
+                    value={this.state.area}
+                    onChange={this.onAreaInputChange}
+                  />
                 </FormItem>
                 <FormItem label="级别">
                   <div
                     style={{ marginTop: '-3px' }}
                     // className={publicStyles.selection}
                   >
-                    <Select className={publicStyles.select_text} defaultValue="lucy">
-                      <Option value="jack">Jack</Option>
-                      <Option value="lucy">Lucy</Option>
-                    </Select>
+                    {this.setupAreaLevelSelect()}
                   </div>
                 </FormItem>
 
                 <span className={publicStyles.button_type}>
-                  <Button className={publicStyles.form_btn}>查询</Button>
-                  <Button className={publicStyles.form_btn} style={{ marginLeft: 37 }}>
+                  <Button className={publicStyles.form_btn} onClick={this.onSearch}>
+                    查询
+                  </Button>
+                  <Button
+                    className={publicStyles.form_btn}
+                    style={{ marginLeft: 37 }}
+                    onClick={this.onClear}
+                  >
                     清空
                   </Button>
                 </span>
@@ -145,10 +220,12 @@ class AreaSet extends React.Component<Props> {
   }
 }
 
-const mapState = ({ mapManager }) => {
+const mapState = ({ mapManager, commonState }) => {
   const resp = mapManager.mapArea;
+  const areaLevels = commonState.allLevels;
   return {
     mapArea: resp,
+    areaLevels,
   };
 };
 

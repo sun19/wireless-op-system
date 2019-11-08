@@ -22,4 +22,10 @@ export async function updateMapArea(params: UpdateMapAreaParams) {
   return resp.success === true && resp.code === 200;
 }
 
-export async function deleteMapArea(params: DeleteMapAreaParams) {}
+export async function deleteMapArea(params: DeleteMapAreaParams) {
+  const resp = await request.delete(MAP_MANAGER_AREA_SETTING_DELETE, { data: params });
+  resp.success === true && resp.code === 200
+    ? message.success(resp.message)
+    : message.error(resp.message);
+  return resp.success === true && resp.code === 200;
+}
