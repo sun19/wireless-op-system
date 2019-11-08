@@ -43,12 +43,12 @@ export const LEFT_MENUS = [
         path: '/user-manager/user-inside',
         component: './pages/user-manager/user-inside/index.tsx',
       },
-      {
-        name: '用户列表-外部',
-        key: '08',
-        path: '/user-manager/user-outside',
-        component: './pages/user-manager/user-outside/index.tsx',
-      },
+      // {
+      //   name: '用户列表-外部',
+      //   key: '08',
+      //   path: '/user-manager/user-outside',
+      //   component: './pages/user-manager/user-outside/index.tsx',
+      // },
     ],
   },
   {

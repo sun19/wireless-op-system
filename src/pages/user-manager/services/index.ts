@@ -8,7 +8,12 @@ import {
   USER_MANAGER_UPDATE_USER,
   USER_MANAGER_GET_IDCARD_INFO,
 } from '@/config/api';
-import { GetUserListParams, UpdateUserParams, DeleteUserParams } from './index.interface';
+import {
+  GetUserListParams,
+  UpdateUserParams,
+  DeleteUserParams,
+  AddUserParams,
+} from './index.interface';
 
 export async function getUserList(params: GetUserListParams) {
   const resp = await request.get(USER_MANAGER_GET_USER_LIST, { params });
@@ -33,6 +38,14 @@ export async function deleteUser(params: DeleteUserParams) {
 
 export async function addCardNoInfo() {
   const resp = await request.get(USER_MANAGER_GET_IDCARD_INFO);
+  resp.success === true && resp.code === 200
+    ? message.success(resp.message)
+    : message.error(resp.message);
+  return resp.success === true && resp.code === 200;
+}
+
+export async function addUser(params: AddUserParams) {
+  const resp = await request.post(USER_MANAGER_ADD_USER, { data: params });
   resp.success === true && resp.code === 200
     ? message.success(resp.message)
     : message.error(resp.message);

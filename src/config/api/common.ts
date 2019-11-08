@@ -36,3 +36,15 @@ export const COMMON_GET_ALL_FENCING_TYPES =
  */
 export const COMMON_GET_ALL_AREAS =
   'http://47.95.195.189:8086/jeecg-boot/intf/location/getAllRegion';
+
+/**
+ *  职务信息列表
+ */
+export const COMMON_GET_ALL_DUTIES =
+  'http://47.95.195.189:8086/jeecg-boot/intf/location/queryPositionList';
+
+/**
+ * 保密等级列表
+ */
+export const COMMON_GET_ALL_SECRET_LEVELS =
+  'http://47.95.195.189:8086/jeecg-boot/intf/location/querySecurityLevelList';

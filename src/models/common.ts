@@ -7,10 +7,12 @@ export default {
     allLevels: {},
     allFencingTypes: {},
     allAreas: {},
+    allDuties: {},
+    allSecretLevel: {},
   },
   reducers: {
-    update(state, parload) {
-      return { ...state, ...parload };
+    update(state, { payload }) {
+      return { ...state, ...payload };
     },
   },
 };

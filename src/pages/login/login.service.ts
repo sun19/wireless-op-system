@@ -7,6 +7,8 @@ import {
   COMMON_GET_ALL_LEVELS,
   COMMON_GET_ALL_USER_INFO,
   COMMON_GET_ALL_FENCING_TYPES,
+  COMMON_GET_ALL_DUTIES,
+  COMMON_GET_ALL_SECRET_LEVELS,
 } from '@/config/api';
 
 export async function getAllMap() {
@@ -36,5 +38,15 @@ export async function getAllUserInfo() {
 
 export async function getAllFencingTypes() {
   const resp = await request.get(COMMON_GET_ALL_FENCING_TYPES);
+  return resp;
+}
+
+export async function getAllDuties() {
+  const resp = await request.get(COMMON_GET_ALL_DUTIES);
+  return resp;
+}
+
+export async function getAllSecretLevels() {
+  const resp = await request.get(COMMON_GET_ALL_SECRET_LEVELS);
   return resp;
 }

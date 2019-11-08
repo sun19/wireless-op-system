@@ -28,3 +28,19 @@ export interface UpdateUserParams extends Params {
 export interface DeleteUserParams extends Params {
   id?: string;
 }
+
+export interface AddUserParams {
+  name?: string;
+  cardNo?: string;
+  sex?: string;
+  address?: string;
+  phone?: string;
+  departmentId?: string;
+  departmentName?: string;
+  positionId?: string;
+  positionName?: string;
+  securityLevelId?: string;
+  securityLevelName?: string;
+  informationBoardId?: string;
+  informationBoardName?: string;
+}

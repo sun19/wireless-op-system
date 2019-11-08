@@ -1,6 +1,6 @@
 import React from 'react';
 import router from 'umi/router';
-import { Form, Icon, Input, Row, Col, Radio, Button,message } from 'antd';
+import { Form, Icon, Input, Row, Col, Radio, Button, message } from 'antd';
 import request from 'umi-request';
 import { connect } from 'dva';
 
@@ -12,6 +12,8 @@ import {
   getAllLevels,
   getAllUserInfo,
   getAllFencingTypes,
+  getAllDuties,
+  getAllSecretLevels,
 } from '../login.service';
 import { UmiComponentProps } from '@/common/type';
 import styles from '../index.less';
@@ -58,6 +60,7 @@ class NormalLoginForm extends React.Component<Props> {
           router.push('/system-setting/customer-manager');
         } else {
           this.showErrorMessage('账号或密码输入不正常，登录失败');
+          await this.preFetchAllCommonState();
         }
       }
     });
@@ -70,6 +73,8 @@ class NormalLoginForm extends React.Component<Props> {
     const levelsResp = await getAllLevels();
     const userInfoResp = await getAllUserInfo();
     const fencingTypesResp = await getAllFencingTypes();
+    const dutiesResp = await getAllDuties();
+    const secretsLevelsResp = await getAllSecretLevels();
 
     this.props.dispatch({
       type: 'commonState/update',
@@ -80,6 +85,8 @@ class NormalLoginForm extends React.Component<Props> {
         allLevels: levelsResp.result,
         allFencingTypes: fencingTypesResp.result,
         allAreas: areasResp.result,
+        allDuties: dutiesResp.result.records,
+        allSecretLevel: secretsLevelsResp.result.records,
       },
     });
   }
