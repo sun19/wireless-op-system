@@ -57,7 +57,9 @@ class NormalLoginForm extends React.Component<Props> {
           await this.preFetchAllCommonState();
           router.push('/system-setting/customer-manager');
         } else {
-          this.showErrorMessage('账号或密码输入不正常，登录失败');
+           await getAllUserInfo();
+
+          this.showErrorMessage('账号或密码输入不正确，登录失败');
         }
       }
     });
@@ -70,7 +72,6 @@ class NormalLoginForm extends React.Component<Props> {
     const levelsResp = await getAllLevels();
     const userInfoResp = await getAllUserInfo();
     const fencingTypesResp = await getAllFencingTypes();
-
     this.props.dispatch({
       type: 'commonState/update',
       payload: {
