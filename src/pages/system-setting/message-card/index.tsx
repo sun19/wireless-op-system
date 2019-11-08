@@ -31,7 +31,7 @@ const columns = [
   {
     title: '颜色',
     dataIndex: 'color',
-    width: '40%',
+    width: '30%',
     editable: true,
   },
 ];

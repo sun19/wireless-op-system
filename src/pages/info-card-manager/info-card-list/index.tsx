@@ -27,6 +27,7 @@ const columns = [
   {
     title: '序号',
     dataIndex: 'id',
+    width: '20%',
     editable: false,
   },
   {
