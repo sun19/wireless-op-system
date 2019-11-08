@@ -111,11 +111,7 @@ class AddUser extends React.Component<Props, State> {
   handleSubmit(e) {
     e.preventDefault();
     this.props.form.validateFields(async (err, values) => {
-      // console.log(values);
-      if (err) {
-        return;
-      }
-      // console.log(values);
+      if (err) { return }
       const isSuccessed = await addInfoList(values);
       if (isSuccessed) {
         message.success('添加成功!', 1000);
@@ -134,7 +130,6 @@ class AddUser extends React.Component<Props, State> {
     this.setState({ userTypes });
     const dutiesResp = await getAllDuties();
     const secretsLevelsResp = await getAllSecretLevels();
-
     this.props.dispatch({
       type: 'commonState/update',
       payload: {
@@ -356,4 +351,3 @@ const mapState = ({ userManager, commonState }) => {
   };
 };
 export default connect(mapState)(AddUserForm);
-// export default Form.create<Props>({ name: 'add_user' })(AddUser);
