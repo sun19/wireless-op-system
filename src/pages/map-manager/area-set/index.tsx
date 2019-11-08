@@ -1,8 +1,13 @@
 import React from 'react';
 import { Layout, Form, Input, Row, Col, Select, Button, Icon } from 'antd';
+import { connect } from 'dva';
+import * as _ from 'lodash';
 
 import MainContent from '../components/MainContent';
 import { ICON_FONTS_URL } from '../../../config/constants';
+import { UmiComponentProps } from '@/common/type';
+import { getMapArea } from '../services';
+import { GetMapAreaParams } from '../services/index.interface';
 import styles from './index.less';
 import publicStyles from '../index.less';
 
@@ -12,11 +17,80 @@ const { Option } = Select;
 const IconFont = Icon.createFromIconfontCN({
   scriptUrl: ICON_FONTS_URL,
 });
-export default class SuperAdmin extends React.Component {
+
+const columns = [
+  {
+    title: '序号',
+    dataIndex: 'id',
+    editable: false,
+  },
+  {
+    title: '区域级别',
+    dataIndex: 'regionakLevelName',
+    editable: true,
+  },
+  {
+    title: '区域名称',
+    dataIndex: 'regionName',
+    editable: true,
+  },
+  {
+    title: '操作时间',
+    dataIndex: 'operatTime',
+    editable: true,
+  },
+  {
+    title: '备注',
+    dataIndex: 'remark',
+    editable: true,
+  },
+];
+
+type StateProps = ReturnType<typeof mapState>;
+type Props = StateProps & UmiComponentProps;
+
+class AreaSet extends React.Component<Props> {
   constructor(props: any) {
     super(props);
+    this.getMapArea = this.getMapArea.bind(this);
+    this.updateData = this.updateData.bind(this);
+    this.deleteColumn = this.deleteColumn.bind(this);
   }
+
+  async getMapArea(params: GetMapAreaParams = {}) {
+    const resp = await getMapArea(params);
+    this.props.dispatch({
+      type: 'mapManager/update',
+      payload: {
+        mapArea: resp.result,
+      },
+    });
+  }
+
+  async updateData(data, item) {
+    const resp = await updateUser(item);
+    if (resp) {
+      this.props.dispatch({
+        type: 'userManager/update',
+        payload: { innerUserList: { records: data } },
+      });
+    }
+  }
+
+  async deleteColumn(item) {
+    //TODO:修改人ID
+    await deleteUser({ id: item.id });
+    //重新请求数据重绘
+    this.getUserList();
+  }
+
   render() {
+    const { mapArea } = this.props;
+    if (_.isEmpty(mapArea)) return null;
+    let { records, total } = mapArea;
+    records = records.map(item => {
+      return _.assign(item, { key: item.id });
+    });
     return (
       <div className={publicStyles.public_hight}>
         <Content className={publicStyles.bg}>
@@ -58,9 +132,24 @@ export default class SuperAdmin extends React.Component {
               </Row>
             </Form>
           </div>
-          <MainContent />
+          <MainContent
+            columns={columns}
+            data={records}
+            total={total}
+            updateData={this.updateData}
+            deleteColumn={this.deleteColumn}
+          />
         </Content>
       </div>
     );
   }
 }
+
+const mapState = ({ mapManager }) => {
+  const resp = mapManager.mapArea;
+  return {
+    mapArea: resp,
+  };
+};
+
+export default connect(mapState)(AreaSet);

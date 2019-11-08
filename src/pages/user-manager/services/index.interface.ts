@@ -44,3 +44,7 @@ export interface AddUserParams {
   informationBoardId?: string;
   informationBoardName?: string;
 }
+
+export interface ImportUserParams {
+  file?: string;
+}

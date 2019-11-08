@@ -29,3 +29,15 @@ export const USER_MANAGER_DELETE_USER =
  */
 export const USER_MANAGER_GET_IDCARD_INFO =
   'http://47.95.195.189:8086/jeecg-boot/intf/location/getIdentityCard';
+
+/**
+ * 人员导出
+ */
+export const USER_MANAGER_EXPORT_USER =
+  'http://47.95.195.189:8086/jeecg-boot/intf/location/exportUserInfoXls';
+
+/**
+ * 人员导入
+ */
+export const USER_MANAGER_IMPORT_USER =
+  'http://47.95.195.189:8086/jeecg-boot/intf/location/importUserInfoExcel';

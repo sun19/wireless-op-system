@@ -7,7 +7,14 @@ import * as _ from 'lodash';
 import MainContent from '../components/MainContent';
 import { ICON_FONTS_URL } from '../../../config/constants';
 import { UmiComponentProps } from '@/common/type';
-import { getUserList, updateUser, deleteUser, addCardNoInfo } from '../services';
+import {
+  getUserList,
+  updateUser,
+  deleteUser,
+  addCardNoInfo,
+  importUser,
+  exportUser,
+} from '../services';
 import styles from './index.less';
 import publicStyles from '../index.less';
 
@@ -124,6 +131,7 @@ class UserInside extends React.Component<Props, State> {
       name: '',
       cardNo: '',
     };
+    this.exportUser = this.exportUser.bind(this);
   }
   addUser = () => {
     router.push('/user-manager/user-inside/add');
@@ -184,9 +192,10 @@ class UserInside extends React.Component<Props, State> {
     await addCardNoInfo();
   }
 
-  exportUser = () => {
+  async exportUser() {
+    const isSuccessed = await exportUser();
     message.success('人员导出成功');
-  };
+  }
 
   componentDidMount() {
     this.getUserList();
