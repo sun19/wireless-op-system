@@ -114,6 +114,8 @@ class SuperAdmin extends React.Component<Props, State> {
       userName: '',
       name: '',
       type: '',
+      pageNo: 1,
+      pageSize:10,
     };
   }
   onNameChange = (e: any) => {
