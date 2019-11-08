@@ -23,37 +23,37 @@ const columns = [
   {
     title: '序号',
     dataIndex: 'id',
-    width: '15%',
+    width: '20%',
     editable: false,
   },
   {
     title: '键值',
     dataIndex: 'dictValue',
-    width: '15%',
+    // width: '15%',
     editable: true,
   },
   {
     title: '标签',
     dataIndex: 'dictName',
-    width: '25%',
+    // width: '25%',
     editable: true,
   },
   {
     title: '类型',
     dataIndex: 'type',
-    width: '15%',
+    // width: '15%',
     editable: true,
   },
   {
     title: '描述',
     dataIndex: 'remark',
-    width: '20%',
+    // width: '20%',
     editable: true,
   },
   {
     title: '排序',
     dataIndex: 'sort',
-    width: '10%',
+    // width: '10%',
     editable: true,
   },
 ];

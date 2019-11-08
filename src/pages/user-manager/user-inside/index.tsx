@@ -35,68 +35,57 @@ const columns = [
   {
     title: '姓名',
     dataIndex: 'name',
-    width: '10%',
     editable: true,
   },
   {
     title: '身份证号',
     dataIndex: 'cardNo',
-    width: '10%',
     editable: true,
   },
   {
     title: '性别',
     dataIndex: 'sex',
-    width: '5%',
     editable: true,
   },
   {
     title: '家庭住址',
     dataIndex: 'address',
-    width: '10%',
     editable: true,
   },
   {
     title: '联系方式',
     dataIndex: 'phone',
-    width: '10%',
     editable: true,
   },
   {
     title: '部门名称',
     dataIndex: 'departmentName',
-    width: '10%',
     editable: true,
   },
   {
     title: '职务名称',
     dataIndex: 'positionName',
-    width: '5%',
     editable: true,
   },
 
   {
     title: '保密登记名称',
     dataIndex: 'securityLevelName',
-    width: '5%',
     editable: true,
   },
   {
     title: '信息牌名称',
     dataIndex: 'informationBoardName',
-    width: '5%',
     editable: true,
   },
   {
     title: '录入时间',
     dataIndex: 'entryTime',
-    width: '10%',
     editable: true,
   },
   {
     title: '注销时间',
     dataIndex: 'logoutTime',
-    width: '10%',
     editable: true,
   },
 ];
