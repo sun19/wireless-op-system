@@ -1,3 +1,5 @@
+import { BASE_API_URL } from '../constants';
+
 /**
  * 左侧菜单栏
  */
