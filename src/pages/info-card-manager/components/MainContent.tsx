@@ -16,7 +16,6 @@ export default class MainContent extends React.Component <any>{
       <div className={styles.table_list}>
         <div className={styles.table_list_panel}>
           <ContentBorder>
-            {/* <EditableFormTable /> */}
             <EditableFormTable {...this.props} />
           </ContentBorder>
         </div>
