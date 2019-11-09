@@ -3,7 +3,7 @@ import { Form, Row, Col, Button, Input, Select } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 
 import ContentBorder from '../../../components/ContentBorder';
-// import { InputText, TreeNodeMenu } from '../components';
+import { warningTypeSearch } from '@/pages/warning-manager/services';
 
 import styles from './index.less';
 
@@ -12,9 +12,21 @@ const { Option } = Select;
 
 interface Props extends FormComponentProps {}
 
-class AddPollingLine extends React.Component<Props> {
+interface State {
+  warningTypes: any[];
+}
+
+class AddPollingLine extends React.Component<Props, State> {
+  constructor(props) {
+    super(props);
+    this.state = {
+      warningTypes: [],
+    };
+  }
   setupAlarmSelect = () => {
     const { getFieldDecorator } = this.props.form;
+    const { warningTypes } = this.state;
+    if (warningTypes.length === 0) return null;
     return (
       <Form.Item label="告警方式" className={styles.area_style}>
         {getFieldDecorator('alarmName', {
@@ -26,13 +38,23 @@ class AddPollingLine extends React.Component<Props> {
           initialValue: 'lucy',
         })(
           <Select placeholder="告警方式">
-            <Option value="jack">Jack</Option>
-            <Option value="lucy">Lucy</Option>
+            {warningTypes.map((item, index) => (
+              <Option value={item.name} key={index}>
+                {item.name}
+              </Option>
+            ))}
           </Select>,
         )}
       </Form.Item>
     );
   };
+
+  async componentDidMount() {
+    const warningTypes = await warningTypeSearch({});
+    this.setState({
+      warningTypes: warningTypes,
+    });
+  }
 
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -104,20 +126,6 @@ class AddPollingLine extends React.Component<Props> {
                       ],
                     })(<Input placeholder="请输入结束时间" />)}
                   </Form.Item>
-                  {/* <Form.Item className={styles.area_style} label="备注">
-                  {getFieldDecorator('备注', {
-                    rules: [
-                      {
-                        message: '请输入备注',
-                      },
-                    ],
-                  })(
-                    <Input
-                      placeholder="请输入备注"
-                      style={{ width: '8.6rem', backgroundSize: '8.6rem 0.4rem' }}
-                    />,
-                  )}
-                </Form.Item> */}
                 </Col>
               </Row>
 

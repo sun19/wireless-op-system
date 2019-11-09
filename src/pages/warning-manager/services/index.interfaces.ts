@@ -1,6 +1,6 @@
 // 查询
 export interface WarningTypeSearch {
-  name: string;
+  name?: string;
   pageNo?: number;
   pageSize?: number;
 }
@@ -32,7 +32,6 @@ export interface WraningTypeEdit {
   repeatType: string;
   warnMode: string;
   overrunTime: string;
-
 }
 // 删除
 export interface WraningTypeDel {
@@ -41,9 +40,8 @@ export interface WraningTypeDel {
 
 /***************************************警告类型********************************************************/
 
-
-  // 查询
-export interface  WarningInfoSearch {
+// 查询
+export interface WarningInfoSearch {
   pageNo?: number;
   pageSize?: number;
   name: string;
@@ -64,4 +62,3 @@ export interface WarningHistorySearch {
   alarmStartTime: string;
   alarmEndTime: string;
 }
-
