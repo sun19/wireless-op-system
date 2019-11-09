@@ -83,7 +83,6 @@ class TaskPlan extends React.Component<Props, State> {
   }
 
   async getTaskListData(data?: State) {
-    // const { remark, informationBoardName, task, pageSize, pageNo } = this.state;
     const taskList = await getTaskList(data);
     this.props.dispatch({
       type: 'infoCardManager/update',
@@ -116,15 +115,17 @@ class TaskPlan extends React.Component<Props, State> {
   };
   handleReset = () => {
     this.props.form.resetFields();
-     this.getTaskListData();
+    this.getTaskListData();
   };
   render() {
     const { taskList } = this.props;
     const { getFieldDecorator } = this.props.form;
-
-    if (_.isEmpty(taskList)) return null;
     let { records, total } = taskList;
-    records = records;
+    records = _.isEmpty(taskList)
+      ? null
+      : records.map(item => {
+          return _.assign(item, { key: item.id });
+        });
     return (
       <div className={publicStyles.public_hight}>
         <Content className={publicStyles.bg}>

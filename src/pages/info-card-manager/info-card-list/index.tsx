@@ -129,6 +129,7 @@ interface State {
   type: string;
   pageNo?: number;
   pageSize?: number;
+  hasData:boolean;
 }
 class SuperAdmin extends React.Component<Props, State> {
   constructor(props: any) {
@@ -141,6 +142,7 @@ class SuperAdmin extends React.Component<Props, State> {
       type: '',
       pageNo: 1,
       pageSize: 10,
+      hasData: true,
     };
   }
   onNameChange = (e: any) => {
@@ -210,9 +212,12 @@ class SuperAdmin extends React.Component<Props, State> {
 
   render() {
     const { userList } = this.props;
-    if (_.isEmpty(userList)) return null;
-    let { records, total } = userList;
-    records = records;
+      let { records, total } = userList;
+      records = _.isEmpty(userList)
+        ? null
+        : records.map(item => {
+            return _.assign(item, { key: item.id });
+          });
     return (
       <div className={publicStyles.public_hight}>
         <Content className={publicStyles.bg}>
