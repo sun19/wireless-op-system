@@ -1,3 +1,6 @@
+/**
+ * title: 超级管理员设置
+ */
 import React from 'react';
 import { Layout, Form, Input, Row, Col, Select, Button, Icon, message } from 'antd';
 import { connect } from 'dva';

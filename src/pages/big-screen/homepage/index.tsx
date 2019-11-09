@@ -1,3 +1,6 @@
+/**
+ * title: 首页
+ */
 import React, { Component } from 'react';
 
 export default class HomePage extends Component {

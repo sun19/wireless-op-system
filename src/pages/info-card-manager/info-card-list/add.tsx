@@ -1,10 +1,12 @@
+/**
+ * title: 发放
+ */
 import React from 'react';
 import { Form, Row, Col, Button, Input, Select, message } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import { connect } from 'dva';
 import * as _ from 'lodash';
 import router from 'umi/router';
-
 
 import ContentBorder from '../../../components/ContentBorder';
 // import { InputText, TreeNodeMenu } from '../components';
@@ -111,7 +113,9 @@ class AddUser extends React.Component<Props, State> {
   handleSubmit(e) {
     e.preventDefault();
     this.props.form.validateFields(async (err, values) => {
-      if (err) { return }
+      if (err) {
+        return;
+      }
       const isSuccessed = await addInfoList(values);
       if (isSuccessed) {
         message.success('添加成功!', 1000);

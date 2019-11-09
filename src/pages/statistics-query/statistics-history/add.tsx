@@ -48,11 +48,9 @@ const UserAuth: React.FC<Props> = (props: Props) => {
                     ],
                   })(<Input placeholder="请输入类型" />)}
                 </Form.Item>
-                 
               </Col>
             </Row>
 
-        
             <Row className={styles.line_style}>
               <Col className={styles.line_type} span={11} />
               <Col span={2}>地图</Col>

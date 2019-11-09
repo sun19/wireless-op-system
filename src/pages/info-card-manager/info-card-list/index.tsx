@@ -1,3 +1,6 @@
+/**
+ * title: 信息牌列表
+ */
 import React from 'react';
 import { Layout, Form, Input, Row, Col, Tag, Select, Button, Icon } from 'antd';
 import router from 'umi/router';
@@ -129,7 +132,7 @@ interface State {
   type: string;
   pageNo?: number;
   pageSize?: number;
-  hasData:boolean;
+  hasData: boolean;
 }
 class SuperAdmin extends React.Component<Props, State> {
   constructor(props: any) {
@@ -212,12 +215,12 @@ class SuperAdmin extends React.Component<Props, State> {
 
   render() {
     const { userList } = this.props;
-      let { records, total } = userList;
-      records = _.isEmpty(userList)
-        ? null
-        : records.map(item => {
-            return _.assign(item, { key: item.id });
-          });
+    let { records, total } = userList;
+    records = _.isEmpty(userList)
+      ? null
+      : records.map(item => {
+          return _.assign(item, { key: item.id });
+        });
     return (
       <div className={publicStyles.public_hight}>
         <Content className={publicStyles.bg}>

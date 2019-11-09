@@ -1,3 +1,6 @@
+/**
+ * title: 巡检线设置
+ */
 import React from 'react';
 import { Layout, Form, Input, Row, Col, Select, Button, Icon } from 'antd';
 import router from 'umi/router';

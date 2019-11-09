@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Menu, Icon } from 'antd';
 import { connect } from 'dva';
+import router from 'umi/router';
 
 import { ICON_FONTS_URL } from '../config/constants';
 import Link from 'umi/link';
@@ -30,6 +31,44 @@ class LeftMenuList extends Component<any> {
         openKeys,
       },
     });
+  };
+  componentDidMount() {
+    const { router, menus } = this.props;
+    //根据路由匹配菜单状态
+    const pathname = router.location.pathname;
+    const result = this.matchCurrentRouter(menus, pathname);
+    this.props.dispatch({
+      type: 'menu/changeOpen',
+      payload: {
+        ...result,
+      },
+    });
+  }
+  matchCurrentRouter = (menus, pathname) => {
+    let current = '';
+    let openKeys = [];
+    for (let i = 0, len = menus.length; i < len; i++) {
+      const menu = menus[i];
+      if (menu.path === pathname) {
+        current = menu.name;
+        break;
+      }
+      if (menu.children && menu.children.length > 0) {
+        const children = menu.children;
+        for (let j = 0; j < children.length; j++) {
+          const child = children[j];
+          if (child.path === pathname) {
+            current = child.name;
+            openKeys = [menu.name];
+            break;
+          }
+        }
+      }
+    }
+    return {
+      current,
+      openKeys,
+    };
   };
 
   renderLeftMenu = () => {
@@ -87,6 +126,9 @@ class LeftMenuList extends Component<any> {
   }
 }
 
-const mapState = ({ menu }) => menu;
+const mapState = ({ menu, router }) => ({
+  ...menu,
+  router,
+});
 
 export default connect(mapState)(LeftMenuList);

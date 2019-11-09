@@ -1,3 +1,6 @@
+/**
+ * title: 统计查询
+ */
 import React from 'react';
 import { Layout, Form, Input, Row, Col, Select, TimePicker, Button, Icon } from 'antd';
 import router from 'umi/router';
