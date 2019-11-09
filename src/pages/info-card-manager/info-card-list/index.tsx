@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, Form, Input, Row, Col, Select, Button, Icon } from 'antd';
+import { Layout, Form, Input, Row, Col, Tag, Select, Button, Icon } from 'antd';
 import router from 'umi/router';
 import { UmiComponentProps } from '@/common/type';
 import * as _ from 'lodash';
@@ -27,8 +27,8 @@ const columns = [
   {
     title: '序号',
     dataIndex: 'id',
-    width: '20%',
-    editable: false,
+    // width: '20%',
+    editable: true,
   },
   {
     title: '信息牌编号',
@@ -39,6 +39,11 @@ const columns = [
     title: '状态',
     dataIndex: 'onlineStatus',
     editable: true,
+    render: onlineStatus => {
+      let color = onlineStatus == 1 ? 'white' : '#EB6262';
+      let values = onlineStatus == 1 ? '在线' : '离线';
+      return <span style={{ color: color }}> {values}</span>;
+    },
   },
   {
     title: '定位',
@@ -58,45 +63,66 @@ const columns = [
   {
     title: '身份证号',
     dataIndex: 'cardNo',
-    editable: false,
+    editable: true,
   },
   {
     title: '性别',
     dataIndex: 'sex',
-    editable: false,
+    editable: true,
+
+    render: onlineStatus => {
+      // let color = onlineStatus == 1 ? 'white' : '#EB6262';
+      let values = onlineStatus == 1 ? '女' : '男';
+      return <span> {values}</span>;
+    },
   },
   {
     title: '家庭住址',
     dataIndex: 'address',
-    editable: false,
+    editable: true,
   },
   {
     title: '联系方式',
     dataIndex: 'phone',
-    editable: false,
+    editable: true,
   },
   {
     title: '部门',
     dataIndex: 'departmentName',
-    editable: false,
+    editable: true,
   },
   {
     title: '人员类型',
     dataIndex: 'type',
-    editable: false,
+    editable: true,
+
+    render: onlineStatus => {
+      let values = onlineStatus == 1 ? '内部' : '外部';
+      return <span> {values}</span>;
+    },
   },
   {
     title: '保密等级',
     dataIndex: 'securityLevelName',
-    editable: false,
+    key: 'securityLevelName',
+    editable: true,
+
+    render: securityLevelName => {
+      let color = ['#f50', '#2db7f5', '#87d068'][securityLevelName];
+
+      return <Tag color={color}> {['一级', '二级', '三级'][securityLevelName]}</Tag>;
+    },
   },
   {
     title: '在职状态',
     dataIndex: 'incumbency',
-    editable: false,
+    editable: true,
+    render: onlineStatus => {
+      let values = onlineStatus == 1 ? '在职' : '离职';
+      return <span> {values}</span>;
+    },
   },
 ];
-
 interface State {
   userName: string;
   name: string;
@@ -104,7 +130,6 @@ interface State {
   pageNo?: number;
   pageSize?: number;
 }
-
 class SuperAdmin extends React.Component<Props, State> {
   constructor(props: any) {
     super(props);
@@ -115,7 +140,7 @@ class SuperAdmin extends React.Component<Props, State> {
       name: '',
       type: '',
       pageNo: 1,
-      pageSize:10,
+      pageSize: 10,
     };
   }
   onNameChange = (e: any) => {
@@ -182,6 +207,7 @@ class SuperAdmin extends React.Component<Props, State> {
       });
     }
   }
+
   render() {
     const { userList } = this.props;
     if (_.isEmpty(userList)) return null;

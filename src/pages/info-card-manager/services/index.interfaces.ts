@@ -2,7 +2,7 @@
 export interface GetInfoListParams {
   userName: string;
   name: string;
-  type:string;
+  type: string;
   pageNo?: number;
   pageSize?: number;
 }
@@ -16,7 +16,7 @@ export interface GetInfoDetial {
 
 }
 // 信息牌添加
-export interface AddInfoList{
+export interface AddInfoList {
   userName: string;
   cardNo: string;
   sex: string;
@@ -32,3 +32,31 @@ export interface AddInfoList{
   note: string;
 }
 
+/***************************************任务规划********************************************************/
+
+
+  // 表格
+export interface GetTaskList {
+  remark: string;
+  informationBoardName: string;
+  task: string;
+  pageNo?: number;
+  pageSize?: number;
+}
+// 详情
+export interface GetTaskDetail {
+  id: string;
+}
+// 删除
+export interface DelTaskList {
+  id: string;
+}
+
+// 添加
+export interface AddTaskList {
+  remark: string;
+  informationBoardName: string;
+  task: string;
+  startTime: string;
+  endTime: string;
+}

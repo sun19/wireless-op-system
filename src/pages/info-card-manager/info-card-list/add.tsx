@@ -26,8 +26,8 @@ interface UserType {
   value?: string;
   roleId: string;
 }
-interface FormProps extends FormComponentProps {}
 
+interface FormProps extends FormComponentProps {}
 type StateProps = ReturnType<typeof mapState>;
 type Props = StateProps & UmiComponentProps & FormProps;
 
