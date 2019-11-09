@@ -1,7 +1,8 @@
 import React from 'react';
-import { Layout, Form, Input, Row, Col, Select, Button, Icon } from 'antd';
+import { Layout, Form, Input, Row, Col, Select, Button, Icon, message } from 'antd';
 import { connect } from 'dva';
 import * as _ from 'lodash';
+import router from 'umi/router';
 
 import MainContent from '../components/MainContent';
 import { ICON_FONTS_URL } from '../../../config/constants';
@@ -26,13 +27,18 @@ const columns = [
     editable: false,
   },
   {
-    title: '区域级别',
-    dataIndex: 'regionakLevelName',
+    title: '地图名称',
+    dataIndex: 'mapName',
     editable: true,
   },
   {
     title: '区域名称',
     dataIndex: 'regionName',
+    editable: true,
+  },
+  {
+    title: '区域级别',
+    dataIndex: 'regionalLevelName',
     editable: true,
   },
   {
@@ -136,6 +142,10 @@ class AreaSet extends React.Component<Props, State> {
     });
     this.getMapArea();
   };
+  addMapArea = () => {
+    message.success('待开发...');
+    // router.push('/map-manager/area-set');
+  };
 
   async componentDidMount() {
     this.getMapArea();
@@ -201,7 +211,7 @@ class AreaSet extends React.Component<Props, State> {
                 </span>
                 <span className={[`${publicStyles.form_btns}`].join(' ')}>
                   <span className={[`${publicStyles.form_btn_add}`].join('')}>
-                    <IconFont type="icon-plus" />
+                    <IconFont type="icon-plus" onClick={this.addMapArea} />
                   </span>
                 </span>
               </Row>

@@ -71,7 +71,7 @@ export default class EditableTable extends React.Component<Props, State> {
     this.state = { editingKey: '' };
     // console.log(this.props);
     this.columns = this.props.columns.concat([
-    // this.columns =  [
+      // this.columns =  [
       {
         title: '操作',
         dataIndex: 'operation',

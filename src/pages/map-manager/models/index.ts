@@ -3,6 +3,8 @@ export default {
   state: {
     mapImport: {},
     mapArea: {},
+    mapFencing: {},
+    lamps: {},
   },
   reducers: {
     update(state, { payload }) {
