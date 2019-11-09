@@ -1,10 +1,9 @@
 export default {
-  namespace: 'infoCardManager',
+  namespace: 'wraningManager',
   state: {
-    customManager: {},
-    taskPlan: {},
-    infoCard: {},
-    superAdmin: {},
+    type:{},
+    info:{},
+   history:{},
   },
   reducers: {
     update(state, { payload }) {

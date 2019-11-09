@@ -33,8 +33,12 @@ import {
 
 // 信息牌列表
 export async function getInfoListParams(params: GetInfoListParams) {
-  const resp = await request.get(GET_INFO_LIST, { params });
+  const resp = await request.get(GET_INFO_LIST, { params })
+  if(resp.code==500){
+    alert(resp.message)
+  }
   return resp.result;
+
 }
 // 信息牌删除
 
