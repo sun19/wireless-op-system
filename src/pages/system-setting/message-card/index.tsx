@@ -1,3 +1,6 @@
+/**
+ * title: 信息牌设置
+ */
 import React from 'react';
 import { Layout, Form, Input, Row, Col, Button, Icon } from 'antd';
 import { connect } from 'dva';

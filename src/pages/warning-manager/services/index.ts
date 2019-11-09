@@ -7,12 +7,10 @@ import {
   WARNING_TYPE_EDIT,
   WARNING_TYPE_DEL,
   // 告警信息
-
   WARNING_INFO_SEARCH,
   WARNING_INFO_DEAL,
   // 告警历史
-  WARNING_HISTORY_SEARCH
-
+  WARNING_HISTORY_SEARCH,
 } from '@/config/api';
 import {
   WarningTypeSearch,
@@ -23,7 +21,7 @@ import {
   WarningInfoSearch,
   WarningInfoDeal,
   //
-  WarningHistorySearch
+  WarningHistorySearch,
 } from './index.interfaces';
 
 /************************************类型******************************** */

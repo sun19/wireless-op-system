@@ -5,13 +5,21 @@ import withBreadcrumbs from 'react-router-breadcrumbs-hoc';
 
 import styles from './menuBreadCrumb.less';
 
-export default class MenuBreadCrumb extends React.Component<any, any> {
+class MenuBreadCrumb extends React.Component<any, any> {
   render() {
+    const { breadcrumbs } = this.props;
     return (
       <Breadcrumb separator=">" className={styles.bread_box}>
-        <Breadcrumb.Item className={styles.prev_item}>大屏展示</Breadcrumb.Item>
-        <Breadcrumb.Item className={styles.current_item}>大屏展示</Breadcrumb.Item>
+        {breadcrumbs.map(({ title, match }) => (
+          <Breadcrumb.Item className={styles.current_item} key={match.url}>
+            {/* <NavLink to={match.url}>{title}</NavLink> */}
+            {title}
+          </Breadcrumb.Item>
+        ))}
       </Breadcrumb>
     );
   }
 }
+const routes = window.g_routes[0].routes.filter(item => item.path);
+
+export default withBreadcrumbs(routes)(MenuBreadCrumb);

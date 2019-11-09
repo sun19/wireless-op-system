@@ -1,3 +1,6 @@
+/**
+ * title: 修改
+ */
 import React from 'react';
 import { Form, Row, Col, Button, Input, Select } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
@@ -148,18 +151,23 @@ const UserAuth: React.FC<Props> = (props: Props) => {
                         message: '请输入区域',
                       },
                     ],
-                  })(<Input placeholder="请输入区域" style={{'width': '5.25rem','backgroundSize':'5.25rem 0.4rem'}} />)}
+                  })(
+                    <Input
+                      placeholder="请输入区域"
+                      style={{ width: '5.25rem', backgroundSize: '5.25rem 0.4rem' }}
+                    />,
+                  )}
                 </Form.Item>
               </Col>
             </Row>
 
             <Row className={styles.line_style}>
-              <Col className={styles.line_type} span={11}/>
+              <Col className={styles.line_type} span={11} />
               <Col span={2}>地图</Col>
-              <Col className={styles.line_type} span={11}/>
+              <Col className={styles.line_type} span={11} />
             </Row>
             <Row className={styles.line_style}>
-              <Col className={styles.img_type} span={24}/>
+              <Col className={styles.img_type} span={24} />
             </Row>
             <Row type="flex" justify="center" style={{ marginTop: '0.35rem' }}>
               <Col span={2}>

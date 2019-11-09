@@ -1,3 +1,6 @@
+/**
+ * title: 日志管理
+ */
 import React from 'react';
 import { Layout, Form, Input, Row, Col, TimePicker, Button, Icon } from 'antd';
 

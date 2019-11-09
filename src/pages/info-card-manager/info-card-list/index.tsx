@@ -1,3 +1,6 @@
+/**
+ * title: 信息牌列表
+ */
 import React from 'react';
 import { Layout, Form, Input, Row, Col, Tag, Select, Button, Icon } from 'antd';
 import router from 'umi/router';

@@ -105,3 +105,73 @@ export interface UpdateMapLampsParams {
 export interface DeleteMapLampsParams {
   id: string;
 }
+
+export interface GetPollingPointByNameParams extends Params {
+  name?: string;
+}
+
+export interface AddPollingPointParams {
+  mapName?: string;
+  name?: string;
+  address?: string;
+  startTime?: string;
+  endTime?: string;
+  xCoordinate?: string;
+  yCoordinate?: string;
+  remark?: string;
+}
+
+export interface UpdatePollingPointParams {
+  id?: string;
+  mapName?: string;
+  name?: string;
+  address?: string;
+  startTime?: string;
+  endTime?: string;
+  xCoordinate?: string;
+  yCoordinate?: string;
+  remark?: string;
+}
+
+export interface DeletePollingPointParams {
+  id: string;
+}
+
+export interface GetPollingPointDetailParams {
+  id: string;
+}
+
+export interface GetPollingLineByNameParams extends Params {
+  name?: string;
+}
+
+export interface AddPollingLineParams {
+  mapName?: string;
+  login_id?: string;
+  informationBoardId?: string;
+  startTime?: string;
+  endTime?: string;
+  remark?: string;
+  inspectionRoute?: string;
+  alarmName?: string;
+}
+
+export interface UpdatePollingLineParams {
+  id?: string;
+  mapName?: string;
+  login_id?: string;
+  informationBoardId?: string;
+  startTime?: string;
+  endTime?: string;
+  remark?: string;
+  inspectionRoute?: string;
+  alarmName?: string;
+}
+
+export interface DeletePollingLineParams {
+  id: string;
+}
+
+export interface GetPollingLineDetailParams {
+  id: string;
+}
