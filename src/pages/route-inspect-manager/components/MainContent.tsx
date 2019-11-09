@@ -6,7 +6,7 @@ import EditableTable from '../../../components/EditorableTable';
 import ContentBorder from '../../../components/ContentBorder';
 
 @Form.create()
-export default class MainContent extends React.Component {
+export default class MainContent extends React.Component<any> {
   constructor(props: any) {
     super(props);
   }
@@ -16,7 +16,7 @@ export default class MainContent extends React.Component {
       <div className={styles.table_list}>
         <div className={styles.table_list_panel}>
           <ContentBorder>
-            <EditableFormTable />
+            <EditableFormTable {...this.props} />
           </ContentBorder>
         </div>
       </div>
