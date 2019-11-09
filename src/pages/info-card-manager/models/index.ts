@@ -2,7 +2,7 @@ export default {
   namespace: 'infoCardManager',
   state: {
     customManager: {},
-    peopleType: {},
+    taskPlan: {},
     infoCard: {},
     superAdmin: {},
   },

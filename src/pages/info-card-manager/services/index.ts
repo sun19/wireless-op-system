@@ -6,7 +6,14 @@ import {
   GET_INFO_DETIAL,
   ADD_INFO_LIST,
   EXPORT_INFO_IN,
-  EXPORT_INFO_OUT
+  EXPORT_INFO_OUT,
+  // 任务
+  GET_TASK_LIST,
+  GRT_TASK_DETAIL,
+  DEL_TASK_LIST,
+  ADD_TASK_LIST,
+  EXPORT_TASK_OUT,
+  EXPORT_TASK_IN
 
 } from '@/config/api';
 import {
@@ -14,7 +21,15 @@ import {
   DeleteInfo,
   GetInfoDetial,
   AddInfoList,
+  // 任务
+  GetTaskList,
+  GetTaskDetail,
+  DelTaskList,
+  AddTaskList
+
 } from './index.interfaces';
+
+/*************************************信息牌******************************** */
 
 // 信息牌列表
 export async function getInfoListParams(params: GetInfoListParams) {
@@ -56,3 +71,43 @@ export async function exportOut() {
   return resp.success === true && resp.code === 200;
 }
 
+/*************************************任务规划******************************** */
+
+// 信息牌列表
+export async function getTaskList(params: GetTaskList) {
+  const resp = await request.get(GET_TASK_LIST, { params });
+  // console.log(resp)
+  return resp.result;
+}
+// 查看详情
+export async function getTaskDetail(data: GetTaskDetail) {
+  const resp = await request.post(GRT_TASK_DETAIL, {
+    data,
+  });
+  return resp.result;
+}
+// 信息牌删除
+export async function delTaskList(data: DelTaskList) {
+  const resp = await request.delete(DEL_TASK_LIST, {
+    data,
+  });
+  return resp.success === true && resp.code === 200;
+}
+// 信息牌添加
+export async function addTaskList(data: AddTaskList) {
+  const resp = await request.post(ADD_TASK_LIST, {
+    data,
+  });
+  return resp.success === true && resp.code === 200;
+}
+
+// 导入
+export async function exportTaskIn() {
+  const resp = await request.post(EXPORT_TASK_IN);
+  return resp.success === true && resp.code === 200;
+}
+// 导出
+export async function exportTaskOut() {
+  const resp = await request.post(EXPORT_TASK_OUT);
+  return resp.success === true && resp.code === 200;
+}
