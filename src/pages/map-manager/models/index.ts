@@ -5,6 +5,8 @@ export default {
     mapArea: {},
     mapFencing: {},
     lamps: {},
+    pollingPoints: {},
+    pollingLines: {},
   },
   reducers: {
     update(state, { payload }) {
