@@ -26,7 +26,7 @@ class AddPollingLine extends React.Component<Props, State> {
   setupAlarmSelect = () => {
     const { getFieldDecorator } = this.props.form;
     const { warningTypes } = this.state;
-    if (warningTypes.length === 0) return null;
+    // if (warningTypes.length === 0) return null;
     return (
       <Form.Item label="告警方式" className={styles.area_style}>
         {getFieldDecorator('alarmName', {
@@ -35,7 +35,7 @@ class AddPollingLine extends React.Component<Props, State> {
               message: '告警方式',
             },
           ],
-          initialValue: 'lucy',
+          initialValue: warningTypes.length === 0 ? '' : warningTypes[0].name,
         })(
           <Select placeholder="告警方式">
             {warningTypes.map((item, index) => (
@@ -52,7 +52,7 @@ class AddPollingLine extends React.Component<Props, State> {
   async componentDidMount() {
     const warningTypes = await warningTypeSearch({});
     this.setState({
-      warningTypes: warningTypes,
+      warningTypes: warningTypes.records,
     });
   }
 
