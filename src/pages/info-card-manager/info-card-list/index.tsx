@@ -214,13 +214,17 @@ class SuperAdmin extends React.Component<Props, State> {
   }
 
   render() {
-    const { userList } = this.props;
+    let { userList } = this.props;
+    if (_.isEmpty(userList)) {
+      userList = {
+        records: [],
+        total: 0,
+      };
+    }
     let { records, total } = userList;
-    records = _.isEmpty(userList)
-      ? null
-      : records.map(item => {
-          return _.assign(item, { key: item.id });
-        });
+    records = records.map(item => {
+      return _.assign(item, { key: item.id });
+    });
     return (
       <div className={publicStyles.public_hight}>
         <Content className={publicStyles.bg}>
@@ -302,10 +306,8 @@ class SuperAdmin extends React.Component<Props, State> {
   }
 }
 const mapState = ({ infoCardManager }) => {
-  // console.log(infoCardManager);
   const resp = infoCardManager.customManager;
   return { userList: resp };
 };
 
 export default connect(mapState)(SuperAdmin);
-// export default SuperAdmin
