@@ -54,6 +54,7 @@ export default class MapManager extends React.Component<Props, State> {
   async componentDidMount() {
     const mapImage = await this.dynamicLoadMapImage();
     const iconImage = await this.dynamicLoadIconImage();
+    if (!this.map.current) return;
     const { clientWidth, clientHeight } = this.map.current;
     this.connectWs();
     this.setState({
