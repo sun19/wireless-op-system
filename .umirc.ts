@@ -35,8 +35,8 @@ const config: IConfig = {
   // base: '/#/',
   // publicPath: '',
   // history: 'hash',
-  base: './',
-  publicPath: './',
+  base: '/wireless-op-system/',
+  publicPath: '/wireless-op-system/',
   history: 'hash',
 };
 

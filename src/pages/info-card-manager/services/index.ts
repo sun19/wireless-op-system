@@ -1,4 +1,5 @@
 import request from 'umi-request';
+import { message } from 'antd';
 
 import {
   GET_INFO_LIST,
@@ -13,8 +14,7 @@ import {
   DEL_TASK_LIST,
   ADD_TASK_LIST,
   EXPORT_TASK_OUT,
-  EXPORT_TASK_IN
-
+  EXPORT_TASK_IN,
 } from '@/config/api';
 import {
   GetInfoListParams,
@@ -25,20 +25,18 @@ import {
   GetTaskList,
   GetTaskDetail,
   DelTaskList,
-  AddTaskList
-
+  AddTaskList,
 } from './index.interfaces';
 
 /*************************************信息牌******************************** */
 
 // 信息牌列表
 export async function getInfoListParams(params: GetInfoListParams) {
-  const resp = await request.get(GET_INFO_LIST, { params })
-  if(resp.code==500){
-    alert(resp.message)
+  const resp = await request.get(GET_INFO_LIST, { params });
+  if (resp.code == 500) {
+    message.error(resp.message);
   }
   return resp.result;
-
 }
 // 信息牌删除
 
@@ -54,7 +52,6 @@ export async function getInfoDetial(data: GetInfoDetial) {
     data,
   });
   return resp.result;
-
 }
 // 信息牌添加
 export async function addInfoList(data: AddInfoList) {

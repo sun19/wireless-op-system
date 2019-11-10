@@ -1,4 +1,5 @@
 import request from 'umi-request';
+import { message } from 'antd';
 
 import {
   // 告警类型
@@ -74,8 +75,8 @@ export async function warningInfoDeal(data: WarningInfoDeal) {
 // 查询
 export async function warningHistorySearch(params: WarningHistorySearch) {
   const resp = await request.get(WARNING_HISTORY_SEARCH, { params });
-  if(resp.code==500||!resp){
-    alert(resp.message)
+  if (resp.code == 500 || !resp) {
+    message.error(resp.message);
   }
   return resp.result;
 }
