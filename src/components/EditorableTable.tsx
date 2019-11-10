@@ -69,47 +69,47 @@ export default class EditableTable extends React.Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = { editingKey: '' };
-    // console.log(this.props);
-    this.columns = this.props.columns.concat([
-      // this.columns =  [
-      {
-        title: '操作',
-        dataIndex: 'operation',
-        render: (text, record) => {
-          const editable = this.isEditing(record);
-          return editable ? (
-            <span>
-              <EditableContext.Consumer>
-                {form => (
+    this.columns = this.props.showEdit
+      ? this.props.columns.concat([
+          {
+            title: '操作',
+            dataIndex: 'operation',
+            render: (text, record) => {
+              const editable = this.isEditing(record);
+              return editable ? (
+                <span>
+                  <EditableContext.Consumer>
+                    {form => (
+                      <IconFont
+                        type="icon-save1"
+                        onClick={this.onSave.bind(this, form, record)}
+                        style={{ marginRight: 8 }}
+                      />
+                    )}
+                  </EditableContext.Consumer>
+                  <Popconfirm
+                    title="确定要取消吗?"
+                    onConfirm={this.onCancel.bind(this, record)}
+                    okText="确定"
+                    cancelText="取消"
+                  >
+                    <IconFont type="icon-cancel" />
+                  </Popconfirm>
+                </span>
+              ) : (
+                <span>
                   <IconFont
-                    type="icon-save1"
-                    onClick={this.onSave.bind(this, form, record)}
-                    style={{ marginRight: 8 }}
+                    type="icon-edit"
+                    style={{ marginRight: '8px' }}
+                    onClick={this.onClick.bind(this, record)}
                   />
-                )}
-              </EditableContext.Consumer>
-              <Popconfirm
-                title="确定要取消吗?"
-                onConfirm={this.onCancel.bind(this, record)}
-                okText="确定"
-                cancelText="取消"
-              >
-                <IconFont type="icon-cancel" />
-              </Popconfirm>
-            </span>
-          ) : (
-            <span>
-              <IconFont
-                type="icon-edit"
-                style={{ marginRight: '8px' }}
-                onClick={this.onClick.bind(this, record)}
-              />
-              <IconFont type="icon-delete" onClick={this.onDelete.bind(this, record)} />
-            </span>
-          );
-        },
-      },
-    ]);
+                  <IconFont type="icon-delete" onClick={this.onDelete.bind(this, record)} />
+                </span>
+              );
+            },
+          },
+        ])
+      : this.props.columns;
   }
 
   isEditing = record => record.key === this.state.editingKey;

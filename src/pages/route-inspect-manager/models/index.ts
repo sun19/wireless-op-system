@@ -1,9 +1,8 @@
 export default {
-  namespace: 'wraningManager',
+  namespace: 'routeInspect',
   state: {
-    type:{},
-    info:{},
-   history:{},
+    routeInspectList: {},
+    routeInspectReports: {},
   },
   reducers: {
     update(state, { payload }) {

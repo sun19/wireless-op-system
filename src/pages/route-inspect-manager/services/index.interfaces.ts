@@ -1,77 +1,19 @@
-
-
-// {
-
-//   inspectionRoute
-//   createId
-//   startTime
-//   endTime
-//   pageSize
-//   pageNo
-// }
-
-
-// 查询
-export interface WarningTypeSearch {
-  name?: string;
-  pageNo?: number;
-  pageSize?: number;
+export interface GetInspectListParams {
+  inspectionRoute?: string;
+  createId?: string;
+  startTime?: string;
+  endTime?: string;
+  pageSize?: string;
+  pageNo?: string;
 }
-// 添加
-export interface WraningTypeAdd {
-  name: string;
-  mapName: string;
-  regionalName: string;
-  informationBoardName: string;
-  startTime: string;
-  endTime: string;
-  repeatType: string;
-  warnMode: string;
-  aggregateRadius: string;
-  overrunNum: string;
-  overrunTime: string;
-}
-// 编辑
-export interface WraningTypeEdit {
-  name: string;
-  mapName: string;
-  regionalName: string;
-  informationBoardName: string;
-  startTime: string;
-  aggregateRadius: string;
-  endTime: string;
-  overrunNum: string;
-  id: string;
-  repeatType: string;
-  warnMode: string;
-  overrunTime: string;
-}
-// 删除
-export interface WraningTypeDel {
+
+export interface GetInspectDetailParams {
   id: string;
 }
 
-/***************************************警告类型********************************************************/
-
-// 查询
-export interface WarningInfoSearch {
-  pageNo?: number;
-  pageSize?: number;
-  name: string;
-  alarmStartTime: string;
-  alarmEndTime: string;
-}
-// 处理
-export interface WarningInfoDeal {
-  id: string;
-}
-/***************************************历史警告********************************************************/
-
-// 查询
-export interface WarningHistorySearch {
-  pageNo?: number;
-  pageSize?: number;
-  warnModeName: string;
-  alarmStartTime: string;
-  alarmEndTime: string;
+export interface GetInspectReportsParams {
+  createtime?: string;
+  inspectionTime?: string;
+  pageNo?: string;
+  pageSize?: string;
 }

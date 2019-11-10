@@ -57,7 +57,7 @@ class NormalLoginForm extends React.Component<Props> {
           const token = resp.result.token;
           localStorage.setItem('token', token);
           await this.preFetchAllCommonState();
-          router.push('/system-setting/customer-manager');
+          router.push('/big-screen/homepage');
         } else {
           this.showErrorMessage('账号或密码输入不正常，登录失败');
           await this.preFetchAllCommonState();
