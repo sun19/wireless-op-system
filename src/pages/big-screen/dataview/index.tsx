@@ -76,7 +76,9 @@ export default class DataView extends React.Component<Props, State> {
     let i = 0;
     let temp = [];
     const timer = setInterval(() => {
+      if (i === 0) message.success('轨迹开始');
       if (i > 5) {
+        message.success('轨迹结束');
         clearInterval(timer);
         return;
       }

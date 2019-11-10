@@ -182,12 +182,14 @@ export const LEFT_MENUS = [
     component: './pages/big-screen',
     children: [
       {
-        name: '首页',
+        // name: '首页',
+        name: '实时位置',
         path: '/big-screen/homepage',
         component: './pages/big-screen/homepage',
       },
       {
-        name: '数据',
+        // name: '数据',
+        name: '电子围栏',
         path: '/big-screen/dataview',
         component: './pages/big-screen/dataview',
       },
