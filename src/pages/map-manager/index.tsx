@@ -13,6 +13,9 @@ interface State {
   width: number;
   height: number;
   lamps: Lamp[];
+  stageScale: number;
+  stageX: number;
+  stageY: number;
 }
 interface Props {
   [key: string]: any;
@@ -35,6 +38,7 @@ const defaultLamps = [
   { x: 1337, y: 688, id: '03' },
   { x: 1337, y: 815, id: '04' },
 ];
+const scaleBy = 1.01;
 
 export default class MapManager extends React.Component<Props, State> {
   map: React.RefObject<HTMLDivElement>;
@@ -48,6 +52,9 @@ export default class MapManager extends React.Component<Props, State> {
       width: 0,
       height: 0,
       lamps: [],
+      stageScale: 1,
+      stageX: 0,
+      stageY: 0,
     };
   }
   //异步加载图片，保证渲染到canvas上时是已经OK的
@@ -121,12 +128,43 @@ export default class MapManager extends React.Component<Props, State> {
       };
     });
   }
+
+  onWheel = evt => {
+    evt.evt.preventDefault();
+    const stage = evt.target.getStage();
+    const oldScale = stage.scaleX();
+
+    const mousePointTo = {
+      x: stage.getPointerPosition().x / oldScale - stage.x() / oldScale,
+      y: stage.getPointerPosition().y / oldScale - stage.y() / oldScale,
+    };
+
+    const newScale = evt.evt.deltaY > 0 ? oldScale * scaleBy : oldScale / scaleBy;
+
+    stage.scale({ x: newScale, y: newScale });
+
+    this.setState({
+      stageScale: newScale,
+      stageX: -(mousePointTo.x - stage.getPointerPosition().x / newScale) * newScale,
+      stageY: -(mousePointTo.y - stage.getPointerPosition().y / newScale) * newScale,
+    });
+  };
+
   render() {
     const { mapImage, width, height } = this.state;
     const lamps = this.createLamps();
     return (
       <div className={styles.map_manager} ref={this.map}>
-        <Stage width={width} height={height}>
+        <Stage
+          width={width}
+          height={height}
+          onWheel={this.onWheel}
+          scaleX={this.state.stageScale}
+          scaleY={this.state.stageScale}
+          x={this.state.stageX}
+          y={this.state.stageY}
+          draggable={true}
+        >
           <Layer>
             <ImageLayer image={mapImage} x={0} y={0} width={width} height={height} />
             {lamps}
