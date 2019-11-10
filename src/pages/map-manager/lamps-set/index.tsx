@@ -129,11 +129,14 @@ class LampsSettings extends React.Component<Props, State> {
   }
 
   setupMapArea = () => {
-    const { allAreas } = this.props;
+    let { allAreas } = this.props;
+    if (_.isEmpty(allAreas)) {
+      allAreas = [];
+    }
     return (
       <Select
         className={publicStyles.select_text}
-        defaultValue={allAreas[0].name}
+        defaultValue={allAreas.length === 0 ? '' : allAreas[0].name}
         onSelect={this.onMapSelectChange}
       >
         {allAreas.map((area, index) => (
@@ -187,8 +190,13 @@ class LampsSettings extends React.Component<Props, State> {
   }
 
   render() {
-    const { lamps, allAreas } = this.props;
-    if (_.isEmpty(lamps) || _.isEmpty(allAreas)) return null;
+    let { lamps, allAreas } = this.props;
+    if (_.isEmpty(lamps) || _.isEmpty(allAreas)) {
+      lamps = {
+        records: [],
+        total: 0,
+      };
+    }
     let { records, total } = lamps;
     records = records.map((item, index) => {
       return _.assign(item, { key: item.id || index });

@@ -130,8 +130,13 @@ class FencingSettings extends React.Component<Props> {
   }
 
   render() {
-    const { mapFencing } = this.props;
-    if (_.isEmpty(mapFencing)) return null;
+    let { mapFencing } = this.props;
+    if (_.isEmpty(mapFencing)) {
+      mapFencing = {
+        records: [],
+        total: 0,
+      };
+    }
     let { records, total } = mapFencing;
     records = records.map(item => {
       return _.assign(item, { key: item.id });

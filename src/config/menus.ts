@@ -77,12 +77,12 @@ export const LEFT_MENUS = [
     path: '/map-manager',
     component: './pages/map-manager',
     children: [
-      {
-        name: '地图导入',
-        key: '13',
-        path: '/map-manager/map-import',
-        component: './pages/map-manager/map-import/index.tsx',
-      },
+      // {
+      //   name: '地图导入',
+      //   key: '13',
+      //   path: '/map-manager/map-import',
+      //   component: './pages/map-manager/map-import/index.tsx',
+      // },
       {
         name: '区域设置',
         key: '14',
