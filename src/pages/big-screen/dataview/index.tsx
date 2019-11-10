@@ -106,7 +106,6 @@ export default class DataView extends React.Component<Props, State> {
   };
   createLamps() {
     const lamps = this.state.lamps;
-    console.log(lamps, 'xxzz');
     return lamps.map((lamp, index) => (
       <ImageLayer
         image={lamp.code === 0 ? this.state.icon : this.state.iconRed}
