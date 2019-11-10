@@ -32,9 +32,12 @@ const config: IConfig = {
     ],
   ],
 
-  base: '/#/',
+  // base: '/#/',
   // publicPath: '',
   // history: 'hash',
+  base: '/wireless-op-system/',
+  publicPath: '/wireless-op-system/',
+  history: 'hash',
 };
 
 export default config;
