@@ -2,7 +2,7 @@
  * title: 电子围栏
  */
 import React, { Component } from 'react';
-import { message } from 'antd';
+import { message, Row, Col } from 'antd';
 import Konva from 'konva';
 import { Stage, Layer, Image as ImageLayer, Line as LineLayer } from 'react-konva';
 
@@ -64,20 +64,20 @@ export default class DataView extends React.Component<Props, State> {
   }
   //异步加载图片，保证渲染到canvas上时是已经OK的
   async componentDidMount() {
-    const mapImage = await this.dynamicLoadMapImage();
-    const iconImage = await this.dynamicLoadIconImage();
-    const iconRedImage = await this.dynamicLoadIconRedImage();
-    if (this.map.current) {
-      const { clientWidth, clientHeight } = this.map.current;
-      this.showLine();
-      this.setState({
-        mapImage,
-        icon: iconImage,
-        iconRed: iconRedImage,
-        width: clientWidth,
-        height: clientHeight,
-      });
-    }
+    // const mapImage = await this.dynamicLoadMapImage();
+    // const iconImage = await this.dynamicLoadIconImage();
+    // const iconRedImage = await this.dynamicLoadIconRedImage();
+    // if (this.map.current) {
+    //   const { clientWidth, clientHeight } = this.map.current;
+    //   this.showLine();
+    //   this.setState({
+    //     mapImage,
+    //     icon: iconImage,
+    //     iconRed: iconRedImage,
+    //     width: clientWidth,
+    //     height: clientHeight,
+    //   });
+    // }
   }
   showLine() {
     const { clientWidth, clientHeight } = this.map.current;
@@ -160,7 +160,9 @@ export default class DataView extends React.Component<Props, State> {
     );
   };
 
-  componentWillUnmount() {}
+  componentWillUnmount() {
+    message.destroy();
+  }
   dynamicLoadMapImage() {
     return new Promise(resolve => {
       const mapImage = new Image();
@@ -212,26 +214,54 @@ export default class DataView extends React.Component<Props, State> {
 
   render() {
     const { mapImage, width, height } = this.state;
-    const lamps = this.createLamps();
-    const line = this.createLampLines();
+    // const lamps = this.createLamps();
+    // const line = this.createLampLines();
     return (
-      <div className={styles.map_manager} ref={this.map}>
-        <Stage
-          width={width}
-          height={height}
-          onWheel={this.onWheel}
-          scaleX={this.state.stageScale}
-          scaleY={this.state.stageScale}
-          x={this.state.stageX}
-          y={this.state.stageY}
-          draggable={true}
-        >
-          <Layer>
-            <ImageLayer image={mapImage} x={0} y={0} width={width} height={height} />
-            {line}
-            {lamps}
-          </Layer>
-        </Stage>
+      <div className={styles.dataview_root_container}>
+        <div className="header">xx</div>
+        <div className="content">
+          <Row>
+            <Col span={4} className="left_panel">
+              <div className="top">
+                <div className="title">当前在线人数</div>
+                <div className="number">
+                  <span>0</span>
+                  <span>0</span>
+                  <span>3</span>
+                  <span>2</span>
+                  <span>4</span>
+                </div>
+                <div>今日最高值 324</div>
+                <div>昨日最高值 320</div>
+              </div>
+              <div className="bottom">下面</div>
+            </Col>
+            <Col span={16} className="middle_panel">
+              中间
+            </Col>
+            <Col span={4} className="right_panel">
+              右侧
+            </Col>
+          </Row>
+        </div>
+        {/* <div className={styles.map_manager} ref={this.map}>
+          <Stage
+            width={width}
+            height={height}
+            onWheel={this.onWheel}
+            scaleX={this.state.stageScale}
+            scaleY={this.state.stageScale}
+            x={this.state.stageX}
+            y={this.state.stageY}
+            draggable={true}
+          >
+            <Layer>
+              <ImageLayer image={mapImage} x={0} y={0} width={width} height={height} />
+              {line}
+              {lamps}
+            </Layer>
+          </Stage>
+        </div> */}
       </div>
     );
   }
