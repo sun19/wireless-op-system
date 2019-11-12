@@ -1,18 +1,46 @@
 .navigation {
+    min-width: 1200px;
 	:global(.ant-menu-horizontal) {
 		border-bottom-right-radius: 65px;
-		padding-left: 40px;
-		background: #021132;
+		padding-left: 30px;
+		background: #091e52;
 		color: #016597;
+		border: 0px;
 		.ant-menu-item {
 			color: #016597;
 		}
-    }
-    .title_back{
-width: 7rem;
-height: 1rem;
-display: inline-block;
-background: red
-    }
-    
+	}
+	.middle_panel {
+		width: 10rem;
+	}
+	.title_back {
+		width: 7rem;
+		height: 1rem;
+		background: url(../../../assets/login//02-title.png);
+		background-size: 7rem 1rem;
+		margin: 0 auto;
+	}
+	.right_panel {
+		.year {
+			padding: 0px 10px;
+			font-size: 0.15rem;
+			color: #00a7fe;
+        }
+        .split{
+           	color: white;
+            font-weight: 500; 
+            margin-right: 2px;
+        }
+		.hours {
+            margin-left: 2px;
+			display: inline-block;
+			width: 0.15rem;
+			height: 0.25rem;
+			color: white;
+			font-weight: 500;
+			padding: 1px 0px 0px 3px;
+			background: #0c2467;
+			border: 0.5px solid #00edfd;
+		}
+	}
 }
