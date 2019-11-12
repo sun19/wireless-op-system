@@ -4,8 +4,10 @@
 import React, { Component } from 'react';
 import { message, Row, Col, Icon, Progress } from 'antd';
 import Konva from 'konva';
+import ReactEcharts from 'echarts-for-react';
 import { Stage, Layer, Image as ImageLayer, Line as LineLayer } from 'react-konva';
-import Navigation from './navigation.tsx';
+
+import Navigation from './navigation';
 
 import styles from '../index.less';
 
@@ -19,6 +21,7 @@ interface State {
   stageScale: number;
   stageX: number;
   stageY: number;
+  showPeopleInfo: boolean;
 }
 interface Props {
   [key: string]: any;
@@ -44,7 +47,119 @@ const defaultLamps = [
 ];
 
 const scaleBy = 1.01;
-
+const getOptionSquar = {
+  tooltip: {
+    trigger: 'axis',
+    axisPointer: {
+      // 坐标轴指示器，坐标轴触发有效
+      type: 'shadow', // 默认为直线，可选为：'line' | 'shadow'
+    },
+  },
+  legend: {
+    data: ['直接访问', '联盟广告', '视频广告', '邮件营销', '搜索引擎'],
+  },
+  grid: {
+    left: '3%',
+    right: '4%',
+    bottom: '3%',
+    containLabel: true,
+  },
+  xAxis: {
+    type: 'value',
+  },
+  yAxis: {
+    type: 'category',
+    data: ['周一', '周二', '周三'],
+  },
+  series: [
+    {
+      name: '直接访问',
+      type: 'bar',
+      stack: '总量',
+      label: {
+        normal: {
+          show: true,
+          position: 'insideRight',
+        },
+      },
+      data: [32, 30, 30],
+    },
+    {
+      name: '联盟广告',
+      type: 'bar',
+      stack: '总量',
+      label: {
+        normal: {
+          show: true,
+          position: 'insideRight',
+        },
+      },
+      data: [22, 18, 19],
+    },
+    {
+      name: '视频广告',
+      type: 'bar',
+      stack: '总量',
+      label: {
+        normal: {
+          show: true,
+          position: 'insideRight',
+        },
+      },
+      data: [15, 21, 20],
+    },
+    {
+      name: '搜索引擎',
+      type: 'bar',
+      stack: '总量',
+      label: {
+        normal: {
+          show: true,
+          position: 'insideRight',
+        },
+      },
+      data: [22, 83, 90],
+    },
+  ],
+};
+const getOption = {
+  // title: {
+  //   // text: '南丁格尔玫瑰图',
+  //   // subtext: '纯属虚构',
+  //   // x: 'center',
+  // },
+  tooltip: {
+    trigger: 'item',
+    formatter: '{a} <br/>{b} : {c} ({d}%)',
+  },
+  legend: {
+    itemHeight: 5,
+    itemWidth: 5,
+    data: ['', 'rose2', 'rose3', 'rose4'],
+  },
+  series: [
+    {
+      type: 'pie',
+      roseType: 'radius',
+      radius: ['50%', '25%'],
+      center: ['50%', '25%'],
+      label: {
+        normal: {
+          show: false,
+        },
+        emphasis: {
+          show: false,
+        },
+      },
+      data: [
+        { value: 12, name: 'rose2' },
+        { value: 15, name: 'rose3' },
+        { value: 22, name: 'rose4' },
+        { value: 20, name: 'rose5' },
+      ],
+    },
+  ],
+};
 export default class DataView extends React.Component<Props, State> {
   map: React.RefObject<HTMLDivElement>;
   ws: WebSocket;
@@ -61,6 +176,7 @@ export default class DataView extends React.Component<Props, State> {
       stageScale: 1,
       stageX: 0,
       stageY: 0,
+      showPeopleInfo: true,
     };
   }
   //异步加载图片，保证渲染到canvas上时是已经OK的
@@ -217,6 +333,7 @@ export default class DataView extends React.Component<Props, State> {
     const { mapImage, width, height } = this.state;
     const lamps = this.createLamps();
     const line = this.createLampLines();
+
     return (
       <div className={styles.dataview_root_container}>
         <div className="header">
@@ -244,35 +361,54 @@ export default class DataView extends React.Component<Props, State> {
                   <span className="data-title">昨日最高值</span>
                   <span className="data-number">324</span>
                 </div>
-              </div>
-              <div className="bottom">
-                <div className="people-type">
-                  <Icon type="trademark-circle" theme="twoTone" style={{ fontSize: '18px' }} />
-                  <span>人员类型</span>
+                {/* </div> */}
+                <div className="people_type">
+                  <div className="people_type_title">
+                    <Icon type="trademark-circle" theme="twoTone" style={{ fontSize: '18px' }} />
+                    <span>人员类型</span>
+                  </div>
+                  <div className="inner_or_outer">
+                    <span className="left">
+                      <Icon type="trademark-circle" theme="twoTone" />
+                      <span className="text_span"> 内部</span>
+                      <span className="number_span"> 316</span>
+                    </span>
+                    <span className="right">
+                      <Icon type="trademark-circle" theme="twoTone" />
+                      <span className="text_span">外部</span>
+                      <span className="number_span">8</span>
+                    </span>
+                  </div>
                 </div>
-                <div className="inner_or_outer">
-                  <div className="left">
+                <div className="people-secret">
+                  <div className="people-type">
                     <Icon type="trademark-circle" theme="twoTone" />
-                    <span className="text_span"> 内部</span>
-                    <span className="number_span"> 316</span>
+                    <span>保密级别人数占比</span>
                   </div>
-                  <div className="right">
-                    <Icon type="trademark-circle" theme="twoTone" />
-                    <span>外部</span>
-                    <span>8</span>
+                  <div className="people_progress people_progress_first">
+                    <div>
+                      <span>一级</span>
+                      <span className="people-number">84人</span>
+                    </div>
+                    <Progress percent={30} />
+                    <div className="people_progress_num">42%</div>
                   </div>
-                </div>
-                <div className="secret-name">
-                  <Icon type="trademark-circle" theme="twoTone" />
-                  <span>保密级别人数占比</span>
-                </div>
-                <div>
-                  <div>
-                    <span>一级</span>
-                    <span>84人</span>
+                  <div className="people_progress people_progress_second">
+                    <div>
+                      <span>二级</span>
+                      <span className="people-number">84人</span>
+                    </div>
+                    <Progress percent={30} />
+                    <div className="people_progress_num">42%</div>
                   </div>
-                  <Progress percent={30} />
-                  <div>42%</div>
+                  <div className="people_progress people_progress_third">
+                    <div>
+                      <span>三级</span>
+                      <span className="people-number">84人</span>
+                    </div>
+                    <Progress percent={30} />
+                    <div className="people_progress_num">42%</div>
+                  </div>
                 </div>
               </div>
             </Col>
@@ -297,8 +433,91 @@ export default class DataView extends React.Component<Props, State> {
               </div>
             </Col>
             <Col span={4} className="right_panel">
-              右侧
+              {this.state.showPeopleInfo == true ? (
+                <div>
+                  <div className="right_top_panel">
+                    <div>
+                      <div>
+                        <Icon
+                          type="trademark-circle"
+                          theme="twoTone"
+                          style={{ fontSize: '20px' }}
+                        />
+                        <span>职务占比人数</span>
+                      </div>
+                      <div className="echarts">
+                        <div>
+                          <ReactEcharts
+                            option={getOption}
+                            style={{ height: '500px', width: '80%' }}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="right_middle_panel">
+                    <div>
+                      <div>
+                        <Icon
+                          type="trademark-circle"
+                          theme="twoTone"
+                          style={{ fontSize: '20px' }}
+                        />
+                        <span>停留时长分析</span>
+                      </div>
+                      <div className="echarts">
+                        <div className="eractEcharts">
+                          <ReactEcharts
+                            option={getOption}
+                            style={{ height: '500px', width: '80%' }}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="right_bottom_panel">
+                    <div>
+                      <div>
+                        <Icon
+                          type="trademark-circle"
+                          theme="twoTone"
+                          style={{ fontSize: '20px' }}
+                        />
+                        <span>告警类型统计</span>
+                      </div>
+                      <div className="echarts">
+                        <div>
+                          <ReactEcharts
+                            option={getOptionSquar}
+                            style={{ height: '200px', width: '100%' }}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div>
+                  <div className="right_ele_panel">
+                    <div>
+                      <div>
+                        <Icon
+                          type="trademark-circle"
+                          theme="twoTone"
+                          style={{ fontSize: '20px' }}
+                        />
+                        <span>aaa</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="right_wraning_panel">
+                    <div>bbb</div>
+                  </div>
+                </div>
+              )}
             </Col>
+            }
           </Row>
         </div>
       </div>
