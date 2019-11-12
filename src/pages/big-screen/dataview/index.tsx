@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import { message, Row, Col, Icon, Progress } from 'antd';
 import Konva from 'konva';
 import { Stage, Layer, Image as ImageLayer, Line as LineLayer } from 'react-konva';
-import Navigation from './navigation.tsx'
+import Navigation from './navigation.tsx';
 
 import styles from '../index.less';
 
@@ -220,7 +220,7 @@ export default class DataView extends React.Component<Props, State> {
     return (
       <div className={styles.dataview_root_container}>
         <div className="header">
-        <Navigation/>
+          <Navigation />
         </div>
         <div className="content">
           <Row>
@@ -262,7 +262,7 @@ export default class DataView extends React.Component<Props, State> {
                     <span>8</span>
                   </div>
                 </div>
-                <div>
+                <div className="secret-name">
                   <Icon type="trademark-circle" theme="twoTone" />
                   <span>保密级别人数占比</span>
                 </div>
