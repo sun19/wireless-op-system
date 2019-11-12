@@ -2,7 +2,7 @@
  * title: 电子围栏
  */
 import React, { Component } from 'react';
-import { message, Row, Col } from 'antd';
+import { message, Row, Col, Icon, Progress } from 'antd';
 import Konva from 'konva';
 import { Stage, Layer, Image as ImageLayer, Line as LineLayer } from 'react-konva';
 
@@ -64,20 +64,20 @@ export default class DataView extends React.Component<Props, State> {
   }
   //异步加载图片，保证渲染到canvas上时是已经OK的
   async componentDidMount() {
-    // const mapImage = await this.dynamicLoadMapImage();
-    // const iconImage = await this.dynamicLoadIconImage();
-    // const iconRedImage = await this.dynamicLoadIconRedImage();
-    // if (this.map.current) {
-    //   const { clientWidth, clientHeight } = this.map.current;
-    //   this.showLine();
-    //   this.setState({
-    //     mapImage,
-    //     icon: iconImage,
-    //     iconRed: iconRedImage,
-    //     width: clientWidth,
-    //     height: clientHeight,
-    //   });
-    // }
+    const mapImage = await this.dynamicLoadMapImage();
+    const iconImage = await this.dynamicLoadIconImage();
+    const iconRedImage = await this.dynamicLoadIconRedImage();
+    if (this.map.current) {
+      const { clientWidth, clientHeight } = this.map.current;
+      this.showLine();
+      this.setState({
+        mapImage,
+        icon: iconImage,
+        iconRed: iconRedImage,
+        width: clientWidth,
+        height: clientHeight,
+      });
+    }
   }
   showLine() {
     const { clientWidth, clientHeight } = this.map.current;
@@ -214,8 +214,8 @@ export default class DataView extends React.Component<Props, State> {
 
   render() {
     const { mapImage, width, height } = this.state;
-    // const lamps = this.createLamps();
-    // const line = this.createLampLines();
+    const lamps = this.createLamps();
+    const line = this.createLampLines();
     return (
       <div className={styles.dataview_root_container}>
         <div className="header">xx</div>
@@ -231,37 +231,73 @@ export default class DataView extends React.Component<Props, State> {
                   <span>2</span>
                   <span>4</span>
                 </div>
-                <div>今日最高值 324</div>
-                <div>昨日最高值 320</div>
+                <div className="today-data">
+                  <Icon type="trademark-circle" theme="twoTone" style={{ fontSize: '20px' }} />
+                  <span className="data-title">今日最高值</span>
+                  <span className="data-number">324</span>
+                </div>
+                <div className="yesterday-data">
+                  <Icon type="trademark-circle" theme="twoTone" style={{ fontSize: '20px' }} />
+                  <span className="data-title">昨日最高值</span>
+                  <span className="data-number">324</span>
+                </div>
               </div>
-              <div className="bottom">下面</div>
+              <div className="bottom">
+                <div className="people-type">
+                  <Icon type="trademark-circle" theme="twoTone" style={{ fontSize: '18px' }} />
+                  <span>人员类型</span>
+                </div>
+                <div className="inner_or_outer">
+                  <div className="left">
+                    <Icon type="trademark-circle" theme="twoTone" />
+                    <span className="text_span"> 内部</span>
+                    <span className="number_span"> 316</span>
+                  </div>
+                  <div className="right">
+                    <Icon type="trademark-circle" theme="twoTone" />
+                    <span>外部</span>
+                    <span>8</span>
+                  </div>
+                </div>
+                <div>
+                  <Icon type="trademark-circle" theme="twoTone" />
+                  <span>保密级别人数占比</span>
+                </div>
+                <div>
+                  <div>
+                    <span>一级</span>
+                    <span>84人</span>
+                  </div>
+                  <Progress percent={30} />
+                  <div>42%</div>
+                </div>
+              </div>
             </Col>
             <Col span={16} className="middle_panel">
-              中间
+              <div className={styles.map_manager} ref={this.map}>
+                <Stage
+                  width={width}
+                  height={height}
+                  onWheel={this.onWheel}
+                  scaleX={this.state.stageScale}
+                  scaleY={this.state.stageScale}
+                  x={this.state.stageX}
+                  y={this.state.stageY}
+                  draggable={true}
+                >
+                  <Layer>
+                    <ImageLayer image={mapImage} x={0} y={0} width={width} height={height} />
+                    {line}
+                    {lamps}
+                  </Layer>
+                </Stage>
+              </div>
             </Col>
             <Col span={4} className="right_panel">
               右侧
             </Col>
           </Row>
         </div>
-        {/* <div className={styles.map_manager} ref={this.map}>
-          <Stage
-            width={width}
-            height={height}
-            onWheel={this.onWheel}
-            scaleX={this.state.stageScale}
-            scaleY={this.state.stageScale}
-            x={this.state.stageX}
-            y={this.state.stageY}
-            draggable={true}
-          >
-            <Layer>
-              <ImageLayer image={mapImage} x={0} y={0} width={width} height={height} />
-              {line}
-              {lamps}
-            </Layer>
-          </Stage>
-        </div> */}
       </div>
     );
   }
