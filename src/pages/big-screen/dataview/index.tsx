@@ -5,6 +5,7 @@ import React, { Component } from 'react';
 import { message, Row, Col } from 'antd';
 import Konva from 'konva';
 import { Stage, Layer, Image as ImageLayer, Line as LineLayer } from 'react-konva';
+import Navigation from './navigation.tsx'
 
 import styles from '../index.less';
 
@@ -218,7 +219,9 @@ export default class DataView extends React.Component<Props, State> {
     // const line = this.createLampLines();
     return (
       <div className={styles.dataview_root_container}>
-        <div className="header">xx</div>
+        <div className="header">
+        <Navigation/>
+        </div>
         <div className="content">
           <Row>
             <Col span={4} className="left_panel">
