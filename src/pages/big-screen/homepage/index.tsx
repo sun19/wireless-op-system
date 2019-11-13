@@ -96,8 +96,8 @@ export default class DataView extends React.Component<Props, State> {
 
     this.ws.onmessage = evt => {
       const message = JSON.parse(evt.data);
-      const msgText = message.msgTxt;
-
+      // const msgText = message.msgTxt;
+      // console.log(message, 'xx');
       // const lamp = { x: +msgText.xCoordinate, y: +msgText.yCoordinate, id: msgText.lampNumber };
       // const currentLamps = this.setupLampData([lamp], clientWidth, clientHeight);
 
@@ -917,7 +917,6 @@ export default class DataView extends React.Component<Props, State> {
                 </div>
               )}
             </Col>
-            }
           </Row>
         </div>
       </div>
