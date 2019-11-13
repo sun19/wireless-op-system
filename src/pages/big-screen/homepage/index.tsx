@@ -697,7 +697,7 @@ export default class DataView extends React.Component<Props, State> {
     const line = this.createLampLines();
 
     return (
-      <div className={styles.dataview_root_container}>
+      <div className={styles.homepage_root_container}>
         <div className="header">
           <Navigation />
         </div>
