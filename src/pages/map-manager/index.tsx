@@ -126,6 +126,7 @@ export default class MapManager extends React.Component<Props, State> {
   }
   componentWillUnmount() {
     clearInterval(this.checkUpdateTimer);
+    this.ws && this.ws.close();
   }
   dynamicLoadMapImage() {
     return new Promise(resolve => {

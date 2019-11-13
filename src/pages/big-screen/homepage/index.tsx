@@ -12,6 +12,7 @@ import Title from '../components/Title';
 import Navigation from '../components/navigation';
 
 import styles from './index.less';
+import request from 'umi-request';
 
 interface State {
   mapImage: any | null;
@@ -20,6 +21,7 @@ interface State {
   width: number;
   height: number;
   lamps: Lamp[];
+  ajaxLamps: any[];
   stageScale: number;
   stageX: number;
   stageY: number;
@@ -67,6 +69,7 @@ export default class DataView extends React.Component<Props, State> {
       stageX: 0,
       stageY: 0,
       showPeopleInfo: true,
+      ajaxLamps: [],
     };
     this.connectWs = this.connectWs.bind(this);
   }
@@ -86,7 +89,14 @@ export default class DataView extends React.Component<Props, State> {
         height: clientHeight,
       });
     }
-    this.connectWs();
+    // this.connectWs();
+    let lamps = await request.get(
+      'http://47.96.112.31:8086/jeecg-boot/intf/location/listByHistoryTrajectory',
+    );
+    lamps = (lamps.result && lamps.result.records) || [];
+    this.setState({
+      ajaxLamps: lamps,
+    });
   }
 
   connectWs() {
@@ -116,14 +126,21 @@ export default class DataView extends React.Component<Props, State> {
     let i = 0;
     let temp = [];
     const timer = setInterval(() => {
+      const ajaxLamps = this.state.ajaxLamps;
+
       if (i === 0) message.success('轨迹开始');
-      if (i > 5) {
+      if (i > ajaxLamps.length - 1) {
         message.success('轨迹结束');
         clearInterval(timer);
         return;
       }
-      const lnglat = defaultLamps[i];
-      const lamp = { x: +lnglat.x, y: +lnglat.y, id: lnglat.id, code: lnglat.code };
+      const lnglat = ajaxLamps[i];
+      const lamp = {
+        x: +lnglat.xcoordinate,
+        y: +lnglat.ycoordinate,
+        id: lnglat.id,
+        code: lnglat.abnormal,
+      };
       if (lamp.code === 1) {
         message.warn('您已进入非法区域');
       }
@@ -134,7 +151,7 @@ export default class DataView extends React.Component<Props, State> {
         lamps: currentLamps,
       });
       i++;
-    }, 3000);
+    }, 1000);
   }
   setupLampData = (data, currentWidth, currentHeight) => {
     const defaultWidth = 1920;
@@ -194,6 +211,7 @@ export default class DataView extends React.Component<Props, State> {
 
   componentWillUnmount() {
     message.destroy();
+    this.ws && this.ws.close();
   }
   dynamicLoadMapImage() {
     return new Promise(resolve => {

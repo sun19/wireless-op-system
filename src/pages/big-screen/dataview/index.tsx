@@ -827,7 +827,6 @@ export default class HomePage extends Component<any, State> {
     );
   };
   render() {
-    // return <RealTimeTrack />;
     return (
       <div className={styles.dataview_root_container}>
         <div className="header">

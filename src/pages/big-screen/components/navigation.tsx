@@ -33,6 +33,7 @@ class Navigation extends React.Component<Props, State> {
         break;
       case 'realtime':
         this.gotoRealTime();
+        break;
       case 'dataview':
         this.gotoDataview();
         break;
