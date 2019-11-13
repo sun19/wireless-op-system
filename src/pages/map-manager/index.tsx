@@ -43,6 +43,7 @@ const scaleBy = 1.01;
 export default class MapManager extends React.Component<Props, State> {
   map: React.RefObject<HTMLDivElement>;
   ws: WebSocket;
+  checkUpdateTimer: any;
   constructor(props) {
     super(props);
     this.map = React.createRef<HTMLDivElement>();
@@ -73,13 +74,27 @@ export default class MapManager extends React.Component<Props, State> {
   }
   connectWs() {
     const { clientWidth, clientHeight } = this.map.current;
-    this.ws = new WebSocket('ws://47.96.112.31:8084/jeecg-boot/websocket/1');
-    this.ws.onopen = () => {};
+    // this.ws = new WebSocket('ws://47.96.112.31:8084/jeecg-boot/websocket/1');
+    this.ws = new WebSocket('ws://47.96.112.31:8086/jeecg-boot/websocket/1');
 
+    this.ws.onopen = () => {};
+    let lastTime = new Date();
+    //5s不来新数据，则消失
+    const maxDuraction = 5000;
+    this.checkUpdateTimer = setInterval(() => {
+      const currentTime = new Date().getTime();
+      const duration = currentTime - lastTime.getTime();
+      if (duration > maxDuraction) {
+        this.setState({
+          lamps: [],
+        });
+      }
+    }, maxDuraction);
     this.ws.onmessage = evt => {
-      const message = JSON.parse(evt.data);
-      const msgText = message.msgTxt;
-      const lamp = { x: +msgText.xCoordinate, y: +msgText.yCoordinate, id: msgText.lampNumber };
+      const msgText = JSON.parse(evt.data)[0];
+      lastTime = new Date();
+      // const msgText = message.msgTxt;
+      const lamp = { x: +msgText.xcoordinate, y: +msgText.ycoordinate, id: msgText.key };
       const currentLamps = this.setupLampData([lamp], clientWidth, clientHeight);
 
       this.setState({
@@ -109,7 +124,10 @@ export default class MapManager extends React.Component<Props, State> {
       />
     ));
   }
-  componentWillUnmount() {}
+  componentWillUnmount() {
+    clearInterval(this.checkUpdateTimer);
+    this.ws && this.ws.close();
+  }
   dynamicLoadMapImage() {
     return new Promise(resolve => {
       const mapImage = new Image();
