@@ -716,218 +716,214 @@ export default class DataView extends React.Component<Props, State> {
 
     return (
       <div className={styles.homepage_root_container}>
-          <div className="header">
-            <Navigation />
-          </div>
-          <div className="content">
-            <Row>
-              <Col span={4} className="left_panel">
-                <div className="top">
-                  <div className="title">当前在线人数</div>
-                  <div className="number">
-                    <span>0</span>
-                    <span>0</span>
-                    <span>3</span>
-                    <span>2</span>
-                    <span>4</span>
-                  </div>
-                  <div className="today-data">
+        <div className="header">
+          <Navigation />
+        </div>
+        <div className="content">
+          <Row>
+            <Col span={4} className="left_panel">
+              <div className="top">
+                <div className="title">当前在线人数</div>
+                <div className="number">
+                  <span>0</span>
+                  <span>0</span>
+                  <span>3</span>
+                  <span>2</span>
+                  <span>4</span>
+                </div>
+                <div className="today-data">
+                  <span className="icon" />
+
+                  <span className="data-title">今日最高值</span>
+                  <span className="data-number">324</span>
+                </div>
+                <div className="yesterday-data">
+                  <span className="icon" />
+
+                  <span className="data-title">昨日最高值</span>
+                  <span className="data-number">324</span>
+                </div>
+                {/* </div> */}
+                <div className="people_type">
+                  <div className="people_type_title">
                     <span className="icon" />
-
-                    <span className="data-title">今日最高值</span>
-                    <span className="data-number">324</span>
+                    <span className="titlename">人员类型</span>
                   </div>
-                  <div className="yesterday-data">
+                  <div className="inner_or_outer">
+                    <span className="left">
+                      <span className="icon">内</span>
+                      <span className="text_span"> 内部</span>
+                      <span className="number_span"> 316</span>
+                    </span>
+                    <span className="right">
+                      <span className="icon">外</span>
+                      <span className="text_span">外部</span>
+                      <span className="number_span">8</span>
+                    </span>
+                  </div>
+                </div>
+                <div className="people-secret">
+                  <div className="people-type">
                     <span className="icon" />
-
-                    <span className="data-title">昨日最高值</span>
-                    <span className="data-number">324</span>
+                    <span className="titlename">保密级别人数占比</span>
                   </div>
-                  {/* </div> */}
-                  <div className="people_type">
-                    <div className="people_type_title">
-                      <span className="icon" />
-                      <span className="titlename">人员类型</span>
+                  <div className="people_progress people_progress_first">
+                    <div>
+                      <span>一级</span>
+                      <span className="people-number">84人</span>
                     </div>
-                    <div className="inner_or_outer">
-                      <span className="left">
-                        <span className="icon">内</span>
-                        <span className="text_span"> 内部</span>
-                        <span className="number_span"> 316</span>
-                      </span>
-                      <span className="right">
-                        <span className="icon">外</span>
-                        <span className="text_span">外部</span>
-                        <span className="number_span">8</span>
-                      </span>
+                    <Progress percent={30} />
+                    <div className="people_progress_num">42%</div>
+                  </div>
+                  <div className="people_progress people_progress_second">
+                    <div>
+                      <span>二级</span>
+                      <span className="people-number">84人</span>
+                    </div>
+                    <Progress percent={30} />
+                    <div className="people_progress_num">42%</div>
+                  </div>
+                  <div className="people_progress people_progress_third">
+                    <div>
+                      <span>三级</span>
+                      <span className="people-number">84人</span>
+                    </div>
+                    <Progress percent={30} />
+                    <div className="people_progress_num">42%</div>
+                  </div>
+                </div>
+              </div>
+            </Col>
+            <Col span={16} className="middle_panel">
+              <div className="middle_text">
+                <div className="text_panel" onClick={this.selectShow}>
+                  人员信息
+                </div>
+                <div className="text_panel" onClick={this.selectShow}>
+                  灯具显示
+                </div>
+              </div>
+              <div className={styles.map_manager} ref={this.map}>
+                <Stage
+                  width={width}
+                  height={height}
+                  onWheel={this.onWheel}
+                  scaleX={this.state.stageScale}
+                  scaleY={this.state.stageScale}
+                  x={this.state.stageX}
+                  y={this.state.stageY}
+                  draggable={true}
+                >
+                  <Layer>
+                    <ImageLayer image={mapImage} x={0} y={0} width={width} height={height} />
+                    {line}
+                    {lamps}
+                  </Layer>
+                </Stage>
+              </div>
+            </Col>
+            <Col span={4} className="right_panel">
+              {this.state.showPeopleInfo == true ? (
+                <div>
+                  <div className="right_top_panel">
+                    <div>
+                      <div>
+                        <Title title="职位占比人数" />
+                      </div>
+                      <div className="echarts">
+                        <div className="graph" style={{ height: '180px', width: '100%' }}>
+                          {this.createPositionNumberGraph()}
+                        </div>
+                      </div>
                     </div>
                   </div>
-                  <div className="people-secret">
-                    <div className="people-type">
-                      <span className="icon" />
-                      <span className="titlename">保密级别人数占比</span>
-                    </div>
-                    <div className="people_progress people_progress_first">
+                  <div className="right_middle_panel">
+                    <div>
                       <div>
-                        <span>一级</span>
-                        <span className="people-number">84人</span>
+                        <Title title="停留时长分析" />
                       </div>
-                      <Progress percent={30} />
-                      <div className="people_progress_num">42%</div>
+                      <div className="echarts">
+                        <div className="graph" style={{ height: '180px', width: '100%' }}>
+                          {this.createStayTimeAnalyzeGraph()}
+                        </div>
+                      </div>
                     </div>
-                    <div className="people_progress people_progress_second">
+                  </div>
+                  <div className="right_bottom_panel">
+                    <div>
                       <div>
-                        <span>二级</span>
-                        <span className="people-number">84人</span>
+                        <Title title="告警类型统计" />
                       </div>
-                      <Progress percent={30} />
-                      <div className="people_progress_num">42%</div>
-                    </div>
-                    <div className="people_progress people_progress_third">
-                      <div>
-                        <span>三级</span>
-                        <span className="people-number">84人</span>
+                      <div className="echarts">
+                        <div className="graph" style={{ height: '200px', width: '100%' }}>
+                          {this.createPoliceType()}
+                        </div>
                       </div>
-                      <Progress percent={30} />
-                      <div className="people_progress_num">42%</div>
                     </div>
                   </div>
                 </div>
-              </Col>
-              <Col span={16} className="middle_panel">
-                <div className="middle_text">
-                  <div className="text_panel" onClick={this.selectShow}>
-                    人员信息
-                  </div>
-                  <div className="text_panel" onClick={this.selectShow}>
-                    灯具显示
-                  </div>
-                </div>
-                <div className={styles.map_manager} ref={this.map}>
-                  <Stage
-                    width={width}
-                    height={height}
-                    onWheel={this.onWheel}
-                    scaleX={this.state.stageScale}
-                    scaleY={this.state.stageScale}
-                    x={this.state.stageX}
-                    y={this.state.stageY}
-                    draggable={true}
-                  >
-                    <Layer>
-                      <ImageLayer image={mapImage} x={0} y={0} width={width} height={height} />
-                      {line}
-                      {lamps}
-                    </Layer>
-                  </Stage>
-                </div>
-              </Col>
-              <Col span={4} className="right_panel">
-                {this.state.showPeopleInfo == true ? (
-                  <div>
-                    <div className="right_top_panel">
-                      <div>
-                        <div>
-                          <Title title="职位占比人数" />
-                        </div>
-                        <div className="echarts">
-                          <div className="graph" style={{ height: '180px', width: '100%' }}>
-                            {this.createPositionNumberGraph()}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="right_middle_panel">
-                      <div>
-                        <div>
-                          <Title title="停留时长分析" />
-                        </div>
-                        <div className="echarts">
-                          <div className="graph" style={{ height: '180px', width: '100%' }}>
-                            {this.createStayTimeAnalyzeGraph()}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="right_bottom_panel">
-                      <div>
-                        <div>
-                          <Title title="告警类型统计" />
-                        </div>
-                        <div className="echarts">
-                          <div className="graph" style={{ height: '200px', width: '100%' }}>
-                            {this.createPoliceType()}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ) : (
-                  <div>
-                    <div className="right_ele_panel">
-                      <div>
-                        <div className="ele_text">
-                          <Icon
-                            type="trademark-circle"
-                            theme="twoTone"
-                            style={{ fontSize: '20px' }}
-                          />
-                          <span>电子围栏</span>
-                        </div>
-                        <div className="ele_from">
-                          <div className="flex_out">
-                            <div className="flex_outer">
-                              <div className="ele_title_top">
-                                <div className="ele_title"> 办公室</div>
-                                <div className="ele_title"> 闯入电子围栏</div>
-                              </div>
-                              <div className="ele_img" />
-                            </div>
-                            <div className="flex_outer">
-                              <div className="ele_title_top">
-                                <div className="ele_title"> 办公室</div>
-                                <div className="ele_title"> 闯入电子围栏</div>
-                              </div>
-                              <div className="ele_img" />
-                            </div>
-                          </div>
-                          <div className="flex_out">
-                            <div className="flex_outer">
-                              <div className="ele_title_top">
-                                <div className="ele_title"> 办公室</div>
-                                <div className="ele_title"> 闯入电子围栏</div>
-                              </div>
-                              <div className="ele_img" />
-                            </div>
-                            <div className="flex_outer">
-                              <div className="ele_title_top">
-                                <div className="ele_title"> 办公室</div>
-                                <div className="ele_title"> 闯入电子围栏</div>
-                              </div>
-                              <div className="ele_img" />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="right_wraning_panel">
+              ) : (
+                <div>
+                  <div className="right_ele_panel">
+                    <div>
                       <div className="ele_text">
                         <Icon
                           type="trademark-circle"
                           theme="twoTone"
                           style={{ fontSize: '20px' }}
                         />
-                        <span>警告信息</span>
+                        <span>电子围栏</span>
                       </div>
-                      <div className="ele_from">{/* <MainContent /> */}</div>
+                      <div className="ele_from">
+                        <div className="flex_out">
+                          <div className="flex_outer">
+                            <div className="ele_title_top">
+                              <div className="ele_title"> 办公室</div>
+                              <div className="ele_title"> 闯入电子围栏</div>
+                            </div>
+                            <div className="ele_img" />
+                          </div>
+                          <div className="flex_outer">
+                            <div className="ele_title_top">
+                              <div className="ele_title"> 办公室</div>
+                              <div className="ele_title"> 闯入电子围栏</div>
+                            </div>
+                            <div className="ele_img" />
+                          </div>
+                        </div>
+                        <div className="flex_out">
+                          <div className="flex_outer">
+                            <div className="ele_title_top">
+                              <div className="ele_title"> 办公室</div>
+                              <div className="ele_title"> 闯入电子围栏</div>
+                            </div>
+                            <div className="ele_img" />
+                          </div>
+                          <div className="flex_outer">
+                            <div className="ele_title_top">
+                              <div className="ele_title"> 办公室</div>
+                              <div className="ele_title"> 闯入电子围栏</div>
+                            </div>
+                            <div className="ele_img" />
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                )}
-              </Col>
-              }
-            </Row>
-          </div>
+
+                  <div className="right_wraning_panel">
+                    <div className="ele_text">
+                      <Icon type="trademark-circle" theme="twoTone" style={{ fontSize: '20px' }} />
+                      <span>警告信息</span>
+                    </div>
+                    <div className="ele_from">{/* <MainContent /> */}</div>
+                  </div>
+                </div>
+              )}
+            </Col>
+            }
+          </Row>
+        </div>
       </div>
     );
   }
