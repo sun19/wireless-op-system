@@ -176,7 +176,7 @@ export default class DataView extends React.Component<Props, State> {
       stageScale: 1,
       stageX: 0,
       stageY: 0,
-      showPeopleInfo:true,
+      showPeopleInfo:false,
     };
   }
   //异步加载图片，保证渲染到canvas上时是已经OK的
@@ -500,19 +500,37 @@ export default class DataView extends React.Component<Props, State> {
                 <div>
                   <div className="right_ele_panel">
                     <div>
-                      <div>
+                      <div className="ele_text">
                         <Icon
                           type="trademark-circle"
                           theme="twoTone"
                           style={{ fontSize: '20px' }}
                         />
-                        <span>aaa</span>
+                        <span>电子围栏</span>
+                      </div>
+                      <div className="ele_from">
+                        <div className="flex_out">
+                          <div className="flex_outer">1</div>
+                          <div className="flex_outer">2</div>
+                        </div>
+                        <div className="flex_out">
+                          <div className="flex_outer">3</div>
+                          <div className="flex_outer">4</div>
+                        </div>
                       </div>
                     </div>
                   </div>
 
                   <div className="right_wraning_panel">
-                    <div>bbb</div>
+                    <div className="ele_text">
+                      <Icon type="trademark-circle" theme="twoTone" style={{ fontSize: '20px' }} />
+                      <span>告警信息</span>
+                    </div>
+                    <div className="ele_from">
+                      <div className="flex_out">
+5
+                      </div>
+                    </div>
                   </div>
                 </div>
               )}
