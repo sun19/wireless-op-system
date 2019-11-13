@@ -7,7 +7,7 @@ import Konva from 'konva';
 import ReactEcharts from 'echarts-for-react';
 import { Stage, Layer, Image as ImageLayer, Line as LineLayer } from 'react-konva';
 
-import Navigation from './navigation';
+import Navigation from '../components/navigation';
 
 import styles from '../index.less';
 
@@ -21,7 +21,7 @@ interface State {
   stageScale: number;
   stageX: number;
   stageY: number;
-  showPeopleInfo:boolean;
+  showPeopleInfo: boolean;
 }
 interface Props {
   [key: string]: any;
@@ -56,7 +56,7 @@ const getOptionSquar = {
     },
   },
   legend: {
-    data: ['直接访问','联盟广告','视频广告' ,'邮件营销',   '搜索引擎'],
+    data: ['直接访问', '联盟广告', '视频广告', '邮件营销', '搜索引擎'],
   },
   grid: {
     left: '3%',
@@ -141,7 +141,7 @@ const getOption = {
     {
       type: 'pie',
       roseType: 'radius',
-      radius:['50%', '25%'],
+      radius: ['50%', '25%'],
       center: ['50%', '25%'],
       label: {
         normal: {
@@ -176,7 +176,7 @@ export default class DataView extends React.Component<Props, State> {
       stageScale: 1,
       stageX: 0,
       stageY: 0,
-      showPeopleInfo:false,
+      showPeopleInfo: true,
     };
   }
   //异步加载图片，保证渲染到canvas上时是已经OK的
@@ -500,37 +500,19 @@ export default class DataView extends React.Component<Props, State> {
                 <div>
                   <div className="right_ele_panel">
                     <div>
-                      <div className="ele_text">
+                      <div>
                         <Icon
                           type="trademark-circle"
                           theme="twoTone"
                           style={{ fontSize: '20px' }}
                         />
-                        <span>电子围栏</span>
-                      </div>
-                      <div className="ele_from">
-                        <div className="flex_out">
-                          <div className="flex_outer">1</div>
-                          <div className="flex_outer">2</div>
-                        </div>
-                        <div className="flex_out">
-                          <div className="flex_outer">3</div>
-                          <div className="flex_outer">4</div>
-                        </div>
+                        <span>aaa</span>
                       </div>
                     </div>
                   </div>
 
                   <div className="right_wraning_panel">
-                    <div className="ele_text">
-                      <Icon type="trademark-circle" theme="twoTone" style={{ fontSize: '20px' }} />
-                      <span>告警信息</span>
-                    </div>
-                    <div className="ele_from">
-                      <div className="flex_out">
-5
-                      </div>
-                    </div>
+                    <div>bbb</div>
                   </div>
                 </div>
               )}
