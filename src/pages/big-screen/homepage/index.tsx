@@ -484,6 +484,9 @@ export default class HomePage extends Component {
       },
       legend: {
         data: ['闯入告警', '闯出告警', '聚集告警', '超员告警', '脱岗告警'],
+        textStyle: {
+          color: '#7AB2E2',
+        },
       },
       grid: {
         left: '3%',
@@ -493,7 +496,7 @@ export default class HomePage extends Component {
       },
       xAxis: {
         type: 'value',
-        max: 100,
+        max: 120,
         axisLine: {
           lineStyle: {
             color: '#7AB2E2',
@@ -525,19 +528,19 @@ export default class HomePage extends Component {
       },
       series: [
         {
-          name: 'A级门店',
+          name: '闯入告警',
           type: 'bar',
           stack: '总量',
           barWidth: 10,
           itemStyle: {
             normal: {
               color: 'rgba(9,120,242,1)',
-              barBorderRadius: [20, 20, 20, 20],
+              barBorderRadius: [0, 0, 0, 0],
             },
           },
           label: {
             normal: {
-              show: true,
+              show: false,
               position: 'insideRight',
             },
           },
@@ -545,21 +548,18 @@ export default class HomePage extends Component {
           data: [32, 30, 30, 33, 39, 33, 32],
         },
         {
-          name: 'B级门店',
+          name: '闯出告警',
           type: 'bar',
           stack: '总量',
           itemStyle: {
             normal: {
               color: 'rgba(77,253,184,1)',
-              shadowBlur: [0, 0, 0, 10],
-              shadowColor: '#ebe806',
-              barBorderRadius: [20, 20, 20, 20],
-              shadowOffsetX: -20,
+              barBorderRadius: [0, 0, 0, 0],
             },
           },
           label: {
             normal: {
-              show: true,
+              show: false,
               position: 'insideRight',
             },
           },
@@ -567,16 +567,49 @@ export default class HomePage extends Component {
           data: [12, 13, 10, 13, 9, 23, 21],
         },
         {
-          name: 'C级门店',
+          name: '聚集告警',
           type: 'bar',
           stack: '总量',
           itemStyle: {
             normal: {
-              barBorderRadius: [20, 20, 20, 20],
+              barBorderRadius: [0, 0, 0, 0],
               color: 'rgba(255,180,0,1)',
-              shadowBlur: [0, 0, 0, 10],
-              shadowColor: 'rgba(255,180,0,1)',
-              shadowOffsetX: -20,
+            },
+          },
+          label: {
+            normal: {
+              show: false,
+              position: 'insideRight',
+            },
+          },
+          data: [12, 8, 9, 23, 9, 13, 21],
+        },
+        {
+          name: '超员告警',
+          type: 'bar',
+          stack: '总量',
+          itemStyle: {
+            normal: {
+              barBorderRadius: [0, 0, 0, 0],
+              color: 'rgba(241,126,60,1)',
+            },
+          },
+          label: {
+            normal: {
+              show: false,
+              position: 'insideRight',
+            },
+          },
+          data: [12, 18, 15, 23, 19, 23, 21],
+        },
+        {
+          name: '脱岗告警',
+          type: 'bar',
+          stack: '总量',
+          itemStyle: {
+            normal: {
+              barBorderRadius: [0, 20, 20, 0],
+              color: 'rgba(73,86,227,1)',
             },
           },
           label: {
@@ -585,7 +618,97 @@ export default class HomePage extends Component {
               position: 'insideRight',
             },
           },
-          data: [22, 18, 19, 23, 29, 33, 31],
+          data: [10, 12, 13, 15, 14, 19, 20],
+        },
+      ],
+    };
+    return <ReactEcharts option={option} style={{ width: '100%', height: '100%' }} />;
+  };
+  createSecretLevel = () => {
+    var data = [84, 70, 46];
+    var titlename = ['一级', '二级', '三级'];
+    var valdata = [683, 234, 234];
+    var myColor = ['#3434DB', '#FF9C00', '#006CFF'];
+    const option = {
+      xAxis: {
+        show: false,
+      },
+      grid: {
+        left: '5%',
+        right: '3%',
+        bottom: '3%',
+        containLabel: true,
+      },
+      yAxis: [
+        {
+          show: true,
+          data: titlename,
+          inverse: true,
+          axisLine: {
+            show: false,
+          },
+          splitLine: {
+            show: false,
+          },
+          axisTick: {
+            show: false,
+          },
+          axisLabel: {
+            textStyle: {
+              color: 'rgba(255,255,255,1)',
+            },
+            formatter: function(value, index) {
+              return ['{title|' + value + '} '].join('\n');
+            },
+            rich: {},
+          },
+        },
+        {
+          show: true,
+          inverse: true,
+          data: valdata,
+          axisLabel: {
+            textStyle: {
+              color: 'rgba(255,255,255,1)',
+            },
+            formatter: function(value, index) {
+              return value + '人';
+            },
+          },
+          axisLine: {
+            show: false,
+          },
+          splitLine: {
+            show: false,
+          },
+          axisTick: {
+            show: false,
+          },
+        },
+      ],
+      series: [
+        {
+          name: '条',
+          type: 'bar',
+          yAxisIndex: 0,
+          data: data,
+          barWidth: 10,
+          itemStyle: {
+            normal: {
+              barBorderRadius: 30,
+              color: function(params) {
+                var num = myColor.length;
+                return myColor[params.dataIndex % num];
+              },
+            },
+          },
+          label: {
+            normal: {
+              show: true,
+              position: 'inside',
+              formatter: '{c}%',
+            },
+          },
         },
       ],
     };
@@ -632,6 +755,7 @@ export default class HomePage extends Component {
             <Col span={4}>
               <div className="inner_border">
                 <Title title="保密级别人数占比" />
+                <div className="graph">{this.createSecretLevel()}</div>
               </div>
             </Col>
             <Col span={4}>
