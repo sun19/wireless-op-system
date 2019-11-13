@@ -327,6 +327,270 @@ export default class HomePage extends Component {
     };
     return <ReactEcharts option={option} style={{ height: '100%', width: '100%' }} />;
   };
+  createWeeklyPersonCount = () => {
+    //数据
+    var XName = ['D1', 'D2', 'D3', 'D4', 'D5', 'D6', 'D7'];
+    var data1 = [
+      [123, 154, 234, 321, 120, 390, 634],
+      [63, 194, 234, 321, 278, 110, 534],
+    ];
+    var Line = ['内部人员', '外部人员'];
+    var img = [
+      'image://data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAABRCAYAAABFTSEIAAAACXBIWXMAAAsSAAALEgHS3X78AAAEp0lEQVR42u3cz4sjRRTA8W9Vd3Vn8mMmjj9WQWSRZQ+CsH+B7MnDIgiCd0E8CYJ/gOAIelo8ehUP/gF6WLw5/gMueFP2sIcF0dHd2Z1kknR11fOQZJJJMtlZd03H7HtQpNOTnpn+8Lrm1etmjIig8e/DKoECKqACKqCGAiqgAiqghgIqoAIqoIYCKqACKqCGAiqgAiqghgIqoAJudKTr+osZMNPvBUQBHwHsPF9fB9R0DeHMOQ6T6WOrhEzXBM4swDOL0M6CrArRVoq3t2dGUIb9fTvatg8ZZup1PDBgzPmy98mey6qfzjLz2WaWjEUZKEvGyi9nWyneMOvGIyFQo2Sbg4MUSChpU9IeTTUpJdsEajPZOJeJG5uBZj7rLLduWS5dGm6XNLEELOFUFj54ACJCaychkpDSASK3bwsXL0YgVpWJKwM0iy9Zy8HdGru7jvt3Pbu7w0wES7drTwAbjTHMGCsQcIAnYTC1/wRx0wEnl27JNgZI8HQ6Kc1mQq83RNzaMjPzXqDbjTQaJRFLxIyyMSxAXEkWrhrQzAAmo5HOjCQf7jflILxOkohL+aUPgV4vEGNJo+E5PAy02+UIMEwBxo0CPDP7Dg5SnEtpt1PA0e87XO25FOoh8IYIH2Y5b45RzGAQBiIltZoHxqMcjbksXAVgdc2EQMYzzzdotyeZWKuleULXJtwT4SODfC2QCWR+IF9KnjuX1Xbo99Op7LVE8iXlz0YBTk5SyLEEjo5OLuccEoFUvHfO+reuUPx4zftXAIcx1hdcF+/TvFab4A0Bs0VwqyhpVnkJT89/Q4DDQ0e77YCMwIUsFMeFZD856699URRvX4nxE4A/jbnxXp7v4Zw3ReGNSDHI8wFQjIafuoyn58L/fB6sth/Ybg9fez2TRC6QZcZYvgHsazF+MP7YCyLXcM7gvSXLDGBqYDg+NhwdmSpPoTrAkub0W+f4FSB1fDucIunMHSLpO8WAH0rSy8u+19MBCHB4OHzd2pI+CEUhpigEiN+l6WcdY252jLn5s7Wf472ImPcN8pUl/tEHoV4XWq1Ke4KrLmPsTA3oODpytFoOyJKSyzHyMSIxteWngMW5cSEdDJQUhTdZVgxOz3/+jFJm4+bA2e5JpNU6WZ4Fw99JwnWMKccwpeddP+B7GZTNUPKqybJy0O+Hs1YfMz9swwvpB8fbGDG0GuGkkK7V0hxSmZQpABI8l2z0v3sJf50qpAMJCd2qCulql3LD1lRGQjm7lEsDz0rkxTQOfiPPxUBcuJTbbhss/Y1eyi3NwsmKInmkZsKk5gtPUzNhvp11507CSy/X6XYStpvFudpZw1ZWIOF4Cq6SdtbKbioJyAhRTu3u9yMJXerN+ugvaQQsjcZ8Q3VnZwxlSDhe1lB9GjrSw5b+1avT8+Jw+979nNaOI6U3KpTrWAosxVQmygK4ld8X0ZtK/7eViExD7O1NQPb3T7fsl4/4sBpwYzPwjFbTo95Yl9l9Vd1YN1X/147HebSjary1AHyc5qc+XLQEQx9ve8Kg6xr6hKoCKqACKqCGAiqgAiqghgIqoAIqoIYCKqACKqCGAiqgAiqghgIq4JrHP8fEWV8FMTmOAAAAAElFTkSuQmCC',
+      'image://data:image/png;base64,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',
+    ];
+    var color = ['#00f8ff', '#00f15a', '#0696f9', '#dcf776'];
+
+    //数据处理
+    var datas = [];
+    Line.map((item, index) => {
+      datas.push({
+        symbolSize: 150,
+        symbol: img[index],
+        name: item,
+        type: 'line',
+        yAxisIndex: 1,
+        data: data1[index],
+        itemStyle: {
+          normal: {
+            borderWidth: 5,
+            color: color[index],
+          },
+        },
+      });
+    });
+
+    const option = {
+      grid: {
+        left: '8%',
+        top: '10%',
+        bottom: '12%',
+        right: '5%',
+      },
+      legend: {
+        type: 'scroll',
+        orient: 'vertical',
+        top: '0',
+        right: '10',
+        data: Line,
+        itemWidth: 18,
+        itemHeight: 12,
+        textStyle: {
+          color: 'rgba(122,178,226,1)',
+          fontSize: 12,
+        },
+      },
+      yAxis: [
+        {
+          type: 'value',
+          position: 'right',
+          splitLine: {
+            show: false,
+          },
+          axisLine: {
+            show: false,
+          },
+          axisTick: {
+            show: false,
+          },
+          axisLabel: {
+            show: true,
+          },
+          nameTextStyle: {
+            color: 'rgba(122,178,226,1)',
+          },
+        },
+        {
+          type: 'value',
+          position: 'left',
+          nameTextStyle: {
+            color: 'rgba(122,178,226,1)',
+          },
+          splitLine: {
+            lineStyle: {
+              type: 'dashed',
+              color: 'rgba(135,140,147,0.8)',
+            },
+          },
+          axisLine: {
+            show: false,
+          },
+          axisTick: {
+            show: false,
+          },
+          axisLabel: {
+            formatter: '{value}',
+            color: '#fff',
+            fontSize: 14,
+          },
+        },
+      ],
+      xAxis: [
+        {
+          type: 'category',
+          axisTick: {
+            show: false,
+          },
+          axisLine: {
+            show: false,
+            lineStyle: {
+              color: '#6A989E',
+            },
+          },
+          axisLabel: {
+            inside: false,
+            textStyle: {
+              color: '#fff', // x轴颜色
+              fontWeight: 'normal',
+              fontSize: '14',
+              lineHeight: 22,
+            },
+          },
+          data: XName,
+        },
+        {
+          type: 'category',
+          axisLine: {
+            show: false,
+          },
+          axisTick: {
+            show: false,
+          },
+          axisLabel: {
+            show: false,
+          },
+          splitArea: {
+            show: false,
+          },
+          splitLine: {
+            show: false,
+          },
+          //-----
+          data: ['D1', 'D2', 'D3', 'D4', 'D5', 'D6', 'D7'],
+        },
+      ],
+      series: datas,
+    };
+    return <ReactEcharts option={option} style={{ width: '100%', height: '100%' }} />;
+  };
+  createPoliceType = () => {
+    const option = {
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          // 坐标轴指示器，坐标轴触发有效
+          type: 'line', // 默认为直线，可选为：'line' | 'shadow'
+        },
+      },
+      legend: {
+        data: ['闯入告警', '闯出告警', '聚集告警', '超员告警', '脱岗告警'],
+      },
+      grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true,
+      },
+      xAxis: {
+        type: 'value',
+        max: 100,
+        axisLine: {
+          lineStyle: {
+            color: '#7AB2E2',
+          },
+        },
+        splitLine: {
+          lineStyle: {
+            color: 'rgba(36,54,113,1)',
+          },
+        },
+        axisTick: {
+          show: false,
+        },
+      },
+      yAxis: {
+        type: 'category',
+        data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+        axisLine: {
+          lineStyle: {
+            color: '#7AB2E2',
+          },
+          splitLine: {
+            show: false,
+          },
+        },
+        axisTick: {
+          show: false,
+        },
+      },
+      series: [
+        {
+          name: 'A级门店',
+          type: 'bar',
+          stack: '总量',
+          barWidth: 10,
+          itemStyle: {
+            normal: {
+              color: 'rgba(9,120,242,1)',
+              barBorderRadius: [20, 20, 20, 20],
+            },
+          },
+          label: {
+            normal: {
+              show: true,
+              position: 'insideRight',
+            },
+          },
+          z: 10,
+          data: [32, 30, 30, 33, 39, 33, 32],
+        },
+        {
+          name: 'B级门店',
+          type: 'bar',
+          stack: '总量',
+          itemStyle: {
+            normal: {
+              color: 'rgba(77,253,184,1)',
+              shadowBlur: [0, 0, 0, 10],
+              shadowColor: '#ebe806',
+              barBorderRadius: [20, 20, 20, 20],
+              shadowOffsetX: -20,
+            },
+          },
+          label: {
+            normal: {
+              show: true,
+              position: 'insideRight',
+            },
+          },
+          z: 5,
+          data: [12, 13, 10, 13, 9, 23, 21],
+        },
+        {
+          name: 'C级门店',
+          type: 'bar',
+          stack: '总量',
+          itemStyle: {
+            normal: {
+              barBorderRadius: [20, 20, 20, 20],
+              color: 'rgba(255,180,0,1)',
+              shadowBlur: [0, 0, 0, 10],
+              shadowColor: 'rgba(255,180,0,1)',
+              shadowOffsetX: -20,
+            },
+          },
+          label: {
+            normal: {
+              show: true,
+              position: 'insideRight',
+            },
+          },
+          data: [22, 18, 19, 23, 29, 33, 31],
+        },
+      ],
+    };
+    return <ReactEcharts option={option} style={{ width: '100%', height: '100%' }} />;
+  };
   render() {
     // return <RealTimeTrack />;
     return (
@@ -386,11 +650,13 @@ export default class HomePage extends Component {
             <Col span={8}>
               <div className="inner_border">
                 <Title title="内、外部一周人数统计" />
+                <div className="graph">{this.createWeeklyPersonCount()}</div>
               </div>
             </Col>
             <Col span={8}>
               <div className="inner_border">
                 <Title title="告警类型统计" />
+                <div className="graph">{this.createPoliceType()}</div>
               </div>
             </Col>
             <Col span={8}>
