@@ -2,7 +2,7 @@
  * title: 电子围栏
  */
 import React, { Component } from 'react';
-import { message, Row, Col, Icon, Progress,Table } from 'antd';
+import { message, Row, Col, Icon, Progress, Table } from 'antd';
 import Konva from 'konva';
 import ReactEcharts from 'echarts-for-react';
 import { Stage, Layer, Image as ImageLayer, Line as LineLayer } from 'react-konva';
@@ -11,7 +11,6 @@ import Title from '../components/Title';
 
 import Navigation from '../components/navigation';
 import request from 'umi-request';
-
 
 import styles from './index.less';
 
@@ -27,7 +26,7 @@ interface State {
   stageX: number;
   stageY: number;
   showPeopleInfo: boolean;
-   routeData: any[];
+  routeData: any[];
 }
 interface Props {
   [key: string]: any;
@@ -84,9 +83,9 @@ export default class DataView extends React.Component<Props, State> {
     if (this.map.current) {
       const { clientWidth, clientHeight } = this.map.current;
       this.showLine();
-        const routeData = await request.get(
-          'http://47.96.112.31:8086/jeecg-boot/intf/location/findbyInspectionReports',
-        );
+      const routeData = await request.get(
+        'http://47.96.112.31:8086/jeecg-boot/intf/location/findbyInspectionReports',
+      );
       this.setState({
         mapImage,
         icon: iconImage,
@@ -125,7 +124,7 @@ export default class DataView extends React.Component<Props, State> {
   }
 
   selectShow = () => {
-    // this.setState({ showPeopleInfo: !this.showPeopleInfo });
+    this.setState({ showPeopleInfo: !this.state.showPeopleInfo });
   };
   showLine() {
     const { clientWidth, clientHeight } = this.map.current;
@@ -715,7 +714,7 @@ export default class DataView extends React.Component<Props, State> {
     };
     return <ReactEcharts option={option} style={{ width: '100%', height: '100%' }} />;
   };
-    createRouteCheckData = () => {
+  createRouteCheckData = () => {
     const columns = [
       {
         title: '开始时间',

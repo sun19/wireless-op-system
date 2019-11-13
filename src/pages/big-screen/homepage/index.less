@@ -234,6 +234,7 @@
           // position:absolute;
           float: right;
           right: 20px;
+          z-index: 999;
           .text_panel {
             width: 1.5rem;
             height: 0.46rem;
@@ -241,6 +242,10 @@
             line-height: 0.46rem;
             text-align: center;
             border: 2px solid rgba(15, 38, 74, 1);
+          }
+          .text_panel.active {
+            color: #01cff5;
+            border: 1px solid #01cff5;
           }
           .text_panel:hover,
           .text_panel:active,
@@ -366,13 +371,17 @@
     // margin-top: 1.3rem;
   }
 }
-:global{
-   //滚动条样式
-      .ant-table-fixed-header .ant-table-scroll .ant-table-header::-webkit-scrollbar {
-        border-width: 0;
-      }
-      ::-webkit-scrollbar {
-        width: 0;
-        height: 0;
-      }
+:global {
+  //滚动条样式
+  .ant-table-fixed-header .ant-table-scroll .ant-table-header::-webkit-scrollbar {
+    border-width: 0;
+  }
+  ::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+  ::-webkit-scrollbar {
+    width: 0px !important;
+    height: 0px !important;
+  }
 }
