@@ -7,7 +7,7 @@ import Konva from 'konva';
 import ReactEcharts from 'echarts-for-react';
 import { Stage, Layer, Image as ImageLayer, Line as LineLayer } from 'react-konva';
 
-import Navigation from './navigation';
+import Navigation from '../components/navigation';
 
 import styles from '../index.less';
 

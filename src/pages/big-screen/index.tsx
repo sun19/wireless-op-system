@@ -3,10 +3,10 @@
  */
 import React from 'react';
 
-import RealTimeTrack from '../map-manager';
+import HomePage from './homepage';
 
 export default class BigScreen extends React.Component {
   render() {
-    return <RealTimeTrack />;
+    return <HomePage />;
   }
 }
