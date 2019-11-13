@@ -91,11 +91,16 @@ export default class MapManager extends React.Component<Props, State> {
       }
     }, maxDuraction);
     this.ws.onmessage = evt => {
-      const msgText = JSON.parse(evt.data)[0];
+      let msgText = JSON.parse(evt.data);
       lastTime = new Date();
       // const msgText = message.msgTxt;
-      const lamp = { x: +msgText.xcoordinate, y: +msgText.ycoordinate, id: msgText.key };
-      const currentLamps = this.setupLampData([lamp], clientWidth, clientHeight);
+      msgText = msgText.map(item => ({
+        x: +item.xcoordinate,
+        y: +item.ycoordinate,
+        id: item.key,
+      }));
+      // const lamp = { };
+      const currentLamps = this.setupLampData(msgText, clientWidth, clientHeight);
 
       this.setState({
         lamps: currentLamps,
