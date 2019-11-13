@@ -99,6 +99,49 @@
       }
       .graph {
         height: calc(100% - 0.8rem);
+        .ant-table-header {
+          background: rgba(0, 0, 0, 0);
+          border-width: 0;
+        }
+        .ant-table-body {
+          background: rgba(0, 0, 0, 0);
+          border-width: 0;
+          margin-bottom: 2px;
+        }
+        .ant-table-placeholder {
+          background: rgba(0, 0, 0, 0);
+          border-width: 0;
+        }
+        .ant-table-small {
+          border: 0;
+        }
+        .ant-table-header.ant-table-hide-scrollbar {
+          margin-bottom: 0 !important;
+        }
+        .complete_ok {
+          display: inline-block;
+          background: url(./assets/04_down.svg);
+          background-repeat: no-repeat;
+          background-size: 100% 100%;
+          width: 0.14rem;
+          height: 0.14rem;
+        }
+        .complete_no {
+          display: inline-block;
+          background: url(./assets/05_no.svg);
+          background-repeat: no-repeat;
+          background-size: 100% 100%;
+          width: 0.14rem;
+          height: 0.14rem;
+        }
+      }
+      //滚动条样式
+      .ant-table-fixed-header .ant-table-scroll .ant-table-header::-webkit-scrollbar {
+        border-width: 0;
+      }
+      ::-webkit-scrollbar {
+        width: 0;
+        height: 0;
       }
     }
   }
