@@ -693,29 +693,31 @@ export default class DataView extends React.Component<Props, State> {
                   <span>4</span>
                 </div>
                 <div className="today-data">
-                  <Icon type="trademark-circle" theme="twoTone" style={{ fontSize: '20px' }} />
+                    <span className="icon" />
+                 
                   <span className="data-title">今日最高值</span>
                   <span className="data-number">324</span>
                 </div>
                 <div className="yesterday-data">
-                  <Icon type="trademark-circle" theme="twoTone" style={{ fontSize: '20px' }} />
+                    <span className="icon" />
+
                   <span className="data-title">昨日最高值</span>
                   <span className="data-number">324</span>
                 </div>
                 {/* </div> */}
                 <div className="people_type">
                   <div className="people_type_title">
-                    <Icon type="trademark-circle" theme="twoTone" style={{ fontSize: '18px' }} />
-                    <span>人员类型</span>
+                    <span className="icon" />
+                    <span className="titlename">人员类型</span>
                   </div>
                   <div className="inner_or_outer">
                     <span className="left">
-                      <Icon type="trademark-circle" theme="twoTone" />
+                      <span className="icon"  >内</span>
                       <span className="text_span"> 内部</span>
                       <span className="number_span"> 316</span>
                     </span>
                     <span className="right">
-                      <Icon type="trademark-circle" theme="twoTone" />
+                      <span className="icon"  >外</span>
                       <span className="text_span">外部</span>
                       <span className="number_span">8</span>
                     </span>
@@ -723,8 +725,8 @@ export default class DataView extends React.Component<Props, State> {
                 </div>
                 <div className="people-secret">
                   <div className="people-type">
-                    <Icon type="trademark-circle" theme="twoTone" />
-                    <span>保密级别人数占比</span>
+                    <span className="icon" />
+                    <span className="titlename">保密级别人数占比</span>
                   </div>
                   <div className="people_progress people_progress_first">
                     <div>
@@ -787,12 +789,7 @@ export default class DataView extends React.Component<Props, State> {
                   <div className="right_top_panel">
                     <div>
                       <div>
-                        <Icon
-                          type="trademark-circle"
-                          theme="twoTone"
-                          style={{ fontSize: '20px' }}
-                        />
-                        <span>职位占比人数</span>
+                        <Title title="职位占比人数" />
                       </div>
                       <div className="echarts">
                         <div className="graph" style={{ height: '180px', width: '100%' }}>
@@ -805,12 +802,6 @@ export default class DataView extends React.Component<Props, State> {
                     <div>
                       <div>
                         <Title title="停留时长分析" />
-                        {/* <Icon
-                          type="trademark-circle"
-                          theme="twoTone"
-                          style={{ fontSize: '20px' }}
-                        />
-                        <span>停留时长分析</span> */}
                       </div>
                       <div className="echarts">
                         <div className="graph" style={{ height: '180px', width: '100%' }}>
@@ -822,12 +813,7 @@ export default class DataView extends React.Component<Props, State> {
                   <div className="right_bottom_panel">
                     <div>
                       <div>
-                        <Icon
-                          type="trademark-circle"
-                          theme="twoTone"
-                          style={{ fontSize: '20px' }}
-                        />
-                        <span>告警类型统计</span>
+                        <Title title="告警类型统计" />
                       </div>
                       <div className="echarts">
                         <div className="graph" style={{ height: '200px', width: '100%' }}>
