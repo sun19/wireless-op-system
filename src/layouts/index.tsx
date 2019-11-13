@@ -11,7 +11,14 @@ import styles from './index.less';
 
 const { Sider } = Layout;
 
-const ignoreLayout = ['/login', '/login/'];
+const ignoreLayout = [
+  '/login',
+  '/login/',
+  '/wireless-op-system/big-screen/homepage',
+  '/big-screen/homepage',
+  '/wireless-op-system/big-screen/dataview',
+  '/big-screen/dataview',
+];
 
 const BasicLayout: React.FC = (props: any) => {
   let routeName = props.location.pathname;
