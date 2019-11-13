@@ -2,16 +2,42 @@
  * title: 实时轨迹
  */
 import React, { Component } from 'react';
-import { Row, Col, Icon } from 'antd';
+import { Row, Col, Icon, Table } from 'antd';
 import ReactEcharts from 'echarts-for-react';
+import request from 'umi-request';
 
 import Navigation from '../components/navigation';
 import RealTimeTrack from '../../map-manager';
+import MainContent from '../components/MainContent';
 import Title from '../components/Title';
 
 import styles from '../index.less';
 
-export default class HomePage extends Component {
+interface State {
+  routeData: any[];
+  realInfo: any[];
+}
+
+export default class HomePage extends Component<any, State> {
+  constructor(props) {
+    super(props);
+    this.state = {
+      routeData: [],
+      realInfo: [],
+    };
+  }
+  async componentDidMount() {
+    const realInfo = await request.get(
+      'http://47.96.112.31:8086/jeecg-boot/intf/location/listByUserInfo',
+    );
+    const routeData = await request.get(
+      'http://47.96.112.31:8086/jeecg-boot/intf/location/findbyInspectionReports',
+    );
+    this.setState({
+      routeData,
+      realInfo,
+    });
+  }
   createPositionNumberGraph = () => {
     var dataStyle = {
       normal: {
@@ -714,6 +740,94 @@ export default class HomePage extends Component {
     };
     return <ReactEcharts option={option} style={{ width: '100%', height: '100%' }} />;
   };
+  createRouteCheckData = () => {
+    const columns = [
+      {
+        title: '开始时间',
+        dataIndex: 'inspectionTime',
+        editable: true,
+        ellipsis: true,
+      },
+      {
+        title: '结束时间',
+        dataIndex: 'endTime',
+        editable: true,
+        ellipsis: true,
+      },
+      {
+        title: '巡检人员',
+        dataIndex: 'inspectionName',
+        editable: true,
+        ellipsis: true,
+      },
+      {
+        title: '巡检路线',
+        dataIndex: 'routeName',
+        editable: true,
+        ellipsis: true,
+      },
+      {
+        title: '完成状态',
+        dataIndex: 'isComplete',
+        editable: true,
+        ellipsis: true,
+        render: tag => {
+          const className = tag === '1' ? 'complete_ok' : 'complete_no';
+          return <span className={className} />;
+        },
+      },
+    ];
+    let records = this.state.routeData;
+    // records = records.map((item, index) => Object.assign(records, { key: item }));
+
+    if (records.length === 0) {
+      return <Table columns={columns} dataSource={[]} />;
+    }
+    return (
+      <Table
+        columns={columns}
+        // dataSource={[]}
+        dataSource={records}
+        pagination={false}
+        scroll={{ y: 240 }}
+        size="small"
+      />
+    );
+  };
+  createRealInfoOfPeopleInArea = () => {
+    const columns = [
+      {
+        title: '信息牌',
+        dataIndex: 'information_board_id',
+        editable: true,
+      },
+      {
+        title: '姓名',
+        dataIndex: 'name',
+        editable: true,
+      },
+      {
+        title: '职位',
+        dataIndex: 'position_id',
+        editable: true,
+      },
+    ];
+    let records = this.state.realInfo;
+    // records = records.map((item, index) => Object.assign(records, { key: item }));
+    if (records.length === 0) {
+      return <Table columns={columns} dataSource={[]} />;
+    }
+    return (
+      <Table
+        columns={columns}
+        dataSource={records}
+        size="small"
+        pagination={false}
+        fixed={true}
+        scroll={{ y: 240 }}
+      />
+    );
+  };
   render() {
     // return <RealTimeTrack />;
     return (
@@ -767,6 +881,7 @@ export default class HomePage extends Component {
             <Col span={8}>
               <div className="inner_border">
                 <Title title="巡检数据" />
+                <div className="graph">{this.createRouteCheckData()}</div>
               </div>
             </Col>
           </Row>
@@ -786,6 +901,7 @@ export default class HomePage extends Component {
             <Col span={8}>
               <div className="inner_border">
                 <Title title="区域内实时人员信息" />
+                <div className="graph">{this.createRealInfoOfPeopleInArea()}</div>
               </div>
             </Col>
           </Row>
