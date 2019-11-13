@@ -73,13 +73,15 @@ export default class MapManager extends React.Component<Props, State> {
   }
   connectWs() {
     const { clientWidth, clientHeight } = this.map.current;
-    this.ws = new WebSocket('ws://47.96.112.31:8084/jeecg-boot/websocket/1');
+    // this.ws = new WebSocket('ws://47.96.112.31:8084/jeecg-boot/websocket/1');
+    this.ws = new WebSocket('ws://47.96.112.31:8086/jeecg-boot/websocket/1');
+
     this.ws.onopen = () => {};
 
     this.ws.onmessage = evt => {
-      const message = JSON.parse(evt.data);
-      const msgText = message.msgTxt;
-      const lamp = { x: +msgText.xCoordinate, y: +msgText.yCoordinate, id: msgText.lampNumber };
+      const msgText = JSON.parse(evt.data)[0];
+      // const msgText = message.msgTxt;
+      const lamp = { x: +msgText.xcoordinate, y: +msgText.yoordinate, id: msgText.key };
       const currentLamps = this.setupLampData([lamp], clientWidth, clientHeight);
 
       this.setState({

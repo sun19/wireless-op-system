@@ -16,6 +16,8 @@ const ignoreLayout = [
   '/login/',
   '/wireless-op-system/big-screen/homepage',
   '/big-screen/homepage',
+  '/wireless-op-system/big-screen/homepage/realtime',
+  '/big-screen/homepage/realtime',
   '/wireless-op-system/big-screen/dataview',
   '/big-screen/dataview',
 ];
