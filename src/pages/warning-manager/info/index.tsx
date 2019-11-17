@@ -58,7 +58,6 @@ interface State {
   alarmStartTime: string;
   alarmEndTime: string;
   pageNo?: number;
-  pageSize?: number;
 }
 class WraningInfo extends React.Component<Props, State> {
   constructor(props: any) {
@@ -70,7 +69,6 @@ class WraningInfo extends React.Component<Props, State> {
       alarmStartTime: '',
       alarmEndTime: '',
       pageNo: 1,
-      pageSize: 10,
     };
   }
   async componentDidMount() {

@@ -12,6 +12,7 @@ import { ICON_FONTS_URL } from '@/config/constants';
 import { UmiComponentProps } from '@/common/type';
 import { getBuList, updateMessageCard, deleteMessageCard } from '../services';
 import publicStyles from '../index.less';
+import styles from './index.less';
 
 const { Content } = Layout;
 const IconFont = Icon.createFromIconfontCN({
@@ -36,6 +37,16 @@ const columns = [
     dataIndex: 'color',
     width: '30%',
     editable: true,
+    render: color => {
+      return (
+        <span
+          className={styles.color_span}
+          style={{
+            background: color,
+          }}
+        />
+      );
+    },
   },
 ];
 
@@ -51,7 +62,7 @@ class MessageCard extends React.Component<Props> {
   }
 
   async getBuList() {
-    const buList = await getBuList({ pageSize: 10, pageNo: 1 });
+    const buList = await getBuList({});
     this.props.dispatch({
       type: 'systemSetting/update',
       payload: {
@@ -99,6 +110,7 @@ class MessageCard extends React.Component<Props> {
             total={total}
             updateData={this.updateData}
             deleteColumn={this.deleteColumn}
+            showEdit={true}
           />
         </div>
       </div>

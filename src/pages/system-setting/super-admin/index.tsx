@@ -70,7 +70,10 @@ interface State {
   remark: string;
 }
 
-const staticTypes = [{ label: 'lucy', value: 'lucy' }, { label: 'jack', value: 'jack' }];
+const staticTypes = [
+  { label: 'lucy', value: 'lucy' },
+  { label: 'jack', value: 'jack' },
+];
 
 class SuperAdmin extends React.Component<Props, State> {
   constructor(props: any) {
@@ -85,7 +88,7 @@ class SuperAdmin extends React.Component<Props, State> {
   }
 
   async getSuperAdminList(params: GetSuperAdminListParams = {}) {
-    const superAdmins = await getSuperAdminList(_.assign({ pageSize: 10, pageNo: 1 }, params));
+    const superAdmins = await getSuperAdminList(_.assign({}, params));
     this.props.dispatch({
       type: 'systemSetting/update',
       payload: {
@@ -233,6 +236,7 @@ class SuperAdmin extends React.Component<Props, State> {
             total={total}
             updateData={this.updateData}
             deleteColumn={this.deleteColumn}
+            showEdit={true}
           />
         </Content>
       </div>

@@ -5,6 +5,7 @@ export default {
     taskPlan: {},
     infoCard: {},
     superAdmin: {},
+    peopleType: {},
   },
   reducers: {
     update(state, { payload }) {

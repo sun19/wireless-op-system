@@ -64,7 +64,6 @@ interface State {
   informationBoardName: string;
   task: string;
   pageNo?: number;
-  pageSize?: number;
 }
 class TaskPlan extends React.Component<Props, State> {
   constructor(props: any) {
@@ -76,7 +75,6 @@ class TaskPlan extends React.Component<Props, State> {
       informationBoardName: '',
       task: '',
       pageNo: 1,
-      pageSize: 10,
     };
   }
 
@@ -142,14 +140,16 @@ class TaskPlan extends React.Component<Props, State> {
                 gutter={16}
               >
                 <FormItem label="姓名">
-                  {getFieldDecorator('remark', {})(
-                    <Input className={publicStyles.input_text} placeholder="请输入姓名" />,
-                  )}
+                  {getFieldDecorator(
+                    'remark',
+                    {},
+                  )(<Input className={publicStyles.input_text} placeholder="请输入姓名" />)}
                 </FormItem>
                 <FormItem label="信息牌">
-                  {getFieldDecorator('informationBoardName', {})(
-                    <Input className={publicStyles.input_text} placeholder="信息牌编号" />,
-                  )}
+                  {getFieldDecorator(
+                    'informationBoardName',
+                    {},
+                  )(<Input className={publicStyles.input_text} placeholder="信息牌编号" />)}
                 </FormItem>
                 <Form.Item label="任务">
                   {getFieldDecorator('task', {

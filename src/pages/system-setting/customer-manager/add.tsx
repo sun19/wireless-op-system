@@ -86,7 +86,6 @@ class AddUser extends React.Component<Props, State> {
       }
       const isSuccessed = await updateUserInfo(values);
       if (isSuccessed) {
-        message.success('恭喜您，登录成功!', 1000);
         setTimeout(() => router.push('/system-setting/customer-manager'), 1000);
       }
     });

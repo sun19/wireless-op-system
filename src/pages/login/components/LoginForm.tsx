@@ -1,7 +1,7 @@
 import React from 'react';
 import router from 'umi/router';
 import { Form, Icon, Input, Row, Col, Radio, Button, message } from 'antd';
-import request from 'umi-request';
+import request from '@/utils/request';
 import { connect } from 'dva';
 
 import { ICON_FONTS_URL } from '../../../config/constants';

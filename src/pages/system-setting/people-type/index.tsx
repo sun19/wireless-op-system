@@ -52,7 +52,7 @@ class PeopelType extends React.Component<Props> {
   }
 
   async getUserTypes() {
-    const userTypes = await getUserTypes({ pageSize: 10, pageNo: 1 });
+    const userTypes = await getUserTypes({});
     this.props.dispatch({
       type: 'systemSetting/update',
       payload: {
@@ -108,6 +108,7 @@ class PeopelType extends React.Component<Props> {
             total={total}
             updateData={this.updateData}
             deleteColumn={this.deleteColumn}
+            showEdit={true}
           />
         </Content>
       </div>
