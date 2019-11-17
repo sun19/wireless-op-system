@@ -5,10 +5,13 @@ import React from 'react';
 import { Layout, Form, Input, Row, Col, TimePicker, Button, Icon } from 'antd';
 import { connect } from 'dva';
 import moment from 'moment';
+import * as _ from 'lodash';
 
 import MainContent from '../components/MainContent';
 import { ICON_FONTS_URL } from '../../../config/constants';
 import { UmiComponentProps } from '@/common/type';
+import { getLogList } from '../services';
+
 import styles from './index.less';
 import publicStyles from '../index.less';
 
@@ -56,13 +59,46 @@ const columns = [
 type StateProps = ReturnType<typeof mapState>;
 type Props = StateProps & UmiComponentProps;
 
-class LogList extends React.Component<Props> {
+interface State {
+  createdTime: string;
+  updatedTime: string;
+}
+
+class LogList extends React.Component<Props, State> {
   constructor(props: any) {
     super(props);
+    this.state = {
+      createdTime: '2019-11-11 14:36:31',
+      updatedTime: '2019-11-11 14:36:31',
+    };
+    this.getLogList = this.getLogList.bind(this);
   }
 
-  async getLogList() {}
+  async getLogList() {
+    const resp = await getLogList({});
+    this.props.dispatch({
+      type: 'logManager/update',
+      payload: {
+        logList: resp.result,
+      },
+    });
+  }
+
+  componentDidMount() {
+    this.getLogList();
+  }
   render() {
+    let { logList } = this.props;
+    if (_.isEmpty(logList)) {
+      logList = {
+        records: [],
+        total: 0,
+      };
+    }
+    let { records, total } = logList;
+    records = records.map((item, index) => {
+      return _.assign(item, { key: item.id || index });
+    });
     return (
       <div className={publicStyles.public_hight}>
         <Content className={publicStyles.bg}>
@@ -78,11 +114,11 @@ class LogList extends React.Component<Props> {
                 <span className={publicStyles.authInner} style={{ paddingLeft: '39px' }}>
                   操作时间
                   <span className={publicStyles.timePicker}>
-                    <TimePicker defaultValue={moment('12:08:23', 'HH:mm:ss')} />
+                    <TimePicker value={moment(this.state.createdTime)} />
                   </span>
                   <span className={publicStyles.timePicker}>-</span>
                   <span className={publicStyles.timePicker}>
-                    <TimePicker defaultValue={moment('12:08:23', 'HH:mm:ss')} />
+                    <TimePicker value={moment(this.state.updatedTime)} />
                   </span>
                 </span>
                 <span className={publicStyles.button_type}>
@@ -96,13 +132,7 @@ class LogList extends React.Component<Props> {
               </Row>
             </Form>
           </div>
-          <MainContent
-            columns={columns}
-            data={records}
-            total={total}
-            updateData={this.updateData}
-            deleteColumn={this.deleteColumn}
-          />
+          <MainContent columns={columns} data={records} total={total} />
         </Content>
       </div>
     );
