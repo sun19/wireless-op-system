@@ -3,12 +3,14 @@
  */
 import React from 'react';
 import { Layout, Form, Input, Row, Col, TimePicker, Button, Icon } from 'antd';
+import { connect } from 'dva';
+import moment from 'moment';
 
 import MainContent from '../components/MainContent';
 import { ICON_FONTS_URL } from '../../../config/constants';
+import { UmiComponentProps } from '@/common/type';
 import styles from './index.less';
 import publicStyles from '../index.less';
-import moment from 'moment';
 
 const { Content } = Layout;
 const FormItem = Form.Item;
@@ -16,10 +18,50 @@ const FormItem = Form.Item;
 const IconFont = Icon.createFromIconfontCN({
   scriptUrl: ICON_FONTS_URL,
 });
-export default class SuperAdmin extends React.Component {
+
+const columns = [
+  // {
+  //   title: '序号',
+  //   dataIndex: 'id',
+  //   width: '10%',
+  //   editable: false,
+  // },
+  {
+    title: '操作模块',
+    dataIndex: 'menuName',
+    editable: true,
+  },
+  {
+    title: '操作用户',
+    dataIndex: 'userId',
+    editable: true,
+  },
+  {
+    title: '角色',
+    dataIndex: 'roleId',
+    editable: true,
+  },
+  {
+    title: '操作时间',
+    dataIndex: 'operationTime',
+    editable: true,
+  },
+  {
+    title: '描述',
+    dataIndex: 'remark',
+    editable: true,
+  },
+];
+
+type StateProps = ReturnType<typeof mapState>;
+type Props = StateProps & UmiComponentProps;
+
+class LogList extends React.Component<Props> {
   constructor(props: any) {
     super(props);
   }
+
+  async getLogList() {}
   render() {
     return (
       <div className={publicStyles.public_hight}>
@@ -54,9 +96,24 @@ export default class SuperAdmin extends React.Component {
               </Row>
             </Form>
           </div>
-          <MainContent />
+          <MainContent
+            columns={columns}
+            data={records}
+            total={total}
+            updateData={this.updateData}
+            deleteColumn={this.deleteColumn}
+          />
         </Content>
       </div>
     );
   }
 }
+
+const mapState = ({ logManager }) => {
+  const resp = logManager.logList;
+  return {
+    logList: resp,
+  };
+};
+
+export default connect(mapState)(LogList);

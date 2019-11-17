@@ -5,9 +5,16 @@ import React, { Component } from 'react';
 import { Row, Col, Icon, Table } from 'antd';
 import ReactEcharts from 'echarts-for-react';
 import request from 'umi-request';
+import { connect } from 'dva';
 
 import Navigation from '../components/navigation';
 import Title from '../components/Title';
+import {
+  getBigScreenPeopleCount,
+  getBigScreenPositionPeopleCount,
+  getSecretLevelPeopleCount,
+  getInnerOrOuterPeopleCount,
+} from '../services';
 
 import styles from './index.less';
 
@@ -16,7 +23,7 @@ interface State {
   realInfo: any[];
 }
 
-export default class HomePage extends Component<any, State> {
+class DataView extends Component<any, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -35,18 +42,53 @@ export default class HomePage extends Component<any, State> {
       routeData,
       realInfo,
     });
+    this.initRequest();
   }
+  async initRequest() {
+    const peopleCount = await getBigScreenPeopleCount();
+    this.props.dispatch({
+      type: 'bigScreen/update',
+      payload: {
+        bigScreenPeopleCount: peopleCount.result,
+      },
+    });
+    const positionPeople = await getBigScreenPositionPeopleCount();
+    this.props.dispatch({
+      type: 'bigScreen/update',
+      payload: {
+        positionPeopleCount: positionPeople.result,
+      },
+    });
+    const secretLevel = await getSecretLevelPeopleCount();
+    this.props.dispatch({
+      type: 'bigScreen/update',
+      payload: {
+        secretLevelPeopleCount: secretLevel.result,
+      },
+    });
+
+    const innerOuterPeople = await getInnerOrOuterPeopleCount();
+    this.props.dispatch({
+      type: 'bigScreen/update',
+      payload: {
+        innerOuterPeople: innerOuterPeople.result,
+      },
+    });
+  }
+
   createPositionNumberGraph = () => {
+    let { positionPeopleCount } = this.props;
+    positionPeopleCount = positionPeopleCount;
+    if (positionPeopleCount.length === 0) return null;
     var dataStyle = {
       normal: {
         label: {
-          show: false,
+          show: true,
+          position: 'inside',
         },
         labelLine: {
           show: false,
         },
-        // shadowBlur: 15,
-        // shadowColor: 'white',
       },
     };
     var placeHolderStyle = {
@@ -63,107 +105,84 @@ export default class HomePage extends Component<any, State> {
         color: 'rgba(0,0,0,0)',
       },
     };
+    const legendData = positionPeopleCount.map(item => item.name);
+    const total = positionPeopleCount.reduce((p, n) => {
+      return p + Number(n.num);
+    }, 0);
+    const series = positionPeopleCount.map((item, index) => {
+      let radius = [];
+      switch (index) {
+        case 0:
+          radius = ['20%', '30%'];
+          break;
+        case 1:
+          radius = ['35%', '45%'];
+          break;
+        case 2:
+          radius = ['50%', '60%'];
+          break;
+        case 3:
+          radius = ['65%', '75%'];
+          break;
+        default:
+          break;
+      }
+      return {
+        name: `Line ${index}`,
+        type: 'pie',
+        clockWise: false,
+        radius,
+        itemStyle: dataStyle,
+        hoverAnimation: false,
+        data: [
+          {
+            value: Number(item.num),
+            name: item.name,
+          },
+          {
+            value: total,
+            // name: '总数',
+            tooltip: {
+              show: false,
+            },
+            itemStyle: placeHolderStyle,
+          },
+        ],
+      };
+    });
     const option = {
       // backgroundColor: '#0b214a',
-      color: ['#4DFFE3', '#4DE0FF', '#4DFF8F', '#ADFF4D'],
+      color: ['#3DD1F9', '#01E17E', '#FFAD05', '#ADFF4D'],
       tooltip: {
         show: true,
         formatter: '{b} : {c}',
       },
 
       legend: {
-        top: '13.5%',
-        x: 'right',
-        left: '42%',
-        itemWidth: 0,
-        itemHeight: 0,
-        data: ['作战人员', '主官', '首长'],
+        //  top: '15%',
+        // x: 'right',
+        // width: 12,
+        height: 13,
+        lineHeight: 16,
+        right: '0%',
+        itemHeight: 5, //图例标记的图形宽度。
+        itemWidth: 5, //图例标记的图形gao度。
+        orient: 'vertical', //图例列表的布局朝向。
+        data: legendData,
         itemGap: 38,
         textStyle: {
-          color: '#fff',
+          color: '#A3E2F4',
           align: 'right',
           x: 'right',
           textAlign: 'right',
         },
-
         selectedMode: true,
-        orient: 'vertical',
       },
-      series: [
-        {
-          name: 'Line 3',
-          type: 'pie',
-          clockWise: false,
-          radius: ['50%', '60%'],
-          itemStyle: dataStyle,
-          hoverAnimation: false,
-
-          data: [
-            {
-              value: 2632321,
-              name: '作战人员',
-            },
-            {
-              value: 2212343,
-              name: '总数',
-              tooltip: {
-                show: false,
-              },
-              itemStyle: placeHolderStyle,
-            },
-          ],
-        },
-        {
-          name: 'Line 2',
-          type: 'pie',
-          clockWise: false,
-          hoverAnimation: false,
-          radius: ['35%', '45%'],
-          itemStyle: dataStyle,
-
-          data: [
-            {
-              value: 1823323,
-              name: '主官',
-            },
-            {
-              value: 1812343,
-              name: '总数',
-              tooltip: {
-                show: false,
-              },
-              itemStyle: placeHolderStyle,
-            },
-          ],
-        },
-        {
-          name: 'Line 1',
-          type: 'pie',
-          clockWise: false,
-
-          radius: ['20%', '30%'],
-          itemStyle: dataStyle,
-          hoverAnimation: false,
-
-          data: [
-            {
-              value: 1342221,
-              name: '首长',
-            },
-            {
-              value: 1912343,
-              name: '总数',
-              tooltip: {
-                show: false,
-              },
-              itemStyle: placeHolderStyle,
-            },
-          ],
-        },
-      ],
+      series: series,
     };
     return <ReactEcharts option={option} style={{ height: '100%', width: '100%' }} />;
   };
+
   createStayTimeAnalyzeGraph = () => {
     const option = {
       backgroundColor: '#0B1837',
@@ -352,11 +371,15 @@ export default class HomePage extends Component<any, State> {
     return <ReactEcharts option={option} style={{ height: '100%', width: '100%' }} />;
   };
   createWeeklyPersonCount = () => {
+    const { peopleType } = this.props.innerOuterPeople;
+    if (!peopleType || (Array.isArray(peopleType) && peopleType.length === 0)) return null;
     //数据
-    var XName = ['D1', 'D2', 'D3', 'D4', 'D5', 'D6', 'D7'];
+    var XName = peopleType.map(item => item.time);
     var data1 = [
-      [123, 154, 234, 321, 120, 390, 634],
-      [63, 194, 234, 321, 278, 110, 534],
+      // [123, 154, 234, 321, 120, 390, 634],
+      peopleType.map(item => item.inner),
+      // [63, 194, 234, 321, 278, 110, 534],
+      peopleType.map(item => item.outer),
     ];
     var Line = ['内部人员', '外部人员'];
     var img = [
@@ -649,13 +672,23 @@ export default class HomePage extends Component<any, State> {
     return <ReactEcharts option={option} style={{ width: '100%', height: '100%' }} />;
   };
   createSecretLevel = () => {
-    var data = [84, 70, 46];
-    var titlename = ['一级', '二级', '三级'];
-    var valdata = [683, 234, 234];
+    let { secretLevelPeopleCount = [] } = this.props;
+    const allSecretLevel = secretLevelPeopleCount.reduce((prev, next) => {
+      return prev + Number(next.num);
+    }, 0);
+    const setupSecretLevels = secretLevelPeopleCount.map(item => {
+      return { ...item, percent: (+item.num / allSecretLevel) * 100 };
+    });
+    var valdata = secretLevelPeopleCount.map(item => +item.num);
+    var titlename = secretLevelPeopleCount.map(item => item.securityLevel);
+    var data = setupSecretLevels.map(item => item.percent);
+
     var myColor = ['#3434DB', '#FF9C00', '#006CFF'];
     const option = {
       xAxis: {
         show: false,
+        max: 100,
+        type: 'value',
       },
       grid: {
         left: '5%',
@@ -827,6 +860,9 @@ export default class HomePage extends Component<any, State> {
     );
   };
   render() {
+    let { bigScreenPeopleCount } = this.props;
+    let { outPeople = 0, inPeople = 0 } = bigScreenPeopleCount;
+
     return (
       <div className={styles.dataview_root_container}>
         <div className="header">
@@ -842,7 +878,7 @@ export default class HomePage extends Component<any, State> {
                     <div className="ver-middle">
                       <span className="icon icon-nei" />
                       <span className="icon-name">内部人员</span>
-                      <span className="icon-number">316</span>
+                      <span className="icon-number"> {outPeople} </span>
                     </div>
                   </Col>
                 </Row>
@@ -851,7 +887,7 @@ export default class HomePage extends Component<any, State> {
                     <div className="ver-middle">
                       <span className="icon icon-wai " />
                       <span className="icon-name">外部人员</span>
-                      <span className="icon-number">8</span>
+                      <span className="icon-number">{inPeople}</span>
                     </div>
                   </Col>
                 </Row>
@@ -907,3 +943,12 @@ export default class HomePage extends Component<any, State> {
     );
   }
 }
+
+const mapState = state => {
+  const { bigScreen } = state;
+  return {
+    ...bigScreen,
+  };
+};
+
+export default connect(mapState)(DataView);

@@ -6,6 +6,7 @@ export default {
     bigScreenDepartmentPeopleCount: {},
     positionPeopleCount: [],
     historyWarns: {},
+    innerOuterPeople: [],
   },
   reducers: {
     update(state, { payload }) {
