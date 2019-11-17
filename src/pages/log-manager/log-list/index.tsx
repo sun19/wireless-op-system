@@ -2,7 +2,7 @@
  * title: 日志管理
  */
 import React from 'react';
-import { Layout, Form, Input, Row, Col, DatePicker, Button, Icon } from 'antd';
+import { Layout, Form, message, Row, Col, DatePicker, Button, Icon } from 'antd';
 import { connect } from 'dva';
 import moment from 'moment';
 import * as _ from 'lodash';
@@ -10,7 +10,7 @@ import * as _ from 'lodash';
 import MainContent from '../components/MainContent';
 import { ICON_FONTS_URL } from '../../../config/constants';
 import { UmiComponentProps } from '@/common/type';
-import { getLogList } from '../services';
+import { getLogList, exportLogList } from '../services';
 import { GetLogListParams } from '../services/index.interface';
 
 import styles from './index.less';
@@ -74,6 +74,7 @@ class LogList extends React.Component<Props, State> {
       dateStrings: ['2019-11-11 14:36:31', '2019-11-11 14:36:31'],
     };
     this.getLogList = this.getLogList.bind(this);
+    this.exportLogs = this.exportLogs.bind(this);
   }
 
   async getLogList(params: GetLogListParams = {}) {
@@ -88,6 +89,9 @@ class LogList extends React.Component<Props, State> {
 
   componentDidMount() {
     this.getLogList();
+  }
+  componentWillUnmount() {
+    message.destroy();
   }
   onRangePickerChange = (dates, dateStrings) => {
     this.setState({
@@ -108,6 +112,12 @@ class LogList extends React.Component<Props, State> {
       this.getLogList();
     });
   };
+  async exportLogs() {
+    const resp = await exportLogList();
+    if (resp) {
+      message.success('导出成功');
+    }
+  }
 
   render() {
     let { logList } = this.props;
@@ -159,6 +169,14 @@ class LogList extends React.Component<Props, State> {
                   >
                     清空
                   </Button>
+                </span>
+                <span className={[`${publicStyles.form_btns}`].join(' ')}>
+                  <span
+                    className={[`${publicStyles.form_btn_add}`].join('')}
+                    onClick={this.exportLogs}
+                  >
+                    <IconFont type="icon-plus" />
+                  </span>
                 </span>
               </Row>
             </Form>
