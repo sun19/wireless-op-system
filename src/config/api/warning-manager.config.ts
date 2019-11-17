@@ -1,8 +1,8 @@
-
 /** -----------------***********----- 告警管理： 告警类型——————————————————————————————*******************************/
 
 //  *  查询
-export const  WARNING_TYPE_SEARCH = 'http://47.95.195.189:8086/jeecg-boot/intf/location/listWarnType';
+export const WARNING_TYPE_SEARCH =
+  'http://47.95.195.189:8086/jeecg-boot/intf/location/listWarnType';
 //  添加
 export const WARNING_TYPE_ADD = 'http://47.95.195.189:8086/jeecg-boot/intf/location/addWarnType';
 // 编辑
@@ -20,4 +20,5 @@ export const WARNING_INFO_DEAL = 'http://47.95.195.189:8086/jeecg-boot/intf/loca
 /** -----------------***********----- 告警管理： 告警历史——————————————————————————————*******************************/
 
 // 查询
-export const WARNING_HISTORY_SEARCH = 'http://localhost:8086/jeecg-boot/intf/location/listHistoryAlarmInfo';
+export const WARNING_HISTORY_SEARCH =
+  'http://47.96.112.31:8086/jeecg-boot/intf/location/listHistoryAlarmInfo';

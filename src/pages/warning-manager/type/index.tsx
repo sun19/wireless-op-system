@@ -110,7 +110,7 @@ class WraningType extends React.Component<Props, State> {
   async getwarningTypeList(data?: State) {
     const taskList = await warningTypeSearch(data);
     this.props.dispatch({
-      type: 'wraningManager/update',
+      type: 'warningManager/update',
       payload: { type: taskList },
     });
   }
@@ -118,7 +118,7 @@ class WraningType extends React.Component<Props, State> {
     const resp = await warningTypeSearch(item);
     if (resp) {
       this.props.dispatch({
-        type: 'wraningManager/update',
+        type: 'warningManager/update',
         payload: { type: { records: data } },
       });
     }
@@ -166,9 +166,10 @@ class WraningType extends React.Component<Props, State> {
             <Form layout="inline" onSubmit={this.search}>
               <Row justify="start" align="middle" style={{ paddingLeft: '39px' }} gutter={16}>
                 <FormItem label="告警名称">
-                  {getFieldDecorator('name', {})(
-                    <Input className={publicStyles.input_text} placeholder="请输入告警名称" />,
-                  )}
+                  {getFieldDecorator(
+                    'name',
+                    {},
+                  )(<Input className={publicStyles.input_text} placeholder="请输入告警名称" />)}
                 </FormItem>
                 <span className={publicStyles.button_type}>
                   <Button className={publicStyles.form_btn} htmlType="submit">
@@ -207,8 +208,8 @@ class WraningType extends React.Component<Props, State> {
 }
 
 const TaskPlanFrom = Form.create<Props>({ name: 'task_paln' })(WraningType);
-const mapState = ({ wraningManager }) => {
-  const resp = wraningManager.type;
+const mapState = ({ warningManager }) => {
+  const resp = warningManager.type;
   return { taskList: resp };
 };
 export default connect(mapState)(TaskPlanFrom);

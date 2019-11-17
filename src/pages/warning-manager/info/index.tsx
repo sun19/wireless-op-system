@@ -81,7 +81,7 @@ class WraningInfo extends React.Component<Props, State> {
   async getTaskListData(data?: State) {
     const taskList = await warningInfoSearch(data);
     this.props.dispatch({
-      type: 'wraningManager/update',
+      type: 'warningManager/update',
       payload: { info: taskList },
     });
   }
@@ -89,7 +89,7 @@ class WraningInfo extends React.Component<Props, State> {
   //   const resp = await warningInfoSearch(item);
   //   if (resp) {
   //     this.props.dispatch({
-  //       type: 'wraningManager/update',
+  //       type: 'warningManager/update',
   //       payload: { info: { records: data } },
   //     });
   //   }
@@ -116,16 +116,16 @@ class WraningInfo extends React.Component<Props, State> {
   render() {
     let { taskList } = this.props;
     const { getFieldDecorator } = this.props.form;
-      if (_.isEmpty(taskList)) {
-        taskList = {
-          records: [],
-          total: 0,
-        };
-      }
-      let { records, total } = taskList;
-      records = records.map(item => {
-        return _.assign(item, { key: item.id });
-      });
+    if (_.isEmpty(taskList)) {
+      taskList = {
+        records: [],
+        total: 0,
+      };
+    }
+    let { records, total } = taskList;
+    records = records.map(item => {
+      return _.assign(item, { key: item.id });
+    });
     return (
       <div className={publicStyles.public_hight}>
         <Content className={publicStyles.bg}>
@@ -133,9 +133,10 @@ class WraningInfo extends React.Component<Props, State> {
             <Form layout="inline" onSubmit={this.search}>
               <Row justify="start" align="middle" style={{ paddingLeft: '39px' }} gutter={16}>
                 <FormItem label="警告标签">
-                  {getFieldDecorator('name', {})(
-                    <Input className={publicStyles.input_text} placeholder="请输入警告标签" />,
-                  )}
+                  {getFieldDecorator(
+                    'name',
+                    {},
+                  )(<Input className={publicStyles.input_text} placeholder="请输入警告标签" />)}
                 </FormItem>
                 <span className={publicStyles.authInner} style={{ paddingLeft: '39px' }}>
                   <span className={publicStyles.timePicker}>
@@ -187,8 +188,8 @@ class WraningInfo extends React.Component<Props, State> {
 }
 
 const TaskPlanFrom = Form.create<Props>({ name: 'task_paln' })(WraningInfo);
-const mapState = ({ wraningManager }) => {
-  const resp = wraningManager.info;
+const mapState = ({ warningManager }) => {
+  const resp = warningManager.info;
   return { taskList: resp };
 };
 export default connect(mapState)(TaskPlanFrom);

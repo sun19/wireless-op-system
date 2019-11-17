@@ -1,9 +1,9 @@
 export default {
-  namespace: 'wraningManager',
+  namespace: 'warningManager',
   state: {
-    type:{},
-    info:{},
-   history:{},
+    type: {},
+    info: {},
+    history: {},
   },
   reducers: {
     update(state, { payload }) {

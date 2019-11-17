@@ -97,7 +97,7 @@ class WraningHistory extends React.Component<Props, State> {
   async getTaskListData(data?: State) {
     const historyList = await warningHistorySearch(data);
     this.props.dispatch({
-      type: 'wraningManager/update',
+      type: 'warningManager/update',
       payload: { history: historyList },
     });
   }
@@ -105,7 +105,7 @@ class WraningHistory extends React.Component<Props, State> {
     const resp = await warningHistorySearch(item);
     if (resp) {
       this.props.dispatch({
-        type: 'wraningManager/update',
+        type: 'warningManager/update',
         payload: { history: { records: data } },
       });
     }
@@ -147,9 +147,10 @@ class WraningHistory extends React.Component<Props, State> {
                 gutter={16}
               >
                 <FormItem label="警告名称">
-                  {getFieldDecorator('warnModeName', {})(
-                    <Input className={publicStyles.input_text} placeholder="请输入警告名称" />,
-                  )}
+                  {getFieldDecorator(
+                    'warnModeName',
+                    {},
+                  )(<Input className={publicStyles.input_text} placeholder="请输入警告名称" />)}
                 </FormItem>
                 <span className={publicStyles.authInner} style={{ paddingLeft: '39px' }}>
                   <span className={publicStyles.timePicker}>
@@ -203,9 +204,9 @@ class WraningHistory extends React.Component<Props, State> {
 
 const TaskPlanFrom = Form.create<Props>({ name: 'task_paln' })(WraningHistory);
 
-const mapState = ({ wraningManager }) => {
-  // console.log(wraningManager);
-  const resp = wraningManager.history;
+const mapState = ({ warningManager }) => {
+  // console.log(warningManager);
+  const resp = warningManager.history;
   return { taskList: resp };
 };
 export default connect(mapState)(TaskPlanFrom);

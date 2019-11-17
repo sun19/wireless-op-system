@@ -58,7 +58,7 @@ export interface WarningInfoDeal {
 export interface WarningHistorySearch {
   pageNo?: number;
   pageSize?: number;
-  warnModeName: string;
-  alarmStartTime: string;
-  alarmEndTime: string;
+  warnModeName?: string;
+  alarmStartTime?: string;
+  alarmEndTime?: string;
 }
