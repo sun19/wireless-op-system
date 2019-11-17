@@ -129,11 +129,8 @@ class RouteInspectList extends React.Component<Props> {
                 </FormItem>
                 <FormItem label="开始时间">
                   {getFieldDecorator('startTime', {
-                    // initialValue: moment('12:08:23', 'HH:mm:ss'),
                   })(
                     <TimePicker placeholder="请选择开始时间" />,
-                    // <span className={publicStyles.timePicker}>
-                    // </span>,
                   )}
                 </FormItem>
                 <FormItem label="结束时间">
@@ -141,8 +138,6 @@ class RouteInspectList extends React.Component<Props> {
                     // initialValue: moment('12:08:23', 'HH:mm:ss'),
                   })(
                     <TimePicker placeholder="请选择结束时间" />,
-                    // <span className={publicStyles.timePicker}>
-                    // </span>,
                   )}
                 </FormItem>
                 {/* <span className={publicStyles.authInner} style={{ paddingLeft: '39px' }}>
