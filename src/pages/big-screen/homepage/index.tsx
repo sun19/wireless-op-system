@@ -23,7 +23,11 @@ import {
   getWarnTypeByTime,
 } from '../services';
 import { warningHistorySearch } from '../../warning-manager/services';
-import request from '@/utils/request';
+import { queryFencingArea } from '../../map-manager/services';
+import { getAllFencingTypes } from '../../login/login.service';
+import { QueryFencingAreaParams } from '../../map-manager/services/index.interface';
+
+import request from 'umi-request';
 
 import styles from './index.less';
 import { findRepos } from 'jest-changed-files';
@@ -139,14 +143,32 @@ class DataView extends React.Component<Props, State> {
         positionPeopleCount: positionPeople.result,
       },
     });
+    // 警告类型统计
     const warningType = await getWarnTypeByTime({ dataStr: this.state.dataStr });
     this.props.dispatch({
       type: 'bigScreen/update',
       payload: {
         warningTypeInfo: warningType.result,
-      },
+      }
     });
-  }
+    // 电子围栏
+    const eleFence = await queryFencingArea({})
+    this.props.dispatch({
+      type: 'bigScreen/update',
+      payload: {
+        eleFenceInfo: eleFence.result,
+      }
+    });
+    const eleType = await getAllFencingTypes()
+    this.props.dispatch({
+      type: 'bigScreen/update',
+      payload: {
+        eleTypeInfo: eleType.result,
+      }
+    });
+  };
+
+
 
   selectShow = () => {
     this.setState({ showPeopleInfo: !this.state.showPeopleInfo });
@@ -270,6 +292,34 @@ class DataView extends React.Component<Props, State> {
       stageY: -(mousePointTo.y - stage.getPointerPosition().y / newScale) * newScale,
     });
   };
+  //电子围栏
+  getEleFrom = () => {
+    const { eleFenceInfo } = this.props;
+    const { eleTypeInfo } = this.props;
+    if (eleFenceInfo.length === 0) return null;
+    const { records } = eleFenceInfo
+    // console.log(records)
+    const data = records.map((item, index) => {
+      const type = _.find(eleTypeInfo, { id: item.type })
+      return (
+      < div className="flex_outer" key={index}>
+        <div className="ele_title_top">
+          <div className="ele_title">{item.name}</div>
+          <div className="ele_title"> {type && type.name ? type.name : '闯入电子围栏'}</div>
+        </div>
+        <div className="ele_bag" >
+          {item.userName.map((num,index) => {
+            return (
+              <span key={index} className="ele_bag_round">{num}</span>
+            )
+          })}
+        </div>
+      </div >)
+
+    })
+    return data
+
+  }
   // 职位占比人数
   createPositionNumberGraph = () => {
     const { positionPeopleCount } = this.props;
@@ -872,47 +922,14 @@ class DataView extends React.Component<Props, State> {
                   </div>
                 </div>
               ) : (
-                <div>
-                  <div className="right_ele_panel">
-                    <div>
-                      <div className="ele_text">
-                        <Title title="电子围栏" />
-                      </div>
-                      <div className="ele_from">
-                        <div className="flex_out">
-                          <div className="flex_outer">
-                            <div className="ele_title_top">
-                              <div className="ele_title"> 办公室</div>
-                              <div className="ele_title"> 闯入电子围栏</div>
-                            </div>
-                            <div className="ele_img" />
-                          </div>
-                          <div className="flex_outer">
-                            <div className="ele_title_top">
-                              <div className="ele_title"> 办公室</div>
-                              <div className="ele_title"> 闯入电子围栏</div>
-                            </div>
-                            <div className="ele_img" />
-                          </div>
+                  <div>
+                    <div className="right_ele_panel">
+                      <div>
+                        <div className="ele_text">
+                          <Title title="电子围栏" />
                         </div>
-                        <div className="flex_out">
-                          <div className="flex_outer">
-                            <div className="ele_title_top">
-                              <div className="ele_title"> 办公室</div>
-                              <div className="ele_title"> 闯入电子围栏</div>
-                            </div>
-                            <div className="ele_img" />
-                          </div>
-                          <div className="flex_outer">
-                            <div className="ele_title_top">
-                              <div className="ele_title"> 办公室</div>
-                              <div className="ele_title"> 闯入电子围栏</div>
-                            </div>
-                            <div className="ele_img" />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                        <div className="ele_from"> {this.getEleFrom()} </div>
+              </div>
                   </div>
 
                   <div className="right_wraning_panel">
