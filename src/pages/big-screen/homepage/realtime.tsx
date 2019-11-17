@@ -24,7 +24,7 @@ import {
   getWarnTypeByTime,
 } from '../services';
 import { warningHistorySearch } from '../../warning-manager/services';
-import request from 'umi-request';
+import request from '@/utils/request';
 
 import styles from './index.less';
 import { findRepos } from 'jest-changed-files';

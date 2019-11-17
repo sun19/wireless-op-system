@@ -71,7 +71,6 @@ const columns = [
 
 interface State {
   pageNo?: number;
-  pageSize?: number;
   warnModeName: string;
   alarmStartTime: string;
   alarmEndTime: string;
@@ -86,7 +85,6 @@ class WraningHistory extends React.Component<Props, State> {
       alarmStartTime: '',
       alarmEndTime: '',
       pageNo: 1,
-      pageSize: 10,
     };
   }
   async componentDidMount() {

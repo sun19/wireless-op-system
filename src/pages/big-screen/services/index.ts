@@ -1,4 +1,4 @@
-import request from 'umi-request';
+import request from '@/utils/request';
 
 import {
   BIG_SCREEN_DEPARTMENT_PEOPLE_COUNT,
@@ -10,7 +10,7 @@ import {
   BIG_SCREEN_ROUTING_TRACK,
   BIG_SCREEN_SECRET_LEVEL_PEOPLE_COUNT,
   BIG_SCREEN_WARN_TYPE_BY_TIME,
-  BIG_SCREEN_WARNING_INFO ,
+  BIG_SCREEN_WARNING_INFO,
 } from '@/config/api';
 import { GetWarnTypeByTimeParams } from './index.interface';
 import { async } from 'q';
@@ -54,4 +54,3 @@ export async function getInnerOrOuterPeopleCount() {
   const resp = await request.get(BIG_SCREEN_INNER_OR_OUTER_POEPLE_COUNT);
   return resp;
 }
- 

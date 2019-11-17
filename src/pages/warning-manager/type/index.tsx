@@ -88,7 +88,6 @@ const columns = [
 interface State {
   name: string;
   pageNo?: number;
-  pageSize?: number;
 }
 
 class WraningType extends React.Component<Props, State> {
@@ -99,7 +98,6 @@ class WraningType extends React.Component<Props, State> {
     this.state = {
       name: '',
       pageNo: 1,
-      pageSize: 10,
     };
   }
   async componentDidMount() {

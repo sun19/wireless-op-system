@@ -1,4 +1,4 @@
-import request from 'umi-request';
+import request from '@/utils/request';
 import { message } from 'antd';
 
 import {
@@ -23,6 +23,7 @@ import {
   GetUserListParams,
   UpdateUserInfo,
   DeleteUser,
+  AddUserTypeParams,
   GetUserTypesParams,
   UpdateUserTypeParams,
   DeleteUserTypeParams,
@@ -87,6 +88,14 @@ export async function updateUserType(params: UpdateUserTypeParams) {
 
 export async function deleteUserType(params: DeleteUserTypeParams) {
   const resp = await request.delete(DELETE_USER_TYPE, { data: params });
+  resp.success === true && resp.code === 200
+    ? message.success(resp.message)
+    : message.error(resp.message);
+  return resp.success === true && resp.code === 200;
+}
+
+export async function addUserType(params: AddUserTypeParams) {
+  const resp = await request.post(ADD_USER_TYPE, { data: params });
   resp.success === true && resp.code === 200
     ? message.success(resp.message)
     : message.error(resp.message);

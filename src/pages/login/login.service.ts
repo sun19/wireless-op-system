@@ -1,4 +1,4 @@
-import request from 'umi-request';
+import request from '@/utils/request';
 
 import {
   COMMON_GET_ALL_MAP,

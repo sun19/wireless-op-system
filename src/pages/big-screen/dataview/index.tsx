@@ -4,7 +4,7 @@
 import React, { Component } from 'react';
 import { Row, Col, Icon, Table } from 'antd';
 import ReactEcharts from 'echarts-for-react';
-import request from 'umi-request';
+import request from '@/utils/request';
 import { connect } from 'dva';
 
 import Navigation from '../components/navigation';
@@ -22,7 +22,7 @@ import styles from './index.less';
 interface State {
   routeData: any[];
   realInfo: any[];
-  dataStr?:string;
+  dataStr?: string;
 }
 
 class DataView extends Component<any, State> {
@@ -31,7 +31,7 @@ class DataView extends Component<any, State> {
     this.state = {
       routeData: [],
       realInfo: [],
-      dataStr:'2019-11-15'
+      dataStr: '2019-11-15',
     };
   }
   async componentDidMount() {
@@ -82,8 +82,8 @@ class DataView extends Component<any, State> {
       type: 'bigScreen/update',
       payload: {
         warningTypeInfo: warningType.result,
-      }
-    })
+      },
+    });
   }
 
   createPositionNumberGraph = () => {
@@ -535,7 +535,9 @@ class DataView extends Component<any, State> {
     if (warningTypeInfo.length === 0) return null;
     const legendData = warningTypeInfo.map(item => item.warnTypeName);
     const series = warningTypeInfo.map((warnType, index) => {
-      const data = warnType.warnTypeNumList.map((item, index) => { item.num })
+      const data = warnType.warnTypeNumList.map((item, index) => {
+        item.num;
+      });
       return {
         name: warnType.warnTypeName,
         type: 'bar',
@@ -543,7 +545,13 @@ class DataView extends Component<any, State> {
         barWidth: 6,
         itemStyle: {
           normal: {
-            color: ['rgba(9,120,242,1)', 'rgba(77,253,184,1)', 'rgba(255,180,0,1)', 'rgba(241,126,60,1)', 'rgba(73,86,227,1)'][index],
+            color: [
+              'rgba(9,120,242,1)',
+              'rgba(77,253,184,1)',
+              'rgba(255,180,0,1)',
+              'rgba(241,126,60,1)',
+              'rgba(73,86,227,1)',
+            ][index],
             barBorderRadius: [20, 20, 20, 20],
           },
         },
@@ -555,9 +563,8 @@ class DataView extends Component<any, State> {
         },
         z: 10,
         data: data,
-      }
-    }
-    )
+      };
+    });
     const option = {
       tooltip: {
         trigger: 'axis',
@@ -610,7 +617,7 @@ class DataView extends Component<any, State> {
           show: false,
         },
       },
-      series: series
+      series: series,
     };
     return <ReactEcharts option={option} style={{ width: '100%', height: '100%' }} />;
   };

@@ -2,15 +2,16 @@
  * title: 信息牌列表
  */
 import React from 'react';
-import { Layout, Form, Input, Row, Col, Tag, Select, Button, Icon } from 'antd';
+import { Layout, Form, Input, Row, message, Tag, Select, Button, Icon } from 'antd';
 import router from 'umi/router';
-import { UmiComponentProps } from '@/common/type';
 import * as _ from 'lodash';
 import { connect } from 'dva';
 
+import { UmiComponentProps } from '@/common/type';
 import MainContent from '../components/MainContent';
 import { ICON_FONTS_URL } from '../../../config/constants';
-import { getInfoListParams, deleteInfo } from '../services';
+import { getInfoListParams, deleteInfo, exportIn, exportOut } from '../services';
+import { getUserTypes } from '../../system-setting/services';
 import { DeleteInfo } from '../services/index.interfaces';
 
 import styles from './index.less';
@@ -99,9 +100,8 @@ const columns = [
     dataIndex: 'type',
     editable: true,
 
-    render: onlineStatus => {
-      let values = onlineStatus == 1 ? '内部' : '外部';
-      return <span> {values}</span>;
+    render: (value, current) => {
+      return <span> {current.userTypeName || '-'}</span>;
     },
   },
   {
@@ -110,10 +110,10 @@ const columns = [
     key: 'securityLevelName',
     editable: true,
 
-    render: securityLevelName => {
-      let color = ['#f50', '#2db7f5', '#87d068'][securityLevelName];
+    render: (securityLevelName, current) => {
+      let color = ['#f50', '#2db7f5', '#87d068'][+current.securityLevelId];
 
-      return <Tag color={color}> {['一级', '二级', '三级'][securityLevelName]}</Tag>;
+      return <Tag color={color}> {securityLevelName}</Tag>;
     },
   },
   {
@@ -131,7 +131,6 @@ interface State {
   name: string;
   type: string;
   pageNo?: number;
-  pageSize?: number;
   hasData: boolean;
 }
 class SuperAdmin extends React.Component<Props, State> {
@@ -144,7 +143,6 @@ class SuperAdmin extends React.Component<Props, State> {
       name: '',
       type: '',
       pageNo: 1,
-      pageSize: 10,
       hasData: true,
     };
   }
@@ -169,9 +167,9 @@ class SuperAdmin extends React.Component<Props, State> {
       name: '',
       type: '',
     });
-    // this.forceUpdate(() => {
-    //   this.getInfoListData();
-    // });
+    this.forceUpdate(() => {
+      this.getInfoListData();
+    });
   };
 
   onSearch = () => {
@@ -189,14 +187,41 @@ class SuperAdmin extends React.Component<Props, State> {
   }
 
   async componentDidMount() {
-    this.getInfoListData();
+    const peopleType = await getUserTypes({});
+    this.props.dispatch({
+      type: 'infoCardManager/update',
+      payload: {
+        peopleType: peopleType.result,
+      },
+    });
+    await this.getInfoListData();
+  }
+
+  componentWillUnmount() {
+    message.destroy();
   }
 
   async getInfoListData() {
     const { userName, name, type } = this.state;
-    // console.log(this.state);
+    const { userTypes } = this.props;
     const infoList = await getInfoListParams({ userName, name, type });
-    // console.log(infoList);
+    if (!_.isEmpty(userTypes)) {
+      let types = userTypes.records || [];
+      types = types.reduce((prev, item) => {
+        return _.assign(prev, {
+          [item.roleCode]: item.roleName,
+        });
+      }, {});
+      infoList.records = infoList.records.map(item => {
+        if (!_.isString(item.type) || +item.type <= 0) {
+          return item;
+        }
+        return {
+          ...item,
+          userTypeName: types[item.type],
+        };
+      });
+    }
     this.props.dispatch({
       type: 'infoCardManager/update',
       payload: { customManager: infoList },
@@ -213,6 +238,41 @@ class SuperAdmin extends React.Component<Props, State> {
     }
   }
 
+  setupUserType = () => {
+    const { userTypes } = this.props;
+    if (_.isEmpty(userTypes)) return null;
+    let { records, total } = userTypes;
+    records = records.map(item => {
+      return _.assign(item, { key: item.id });
+    });
+    return (
+      <div
+        style={{ marginTop: '-3px' }}
+        // className={publicStyles.selection}
+      >
+        <Select
+          placeholder="请选择人员类型"
+          className={publicStyles.select_text}
+          onChange={this.selectChange}
+          value={this.state.type}
+        >
+          {records.map((item, index) => (
+            <Option value={item.roleCode} key={item.id}>
+              {item.roleName}
+            </Option>
+          ))}
+        </Select>
+      </div>
+    );
+  };
+
+  export = () => {
+    exportIn().then(() => message.success('导出成功'));
+  };
+  upload = () => {
+    exportOut().then(() => message.success('导入成功'));
+  };
+
   render() {
     let { userList } = this.props;
     if (_.isEmpty(userList)) {
@@ -225,6 +285,7 @@ class SuperAdmin extends React.Component<Props, State> {
     records = records.map(item => {
       return _.assign(item, { key: item.id });
     });
+
     return (
       <div className={publicStyles.public_hight}>
         <Content className={publicStyles.bg}>
@@ -247,23 +308,7 @@ class SuperAdmin extends React.Component<Props, State> {
                     placeholder="请输入信息牌"
                   />
                 </FormItem>
-                <FormItem label="人员类型">
-                  <div
-                    style={{ marginTop: '-3px' }}
-                    // className={publicStyles.selection}
-                  >
-                    <Select
-                      placeholder="请选择人员类型"
-                      className={publicStyles.select_text}
-                      onChange={this.selectChange}
-                      defaultValue=""
-                    >
-                      <Option value="jack">Jack</Option>
-                      <Option value="lucy">Lucy</Option>
-                    </Select>
-                  </div>
-                </FormItem>
-
+                <FormItem label="人员类型">{this.setupUserType()}</FormItem>
                 <span className={publicStyles.button_type}>
                   <Button className={publicStyles.form_btn} onClick={this.onSearch}>
                     查询
@@ -283,10 +328,10 @@ class SuperAdmin extends React.Component<Props, State> {
                   >
                     <IconFont type="icon-plus" />
                   </span>
-                  <span className={[`${publicStyles.form_btn_add}`].join('')}>
+                  <span className={[`${publicStyles.form_btn_add}`].join('')} onClick={this.export}>
                     <IconFont type="icon-download-simple" />
                   </span>
-                  <span className={[`${publicStyles.form_btn_add}`].join('')}>
+                  <span className={[`${publicStyles.form_btn_add}`].join('')} onClick={this.upload}>
                     <IconFont type="icon-upload-light" />
                   </span>
                 </span>
@@ -307,7 +352,7 @@ class SuperAdmin extends React.Component<Props, State> {
 }
 const mapState = ({ infoCardManager }) => {
   const resp = infoCardManager.customManager;
-  return { userList: resp };
+  return { userList: resp, userTypes: infoCardManager.peopleType };
 };
 
 export default connect(mapState)(SuperAdmin);

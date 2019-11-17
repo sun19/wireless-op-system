@@ -23,7 +23,7 @@ import {
   getWarnTypeByTime,
 } from '../services';
 import { warningHistorySearch } from '../../warning-manager/services';
-import request from 'umi-request';
+import request from '@/utils/request';
 
 import styles from './index.less';
 import { findRepos } from 'jest-changed-files';
@@ -72,7 +72,7 @@ class DataView extends React.Component<Props, State> {
   ws: WebSocket;
   constructor(props) {
     super(props);
-    this.map = React.createRef<HTMLDivElement>()
+    this.map = React.createRef<HTMLDivElement>();
     this.state = {
       mapImage: null,
       icon: null,
@@ -85,7 +85,7 @@ class DataView extends React.Component<Props, State> {
       stageY: 0,
       showPeopleInfo: false,
       ajaxLamps: [],
-      dataStr: '2019-11-15'
+      dataStr: '2019-11-15',
     };
   }
   //异步加载图片，保证渲染到canvas上时是已经OK的
@@ -144,11 +144,9 @@ class DataView extends React.Component<Props, State> {
       type: 'bigScreen/update',
       payload: {
         warningTypeInfo: warningType.result,
-      }
-    })
-  };
-
-
+      },
+    });
+  }
 
   selectShow = () => {
     this.setState({ showPeopleInfo: !this.state.showPeopleInfo });
@@ -228,7 +226,7 @@ class DataView extends React.Component<Props, State> {
     return new Promise(resolve => {
       const mapImage = new Image();
       mapImage.src = require('../assets/map.png');
-      mapImage.onload = function () {
+      mapImage.onload = function() {
         resolve(mapImage);
       };
     });
@@ -237,7 +235,7 @@ class DataView extends React.Component<Props, State> {
     return new Promise(resolve => {
       const mapImage = new Image();
       mapImage.src = require('../assets/baoan.png');
-      mapImage.onload = function () {
+      mapImage.onload = function() {
         resolve(mapImage);
       };
     });
@@ -246,7 +244,7 @@ class DataView extends React.Component<Props, State> {
     return new Promise(resolve => {
       const mapImage = new Image();
       mapImage.src = require('../assets/baoan.red.png');
-      mapImage.onload = function () {
+      mapImage.onload = function() {
         resolve(mapImage);
       };
     });
@@ -569,7 +567,9 @@ class DataView extends React.Component<Props, State> {
     if (warningTypeInfo.length === 0) return null;
     const legendData = warningTypeInfo.map(item => item.warnTypeName);
     const series = warningTypeInfo.map((warnType, index) => {
-      const data = warnType.warnTypeNumList.map((item, index) => { item.num })
+      const data = warnType.warnTypeNumList.map((item, index) => {
+        item.num;
+      });
       return {
         name: warnType.warnTypeName,
         type: 'bar',
@@ -577,7 +577,13 @@ class DataView extends React.Component<Props, State> {
         barWidth: 6,
         itemStyle: {
           normal: {
-            color: ['rgba(9,120,242,1)', 'rgba(77,253,184,1)', 'rgba(255,180,0,1)', 'rgba(241,126,60,1)', 'rgba(73,86,227,1)'][index],
+            color: [
+              'rgba(9,120,242,1)',
+              'rgba(77,253,184,1)',
+              'rgba(255,180,0,1)',
+              'rgba(241,126,60,1)',
+              'rgba(73,86,227,1)',
+            ][index],
             barBorderRadius: [20, 20, 20, 20],
           },
         },
@@ -589,9 +595,8 @@ class DataView extends React.Component<Props, State> {
         },
         z: 10,
         data: data,
-      }
-    }
-    )
+      };
+    });
     const option = {
       tooltip: {
         trigger: 'axis',
@@ -657,8 +662,6 @@ class DataView extends React.Component<Props, State> {
         },
       },
       series: series,
-
-
     };
     return <ReactEcharts option={option} style={{ width: '100%', height: '100%' }} />;
   };
@@ -682,8 +685,8 @@ class DataView extends React.Component<Props, State> {
               {record.processResult == '1' ? (
                 <span className={styles.notResolved}>未处理</span>
               ) : (
-                  <span className={styles.resolveed}>已处理</span>
-                )}
+                <span className={styles.resolveed}>已处理</span>
+              )}
             </div>
           );
         },
@@ -869,57 +872,57 @@ class DataView extends React.Component<Props, State> {
                   </div>
                 </div>
               ) : (
-                  <div>
-                    <div className="right_ele_panel">
-                      <div>
-                        <div className="ele_text">
-                          <Title title="电子围栏" />
-                        </div>
-                        <div className="ele_from">
-                          <div className="flex_out">
-                            <div className="flex_outer">
-                              <div className="ele_title_top">
-                                <div className="ele_title"> 办公室</div>
-                                <div className="ele_title"> 闯入电子围栏</div>
-                              </div>
-                              <div className="ele_img" />
-                            </div>
-                            <div className="flex_outer">
-                              <div className="ele_title_top">
-                                <div className="ele_title"> 办公室</div>
-                                <div className="ele_title"> 闯入电子围栏</div>
-                              </div>
-                              <div className="ele_img" />
-                            </div>
-                          </div>
-                          <div className="flex_out">
-                            <div className="flex_outer">
-                              <div className="ele_title_top">
-                                <div className="ele_title"> 办公室</div>
-                                <div className="ele_title"> 闯入电子围栏</div>
-                              </div>
-                              <div className="ele_img" />
-                            </div>
-                            <div className="flex_outer">
-                              <div className="ele_title_top">
-                                <div className="ele_title"> 办公室</div>
-                                <div className="ele_title"> 闯入电子围栏</div>
-                              </div>
-                              <div className="ele_img" />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="right_wraning_panel">
+                <div>
+                  <div className="right_ele_panel">
+                    <div>
                       <div className="ele_text">
-                        <Title title="告警信息" />
+                        <Title title="电子围栏" />
                       </div>
-                      <div className="ele_from">{this.createRouteCheckData()}</div>
+                      <div className="ele_from">
+                        <div className="flex_out">
+                          <div className="flex_outer">
+                            <div className="ele_title_top">
+                              <div className="ele_title"> 办公室</div>
+                              <div className="ele_title"> 闯入电子围栏</div>
+                            </div>
+                            <div className="ele_img" />
+                          </div>
+                          <div className="flex_outer">
+                            <div className="ele_title_top">
+                              <div className="ele_title"> 办公室</div>
+                              <div className="ele_title"> 闯入电子围栏</div>
+                            </div>
+                            <div className="ele_img" />
+                          </div>
+                        </div>
+                        <div className="flex_out">
+                          <div className="flex_outer">
+                            <div className="ele_title_top">
+                              <div className="ele_title"> 办公室</div>
+                              <div className="ele_title"> 闯入电子围栏</div>
+                            </div>
+                            <div className="ele_img" />
+                          </div>
+                          <div className="flex_outer">
+                            <div className="ele_title_top">
+                              <div className="ele_title"> 办公室</div>
+                              <div className="ele_title"> 闯入电子围栏</div>
+                            </div>
+                            <div className="ele_img" />
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                )}
+
+                  <div className="right_wraning_panel">
+                    <div className="ele_text">
+                      <Title title="告警信息" />
+                    </div>
+                    <div className="ele_from">{this.createRouteCheckData()}</div>
+                  </div>
+                </div>
+              )}
             </Col>
             }
           </Row>

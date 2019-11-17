@@ -206,6 +206,7 @@ class UserManager extends React.Component<Props, State> {
             updateData={this.updateData}
             deleteColumn={this.deleteColumn}
             total={total}
+            showEdit={true}
           />
         </Content>
       </div>

@@ -22,6 +22,13 @@ export interface DeleteUser {
   updateId?: string;
 }
 
+export interface AddUserTypeParams {
+  roleName?: string;
+  roleCode?: string;
+  remark?: string;
+  createId?: string;
+}
+
 export interface GetUserTypesParams {
   pageSize?: number;
   pageNo?: number;
