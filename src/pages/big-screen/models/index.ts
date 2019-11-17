@@ -6,6 +6,7 @@ export default {
     bigScreenDepartmentPeopleCount: {},
     positionPeopleCount: [],
     historyWarns: {},
+    warningTypeInfo:{},//告警类型统计
   },
   reducers: {
     update(state, { payload }) {

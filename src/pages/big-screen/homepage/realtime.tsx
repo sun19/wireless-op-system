@@ -2,17 +2,32 @@
  * title: 电子围栏
  */
 import React, { Component } from 'react';
-import { message, Row, Col, Icon, Progress } from 'antd';
+import { message, Row, Col, Icon, Progress, Table } from 'antd';
 import Konva from 'konva';
 import ReactEcharts from 'echarts-for-react';
 import { Stage, Layer, Image as ImageLayer, Line as LineLayer } from 'react-konva';
-// import MainContent from '../components/MainContent';
-import Title from '../components/Title';
-import RealTime from '../../map-manager';
+import { connect } from 'dva';
+import * as _ from 'lodash';
 
+import RealTime from '../../map-manager';
+import Title from '../components/Title';
 import Navigation from '../components/navigation';
+import { UmiComponentProps } from '@/common/type';
+import {
+  getBigScreenPeopleCount,
+  getBigScreenDepartmentPeopleCount,
+  getBigScreenPositionPeopleCount,
+  getInnerOrOuterPeopleCount,
+  getRealTimePeopleInfo,
+  getRoutingData,
+  getSecretLevelPeopleCount,
+  getWarnTypeByTime,
+} from '../services';
+import { warningHistorySearch } from '../../warning-manager/services';
+import request from 'umi-request';
 
 import styles from './index.less';
+import { findRepos } from 'jest-changed-files';
 
 interface State {
   mapImage: any | null;
@@ -21,14 +36,15 @@ interface State {
   width: number;
   height: number;
   lamps: Lamp[];
+  ajaxLamps: any[];
   stageScale: number;
   stageX: number;
   stageY: number;
   showPeopleInfo: boolean;
 }
-interface Props {
-  [key: string]: any;
-}
+type StateProps = ReturnType<typeof mapState>;
+type Props = StateProps & UmiComponentProps;
+
 interface Lamp {
   x: number;
   y: number;
@@ -51,7 +67,7 @@ const defaultLamps = [
 
 const scaleBy = 1.01;
 
-export default class DataView extends React.Component<Props, State> {
+class Realtime extends React.Component<Props, State> {
   map: React.RefObject<HTMLDivElement>;
   ws: WebSocket;
   constructor(props) {
@@ -67,9 +83,9 @@ export default class DataView extends React.Component<Props, State> {
       stageScale: 1,
       stageX: 0,
       stageY: 0,
-      showPeopleInfo: true,
+      showPeopleInfo: false,
+      ajaxLamps: [],
     };
-    // this.connectWs = this.connectWs.bind(this);
   }
   //异步加载图片，保证渲染到canvas上时是已经OK的
   async componentDidMount() {
@@ -87,44 +103,66 @@ export default class DataView extends React.Component<Props, State> {
         height: clientHeight,
       });
     }
-    // this.connectWs();
+    let lamps = await request.get(
+      'http://47.96.112.31:8086/jeecg-boot/intf/location/listByHistoryTrajectory',
+    );
+    lamps = (lamps.result && lamps.result.records) || [];
+    this.setState({
+      ajaxLamps: lamps,
+    });
+    this.initRequest();
   }
 
-  //   connectWs() {
-  //     const { clientWidth, clientHeight } = this.map.current;
-  //     this.ws = new WebSocket('ws://47.96.112.31:8086/jeecg-boot/websocket/1');
-  //     this.ws.onopen = () => {};
+  async initRequest() {
+    const peopleCount = await getBigScreenPeopleCount();
+    const secretLevel = await getSecretLevelPeopleCount();
+    this.props.dispatch({
+      type: 'bigScreen/update',
+      payload: {
+        bigScreenPeopleCount: peopleCount.result,
+        secretLevelPeopleCount: secretLevel.result,
+      },
+    });
+    const histroyWarnings = await warningHistorySearch({});
+    this.props.dispatch({
+      type: 'bigScreen/update',
+      payload: {
+        historyWarns: histroyWarnings,
+      },
+    });
 
-  //     this.ws.onmessage = evt => {
-  //       const message = JSON.parse(evt.data);
-  //       // const msgText = message.msgTxt;
-  //       // console.log(message, 'xx');
-  //       // const lamp = { x: +msgText.xCoordinate, y: +msgText.yCoordinate, id: msgText.lampNumber };
-  //       // const currentLamps = this.setupLampData([lamp], clientWidth, clientHeight);
-
-  //       // this.setState({
-  //       //   lamps: currentLamps,
-  //       // });
-  //     };
-  //     this.ws.onclose = () => {};
-  //   }
+    const positionPeople = await getBigScreenPositionPeopleCount();
+    this.props.dispatch({
+      type: 'bigScreen/update',
+      payload: {
+        positionPeopleCount: positionPeople.result,
+      },
+    });
+  }
 
   selectShow = () => {
-    // this.setState({ showPeopleInfo: !this.showPeopleInfo });
+    this.setState({ showPeopleInfo: !this.state.showPeopleInfo });
   };
   showLine() {
     const { clientWidth, clientHeight } = this.map.current;
     let i = 0;
     let temp = [];
     const timer = setInterval(() => {
+      const ajaxLamps = this.state.ajaxLamps;
+
       if (i === 0) message.success('轨迹开始');
-      if (i > 5) {
+      if (i > ajaxLamps.length - 1) {
         message.success('轨迹结束');
         clearInterval(timer);
         return;
       }
-      const lnglat = defaultLamps[i];
-      const lamp = { x: +lnglat.x, y: +lnglat.y, id: lnglat.id, code: lnglat.code };
+      const lnglat = ajaxLamps[i];
+      const lamp = {
+        x: +lnglat.xcoordinate,
+        y: +lnglat.ycoordinate,
+        id: lnglat.id,
+        code: lnglat.abnormal,
+      };
       if (lamp.code === 1) {
         message.warn('您已进入非法区域');
       }
@@ -135,7 +173,7 @@ export default class DataView extends React.Component<Props, State> {
         lamps: currentLamps,
       });
       i++;
-    }, 3000);
+    }, 1000);
   }
   setupLampData = (data, currentWidth, currentHeight) => {
     const defaultWidth = 1920;
@@ -167,27 +205,6 @@ export default class DataView extends React.Component<Props, State> {
       line.push(lamp.x);
       line.push(lamp.y);
     });
-    //TODO:不给自己找麻烦
-    // return (
-    //   <React.Fragment>
-    //     {lamps.map((lamp, index) => {
-    //       const len = lamps.length;
-    //       if (index < len - 1) {
-    //         const points = [lamp.x, lamp.y, lamps[index + 1].x, lamps[index + 1].y];
-    //         return (
-    //           <LineLayer
-    //             points={points}
-    //             stroke={lamp.code === 0 ? '#1296db' : '#d81e06'}
-    //             strokeWidth={5}
-    //             linecap="round"
-    //             lineJoin="round"
-    //           />
-    //         );
-    //       }
-    //       return;
-    //     })}
-    //   </React.Fragment>
-    // );
     return (
       <LineLayer points={line} stroke="#1296db" strokeWidth={5} linecap="round" lineJoin="round" />
     );
@@ -195,6 +212,7 @@ export default class DataView extends React.Component<Props, State> {
 
   componentWillUnmount() {
     message.destroy();
+    this.ws && this.ws.close();
   }
   dynamicLoadMapImage() {
     return new Promise(resolve => {
@@ -245,6 +263,8 @@ export default class DataView extends React.Component<Props, State> {
     });
   };
   createPositionNumberGraph = () => {
+    const { positionPeopleCount } = this.props;
+    if (positionPeopleCount.length === 0) return null;
     var dataStyle = {
       normal: {
         label: {
@@ -253,8 +273,6 @@ export default class DataView extends React.Component<Props, State> {
         labelLine: {
           show: false,
         },
-        // shadowBlur: 15,
-        // shadowColor: 'white',
       },
     };
     var placeHolderStyle = {
@@ -271,6 +289,51 @@ export default class DataView extends React.Component<Props, State> {
         color: 'rgba(0,0,0,0)',
       },
     };
+    const legendData = positionPeopleCount.map(item => item.name);
+    const total = positionPeopleCount.reduce((p, n) => {
+      return p + Number(n.num);
+    }, 0);
+    const series = positionPeopleCount.map((item, index) => {
+      let radius = [];
+      switch (index) {
+        case 0:
+          radius = ['20%', '30%'];
+          break;
+        case 1:
+          radius = ['35%', '45%'];
+          break;
+        case 2:
+          radius = ['50%', '60%'];
+          break;
+        case 3:
+          radius = ['65%', '75%'];
+          break;
+        default:
+          break;
+      }
+      return {
+        name: `Line ${index}`,
+        type: 'pie',
+        clockWise: false,
+        radius,
+        itemStyle: dataStyle,
+        hoverAnimation: false,
+        data: [
+          {
+            value: Number(item.num),
+            name: item.name,
+          },
+          {
+            value: total,
+            name: '总数',
+            tooltip: {
+              show: false,
+            },
+            itemStyle: placeHolderStyle,
+          },
+        ],
+      };
+    });
     const option = {
       // backgroundColor: '#0b214a',
       color: ['#3DD1F9', '#01E17E', '#FFAD05', '#ADFF4D'],
@@ -282,14 +345,14 @@ export default class DataView extends React.Component<Props, State> {
       legend: {
         //  top: '15%',
         // x: 'right',
-        width: 12,
+        // width: 12,
         height: 13,
         lineHeight: 16,
-        right: '2%',
+        right: '5%',
         itemHeight: 5, //图例标记的图形宽度。
         itemWidth: 5, //图例标记的图形gao度。
         orient: 'vertical', //图例列表的布局朝向。
-        data: ['作战人员', '主官', '首长'],
+        data: legendData,
         itemGap: 38,
         textStyle: {
           color: '#A3E2F4',
@@ -299,77 +362,7 @@ export default class DataView extends React.Component<Props, State> {
         },
         selectedMode: true,
       },
-      series: [
-        {
-          name: 'Line 3',
-          type: 'pie',
-          clockWise: false,
-          radius: ['50%', '60%'],
-          itemStyle: dataStyle,
-          hoverAnimation: false,
-          data: [
-            {
-              value: 5632,
-              name: '作战人员',
-            },
-            {
-              value: 2212,
-              name: '总数',
-              tooltip: {
-                show: false,
-              },
-              itemStyle: placeHolderStyle,
-            },
-          ],
-        },
-        {
-          name: 'Line 2',
-          type: 'pie',
-          clockWise: false,
-          hoverAnimation: false,
-          radius: ['35%', '45%'],
-          itemStyle: dataStyle,
-
-          data: [
-            {
-              value: 1523,
-              name: '主官',
-            },
-            {
-              value: 1812,
-              name: '总数',
-              tooltip: {
-                show: false,
-              },
-              itemStyle: placeHolderStyle,
-            },
-          ],
-        },
-        {
-          name: 'Line 1',
-          type: 'pie',
-          clockWise: false,
-
-          radius: ['20%', '30%'],
-          itemStyle: dataStyle,
-          hoverAnimation: false,
-
-          data: [
-            {
-              value: 842,
-              name: '首长',
-            },
-            {
-              value: 1912,
-              name: '总数',
-              tooltip: {
-                show: false,
-              },
-              itemStyle: placeHolderStyle,
-            },
-          ],
-        },
-      ],
+      series: series,
     };
     return <ReactEcharts option={option} style={{ height: '100%', width: '100%' }} />;
   };
@@ -390,8 +383,8 @@ export default class DataView extends React.Component<Props, State> {
       },
       legend: {
         orient: 'horizontal',
-        bottom: '0',
-        left: '0',
+        // bottom: '0',
+        // left: '0',
         itemWidth: 16,
         itemHeight: 8,
         itemGap: 16,
@@ -692,6 +685,129 @@ export default class DataView extends React.Component<Props, State> {
     };
     return <ReactEcharts option={option} style={{ width: '100%', height: '100%' }} />;
   };
+  createRouteCheckData = () => {
+    const columns = [
+      {
+        title: '序号',
+        dataIndex: 'id',
+        editable: true,
+        ellipsis: true,
+      },
+      {
+        title: '告警信息',
+        dataIndex: 'warnName',
+        editable: true,
+        ellipsis: true,
+        render: (name, record) => {
+          return (
+            <div>
+              <span>{name}</span>
+              {record.processResult == '1' ? (
+                <span className={styles.notResolved}>未处理</span>
+              ) : (
+                <span className={styles.resolveed}>已处理</span>
+              )}
+            </div>
+          );
+        },
+      },
+      {
+        title: '时间',
+        dataIndex: 'processTime',
+        editable: true,
+        ellipsis: true,
+      },
+    ];
+    let historyWarns = this.props.historyWarns;
+    if (_.isEmpty(historyWarns)) {
+      historyWarns = {
+        records: [],
+        total: 0,
+      };
+    }
+    let { records } = historyWarns;
+
+    if (records.length === 0) {
+      return <Table columns={columns} dataSource={[]} />;
+    }
+    return (
+      <Table
+        columns={columns}
+        dataSource={records}
+        pagination={false}
+        scroll={{ y: 240 }}
+        size="small"
+      />
+    );
+  };
+  setupLeftPanel = () => {
+    let { bigScreenPeopleCount, secretLevelPeopleCount = [] } = this.props;
+    const allSecretLevel = secretLevelPeopleCount.reduce((prev, next) => {
+      return prev + Number(next.num);
+    }, 0);
+    const setupSecretLevels = secretLevelPeopleCount.map(item => {
+      return { ...item, percent: (+item.num / allSecretLevel) * 100 };
+    });
+    let { outPeople, onlinePeople, inPeople, yesHigh, toHigh } = bigScreenPeopleCount;
+
+    onlinePeople = _.padStart(onlinePeople, 5, '0');
+    return (
+      <div className="top">
+        <div className="title">当前在线人数</div>
+        <div className="number">
+          {_.map(_.split(`${onlinePeople}`, ''), item => (
+            <span>{item}</span>
+          ))}
+        </div>
+        <div className="today-data">
+          <span className="icon" />
+
+          <span className="data-title">今日最高值</span>
+          <span className="data-number">{toHigh}</span>
+        </div>
+        <div className="yesterday-data">
+          <span className="icon" />
+
+          <span className="data-title">昨日最高值</span>
+          <span className="data-number">{yesHigh}</span>
+        </div>
+        <div className="people_type">
+          <div className="people_type_title">
+            <span className="icon" />
+            <span className="titlename">人员类型</span>
+          </div>
+          <div className="inner_or_outer">
+            <span className="left">
+              <span className="icon">内</span>
+              <span className="text_span"> 内部</span>
+              <span className="number_span"> {inPeople}</span>
+            </span>
+            <span className="right">
+              <span className="icon">外</span>
+              <span className="text_span">外部</span>
+              <span className="number_span">{outPeople}</span>
+            </span>
+          </div>
+        </div>
+        <div className="people-secret">
+          <div className="people-type">
+            <span className="icon" />
+            <span className="titlename">保密级别人数占比</span>
+          </div>
+          {setupSecretLevels.map((item, index) => (
+            <div className={`people_progress people_progress_${index}`}>
+              <div>
+                <span>{item.securityLevel}</span>
+                <span className="people-number"> {item.num}人</span>
+              </div>
+              <Progress percent={item.percent} />
+              <div className="people_progress_num">{item.percent}%</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  };
   render() {
     const { mapImage, width, height } = this.state;
     const lamps = this.createLamps();
@@ -705,75 +821,7 @@ export default class DataView extends React.Component<Props, State> {
         <div className="content">
           <Row>
             <Col span={4} className="left_panel">
-              <div className="top">
-                <div className="title">当前在线人数</div>
-                <div className="number">
-                  <span>0</span>
-                  <span>0</span>
-                  <span>3</span>
-                  <span>2</span>
-                  <span>4</span>
-                </div>
-                <div className="today-data">
-                  <Icon type="trademark-circle" theme="twoTone" style={{ fontSize: '20px' }} />
-                  <span className="data-title">今日最高值</span>
-                  <span className="data-number">324</span>
-                </div>
-                <div className="yesterday-data">
-                  <Icon type="trademark-circle" theme="twoTone" style={{ fontSize: '20px' }} />
-                  <span className="data-title">昨日最高值</span>
-                  <span className="data-number">324</span>
-                </div>
-                {/* </div> */}
-                <div className="people_type">
-                  <div className="people_type_title">
-                    <Icon type="trademark-circle" theme="twoTone" style={{ fontSize: '18px' }} />
-                    <span>人员类型</span>
-                  </div>
-                  <div className="inner_or_outer">
-                    <span className="left">
-                      <Icon type="trademark-circle" theme="twoTone" />
-                      <span className="text_span"> 内部</span>
-                      <span className="number_span"> 316</span>
-                    </span>
-                    <span className="right">
-                      <Icon type="trademark-circle" theme="twoTone" />
-                      <span className="text_span">外部</span>
-                      <span className="number_span">8</span>
-                    </span>
-                  </div>
-                </div>
-                <div className="people-secret">
-                  <div className="people-type">
-                    <Icon type="trademark-circle" theme="twoTone" />
-                    <span>保密级别人数占比</span>
-                  </div>
-                  <div className="people_progress people_progress_first">
-                    <div>
-                      <span>一级</span>
-                      <span className="people-number">84人</span>
-                    </div>
-                    <Progress percent={30} />
-                    <div className="people_progress_num">42%</div>
-                  </div>
-                  <div className="people_progress people_progress_second">
-                    <div>
-                      <span>二级</span>
-                      <span className="people-number">84人</span>
-                    </div>
-                    <Progress percent={30} />
-                    <div className="people_progress_num">42%</div>
-                  </div>
-                  <div className="people_progress people_progress_third">
-                    <div>
-                      <span>三级</span>
-                      <span className="people-number">84人</span>
-                    </div>
-                    <Progress percent={30} />
-                    <div className="people_progress_num">42%</div>
-                  </div>
-                </div>
-              </div>
+              {this.setupLeftPanel()}
             </Col>
             <Col span={16} className="middle_panel">
               <div className="middle_text">
@@ -784,8 +832,8 @@ export default class DataView extends React.Component<Props, State> {
                   灯具显示
                 </div>
               </div>
-              {/* <div className={styles.map_manager} ref={this.map}>
-                <Stage
+              <div className={styles.map_manager} ref={this.map}>
+                {/* <Stage
                   width={width}
                   height={height}
                   onWheel={this.onWheel}
@@ -800,9 +848,9 @@ export default class DataView extends React.Component<Props, State> {
                     {line}
                     {lamps}
                   </Layer>
-                </Stage>
-              </div> */}
-              <RealTime />
+                </Stage> */}
+                        <RealTime />
+              </div>
             </Col>
             <Col span={4} className="right_panel">
               {this.state.showPeopleInfo == true ? (
@@ -810,12 +858,7 @@ export default class DataView extends React.Component<Props, State> {
                   <div className="right_top_panel">
                     <div>
                       <div>
-                        <Icon
-                          type="trademark-circle"
-                          theme="twoTone"
-                          style={{ fontSize: '20px' }}
-                        />
-                        <span>职位占比人数</span>
+                        <Title title="职位占比人数" />
                       </div>
                       <div className="echarts">
                         <div className="graph" style={{ height: '180px', width: '100%' }}>
@@ -828,12 +871,6 @@ export default class DataView extends React.Component<Props, State> {
                     <div>
                       <div>
                         <Title title="停留时长分析" />
-                        {/* <Icon
-                          type="trademark-circle"
-                          theme="twoTone"
-                          style={{ fontSize: '20px' }}
-                        />
-                        <span>停留时长分析</span> */}
                       </div>
                       <div className="echarts">
                         <div className="graph" style={{ height: '180px', width: '100%' }}>
@@ -845,12 +882,7 @@ export default class DataView extends React.Component<Props, State> {
                   <div className="right_bottom_panel">
                     <div>
                       <div>
-                        <Icon
-                          type="trademark-circle"
-                          theme="twoTone"
-                          style={{ fontSize: '20px' }}
-                        />
-                        <span>告警类型统计</span>
+                        <Title title="告警类型统计" />
                       </div>
                       <div className="echarts">
                         <div className="graph" style={{ height: '200px', width: '100%' }}>
@@ -865,12 +897,7 @@ export default class DataView extends React.Component<Props, State> {
                   <div className="right_ele_panel">
                     <div>
                       <div className="ele_text">
-                        <Icon
-                          type="trademark-circle"
-                          theme="twoTone"
-                          style={{ fontSize: '20px' }}
-                        />
-                        <span>电子围栏</span>
+                        <Title title="电子围栏" />
                       </div>
                       <div className="ele_from">
                         <div className="flex_out">
@@ -911,17 +938,26 @@ export default class DataView extends React.Component<Props, State> {
 
                   <div className="right_wraning_panel">
                     <div className="ele_text">
-                      <Icon type="trademark-circle" theme="twoTone" style={{ fontSize: '20px' }} />
-                      <span>警告信息</span>
+                      <Title title="告警信息" />
                     </div>
-                    <div className="ele_from">{/* <MainContent /> */}</div>
+                    <div className="ele_from">{this.createRouteCheckData()}</div>
                   </div>
                 </div>
               )}
             </Col>
+            }
           </Row>
         </div>
       </div>
     );
   }
 }
+
+const mapState = state => {
+  const { bigScreen } = state;
+  return {
+    ...bigScreen,
+  };
+};
+
+export default connect(mapState)(Realtime);
