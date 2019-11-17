@@ -32,7 +32,7 @@ export const BIG_SCREEN_WARN_TYPE_BY_TIME =
  * 获取历史轨迹
  */
 export const BIG_SCREEN_HISTORY_TRACK =
-  'http://47.95.195.189:8086/jeecg-boot/intf/location/listByHistoryTrajectory';
+  'http://47.96.112.31:8086/jeecg-boot/intf/location/listByHistoryTrajectory';
 
 /**
  * 巡检数据

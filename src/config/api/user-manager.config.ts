@@ -4,40 +4,40 @@
  * 人员列表
  */
 export const USER_MANAGER_GET_USER_LIST =
-  'http://47.95.195.189:8086/jeecg-boot/intf/location/queryUserInfoList';
+  'http://47.96.112.31:8086/jeecg-boot/intf/location/queryUserInfoList';
 
 /**
  * 人员新增
  */
 export const USER_MANAGER_ADD_USER =
-  'http://47.95.195.189:8086/jeecg-boot/intf/location/addUserInfo';
+  'http://47.96.112.31:8086/jeecg-boot/intf/location/addUserInfo';
 
 /**
  * 人员修改
  */
 export const USER_MANAGER_UPDATE_USER =
-  'http://47.95.195.189:8086/jeecg-boot/intf/location/editUserInfo';
+  'http://47.96.112.31:8086/jeecg-boot/intf/location/editUserInfo';
 
 /**
  * 人员删除
  */
 export const USER_MANAGER_DELETE_USER =
-  'http://47.95.195.189:8086/jeecg-boot/intf/location/deleteUserInfo';
+  'http://47.96.112.31:8086/jeecg-boot/intf/location/deleteUserInfo';
 
 /**
  * 获取身份证信息（刷身份证使用）
  */
 export const USER_MANAGER_GET_IDCARD_INFO =
-  'http://47.95.195.189:8086/jeecg-boot/intf/location/getIdentityCard';
+  'http://47.96.112.31:8086/jeecg-boot/intf/location/getIdentityCard';
 
 /**
  * 人员导出
  */
 export const USER_MANAGER_EXPORT_USER =
-  'http://47.95.195.189:8086/jeecg-boot/intf/location/exportUserInfoXls';
+  'http://47.96.112.31:8086/jeecg-boot/intf/location/exportUserInfoXls';
 
 /**
  * 人员导入
  */
 export const USER_MANAGER_IMPORT_USER =
-  'http://47.95.195.189:8086/jeecg-boot/intf/location/importUserInfoExcel';
+  'http://47.96.112.31:8086/jeecg-boot/intf/location/importUserInfoExcel';

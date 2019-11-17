@@ -48,7 +48,7 @@ class NormalLoginForm extends React.Component<Props> {
         };
         this.showLoadingMessage();
         const resp = await request(
-          `http://47.95.195.189:8086/jeecg-boot/intf/location/login?username=${data.username}&password=${data.password}`,
+          `http://47.96.112.31:8086/jeecg-boot/intf/location/login?username=${data.username}&password=${data.password}`,
           {
             method: 'GET',
           },
