@@ -254,6 +254,7 @@ class LampsSettings extends React.Component<Props, State> {
             total={total}
             updateData={this.updateData}
             deleteColumn={this.deleteColumn}
+            showEdit={true}
           />
         </Content>
       </div>

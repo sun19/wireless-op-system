@@ -34,6 +34,11 @@ const columns = [
     editable: true,
   },
   {
+    title: '姓名',
+    dataIndex: 'remark',
+    editable: true,
+  },
+  {
     title: '信息牌编号',
     dataIndex: 'informationBoardName',
     editable: true,
@@ -53,17 +58,13 @@ const columns = [
     dataIndex: 'endTime',
     editable: true,
   },
-  {
-    title: '备注',
-    dataIndex: 'remark',
-    editable: true,
-  },
 ];
 interface State {
   remark: string;
   informationBoardName: string;
   task: string;
   pageNo?: number;
+  taskTypes?: any[];
 }
 class TaskPlan extends React.Component<Props, State> {
   constructor(props: any) {
@@ -75,6 +76,7 @@ class TaskPlan extends React.Component<Props, State> {
       informationBoardName: '',
       task: '',
       pageNo: 1,
+      taskTypes: [],
     };
   }
 
@@ -88,6 +90,16 @@ class TaskPlan extends React.Component<Props, State> {
     this.props.dispatch({
       type: 'infoCardManager/update',
       payload: { taskPlan: taskList },
+    });
+    let { records, total } = taskList;
+    records = _.isEmpty(taskList)
+      ? []
+      : records.map(item => {
+          return _.assign(item, { key: item.id });
+        });
+    const arr: any[] = _.uniqBy(records, 'task');
+    this.setState({
+      taskTypes: arr,
     });
   }
   async updateData(data, item) {
@@ -118,12 +130,32 @@ class TaskPlan extends React.Component<Props, State> {
     this.props.form.resetFields();
     this.getTaskListData();
   };
+  setupSelectOptions = records => {
+    // if (records.length === 0) return <Option value="" />;
+    const arr = this.state.taskTypes;
+    const { getFieldDecorator } = this.props.form;
+    return (
+      <Form.Item label="任务">
+        {getFieldDecorator('task', {
+          initialValue: '0',
+        })(
+          <Select placeholder="请选择任务" style={{ marginTop: '-3px' }}>
+            {arr.map((item: any) => (
+              <Option value={item.task} key={item.task}>
+                {item.task}
+              </Option>
+            ))}
+          </Select>,
+        )}
+      </Form.Item>
+    );
+  };
   render() {
     const { taskList } = this.props;
     const { getFieldDecorator } = this.props.form;
     let { records, total } = taskList;
     records = _.isEmpty(taskList)
-      ? null
+      ? []
       : records.map(item => {
           return _.assign(item, { key: item.id });
         });
@@ -151,16 +183,7 @@ class TaskPlan extends React.Component<Props, State> {
                     {},
                   )(<Input className={publicStyles.input_text} placeholder="信息牌编号" />)}
                 </FormItem>
-                <Form.Item label="任务">
-                  {getFieldDecorator('task', {
-                    initialValue: '0',
-                  })(
-                    <Select placeholder="请选择任务" style={{ marginTop: '-3px' }}>
-                      <Option value="0">电力巡检</Option>
-                      <Option value="1">导入测试</Option>
-                    </Select>,
-                  )}
-                </Form.Item>
+                {this.setupSelectOptions(records)}
                 <span className={publicStyles.button_type}>
                   <Button className={publicStyles.form_btn} type="primary" htmlType="submit">
                     查询
@@ -188,6 +211,7 @@ class TaskPlan extends React.Component<Props, State> {
             updateData={this.updateData}
             deleteColumn={this.deleteColumn}
             total={total}
+            showEdit={true}
           />
         </Content>
       </div>

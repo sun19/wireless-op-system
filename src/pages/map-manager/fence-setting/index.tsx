@@ -189,6 +189,7 @@ class FencingSettings extends React.Component<Props> {
             total={total}
             updateData={this.updateData}
             deleteColumn={this.deleteColumn}
+            showEdit={true}
           />
         </Content>
       </div>
