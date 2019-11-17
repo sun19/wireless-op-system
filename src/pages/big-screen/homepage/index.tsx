@@ -566,10 +566,9 @@ class DataView extends React.Component<Props, State> {
   // 告警类型统计
   createPoliceType = () => {
     const { warningTypeInfo } = this.props;
-
     if (warningTypeInfo.length === 0) return null;
     const legendData = warningTypeInfo.map(item => item.warnTypeName);
-const series = warningTypeInfo.map((warnType, index) => {
+    const series = warningTypeInfo.map((warnType, index) => {
       const data = warnType.warnTypeNumList.map((item, index) => { item.num })
       return {
         name: warnType.warnTypeName,

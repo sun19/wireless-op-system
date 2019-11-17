@@ -14,6 +14,7 @@ import {
   getBigScreenPositionPeopleCount,
   getSecretLevelPeopleCount,
   getInnerOrOuterPeopleCount,
+  getWarnTypeByTime,
 } from '../services';
 
 import styles from './index.less';
@@ -21,6 +22,7 @@ import styles from './index.less';
 interface State {
   routeData: any[];
   realInfo: any[];
+  dataStr?:string;
 }
 
 class DataView extends Component<any, State> {
@@ -29,6 +31,7 @@ class DataView extends Component<any, State> {
     this.state = {
       routeData: [],
       realInfo: [],
+      dataStr:'2019-11-15'
     };
   }
   async componentDidMount() {
@@ -74,6 +77,13 @@ class DataView extends Component<any, State> {
         innerOuterPeople: innerOuterPeople.result,
       },
     });
+    const warningType = await getWarnTypeByTime({ dataStr: this.state.dataStr });
+    this.props.dispatch({
+      type: 'bigScreen/update',
+      payload: {
+        warningTypeInfo: warningType.result,
+      }
+    })
   }
 
   createPositionNumberGraph = () => {
@@ -521,6 +531,33 @@ class DataView extends Component<any, State> {
     return <ReactEcharts option={option} style={{ width: '100%', height: '100%' }} />;
   };
   createPoliceType = () => {
+    const { warningTypeInfo } = this.props;
+    if (warningTypeInfo.length === 0) return null;
+    const legendData = warningTypeInfo.map(item => item.warnTypeName);
+    const series = warningTypeInfo.map((warnType, index) => {
+      const data = warnType.warnTypeNumList.map((item, index) => { item.num })
+      return {
+        name: warnType.warnTypeName,
+        type: 'bar',
+        stack: '总量',
+        barWidth: 6,
+        itemStyle: {
+          normal: {
+            color: ['rgba(9,120,242,1)', 'rgba(77,253,184,1)', 'rgba(255,180,0,1)', 'rgba(241,126,60,1)', 'rgba(73,86,227,1)'][index],
+            barBorderRadius: [20, 20, 20, 20],
+          },
+        },
+        label: {
+          normal: {
+            show: true,
+            position: 'insideRight',
+          },
+        },
+        z: 10,
+        data: data,
+      }
+    }
+    )
     const option = {
       tooltip: {
         trigger: 'axis',
@@ -530,7 +567,7 @@ class DataView extends Component<any, State> {
         },
       },
       legend: {
-        data: ['闯入告警', '闯出告警', '聚集告警', '超员告警', '脱岗告警'],
+        data: legendData,
         textStyle: {
           color: '#7AB2E2',
         },
@@ -573,101 +610,7 @@ class DataView extends Component<any, State> {
           show: false,
         },
       },
-      series: [
-        {
-          name: '闯入告警',
-          type: 'bar',
-          stack: '总量',
-          barWidth: 10,
-          itemStyle: {
-            normal: {
-              color: 'rgba(9,120,242,1)',
-              barBorderRadius: [0, 0, 0, 0],
-            },
-          },
-          label: {
-            normal: {
-              show: false,
-              position: 'insideRight',
-            },
-          },
-          z: 10,
-          data: [32, 30, 30, 33, 39, 33, 32],
-        },
-        {
-          name: '闯出告警',
-          type: 'bar',
-          stack: '总量',
-          itemStyle: {
-            normal: {
-              color: 'rgba(77,253,184,1)',
-              barBorderRadius: [0, 0, 0, 0],
-            },
-          },
-          label: {
-            normal: {
-              show: false,
-              position: 'insideRight',
-            },
-          },
-          z: 5,
-          data: [12, 13, 10, 13, 9, 23, 21],
-        },
-        {
-          name: '聚集告警',
-          type: 'bar',
-          stack: '总量',
-          itemStyle: {
-            normal: {
-              barBorderRadius: [0, 0, 0, 0],
-              color: 'rgba(255,180,0,1)',
-            },
-          },
-          label: {
-            normal: {
-              show: false,
-              position: 'insideRight',
-            },
-          },
-          data: [12, 8, 9, 23, 9, 13, 21],
-        },
-        {
-          name: '超员告警',
-          type: 'bar',
-          stack: '总量',
-          itemStyle: {
-            normal: {
-              barBorderRadius: [0, 0, 0, 0],
-              color: 'rgba(241,126,60,1)',
-            },
-          },
-          label: {
-            normal: {
-              show: false,
-              position: 'insideRight',
-            },
-          },
-          data: [12, 18, 15, 23, 19, 23, 21],
-        },
-        {
-          name: '脱岗告警',
-          type: 'bar',
-          stack: '总量',
-          itemStyle: {
-            normal: {
-              barBorderRadius: [0, 20, 20, 0],
-              color: 'rgba(73,86,227,1)',
-            },
-          },
-          label: {
-            normal: {
-              show: true,
-              position: 'insideRight',
-            },
-          },
-          data: [10, 12, 13, 15, 14, 19, 20],
-        },
-      ],
+      series: series
     };
     return <ReactEcharts option={option} style={{ width: '100%', height: '100%' }} />;
   };
