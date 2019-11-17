@@ -2,7 +2,7 @@
  * title: 日志管理
  */
 import React from 'react';
-import { Layout, Form, Input, Row, Col, TimePicker, Button, Icon } from 'antd';
+import { Layout, Form, message, Row, Col, DatePicker, Button, Icon } from 'antd';
 import { connect } from 'dva';
 import moment from 'moment';
 import * as _ from 'lodash';
@@ -10,13 +10,15 @@ import * as _ from 'lodash';
 import MainContent from '../components/MainContent';
 import { ICON_FONTS_URL } from '../../../config/constants';
 import { UmiComponentProps } from '@/common/type';
-import { getLogList } from '../services';
+import { getLogList, exportLogList } from '../services';
+import { GetLogListParams } from '../services/index.interface';
 
 import styles from './index.less';
 import publicStyles from '../index.less';
 
 const { Content } = Layout;
 const FormItem = Form.Item;
+const { RangePicker } = DatePicker;
 
 const IconFont = Icon.createFromIconfontCN({
   scriptUrl: ICON_FONTS_URL,
@@ -60,22 +62,23 @@ type StateProps = ReturnType<typeof mapState>;
 type Props = StateProps & UmiComponentProps;
 
 interface State {
-  createdTime: string;
-  updatedTime: string;
+  time: any[];
+  dateStrings: string[];
 }
 
 class LogList extends React.Component<Props, State> {
   constructor(props: any) {
     super(props);
     this.state = {
-      createdTime: '2019-11-11 14:36:31',
-      updatedTime: '2019-11-11 14:36:31',
+      time: [moment('2019-11-11 14:36:31'), moment('2019-11-11 14:36:31')],
+      dateStrings: ['2019-11-11 14:36:31', '2019-11-11 14:36:31'],
     };
     this.getLogList = this.getLogList.bind(this);
+    this.exportLogs = this.exportLogs.bind(this);
   }
 
-  async getLogList() {
-    const resp = await getLogList({});
+  async getLogList(params: GetLogListParams = {}) {
+    const resp = await getLogList(params);
     this.props.dispatch({
       type: 'logManager/update',
       payload: {
@@ -87,6 +90,35 @@ class LogList extends React.Component<Props, State> {
   componentDidMount() {
     this.getLogList();
   }
+  componentWillUnmount() {
+    message.destroy();
+  }
+  onRangePickerChange = (dates, dateStrings) => {
+    this.setState({
+      time: dates,
+      dateStrings: dateStrings,
+    });
+  };
+  onRangePickerOK = () => {
+    const { dateStrings } = this.state;
+    this.getLogList({
+      createTime: dateStrings[0],
+      updateTime: dateStrings[1],
+    });
+  };
+
+  onResetLogList = () => {
+    this.forceUpdate(() => {
+      this.getLogList();
+    });
+  };
+  async exportLogs() {
+    const resp = await exportLogList();
+    if (resp) {
+      message.success('导出成功');
+    }
+  }
+
   render() {
     let { logList } = this.props;
     if (_.isEmpty(logList)) {
@@ -113,21 +145,38 @@ class LogList extends React.Component<Props, State> {
               >
                 <span className={publicStyles.authInner} style={{ paddingLeft: '39px' }}>
                   操作时间
-                  <span className={publicStyles.timePicker}>
-                    <TimePicker value={moment(this.state.createdTime)} />
-                  </span>
-                  <span className={publicStyles.timePicker}>-</span>
-                  <span className={publicStyles.timePicker}>
-                    <TimePicker value={moment(this.state.updatedTime)} />
-                  </span>
+                  <RangePicker
+                    showTime={{ format: 'HH:mm:ss' }}
+                    format="YYYY-MM-DD HH:mm:ss"
+                    placeholder={['开始时间', '结束时间']}
+                    onChange={this.onRangePickerChange}
+                    onOk={this.onRangePickerOK}
+                    value={this.state.time}
+                  />
                 </span>
                 <span className={publicStyles.button_type}>
-                  <Button className={publicStyles.form_btn} style={{ marginLeft: 30 }}>
+                  <Button
+                    className={publicStyles.form_btn}
+                    style={{ marginLeft: 30 }}
+                    onClick={this.onRangePickerOK}
+                  >
                     查询
                   </Button>
-                  <Button className={publicStyles.form_btn} style={{ marginLeft: 30 }}>
+                  <Button
+                    className={publicStyles.form_btn}
+                    style={{ marginLeft: 30 }}
+                    onClick={this.onResetLogList}
+                  >
                     清空
                   </Button>
+                </span>
+                <span className={[`${publicStyles.form_btns}`].join(' ')}>
+                  <span
+                    className={[`${publicStyles.form_btn_add}`].join('')}
+                    onClick={this.exportLogs}
+                  >
+                    <IconFont type="icon-plus" />
+                  </span>
                 </span>
               </Row>
             </Form>
