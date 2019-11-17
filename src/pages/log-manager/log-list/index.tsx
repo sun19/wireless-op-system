@@ -175,7 +175,7 @@ class LogList extends React.Component<Props, State> {
                     className={[`${publicStyles.form_btn_add}`].join('')}
                     onClick={this.exportLogs}
                   >
-                    <IconFont type="icon-plus" />
+                    <IconFont type="icon-download-simple" />
                   </span>
                 </span>
               </Row>
