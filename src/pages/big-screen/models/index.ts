@@ -7,7 +7,9 @@ export default {
     positionPeopleCount: [],
     historyWarns: {},
     innerOuterPeople: [],
-    warningTypeInfo: {}, //告警类型统计
+    warningTypeInfo: [], //告警类型统计
+    eleFenceInfo:[],//电子围栏
+    eleTypeInfo: []//电子围栏类型
   },
   reducers: {
     update(state, { payload }) {
