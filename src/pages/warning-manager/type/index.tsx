@@ -94,7 +94,8 @@ class WraningType extends React.Component<Props, State> {
   constructor(props: any) {
     super(props);
     this.updateData = this.updateData.bind(this);
-    // this.deleteColumn = this.deleteColumn.bind(this);
+    this.deleteColumn = this.deleteColumn.bind(this);
+    this.getwarningTypeList = this.getwarningTypeList.bind(this);
     this.state = {
       name: '',
       pageNo: 1,
@@ -135,7 +136,6 @@ class WraningType extends React.Component<Props, State> {
   search = e => {
     e.preventDefault();
     this.props.form.validateFields(async (err, values) => {
-      // console.log('1', values);
       this.getwarningTypeList(values);
     });
   };
@@ -206,7 +206,7 @@ class WraningType extends React.Component<Props, State> {
   }
 }
 
-const TaskPlanFrom = Form.create<Props>({ name: 'task_paln' })(WraningType);
+const TaskPlanFrom = Form.create<Props>({ name: 'warn_manager_type' })(WraningType);
 const mapState = ({ warningManager }) => {
   const resp = warningManager.type;
   return { taskList: resp };

@@ -40,7 +40,7 @@ class EditableCell extends React.Component<any> {
                   message: `Please Input ${title}!`,
                 },
               ],
-              initialValue: record[dataIndex],
+              initialValue: record[dataIndex].toString(),
             })(this.getInput())}
           </Form.Item>
         ) : (
