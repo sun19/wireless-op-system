@@ -30,7 +30,15 @@ const columns = [
     editable: true,
   },
   {
-    title: '路线名称1',
+    title: '路线1',
+    dataIndex: 'routeName',
+    editable: true,
+  }, {
+    title: '路线2',
+    dataIndex: 'routeName',
+    editable: true,
+  }, {
+    title: '路线3',
     dataIndex: 'routeName',
     editable: true,
   },

@@ -81,16 +81,9 @@ class TaskPlan extends React.Component<Props, State> {
   }
 
   async componentDidMount() {
-    this.getTaskListData();
+    await this.getTaskListData();
     this.props.form.validateFields();
-  }
-
-  async getTaskListData(data?: State) {
-    const taskList = await getTaskList(data);
-    this.props.dispatch({
-      type: 'infoCardManager/update',
-      payload: { taskPlan: taskList },
-    });
+    const { taskList } = this.props;
     let { records, total } = taskList;
     records = _.isEmpty(taskList)
       ? []
@@ -100,6 +93,14 @@ class TaskPlan extends React.Component<Props, State> {
     const arr: any[] = _.uniqBy(records, 'task');
     this.setState({
       taskTypes: arr,
+    });
+  }
+
+  async getTaskListData(data?: State) {
+    const taskList = await getTaskList(data);
+    this.props.dispatch({
+      type: 'infoCardManager/update',
+      payload: { taskPlan: taskList },
     });
   }
   async updateData(data, item) {
@@ -197,11 +198,12 @@ class TaskPlan extends React.Component<Props, State> {
                     清空
                   </Button>
                 </span>
-                <span className={[`${publicStyles.form_btns}`].join(' ')}>
+                {/* TODO:任务规划缺少UI界面 */}
+                {/* <span className={[`${publicStyles.form_btns}`].join(' ')}>
                   <span className={[`${publicStyles.form_btn_add}`].join('')}>
                     <IconFont type="icon-plus" />
                   </span>
-                </span>
+                </span> */}
               </Row>
             </Form>
           </div>
