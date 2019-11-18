@@ -717,12 +717,12 @@ class DataView extends React.Component<Props, State> {
   };
   createRouteCheckData = () => {
     const columns = [
-      {
-        title: '序号',
-        dataIndex: 'id',
-        editable: true,
-        ellipsis: true,
-      },
+      // {
+      //   title: '序号',
+      //   dataIndex: 'id',
+      //   editable: true,
+      //   ellipsis: true,
+      // },
       {
         title: '告警信息',
         dataIndex: 'warnName',

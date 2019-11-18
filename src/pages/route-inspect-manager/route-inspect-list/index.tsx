@@ -2,11 +2,12 @@
  * title: 巡检列表
  */
 import React from 'react';
-import { Layout, Form, Input, Row, Col, TimePicker, Button, Icon } from 'antd';
+import { Layout, Form, Input, Row, Col, TimePicker, Button, DatePicker, Icon } from 'antd';
 import { connect } from 'dva';
 import * as _ from 'lodash';
 import { FormComponentProps } from 'antd/lib/form';
 
+const { MonthPicker, RangePicker } = DatePicker;
 import MainContent from '../components/MainContent';
 import { ICON_FONTS_URL } from '../../../config/constants';
 import { UmiComponentProps } from '@/common/type';
@@ -18,6 +19,9 @@ import moment from 'moment';
 
 const { Content } = Layout;
 const FormItem = Form.Item;
+const dateFormat = 'YYYY/MM/DD';
+const monthFormat = 'YYYY/MM';
+const dateFormatList = ['DD/MM/YYYY', 'DD/MM/YY'];
 
 const IconFont = Icon.createFromIconfontCN({
   scriptUrl: ICON_FONTS_URL,
@@ -44,14 +48,27 @@ const columns = [
     dataIndex: 'endTime',
     editable: true,
   },
-  // {
-  //   title: '是否完成',
-  //   dataIndex: 'phone',
-  //   editable: true,
-  // },
+  {
+    title: '是否完成',
+    dataIndex: 'whether',
+    editable: true,
+    render: (name, record) => {
+      return (
+        <div>
+          {record.whether == '1' ? (
+            <IconFont type="icon-correct" />
+
+          ) : (
+              <IconFont type="icon-error" />
+
+            )}
+        </div>
+      );
+    },
+  },
   {
     title: '描述',
-    dataIndex: 'departmentName',
+    dataIndex: 'remark',
     editable: true,
   },
 ];
@@ -63,6 +80,8 @@ class RouteInspectList extends React.Component<Props> {
   constructor(props: any) {
     super(props);
     this.getRouteInspectList = this.getRouteInspectList.bind(this);
+    // this.updateData = this.updateData.bind(this);
+    // this.deleteColumn = this.deleteColumn.bind(this);
   }
   async getRouteInspectList(params: GetInspectListParams = {}) {
     const resp = await getInspectList(params);
@@ -79,7 +98,15 @@ class RouteInspectList extends React.Component<Props> {
   onSearch = e => {
     e.preventDefault();
     this.props.form.validateFields(async (err, values) => {
-      this.getRouteInspectList(values);
+      const { startTime, endTime, ...props } = values
+      const data = {
+        ...props,
+        startTime: values.startTime.format('YYYY-MM-DD hh:mm:ss'),
+
+        endTime: values.endTime ? values.endTime.format('YYYY-MM-DD hh:mm:ss') : ''
+      }
+
+      this.getRouteInspectList(data);
     });
   };
 
@@ -130,14 +157,18 @@ class RouteInspectList extends React.Component<Props> {
                 <FormItem label="开始时间">
                   {getFieldDecorator('startTime', {
                   })(
-                    <TimePicker placeholder="请选择开始时间" />,
+                    // <RangePicker
+                    //   defaultValue={[moment('2015/01/01', dateFormat), moment('2015/01/01', dateFormat)]}
+                    //   format={dateFormat}
+                    // />
+                    <DatePicker showTime={true} placeholder="请选择开始时间" />,
                   )}
                 </FormItem>
                 <FormItem label="结束时间">
                   {getFieldDecorator('endTime', {
                     // initialValue: moment('12:08:23', 'HH:mm:ss'),
                   })(
-                    <TimePicker placeholder="请选择结束时间" />,
+                    <DatePicker showTime={true} format="YYYY-MM-DD HH:mm:ss" placeholder="请选择结束时间" />,
                   )}
                 </FormItem>
                 {/* <span className={publicStyles.authInner} style={{ paddingLeft: '39px' }}>
