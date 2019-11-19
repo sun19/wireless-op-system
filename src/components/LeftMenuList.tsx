@@ -23,6 +23,8 @@ class LeftMenuList extends Component<any> {
     });
   };
   onOpenChange = (openKeys: string[]) => {
+
+
     openKeys = openKeys.length > 0 ? openKeys.slice(-1) : [];
     // TODO:暂时不做点击`menu`切换路由操作
     this.props.dispatch({
@@ -72,19 +74,23 @@ class LeftMenuList extends Component<any> {
   };
 
   renderLeftMenu = () => {
-    const { menus, rootKeys } = this.props;
-    return menus.map(leftMenuItem => {
+    const { menus, rootKeys,openKeys } = this.props;
+    return menus.map((leftMenuItem,index) => {
       return (
         <SubMenu
           key={leftMenuItem.name}
           className={[`${styles.no_background}`, `${styles.sub_menu_list}`].join(' ')}
           title={
             <span>
-              <Icon type="setting" />
-              <span className={`${styles.icon_title}`}>{leftMenuItem.name}</span>
+              {/* <Icon type="setting" /> */}
+              <IconFont
+                // className={`${styles.icon_down}`}
+                type={leftMenuItem.icon}
+              />
+              <span className={`${styles.icon_title}`}>{leftMenuItem.name} {rootKeys[index] == leftMenuItem.name}</span>
               <IconFont
                 className={`${styles.icon_down}`}
-                type={rootKeys[0] == leftMenuItem.name ? 'icon-down1' : 'icon-up1'}
+                type={openKeys == leftMenuItem.name ? 'icon-down1' : 'icon-up1'}
               />
             </span>
           }

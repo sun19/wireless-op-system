@@ -2,6 +2,7 @@ export const LEFT_MENUS = [
   {
     name: '系统设置',
     key: '01',
+    icon:'icon-system1',
     path: '/system-setting',
     component: './pages/system-setting',
     children: [
@@ -34,6 +35,7 @@ export const LEFT_MENUS = [
   {
     name: '人员管理',
     key: '06',
+    icon:'icon-system1',
     path: '/user-manager',
     component: './pages/user-manager',
     children: [
@@ -54,6 +56,7 @@ export const LEFT_MENUS = [
   {
     name: '信息牌管理',
     key: '09',
+    icon:'icon-card1',
     path: '/info-card-manager',
     component: './pages/info-card-manager',
     children: [
@@ -75,6 +78,7 @@ export const LEFT_MENUS = [
     name: '地图管理',
     key: '12',
     path: '/map-manager',
+    icon:'icon-map1',
     component: './pages/map-manager',
     children: [
       // {
@@ -118,6 +122,7 @@ export const LEFT_MENUS = [
   {
     name: '告警管理',
     key: '19',
+    icon:'icon-system1',
     path: '/warning-manager',
     component: './pages/warning-manager',
     children: [
@@ -144,6 +149,7 @@ export const LEFT_MENUS = [
   {
     name: '巡检管理',
     key: '23',
+    icon:'icon-polling1',
     path: '/route-inspect-manager',
     component: './pages/route-inspect-manager',
     children: [
@@ -164,6 +170,7 @@ export const LEFT_MENUS = [
   {
     name: '日志管理',
     key: '26',
+    icon:'icon-dialog1',
     path: '/log-manager',
     component: './pages/log-manager',
     children: [
@@ -178,6 +185,7 @@ export const LEFT_MENUS = [
   {
     name: '大屏展示',
     key: '28',
+    icon:'icon-show1',
     path: '/big-screen',
     component: './pages/big-screen',
     children: [
@@ -198,6 +206,7 @@ export const LEFT_MENUS = [
   {
     name: '统计查询',
     key: '29',
+    icon:'icon-statistic1',
     path: '/statistics-query',
     component: './pages/statistics-query',
     children: [
