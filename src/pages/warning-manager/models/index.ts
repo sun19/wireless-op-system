@@ -4,6 +4,8 @@ export default {
     type: {},
     info: {},
     history: {},
+    maps: [],
+    areas: [],
   },
   reducers: {
     update(state, { payload }) {
