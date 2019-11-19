@@ -12,6 +12,8 @@ import {
   WARNING_INFO_DEAL,
   // 告警历史
   WARNING_HISTORY_SEARCH,
+  COMMON_GET_ALL_MAP,
+  COMMON_GET_ALL_AREAS,
 } from '@/config/api';
 import {
   WarningTypeSearch,
@@ -79,4 +81,16 @@ export async function warningHistorySearch(params: WarningHistorySearch) {
     message.error(resp.message);
   }
   return resp.result;
+}
+
+/*******************************  通用接口****************************** */
+
+export async function getAllMaps() {
+  const resp = await request.get(COMMON_GET_ALL_MAP);
+  return resp;
+}
+
+export async function getAllAreas() {
+  const resp = await request.get(COMMON_GET_ALL_AREAS);
+  return resp;
 }
