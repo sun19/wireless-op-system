@@ -135,10 +135,11 @@ class TaskPlan extends React.Component<Props, State> {
     // if (records.length === 0) return <Option value="" />;
     const arr = this.state.taskTypes;
     const { getFieldDecorator } = this.props.form;
+    // if(records){return}
     return (
       <Form.Item label="任务">
         {getFieldDecorator('task', {
-          initialValue: '0',
+          initialValue:'' ,
         })(
           <Select placeholder="请选择任务" style={{ marginTop: '-3px' }}>
             {arr.map((item: any) => (

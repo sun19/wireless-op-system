@@ -82,9 +82,7 @@ class LeftMenuList extends Component<any> {
           className={[`${styles.no_background}`, `${styles.sub_menu_list}`].join(' ')}
           title={
             <span>
-              {/* <Icon type="setting" /> */}
               <IconFont
-                // className={`${styles.icon_down}`}
                 type={leftMenuItem.icon}
               />
               <span className={`${styles.icon_title}`}>{leftMenuItem.name} {rootKeys[index] == leftMenuItem.name}</span>
