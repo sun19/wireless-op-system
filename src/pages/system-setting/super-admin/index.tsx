@@ -136,10 +136,9 @@ class SuperAdmin extends React.Component<Props, State> {
   };
 
   addSuperAdmin = () => {
-    message.success('添加超级管理员成功');
+    message.success('功能暂未开发');
     // router.push('/system-setting/super-admin/add');
   };
-
   componentDidMount() {
     this.getSuperAdminList();
   }

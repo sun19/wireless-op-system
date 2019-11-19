@@ -224,7 +224,7 @@ class StatisticsHistory extends React.Component<Props, State> {
                     className={[`${publicStyles.form_btn_add}`].join('')}
                     onClick={this.addUser}
                   >
-                    <IconFont type="icon-plus" />
+                    <IconFont type="icon-upload-light" />
                   </span>
                 </span>
               </Row>
