@@ -231,11 +231,7 @@ class UserAuth extends React.Component<Props, State> {
                 <Col span={24}>
                   <Form.Item label="超限时间">
                     {getFieldDecorator('overrunTime', {
-                      rules: [
-                        {
-                          message: '请选择超限时间',
-                        },
-                      ],
+                      rules: [],
                     })(
                       <DatePicker
                         showTime={true}
