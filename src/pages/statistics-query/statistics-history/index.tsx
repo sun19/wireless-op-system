@@ -138,12 +138,13 @@ class StatisticsHistory extends React.Component<Props, State> {
   async getHistoryListData(data?: State) {
     const taskList = await getSatisticsHistory(data);
     this.props.dispatch({
-      type: 'statisticsQuery/history',
-      payload: { history: taskList.result},
+      type: 'statisticsQuery/update',
+      payload: { history: taskList},
     });
   }
   render() {
     let { taskList} = this.props;
+
     const { getFieldDecorator } = this.props.form;
     if (_.isEmpty(taskList)) {
       taskList = {
@@ -242,7 +243,7 @@ class StatisticsHistory extends React.Component<Props, State> {
   }
 }
 
-const TaskPlanFrom = Form.create<Props>({ name: 'task_paln' })(StatisticsHistory);
+const TaskPlanFrom = Form.create<Props>({ name: 'statistics_history_query' })(StatisticsHistory);
 const mapState = ({ statisticsQuery }) => {
   const resp = statisticsQuery.history;
   return { taskList: resp};
