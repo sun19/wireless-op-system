@@ -109,7 +109,10 @@ class AddUser extends React.Component<Props, State> {
   componentWillUnmount() {
     message.destroy();
   }
-
+  goBack = () => {
+    this.props.form.resetFields();
+    router.push('/info-card-manager/info-card-list');
+  }; 
   handleSubmit(e) {
     e.preventDefault();
     this.props.form.validateFields(async (err, values) => {
@@ -335,7 +338,7 @@ class AddUser extends React.Component<Props, State> {
                   </Col>
                   <Col span={6} className={styles.select_padding_left}>
                     <Form.Item>
-                      <Button className={styles.form_btn}>返回</Button>
+                      <Button className={styles.form_btn} onClick={this.goBack}>返回</Button>
                     </Form.Item>
                   </Col>
                 </Row>

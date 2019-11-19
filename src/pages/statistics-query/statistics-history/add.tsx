@@ -1,7 +1,10 @@
 import React from 'react';
 import { Form, Row, Col, Button, Input, Select } from 'antd';
+import { connect } from 'dva';
+import router from 'umi/router';
 import { FormComponentProps } from 'antd/lib/form';
 
+import { UmiComponentProps } from '@/common/type';
 import ContentBorder from '../../../components/ContentBorder';
 // import { InputText, TreeNodeMenu } from '../components';
 
@@ -10,9 +13,26 @@ import styles from './index.less';
 const { TextArea } = Input;
 const { Option } = Select;
 
-interface Props extends FormComponentProps {}
 
-const UserAuth: React.FC<Props> = (props: Props) => {
+
+interface FormProps extends FormComponentProps {}
+
+type StateProps = ReturnType<typeof mapState>;
+type Props = StateProps & UmiComponentProps & FormProps;
+
+
+// const UserAuth: React.FC<Props> = (props: Props) => {
+class historyAdd extends React.Component<Props> {
+  constructor(props) {
+    super(props);
+    // this.handleSubmit = this.handleSubmit.bind(this);
+  }
+  goBack = () => {
+    this.props.form.resetFields();
+    router.push('/statistics-query/statistics-history');
+  }; 
+render() {
+    const props = this.props;
   const { getFieldDecorator } = props.form;
   return (
     <ContentBorder className={styles.auth_root}>
@@ -67,7 +87,7 @@ const UserAuth: React.FC<Props> = (props: Props) => {
               </Col>
               <Col span={2} className={styles.select_padding_left}>
                 <Form.Item>
-                  <Button className={styles.form_btn}>返回</Button>
+                  <Button className={styles.form_btn} onClick={this.goBack}>返回</Button>
                 </Form.Item>
               </Col>
             </Row>
@@ -76,6 +96,18 @@ const UserAuth: React.FC<Props> = (props: Props) => {
       </Form>
     </ContentBorder>
   );
+}
 };
 
-export default Form.create<Props>({ name: 'auth_user' })(UserAuth);
+const HistoryAdd = Form.create<Props>({ name: 'history_add' })(historyAdd);
+
+const mapState = ({ statisticsQuery }) => {
+  const resp = statisticsQuery.history;
+  // const { allDuties, allSecretLevel } = commonState;
+  return {
+    history: resp,
+    
+  };
+};
+
+export default connect(mapState)(HistoryAdd);

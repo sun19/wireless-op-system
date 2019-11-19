@@ -7,6 +7,7 @@ export default {
     lamps: {},
     pollingPoints: {},
     pollingLines: {},
+    fenceAdd:{}
   },
   reducers: {
     update(state, { payload }) {
