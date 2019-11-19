@@ -2,7 +2,7 @@
  * title: 历史告警
  */
 import React from 'react';
-import { Layout, Form, Input, Row, Col, TimePicker, Button, Icon } from 'antd';
+import { Layout, Form, Input, Row, Col, TimePicker, Button, DatePicker, Icon } from 'antd';
 
 import MainContent from '../components/MainContent';
 import { ICON_FONTS_URL } from '../../../config/constants';
@@ -113,8 +113,13 @@ class WraningHistory extends React.Component<Props, State> {
   search = e => {
     e.preventDefault();
     this.props.form.validateFields(async (err, values) => {
-      // console.log('1', values);
-      this.getTaskListData(values);
+      const { alarmStartTime, alarmEndTime, ...props } = values
+      const data = {
+        ...props,
+        alarmStartTime: values.alarmStartTime ? values.alarmStartTime.format('MM-DD hh:mm:ss') : '',
+        alarmEndTime: values.alarmEndTime ? values.alarmEndTime.format('MM-DD hh:mm:ss') : ''
+      }
+      this.getTaskListData(data);
     });
   };
   handleReset = () => {
@@ -151,8 +156,21 @@ class WraningHistory extends React.Component<Props, State> {
                   )(<Input className={publicStyles.input_text} placeholder="请输入警告名称" />)}
                 </FormItem>
                 <span className={publicStyles.authInner} style={{ paddingLeft: '39px' }}>
-                  <span className={publicStyles.timePicker}>
-                    <FormItem label="警告标签">
+                  {/* <span className={publicStyles.timePicker}> */}
+                    <FormItem label="开始时间">
+                      {getFieldDecorator('alarmStartTime', {
+                      })(
+                        <DatePicker showTime={true} placeholder="请选择开始时间" />,
+                      )}
+                    </FormItem>
+                    <FormItem label="结束时间">
+                      {getFieldDecorator('alarmEndTime', {
+                        // initialValue: moment('12:08:23', 'HH:mm:ss'),
+                      })(
+                        <DatePicker showTime={true} format="YYYY-MM-DD HH:mm:ss" placeholder="请选择结束时间" />,
+                      )}
+                    </FormItem>
+                    {/* <FormItem label="警告标签">
                       {getFieldDecorator('alarmStartTime', {
                         initialValue: moment('12:08:23', 'HH:mm:ss'),
                       })(<TimePicker />)}
@@ -164,8 +182,8 @@ class WraningHistory extends React.Component<Props, State> {
                       {getFieldDecorator('alarmEndTime', {
                         initialValue: moment('12:08:23', 'HH:mm:ss'),
                       })(<TimePicker />)}
-                    </FormItem>
-                  </span>
+                    </FormItem> */}
+                  {/* </span> */}
                 </span>
 
                 <span className={publicStyles.button_type}>

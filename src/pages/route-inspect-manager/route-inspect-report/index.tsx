@@ -2,7 +2,7 @@
  * title: 巡检报表
  */
 import React from 'react';
-import { Layout, Form, Input, Row, Col, TimePicker, Button, Icon } from 'antd';
+import { Layout, Form, Input, Row, Col, TimePicker, Button, DatePicker, Icon } from 'antd';
 import * as _ from 'lodash';
 import { FormComponentProps } from 'antd/lib/form';
 import { connect } from 'dva';
@@ -31,16 +31,55 @@ const columns = [
   },
   {
     title: '路线1',
-    dataIndex: 'routeName',
+    dataIndex: 'inspectionId',
     editable: true,
+    render: (name, record) => {
+      return (
+        <div>
+          {record.inspectionId == '1' ? (
+            <IconFont type="icon-correct" />
+
+          ) : (
+              <IconFont type="icon-error" />
+
+            )}
+        </div>
+      );
+    },
   }, {
     title: '路线2',
-    dataIndex: 'routeName',
+    dataIndex: 'routeId',
     editable: true,
+    render: (name, record) => {
+      return (
+        <div>
+          {record.routeId == '1' ? (
+            <IconFont type="icon-correct" />
+
+          ) : (
+              <IconFont type="icon-error" />
+
+            )}
+        </div>
+      );
+    },
   }, {
     title: '路线3',
-    dataIndex: 'routeName',
+    dataIndex: 'updateId',
     editable: true,
+    render: (name, record) => {
+      return (
+        <div>
+          {record.updateId == '1' ? (
+            <IconFont type="icon-correct" />
+
+          ) : (
+              <IconFont type="icon-error" />
+
+            )}
+        </div>
+      );
+    },
   },
 ];
 
@@ -57,7 +96,7 @@ class RouteInspectReport extends React.Component<Props> {
       this.props.dispatch({
         type: 'routeInspect/update',
         payload: {
-          RouteInspectReport: resp.result,
+          routeInspectReports: resp.result,
         },
       });
     }
@@ -65,7 +104,14 @@ class RouteInspectReport extends React.Component<Props> {
   onSearch = e => {
     e.preventDefault();
     this.props.form.validateFields(async (err, values) => {
-      this.getRouteInspectReports(values);
+      const { createtime, inspectionTime, ...props } = values
+      const data = {
+        ...props,
+        createtime: values.createtime ?values.createtime.format('YYYY-MM-DD hh:mm:ss'):'',
+
+        inspectionTime: values.inspectionTime ? values.inspectionTime.format('YYYY-MM-DD hh:mm:ss') : ''
+      }
+      this.getRouteInspectReports(data);
     });
   };
 
@@ -87,9 +133,10 @@ class RouteInspectReport extends React.Component<Props> {
       };
     }
     let { records, total } = routeInspectReports;
-    records = records.map(item => {
+    records = records.map((item,index)=> {
       return _.assign(item, { key: item.id });
     });
+
     const { getFieldDecorator } = this.props.form;
     return (
       <div className={publicStyles.public_hight}>
@@ -104,10 +151,17 @@ class RouteInspectReport extends React.Component<Props> {
                 gutter={16}
               >
                 <FormItem label="开始时间">
-                  {getFieldDecorator('startTime', {})(<TimePicker placeholder="请选择开始时间" />)}
+                  {getFieldDecorator('createtime', {
+                  })(
+                    <DatePicker showTime={true} placeholder="请选择开始时间" />,
+                  )}
                 </FormItem>
                 <FormItem label="结束时间">
-                  {getFieldDecorator('endTime', {})(<TimePicker placeholder="请选择结束时间" />)}
+                  {getFieldDecorator('inspectionTime', {
+                    // initialValue: moment('12:08:23', 'HH:mm:ss'),
+                  })(
+                    <DatePicker showTime={true} format="YYYY-MM-DD HH:mm:ss" placeholder="请选择结束时间" />,
+                  )}
                 </FormItem>
                 <span className={publicStyles.button_type}>
                   <Button

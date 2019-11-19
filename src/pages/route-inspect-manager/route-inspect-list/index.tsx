@@ -7,7 +7,7 @@ import { connect } from 'dva';
 import * as _ from 'lodash';
 import { FormComponentProps } from 'antd/lib/form';
 
-const { MonthPicker, RangePicker } = DatePicker;
+// const { MonthPicker, RangePicker } = DatePicker;
 import MainContent from '../components/MainContent';
 import { ICON_FONTS_URL } from '../../../config/constants';
 import { UmiComponentProps } from '@/common/type';
@@ -157,10 +157,6 @@ class RouteInspectList extends React.Component<Props> {
                 <FormItem label="开始时间">
                   {getFieldDecorator('startTime', {
                   })(
-                    // <RangePicker
-                    //   defaultValue={[moment('2015/01/01', dateFormat), moment('2015/01/01', dateFormat)]}
-                    //   format={dateFormat}
-                    // />
                     <DatePicker showTime={true} placeholder="请选择开始时间" />,
                   )}
                 </FormItem>
@@ -171,16 +167,6 @@ class RouteInspectList extends React.Component<Props> {
                     <DatePicker showTime={true} format="YYYY-MM-DD HH:mm:ss" placeholder="请选择结束时间" />,
                   )}
                 </FormItem>
-                {/* <span className={publicStyles.authInner} style={{ paddingLeft: '39px' }}>
-                  操作时间
-                  <span className={publicStyles.timePicker}>
-                    <TimePicker defaultValue={moment('12:08:23', 'HH:mm:ss')} />
-                  </span>
-                  <span className={publicStyles.timePicker}>-</span>
-                  <span className={publicStyles.timePicker}>
-                    <TimePicker defaultValue={moment('12:08:23', 'HH:mm:ss')} />
-                  </span>
-                </span> */}
                 <span className={publicStyles.button_type}>
                   <Button
                     className={publicStyles.form_btn}

@@ -2,7 +2,7 @@
  * title: 告警信息
  */
 import React from 'react';
-import { Layout, Form, Input, Row, Col, TimePicker, Button, Icon } from 'antd';
+import { Layout, Form, Input, Row, Col, TimePicker, Button, DatePicker,Icon } from 'antd';
 import * as _ from 'lodash';
 import { connect } from 'dva';
 import { UmiComponentProps } from '@/common/type';
@@ -103,8 +103,13 @@ class WraningInfo extends React.Component<Props, State> {
   search = e => {
     e.preventDefault();
     this.props.form.validateFields(async (err, values) => {
-      // console.log('1', values);
-      this.getTaskListData(values);
+      const { alarmStartTime, alarmEndTime, ...props } = values
+      const data = {
+        ...props,
+        alarmStartTime: values.alarmStartTime ? values.alarmStartTime.format('MM-DD hh:mm:ss') : '',
+        alarmEndTime: values.alarmEndTime ? values.alarmEndTime.format('MM-DD hh:mm:ss') : ''
+      }
+      this.getTaskListData(data);
     });
   };
   handleReset = () => {
@@ -137,21 +142,21 @@ class WraningInfo extends React.Component<Props, State> {
                   )(<Input className={publicStyles.input_text} placeholder="请输入警告标签" />)}
                 </FormItem>
                 <span className={publicStyles.authInner} style={{ paddingLeft: '39px' }}>
-                  <span className={publicStyles.timePicker}>
-                    <FormItem label="警告标签">
+                  {/* <span className={publicStyles.timePicker}> */}
+                    <FormItem label="开始时间">
                       {getFieldDecorator('alarmStartTime', {
-                        initialValue: moment('12:08:23', 'HH:mm:ss'),
-                      })(<TimePicker />)}
+                      })(
+                        <DatePicker showTime={true} placeholder="请选择开始时间" />,
+                      )}
                     </FormItem>
-                  </span>
-                  <span className={publicStyles.timePicker}>-</span>
-                  <span className={publicStyles.timePicker}>
-                    <FormItem label="">
+                    <FormItem label="结束时间">
                       {getFieldDecorator('alarmEndTime', {
-                        initialValue: moment('12:08:23', 'HH:mm:ss'),
-                      })(<TimePicker />)}
+                        // initialValue: moment('12:08:23', 'HH:mm:ss'),
+                      })(
+                        <DatePicker showTime={true} format="YYYY-MM-DD HH:mm:ss" placeholder="请选择结束时间" />,
+                      )}
                     </FormItem>
-                  </span>
+                  {/* </span> */}
                 </span>
                 <span className={publicStyles.button_type}>
                   <Button

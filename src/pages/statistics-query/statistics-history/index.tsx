@@ -30,35 +30,35 @@ type Props = StateProps & UmiComponentProps & FormProps;
 const columns = [
   {
     title: '信息牌编号',
-    dataIndex: 'name',
+    dataIndex: 'informationBoardId',
     editable: true,
   },
   {
     title: '状态',
-    dataIndex: 'mapName',
+    dataIndex: 'onlineStatus',
     editable: true,
   },
   {
     title: '定位',
-    dataIndex: 'alarmTime',
+    dataIndex: 'positionName',
     editable: true,
   },
   {
     title: '任务',
-    dataIndex: 'informationBoardName',
+    dataIndex: 'taskName',
     editable: true,
   },
   {
     title: '进入时间',
-    dataIndex: 'alarmType1',
+    dataIndex: 'entryTime',
     editable: true,
   }, {
     title: '离开时间',
-    dataIndex: 'alarmType2',
+    dataIndex: 'leaveTime',
     editable: true,
   }, {
     title: '姓名',
-    dataIndex: 'alarmType3',
+    dataIndex: 'userName',
     editable: true,
   }, {
     title: '职务',
@@ -66,11 +66,11 @@ const columns = [
     editable: true,
   }, {
     title: '身份证号',
-    dataIndex: 'alarmType5',
+    dataIndex: 'cardNo',
     editable: true,
   }, {
     title: '人员类型',
-    dataIndex: 'alarmType6',
+    dataIndex: 'type',
     editable: true,
   },
 ];
@@ -139,11 +139,11 @@ class StatisticsHistory extends React.Component<Props, State> {
     const taskList = await getSatisticsHistory(data);
     this.props.dispatch({
       type: 'statisticsQuery/history',
-      payload: { history: taskList },
+      payload: { history: taskList.result},
     });
   }
   render() {
-    let { taskList, userTypes} = this.props;
+    let { taskList} = this.props;
     const { getFieldDecorator } = this.props.form;
     if (_.isEmpty(taskList)) {
       taskList = {
@@ -245,7 +245,6 @@ class StatisticsHistory extends React.Component<Props, State> {
 const TaskPlanFrom = Form.create<Props>({ name: 'task_paln' })(StatisticsHistory);
 const mapState = ({ statisticsQuery }) => {
   const resp = statisticsQuery.history;
-  const roleTypes = statisticsQuery.roles;
-  return { taskList: resp, userTypes: roleTypes};
+  return { taskList: resp};
 };
 export default connect(mapState)(TaskPlanFrom);
