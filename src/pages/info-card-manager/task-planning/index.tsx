@@ -41,7 +41,7 @@ const columns = [
   },
   {
     title: '信息牌编号',
-    dataIndex: 'informationBoardName',
+    dataIndex: 'informationBoardId',
     editable: true,
   },
   {

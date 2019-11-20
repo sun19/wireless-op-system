@@ -47,12 +47,12 @@ const columns = [
   },
   {
     title: 'x坐标',
-    dataIndex: 'xCoordinate',
+    dataIndex: 'xcoordinate',
     editable: true,
   },
   {
     title: 'y坐标',
-    dataIndex: 'yCoordinate',
+    dataIndex: 'ycoordinate',
     editable: true,
   },
   {
