@@ -7,7 +7,10 @@ export default {
     lamps: {},
     pollingPoints: {},
     pollingLines: {},
-    fenceAdd:{}
+    allMaps: [],
+    fencingTypes: [],
+    users: [],
+    levels: [],
   },
   reducers: {
     update(state, { payload }) {

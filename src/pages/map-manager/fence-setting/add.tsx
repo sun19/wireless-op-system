@@ -2,37 +2,91 @@
  * title: 修改
  */
 import React from 'react';
-import { Form, Row, Col, Button, Input, Select } from 'antd';
-import { connect } from 'dva';
+import { Form, Row, Col, Button, Input, Select, DatePicker } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
-import router from 'umi/router';
+import { connect } from 'dva';
+import Konva from 'konva';
+import { Stage, Layer, Image as ImageLayer, Line as LineLayer } from 'react-konva';
 
-import { UmiComponentProps } from '@/common/type';
 import ContentBorder from '../../../components/ContentBorder';
-// import { InputText, TreeNodeMenu } from '../components';
+import { UmiComponentProps } from '@/common/type';
+import {
+  getAllMap,
+  getAllFencingTypes,
+  getAllUserInfo,
+  getAllLevels,
+} from '@/pages/login/login.service';
 
 import styles from './index.less';
 
 const { TextArea } = Input;
 const { Option } = Select;
 
-interface FormProps extends FormComponentProps { }
+interface State {
+  mapImage: any;
+  width: number;
+  height: number;
+}
 
 type StateProps = ReturnType<typeof mapState>;
-type Props = StateProps & UmiComponentProps & FormProps;
+type Props = StateProps & UmiComponentProps & FormComponentProps;
 
-class fenceAdd extends React.Component<Props> {
+class FencingSetting extends React.Component<Props, State> {
+  map: React.RefObject<HTMLDivElement>;
   constructor(props) {
     super(props);
-    // this.handleSubmit = this.handleSubmit.bind(this);
+    this.map = React.createRef<HTMLDivElement>();
+    this.state = {
+      mapImage: null,
+      width: 0,
+      height: 0,
+    };
+    this.initRequest = this.initRequest.bind(this);
   }
-  goBack = () => {
-    this.props.form.resetFields();
-    router.push('/map-manager/fence-setting');
-  }; 
-  render() {
+  async componentDidMount() {
+    const mapImage = await this.dynamicLoadMapImage();
+    if (this.map.current) {
+      const { clientWidth, clientHeight } = this.map.current;
 
+      this.setState({
+        mapImage,
+        width: clientWidth,
+        height: clientHeight,
+      });
+    }
+    this.initRequest();
+  }
+
+  async initRequest() {
+    const maps = await getAllMap();
+    const fencingTypes = await getAllFencingTypes();
+    const users = await getAllUserInfo();
+    const levels = await getAllLevels();
+    this.props.dispatch({
+      type: 'mapManager/update',
+      payload: {
+        allMaps: maps.result,
+        fencingTypes: fencingTypes.result,
+        users: users.result,
+        levels: levels.result,
+      },
+    });
+  }
+
+  dynamicLoadMapImage() {
+    return new Promise(resolve => {
+      const mapImage = new Image();
+      mapImage.src = require('../../big-screen/assets/map.png');
+      mapImage.onload = function() {
+        resolve(mapImage);
+      };
+    });
+  }
+
+  render() {
     const { getFieldDecorator } = this.props.form;
+    const { mapImage, width, height } = this.state;
+    const { maps, fencingTypes, users, levels } = this.props;
     return (
       <ContentBorder className={styles.auth_root}>
         <Form layout="inline" labelAlign="right" style={{ marginTop: '0.57rem' }}>
@@ -41,7 +95,7 @@ class fenceAdd extends React.Component<Props> {
               <Row type="flex" justify="space-between">
                 <Col span={24}>
                   <Form.Item label="地图名称">
-                    {getFieldDecorator('地图名称', {
+                    {getFieldDecorator('mapName', {
                       rules: [
                         {
                           message: '请选择地图名称',
@@ -49,13 +103,16 @@ class fenceAdd extends React.Component<Props> {
                       ],
                     })(
                       <Select placeholder="请选择地图名称" defaultValue="lucy">
-                        <Option value="jack">Jack</Option>
-                        <Option value="lucy">Lucy</Option>
+                        {maps.map(item => (
+                          <Option value={item.name} key={item.name}>
+                            {item.name}
+                          </Option>
+                        ))}
                       </Select>,
                     )}
                   </Form.Item>
                   <Form.Item label="围栏名称">
-                    {getFieldDecorator('围栏名称', {
+                    {getFieldDecorator('name', {
                       rules: [
                         {
                           message: '请输入围栏名称',
@@ -64,7 +121,7 @@ class fenceAdd extends React.Component<Props> {
                     })(<Input placeholder="请输入围栏名称" />)}
                   </Form.Item>
                   <Form.Item label="围栏类型">
-                    {getFieldDecorator('围栏类型', {
+                    {getFieldDecorator('type', {
                       rules: [
                         {
                           message: '请选择围栏类型',
@@ -74,11 +131,16 @@ class fenceAdd extends React.Component<Props> {
                       <Select placeholder="请选择围栏类型" defaultValue="lucy">
                         <Option value="jack">Jack</Option>
                         <Option value="lucy">Lucy</Option>
+                        {fencingTypes.map(item => (
+                          <Option value={item.value} key={item.value}>
+                            {item.name}
+                          </Option>
+                        ))}
                       </Select>,
                     )}
                   </Form.Item>
                   <Form.Item label="是否永久">
-                    {getFieldDecorator('是否永久', {
+                    {getFieldDecorator('isForever', {
                       rules: [
                         {
                           message: '请选择是否永久',
@@ -86,8 +148,8 @@ class fenceAdd extends React.Component<Props> {
                       ],
                     })(
                       <Select placeholder="请选择是否永久" defaultValue="lucy">
-                        <Option value="jack">Jack</Option>
-                        <Option value="lucy">Lucy</Option>
+                        <Option value="是">是</Option>
+                        <Option value="否">否</Option>
                       </Select>,
                     )}
                   </Form.Item>
@@ -97,25 +159,33 @@ class fenceAdd extends React.Component<Props> {
               <Row type="flex" justify="space-between">
                 <Col span={24}>
                   <Form.Item label="生效时间">
-                    {getFieldDecorator('生效时间', {
-                      rules: [
-                        {
-                          message: '请输入生效时间',
-                        },
-                      ],
-                    })(<Input placeholder="请输入生效时间" />)}
+                    {getFieldDecorator('effectiveTime', {
+                      rules: [],
+                    })(
+                      <DatePicker
+                        showTime={true}
+                        format="YYYY-MM-DD HH:mm:ss"
+                        placeholder="请选择开始时间"
+                      />,
+                    )}
                   </Form.Item>
                   <Form.Item label="失效时间">
-                    {getFieldDecorator('失效时间', {
+                    {getFieldDecorator('failureTime', {
                       rules: [
                         {
                           message: '请输入失效时间',
                         },
                       ],
-                    })(<Input placeholder="请输入失效时间" />)}
+                    })(
+                      <DatePicker
+                        showTime={true}
+                        format="YYYY-MM-DD HH:mm:ss"
+                        placeholder="请选择开始时间"
+                      />,
+                    )}
                   </Form.Item>
                   <Form.Item label="级别">
-                    {getFieldDecorator('级别', {
+                    {getFieldDecorator('level', {
                       rules: [
                         {
                           message: '请选择级别',
@@ -123,8 +193,11 @@ class fenceAdd extends React.Component<Props> {
                       ],
                     })(
                       <Select placeholder="请选择级别" defaultValue="lucy">
-                        <Option value="jack">Jack</Option>
-                        <Option value="lucy">Lucy</Option>
+                        {levels.map(item => (
+                          <Option value={item.value} key={item.value}>
+                            {item.name}
+                          </Option>
+                        ))}
                       </Select>,
                     )}
                   </Form.Item>
@@ -137,8 +210,11 @@ class fenceAdd extends React.Component<Props> {
                       ],
                     })(
                       <Select placeholder="请选择关联人员" defaultValue="lucy">
-                        <Option value="jack">Jack</Option>
-                        <Option value="lucy">Lucy</Option>
+                        {users.map(item => (
+                          <Option value={item.value} key={item.value}>
+                            {item.name}
+                          </Option>
+                        ))}
                       </Select>,
                     )}
                   </Form.Item>
@@ -147,21 +223,16 @@ class fenceAdd extends React.Component<Props> {
               <Row type="flex" justify="space-between">
                 <Col span={24}>
                   <Form.Item label="最大人员数量">
-                    {getFieldDecorator('最大人员数量', {
+                    {getFieldDecorator('maxUser', {
                       rules: [
                         {
-                          message: '请选择最大人员数量',
+                          message: '请输入最大人员数量',
                         },
                       ],
-                    })(
-                      <Select placeholder="请选择最大人员数量" defaultValue="lucy">
-                        <Option value="jack">Jack</Option>
-                        <Option value="lucy">Lucy</Option>
-                      </Select>,
-                    )}
+                    })(<Input placeholder="请输入最大人员数量" />)}
                   </Form.Item>
                   <Form.Item className={styles.area_style} label="区域">
-                    {getFieldDecorator('区域', {
+                    {getFieldDecorator('regionalName', {
                       rules: [
                         {
                           message: '请输入区域',
@@ -183,7 +254,15 @@ class fenceAdd extends React.Component<Props> {
                 <Col className={styles.line_type} span={11} />
               </Row>
               <Row className={styles.line_style}>
-                <Col className={styles.img_type} span={24} />
+                <Col className={styles.img_type} span={24}>
+                  <div className={styles.map_manager} ref={this.map}>
+                    <Stage width={width} height={height} draggable={false}>
+                      <Layer>
+                        <ImageLayer image={mapImage} x={0} y={0} width={width} height={height} />
+                      </Layer>
+                    </Stage>
+                  </div>
+                </Col>
               </Row>
               <Row type="flex" justify="center" style={{ marginTop: '0.35rem' }}>
                 <Col span={2}>
@@ -193,7 +272,7 @@ class fenceAdd extends React.Component<Props> {
                 </Col>
                 <Col span={2} className={styles.select_padding_left}>
                   <Form.Item>
-                    <Button className={styles.form_btn} onClick={this.goBack}>返回</Button>
+                    <Button className={styles.form_btn}>返回</Button>
                   </Form.Item>
                 </Col>
               </Row>
@@ -203,17 +282,19 @@ class fenceAdd extends React.Component<Props> {
       </ContentBorder>
     );
   }
-};
+}
 
-const FenceAdd = Form.create<Props>({ name: 'fence_add' })(fenceAdd);
+const FencingSettingHOC = Form.create<Props>({ name: 'fencing_setting' })(FencingSetting);
 
 const mapState = ({ mapManager }) => {
-  const resp = mapManager.fenceAdd,
-    ;
+  const { allMaps, fencingTypes, users, levels } = mapManager;
   return {
-    fenceAdd: resp,
-
+    mapFencing: mapManager.mapFencing,
+    maps: allMaps,
+    fencingTypes,
+    users,
+    levels,
   };
 };
 
-export default connect(mapState)(FenceAdd);
+export default connect(mapState)(FencingSettingHOC);
