@@ -15,7 +15,7 @@ class EditableCell extends React.Component<any> {
   getInput = () => {
     if (this.props.inputType === 'number') {
       return <InputNumber  />;
-    } else if (this.props.inputType === 'text' && this.props.className === 'select_text'){
+    } else if ((this.props.inputType === 'text'||this.props.inputType === 'number' )&& this.props.className === 'select_text'){
       return  <Select defaultValue={this.props.record[this.props.dataIndex]} style={{ width: 120 }}  />
            {/* <Option value="1"> 男</Option>
             <Option value="2"> 女</Option> */}

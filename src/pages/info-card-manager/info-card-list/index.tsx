@@ -85,7 +85,6 @@ const columns = [
   {
     title: '家庭住址',
     dataIndex: 'address',
-    className: 'select_text',
     editable: true,
   },
   {

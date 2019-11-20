@@ -46,6 +46,7 @@ const columns = [
   },
   {
     title: '任务',
+    className: 'select_text',
     dataIndex: 'task',
     editable: true,
   },
