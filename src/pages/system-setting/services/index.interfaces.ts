@@ -19,7 +19,6 @@ export interface UpdateUserInfo {
 
 export interface DeleteUser {
   id: string;
-  updateId?: string;
 }
 
 export interface AddUserTypeParams {

@@ -51,9 +51,7 @@ export async function updateUserInfo(data: UpdateUserInfo) {
 }
 
 export async function deleteUser(data: DeleteUser) {
-  const resp = await request.delete(DELETE_USER, {
-    data,
-  });
+  const resp = await request.delete(DELETE_USER, {data});
   resp.success === true && resp.code === 200
     ? message.success(resp.message)
     : message.error(resp.message);

@@ -2,7 +2,7 @@
  * title: 人员类型
  */
 import React from 'react';
-import { Layout, Form, Input, Row, Col, Button, Icon } from 'antd';
+import { Layout, Modal, Form, Input, Row, Col, Button, Icon } from 'antd';
 import { connect } from 'dva';
 import * as _ from 'lodash';
 import router from 'umi/router';
@@ -14,6 +14,7 @@ import styles from './index.less';
 import publicStyles from '../index.less';
 import { UmiComponentProps } from '@/common/type';
 
+const { confirm } = Modal;
 const { Content } = Layout;
 const IconFont = Icon.createFromIconfontCN({
   scriptUrl: ICON_FONTS_URL,
@@ -71,11 +72,23 @@ class PeopelType extends React.Component<Props> {
     }
   }
 
-  async deleteColumn(item) {
+  deleteColumn(item) {
     //TODO:修改人ID
-    await deleteUserType({ id: item.id });
-    //重新请求数据重绘
-    this.getUserTypes();
+    let self = this
+    confirm({
+      title: '确定要删除这条信息吗？',
+      content: '',
+      okText: '确定',
+      okType: 'danger',
+      cancelText: '取消',
+      async onOk() {
+        await deleteUserType({ id: item.id });
+        //重新请求数据重绘
+        self.getUserTypes();
+      },
+      onCancel() {
+      },
+    })
   }
 
   addUserType() {

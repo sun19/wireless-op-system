@@ -2,7 +2,7 @@
  * title: 任务规划
  */
 import React from 'react';
-import { Layout, Form, Input, Row, Col, Select, Button, Icon } from 'antd';
+import { Layout, Modal, Form, Input, Row, Col, Select, Button, Icon } from 'antd';
 import * as _ from 'lodash';
 import { connect } from 'dva';
 import { UmiComponentProps } from '@/common/type';
@@ -16,6 +16,7 @@ import { getTaskList, delTaskList } from '../services';
 // import { getAllDuties, getAllSecretLevels } from '@/pages/login/login.service';
 import { DelTaskList } from '../services/index.interfaces';
 
+const { confirm } = Modal;
 const { Content } = Layout;
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -23,16 +24,16 @@ const IconFont = Icon.createFromIconfontCN({
   scriptUrl: ICON_FONTS_URL,
 });
 
-interface FormProps extends FormComponentProps {}
+interface FormProps extends FormComponentProps { }
 type StateProps = ReturnType<typeof mapState>;
 type Props = StateProps & UmiComponentProps & FormProps;
 
 const columns = [
-  {
-    title: '序号',
-    dataIndex: 'id',
-    editable: true,
-  },
+  // {
+  //   title: '序号',
+  //   dataIndex: 'id',
+  //   editable: true,
+  // },
   {
     title: '姓名',
     dataIndex: 'remark',
@@ -88,8 +89,8 @@ class TaskPlan extends React.Component<Props, State> {
     records = _.isEmpty(taskList)
       ? []
       : records.map(item => {
-          return _.assign(item, { key: item.id });
-        });
+        return _.assign(item, { key: item.id });
+      });
     const arr: any[] = _.uniqBy(records, 'task');
     this.setState({
       taskTypes: arr,
@@ -104,20 +105,34 @@ class TaskPlan extends React.Component<Props, State> {
     });
   }
   async updateData(data, item) {
-    const resp = await getTaskList(item);
-    if (resp) {
-      this.props.dispatch({
-        type: 'infoCardManager/update',
-        payload: { taskPlan: { records: data } },
-      });
-    }
+    this.getTaskListData() 
+     
+    // const resp = await getTaskList(item);
+    // if (resp) {
+    //   this.props.dispatch({
+    //     type: 'infoCardManager/update',
+    //     payload: { taskPlan: { records: data } },
+    //   });
+    // }
   }
   // 删除
-  async deleteColumn(item: DelTaskList) {
-    //TODO:修改人ID
-    await delTaskList({ id: item.id });
-    //重新请求数据重绘
-    this.getTaskListData();
+  deleteColumn(item: DelTaskList) {
+    //TODO:修改人ID   
+    let self = this
+    confirm({
+      title: '确定要删除这条信息吗？',
+      content: '',
+      okText: '确定',
+      okType: 'danger',
+      cancelText: '取消',
+      async onOk() {
+        await delTaskList({ id: item.id });
+        //重新请求数据重绘
+        self.updateData('data', item);
+      },
+      onCancel() {
+      },
+    })
   }
   // 查询
   search = e => {
@@ -139,7 +154,7 @@ class TaskPlan extends React.Component<Props, State> {
     return (
       <Form.Item label="任务">
         {getFieldDecorator('task', {
-          initialValue:'' ,
+          initialValue: '',
         })(
           <Select placeholder="请选择任务" style={{ marginTop: '-3px' }}>
             {arr.map((item: any) => (
@@ -159,8 +174,8 @@ class TaskPlan extends React.Component<Props, State> {
     records = _.isEmpty(taskList)
       ? []
       : records.map(item => {
-          return _.assign(item, { key: item.id });
-        });
+        return _.assign(item, { key: item.id });
+      });
     return (
       <div className={publicStyles.public_hight}>
         <Content className={publicStyles.bg}>
@@ -194,7 +209,7 @@ class TaskPlan extends React.Component<Props, State> {
                     className={publicStyles.form_btn}
                     style={{ marginLeft: 37 }}
                     onClick={this.handleReset}
-                    // htmlType="submit"
+                  // htmlType="submit"
                   >
                     清空
                   </Button>

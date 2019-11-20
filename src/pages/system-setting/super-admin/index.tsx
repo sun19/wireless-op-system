@@ -2,7 +2,7 @@
  * title: 超级管理员设置
  */
 import React from 'react';
-import { Layout, Form, Input, Row, Col, Select, Button, Icon, message } from 'antd';
+import { Layout, Modal, Form, Input, Row, Col, Select, Button, Icon, Divider, message } from 'antd';
 import { connect } from 'dva';
 import router from 'umi/router';
 import * as _ from 'lodash';
@@ -15,6 +15,7 @@ import { GetSuperAdminListParams } from '../services/index.interfaces';
 import styles from './index.less';
 import publicStyles from '../index.less';
 
+const { confirm } = Modal;
 const { Content } = Layout;
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -23,12 +24,12 @@ const IconFont = Icon.createFromIconfontCN({
 });
 
 const columns = [
-  {
-    title: '序号',
-    dataIndex: 'id',
-    width: '20%',
-    editable: false,
-  },
+  // {
+  //   title: '序号',
+  //   dataIndex: 'id',
+  //   width: '20%',
+  //   editable: false,
+  // },
   {
     title: '键值',
     dataIndex: 'dictValue',
@@ -59,6 +60,17 @@ const columns = [
     // width: '10%',
     editable: true,
   },
+  // {
+  //   title: 'Action',
+  //   key: 'action',
+  //   render: (text, record) => (
+  //     <span>
+  //       <a>Invite {record.name}</a>
+  //       <Divider type="vertical" />
+  //       <a>Delete</a>
+  //     </span>
+  //   ),
+  // },
 ];
 
 type AdminTypes = typeof staticTypes;
@@ -108,11 +120,24 @@ class SuperAdmin extends React.Component<Props, State> {
     }
   }
 
-  async deleteColumn(item) {
+  deleteColumn(item) {
     //TODO:修改人ID
-    await deleteSuperAdmin({ id: item.id });
-    //重新请求数据重绘
-    this.getSuperAdminList();
+
+    let self = this
+    confirm({
+      title: '确定要删除这条信息吗？',
+      content: '',
+      okText: '确定',
+      okType: 'danger',
+      cancelText: '取消',
+      async onOk() {
+        await deleteSuperAdmin({ id: item.id });
+        //重新请求数据重绘
+        self.getSuperAdminList();
+      },
+      onCancel() {
+      },
+    })
   }
 
   onRemarkChange = e => {
@@ -181,7 +206,7 @@ class SuperAdmin extends React.Component<Props, State> {
                 <FormItem label="类型">
                   <div
                     style={{ marginTop: '-3px' }}
-                    // className={publicStyles.selection}
+                  // className={publicStyles.selection}
                   >
                     {this.renderTypeOptions()}
                   </div>

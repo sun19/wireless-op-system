@@ -2,7 +2,7 @@
  * title: 信息牌设置
  */
 import React from 'react';
-import { Layout, Form, Input, Row, Col, Button, Icon } from 'antd';
+import { Layout, Modal, Form, Input, Row, Col, Button, Icon } from 'antd';
 import { connect } from 'dva';
 import * as _ from 'lodash';
 import router from 'umi/router';
@@ -14,18 +14,19 @@ import { getBuList, updateMessageCard, deleteMessageCard } from '../services';
 import publicStyles from '../index.less';
 import styles from './index.less';
 
+const { confirm } = Modal;
 const { Content } = Layout;
 const IconFont = Icon.createFromIconfontCN({
   scriptUrl: ICON_FONTS_URL,
 });
 
 const columns = [
-  {
-    title: '序号',
-    dataIndex: 'id',
-    width: '30%',
-    editable: false,
-  },
+  // {
+  //   title: '序号',
+  //   dataIndex: 'id',
+  //   width: '30%',
+  //   editable: false,
+  // },
   {
     title: '部门',
     dataIndex: 'name',
@@ -81,11 +82,23 @@ class MessageCard extends React.Component<Props> {
     }
   }
 
-  async deleteColumn(item) {
+  deleteColumn(item) {
     //TODO:修改人ID
-    await deleteMessageCard({ id: item.id });
-    //重新请求数据重绘
-    this.getBuList();
+    let self = this
+    confirm({
+      title: '确定要删除这条信息吗？',
+      content: '',
+      okText: '确定',
+      okType: 'danger',
+      cancelText: '取消',
+      async onOk() {
+        await deleteMessageCard({ id: item.id });
+        //重新请求数据重绘
+        self.getBuList();
+      },
+      onCancel() {
+      },
+    })
   }
 
   componentDidMount() {

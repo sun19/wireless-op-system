@@ -2,7 +2,7 @@
  * title: 告警类型
  */
 import React from 'react';
-import { Layout, Form, Input, Row, Col, Select, Button, Icon } from 'antd';
+import { Layout, Modal, Form, Input, Row, Col, Select, Button, Icon } from 'antd';
 import router from 'umi/router';
 import * as _ from 'lodash';
 import { connect } from 'dva';
@@ -16,6 +16,7 @@ import publicStyles from '../index.less';
 import { warningTypeSearch, wraningTypeDel } from '../services';
 import { WraningTypeDel } from '../services/index.interfaces';
 
+const { confirm } = Modal;
 const { Content } = Layout;
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -23,7 +24,7 @@ const IconFont = Icon.createFromIconfontCN({
   scriptUrl: ICON_FONTS_URL,
 });
 
-interface FormProps extends FormComponentProps {}
+interface FormProps extends FormComponentProps { }
 type StateProps = ReturnType<typeof mapState>;
 type Props = StateProps & UmiComponentProps & FormProps;
 const columns = [
@@ -123,11 +124,25 @@ class WraningType extends React.Component<Props, State> {
     }
   }
   // 删除
-  async deleteColumn(item: WraningTypeDel) {
+  deleteColumn(item: WraningTypeDel) {
     //TODO:修改人ID
-    await wraningTypeDel({ id: item.id });
-    //重新请求数据重绘
-    this.getwarningTypeList();
+
+    let self = this
+    confirm({
+      title: '确定要删除这条信息吗？',
+      content: '',
+      okText: '确定',
+      okType: 'danger',
+      cancelText: '取消',
+      async onOk() {
+        await wraningTypeDel({ id: item.id });
+        //重新请求数据重绘
+        self.getwarningTypeList();
+      },
+      onCancel() {
+      },
+    })
+
   }
   addUser = () => {
     router.push('/warning-manager/type/add');
