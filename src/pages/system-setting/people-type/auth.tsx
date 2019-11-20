@@ -20,6 +20,10 @@ class UserAuth extends React.Component<Props> {
     this.onSubmit = this.onSubmit.bind(this);
     this.onCancel = this.onCancel.bind(this);
   }
+  goBack = () => {
+    this.props.form.resetFields();
+    router.push('/system-setting/people-type');
+  }; 
   onSubmit(e) {
     e.preventDefault();
     this.props.form.validateFields(async (err, values) => {
@@ -87,7 +91,7 @@ class UserAuth extends React.Component<Props> {
                   </Col>
                   <Col span={6} className={styles.select_padding_left}>
                     <Form.Item>
-                      <Button className={styles.form_btn}>返回</Button>
+                      <Button className={styles.form_btn} onClick={this.goBack}>返回</Button>
                     </Form.Item>
                   </Col>
                 </Row>

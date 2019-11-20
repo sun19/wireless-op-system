@@ -54,6 +54,10 @@ class AddUser extends React.Component<Props, State> {
       userTypes: [],
     };
   }
+  goBack = () => {
+    this.props.form.resetFields();
+    router.push('/system-setting/customer-manager');
+  }; 
   onLoginNameChange = value => {
     this.props.form.setFieldsValue({
       loginName: value,
@@ -190,7 +194,7 @@ class AddUser extends React.Component<Props, State> {
                   </Col>
                   <Col span={6} className={styles.select_padding_left}>
                     <Form.Item>
-                      <FormButton title="返回" />
+                      <FormButton title="返回" onClick={this.goBack}/>
                     </Form.Item>
                   </Col>
                 </Row>

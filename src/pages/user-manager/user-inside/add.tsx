@@ -32,7 +32,10 @@ class UserAuth extends React.Component<Props> {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-
+  goBack = () => {
+    this.props.form.resetFields();
+    router.push('/user-manager/user-inside');
+  }; 
   setupDuties = () => {
     const { allDuties } = this.props;
     const { getFieldDecorator } = this.props.form;
@@ -238,7 +241,7 @@ class UserAuth extends React.Component<Props> {
                   </Col>
                   <Col span={6} className={styles.select_padding_left}>
                     <Form.Item>
-                      <Button className={styles.form_btn}>返回</Button>
+                      <Button className={styles.form_btn} onClick={this.goBack}>返回</Button>
                     </Form.Item>
                   </Col>
                 </Row>

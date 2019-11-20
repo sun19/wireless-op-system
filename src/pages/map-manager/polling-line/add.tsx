@@ -3,6 +3,7 @@
  */
 import React from 'react';
 import { Form, Row, Col, Button, Input, Select } from 'antd';
+import router from 'umi/router';
 import { FormComponentProps } from 'antd/lib/form';
 
 import ContentBorder from '../../../components/ContentBorder';
@@ -26,6 +27,10 @@ class AddPollingLine extends React.Component<Props, State> {
       warningTypes: [],
     };
   }
+  goBack = () => {
+    this.props.form.resetFields();
+    router.push('/map-manager/polling-line');
+  }; 
   setupAlarmSelect = () => {
     const { getFieldDecorator } = this.props.form;
     const { warningTypes } = this.state;
@@ -167,7 +172,7 @@ class AddPollingLine extends React.Component<Props, State> {
                 </Col>
                 <Col span={2} className={styles.select_padding_left}>
                   <Form.Item>
-                    <Button className={styles.form_btn}>返回</Button>
+                    <Button className={styles.form_btn} onClick={this.goBack}>返回</Button>
                   </Form.Item>
                 </Col>
               </Row>

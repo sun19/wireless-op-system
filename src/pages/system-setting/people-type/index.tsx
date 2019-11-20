@@ -20,22 +20,22 @@ const IconFont = Icon.createFromIconfontCN({
 });
 
 const columns = [
-  {
-    title: '序号',
-    dataIndex: 'id',
-    width: '30%',
-    editable: false,
-  },
+  // {
+  //   title: '序号',
+  //   dataIndex: 'id',
+  //   width: '30%',
+  //   editable: false,
+  // },
   {
     title: '人员类型',
     dataIndex: 'roleName',
-    width: '30%',
+    // width: '30%',
     editable: true,
   },
   {
     title: '英文名称',
     dataIndex: 'roleCode',
-    width: '40%',
+    // width: '40%',
     editable: true,
   },
 ];
