@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import { UmiComponentProps } from '@/common/type';
-import { Layout,  Modal, Form, Input, Row, Col, Button, Icon } from 'antd';
+import { Layout, Modal, Form, Select, Input, Row, Col, Button, Icon } from 'antd';
 import { connect } from 'dva';
 import * as _ from 'lodash';
 import router from 'umi/router';
@@ -16,6 +16,7 @@ import { DeleteUser } from '../services/index.interfaces';
 import styles from './index.less';
 import publicStyles from '../index.less';
 
+const { Option } = Select;
 const { confirm } = Modal;
 const { Content } = Layout;
 const IconFont = Icon.createFromIconfontCN({
@@ -45,14 +46,18 @@ const columns = [
     dataIndex: 'roleName',
     // width: '15%',
     editable: true,
+    className:'select_text',
 
   },
   {
     title: '性别',
     dataIndex: 'sex',
     // width: '5%',
+    className: 'select_text',
     editable: true,
-  },
+    },
+       
+ 
   {
     title: '备注',
     dataIndex: 'remark',

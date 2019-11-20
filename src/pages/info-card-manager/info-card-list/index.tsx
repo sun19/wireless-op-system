@@ -43,6 +43,7 @@ const columns = [
   {
     title: '状态',
     dataIndex: 'onlineStatus',
+    className: 'select_text',
     editable: true,
     render: onlineStatus => {
       let color = onlineStatus == 1 ? 'white' : '#EB6262';
@@ -84,6 +85,7 @@ const columns = [
   {
     title: '家庭住址',
     dataIndex: 'address',
+    className: 'select_text',
     editable: true,
   },
   {
@@ -94,11 +96,13 @@ const columns = [
   {
     title: '部门',
     dataIndex: 'departmentName',
+    className: 'select_text',
     editable: true,
   },
   {
     title: '人员类型',
     dataIndex: 'type',
+    className: 'select_text',
     editable: true,
 
     render: (value, current) => {
@@ -109,6 +113,7 @@ const columns = [
     title: '保密等级',
     dataIndex: 'securityLevelName',
     key: 'securityLevelName',
+    className: 'select_text',
     editable: true,
 
     render: (securityLevelName, current) => {
@@ -119,6 +124,7 @@ const columns = [
   },
   {
     title: '在职状态',
+    className: 'select_text',
     dataIndex: 'incumbency',
     editable: true,
     render: onlineStatus => {

@@ -63,12 +63,14 @@ const columns = [
   {
     title: '告警方式',
     dataIndex: 'alarmName',
+    className: 'select_text',
     editable: true,
   },
 
   {
     title: '重复类型',
     dataIndex: 'repeatType',
+    className: 'select_text',
     editable: true,
   },
   {

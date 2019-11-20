@@ -44,6 +44,7 @@ const columns = [
   {
     title: '角色',
     dataIndex: 'roleId',
+    className: 'select_text',
     editable: true,
   },
   {

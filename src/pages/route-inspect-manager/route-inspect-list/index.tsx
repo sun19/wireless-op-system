@@ -2,7 +2,7 @@
  * title: 巡检列表
  */
 import React from 'react';
-import { Layout, Form, Input, Row, Col, TimePicker, Button, DatePicker, Icon } from 'antd';
+import { Layout, Form, Select, Input, Row, Col, TimePicker, Button, DatePicker, Icon } from 'antd';
 import { connect } from 'dva';
 import * as _ from 'lodash';
 import { FormComponentProps } from 'antd/lib/form';
@@ -18,6 +18,7 @@ import publicStyles from '../index.less';
 import moment from 'moment';
 
 const { Content } = Layout;
+ const { Option } = Select;
 const FormItem = Form.Item;
 const dateFormat = 'YYYY/MM/DD';
 const monthFormat = 'YYYY/MM';
@@ -50,6 +51,7 @@ const columns = [
   },
   {
     title: '是否完成',
+    className: 'select_text',
     dataIndex: 'whether',
     editable: true,
     render: (name, record) => {

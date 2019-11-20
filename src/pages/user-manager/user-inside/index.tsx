@@ -49,6 +49,7 @@ const columns = [
   {
     title: '性别',
     dataIndex: 'sex',
+    className: 'select_text',
     editable: true,
   },
   {
@@ -64,11 +65,13 @@ const columns = [
   {
     title: '部门名称',
     dataIndex: 'departmentName',
+    className: 'select_text',
     editable: true,
   },
   {
     title: '职务名称',
     dataIndex: 'positionName',
+    className: 'select_text',
     editable: true,
   },
 
@@ -76,6 +79,7 @@ const columns = [
     title: '保密登记名称',
     dataIndex: 'securityLevelName',
     editable: true,
+    className:'select_text',
   },
   {
     title: '信息牌名称',

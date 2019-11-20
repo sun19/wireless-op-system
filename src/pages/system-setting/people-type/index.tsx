@@ -31,6 +31,7 @@ const columns = [
     title: '人员类型',
     dataIndex: 'roleName',
     // width: '30%',
+    className: 'select_text',
     editable: true,
   },
   {

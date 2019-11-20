@@ -37,6 +37,7 @@ const columns = [
     title: '颜色',
     dataIndex: 'color',
     width: '30%',
+    className: 'select_text',
     editable: true,
     render: color => {
       return (

@@ -43,11 +43,13 @@ const columns = [
   {
     title: '围栏类型',
     dataIndex: 'sex',
+    className: 'select_text',
     editable: true,
   },
   {
     title: '是否永久',
     dataIndex: 'address',
+    className: 'select_text',
     editable: true,
   },
   {
@@ -63,6 +65,7 @@ const columns = [
   {
     title: '级别',
     dataIndex: 'positionName',
+    className: 'select_text',
     editable: true,
   },
 

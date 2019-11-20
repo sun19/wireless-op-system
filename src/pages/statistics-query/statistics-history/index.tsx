@@ -36,6 +36,7 @@ const columns = [
   {
     title: '状态',
     dataIndex: 'onlineStatus',
+    className: 'select_text',
     editable: true,
   },
   {
@@ -63,6 +64,7 @@ const columns = [
   }, {
     title: '职务',
     dataIndex: 'alarmType4',
+    className: 'select_text',
     editable: true,
   }, {
     title: '身份证号',
@@ -71,6 +73,7 @@ const columns = [
   }, {
     title: '人员类型',
     dataIndex: 'type',
+    className: 'select_text',
     editable: true,
   },
 ];

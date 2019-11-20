@@ -35,6 +35,7 @@ const columns = [
   {
     title: '所属地图',
     dataIndex: 'mapName',
+    className: 'select_text',
     editable: true,
   },
   {

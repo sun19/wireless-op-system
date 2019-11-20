@@ -1,9 +1,10 @@
 import React from 'react';
-import { Table, Button, Input, InputNumber, Popconfirm, Form, Icon, Pagination } from 'antd';
+import { Table, Select, Button, Input, InputNumber, Popconfirm, Form, Icon, Pagination } from 'antd';
 
 import { ICON_FONTS_URL } from '../config/constants';
 import styles from './table.less';
 
+const { Option } = Select;
 const IconFont = Icon.createFromIconfontCN({
   scriptUrl: ICON_FONTS_URL,
 });
@@ -13,9 +14,14 @@ const EditableContext = React.createContext();
 class EditableCell extends React.Component<any> {
   getInput = () => {
     if (this.props.inputType === 'number') {
-      return <InputNumber />;
-    }
-    return <Input />;
+      return <InputNumber  />;
+    } else if (this.props.inputType === 'text' && this.props.className === 'select_text'){
+      return  <Select defaultValue={this.props.record[this.props.dataIndex]} style={{ width: 120 }}  />
+           {/* <Option value="1"> 男</Option>
+            <Option value="2"> 女</Option> */}
+        {/* </Select > */}
+    }else
+      return <Input  placeholder={`请输入${this.props.title}`}/>;
   };
 
   renderCell = ({ getFieldDecorator }) => {
@@ -40,7 +46,7 @@ class EditableCell extends React.Component<any> {
                   message: `请输入${title}!`,
                 },
               ],
-              // initialValue: record[dataIndex].toString(),
+              initialValue: record[dataIndex]==''?'': record[dataIndex],
             })(this.getInput())}
           </Form.Item>
         ) : (

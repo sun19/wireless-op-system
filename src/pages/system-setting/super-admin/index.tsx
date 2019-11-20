@@ -46,7 +46,19 @@ const columns = [
     title: '类型',
     dataIndex: 'type',
     // width: '15%',
+    className: 'select_text',
     editable: true,
+    className:'select_text',
+    // render: (name, record) => {
+    //   return (
+    //     <div>
+    //       <Select defaultValue={record.type} style={{ width: 120 }} disabled >
+    //         <Option value="1"> 男</Option>
+    //         <Option value="2"> 女</Option>
+    //       </Select >
+    //     </div >
+    //   );
+    // }
   },
   {
     title: '描述',
