@@ -664,7 +664,7 @@ class DataView extends Component<any, State> {
             textStyle: {
               color: 'rgba(255,255,255,1)',
             },
-            formatter: function(value, index) {
+            formatter: function (value, index) {
               return ['{title|' + value + '} '].join('\n');
             },
             rich: {},
@@ -678,7 +678,7 @@ class DataView extends Component<any, State> {
             textStyle: {
               color: 'rgba(255,255,255,1)',
             },
-            formatter: function(value, index) {
+            formatter: function (value, index) {
               return value + '人';
             },
           },
@@ -703,7 +703,7 @@ class DataView extends Component<any, State> {
           itemStyle: {
             normal: {
               barBorderRadius: 30,
-              color: function(params) {
+              color: function (params) {
                 var num = myColor.length;
                 return myColor[params.dataIndex % num];
               },
@@ -752,6 +752,8 @@ class DataView extends Component<any, State> {
         dataIndex: 'isComplete',
         editable: true,
         ellipsis: true,
+        className: 'select_text',
+
         render: tag => {
           const className = tag === '1' ? 'complete_ok' : 'complete_no';
           return <span className={className} />;

@@ -2,7 +2,7 @@
  * title: 告警信息
  */
 import React from 'react';
-import { Layout, Form, Input, Row, Col, TimePicker, Button, DatePicker,Icon } from 'antd';
+import { Layout, Modal,Form, Input, Row, Col, TimePicker, Button, DatePicker,Icon } from 'antd';
 import * as _ from 'lodash';
 import { connect } from 'dva';
 import { UmiComponentProps } from '@/common/type';
@@ -16,6 +16,7 @@ import moment from 'moment';
 import { warningInfoSearch } from '../services';
 // import { DelTaskList } from '../services/index.interfaces';
 
+const { confirm } = Modal;
 const { Content } = Layout;
 const FormItem = Form.Item;
 interface FormProps extends FormComponentProps {}
@@ -34,6 +35,7 @@ const columns = [
   {
     title: '所属地图',
     dataIndex: 'mapName',
+    className: 'select_text',
     editable: true,
   },
   {

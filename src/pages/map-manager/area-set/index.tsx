@@ -2,7 +2,7 @@
  * title: 区域设置
  */
 import React from 'react';
-import { Layout, Form, Input, Row, Col, Select, Button, Icon, message } from 'antd';
+import { Layout, Modal, Form, Input, Row, Col, Select, Button, Icon, message } from 'antd';
 import { connect } from 'dva';
 import * as _ from 'lodash';
 import router from 'umi/router';
@@ -16,6 +16,7 @@ import { GetMapAreaParams } from '../services/index.interface';
 import styles from './index.less';
 import publicStyles from '../index.less';
 
+const { confirm } = Modal;
 const { Content } = Layout;
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -24,11 +25,11 @@ const IconFont = Icon.createFromIconfontCN({
 });
 
 const columns = [
-  {
-    title: '序号',
-    dataIndex: 'id',
-    editable: false,
-  },
+  // {
+  //   title: '序号',
+  //   dataIndex: 'id',
+  //   editable: false,
+  // },
   {
     title: '地图名称',
     dataIndex: 'mapName',
@@ -95,11 +96,26 @@ class AreaSet extends React.Component<Props, State> {
     }
   }
 
-  async deleteColumn(item) {
+  deleteColumn(item) {
     //TODO:修改人ID
-    await deleteMapArea({ id: item.id });
-    //重新请求数据重绘
-    this.getMapArea();
+    let self = this
+    confirm({
+      title: '确定要删除这条信息吗？',
+      content: '',
+      okText: '确定',
+      okType: 'danger',
+      cancelText: '取消',
+      async onOk() {
+        let data = {
+          id: item.id
+        }
+        await deleteMapArea({ id: item.id });
+        //重新请求数据重绘
+        self.getMapArea();
+      },
+      onCancel() {
+      },
+    })
   }
 
   setupAreaLevelSelect = () => {
@@ -197,7 +213,7 @@ class AreaSet extends React.Component<Props, State> {
                 <FormItem label="级别">
                   <div
                     style={{ marginTop: '-3px' }}
-                    // className={publicStyles.selection}
+                  // className={publicStyles.selection}
                   >
                     {this.setupAreaLevelSelect()}
                   </div>

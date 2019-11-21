@@ -2,7 +2,7 @@
  * title: 内部
  */
 import React from 'react';
-import { Layout, Form, Input, Row, Col, Select, Button, Icon, message } from 'antd';
+import { Layout, Modal, Form, Input, Row, Col, Select, Button, Icon, message } from 'antd';
 import router from 'umi/router';
 import { connect } from 'dva';
 import * as _ from 'lodash';
@@ -21,6 +21,7 @@ import {
 import styles from './index.less';
 import publicStyles from '../index.less';
 
+const { confirm } = Modal;
 const { Content } = Layout;
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -48,6 +49,7 @@ const columns = [
   {
     title: '性别',
     dataIndex: 'sex',
+    className: 'select_text',
     editable: true,
   },
   {
@@ -63,11 +65,13 @@ const columns = [
   {
     title: '部门名称',
     dataIndex: 'departmentName',
+    className: 'select_text',
     editable: true,
   },
   {
     title: '职务名称',
     dataIndex: 'positionName',
+    className: 'select_text',
     editable: true,
   },
 
@@ -75,6 +79,7 @@ const columns = [
     title: '保密登记名称',
     dataIndex: 'securityLevelName',
     editable: true,
+    className:'select_text',
   },
   {
     title: '信息牌名称',
@@ -173,11 +178,23 @@ class UserInside extends React.Component<Props, State> {
     }
   }
 
-  async deleteColumn(item) {
+  deleteColumn(item) {
     //TODO:修改人ID
-    await deleteUser({ id: item.id });
-    //重新请求数据重绘
-    this.getUserList();
+    let self = this
+    confirm({
+      title: '确定要删除这条信息吗？',
+      content: '',
+      okText: '确定',
+      okType: 'danger',
+      cancelText: '取消',
+      async onOk() {
+        await deleteUser({ id: item.id });
+        //重新请求数据重绘
+        self.getUserList();
+      },
+      onCancel() {
+      },
+    })
   }
 
   async getCardNoInfo() {

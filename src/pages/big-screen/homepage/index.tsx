@@ -728,6 +728,8 @@ class DataView extends React.Component<Props, State> {
         dataIndex: 'warnName',
         editable: true,
         ellipsis: true,
+    className:'select_text',
+
         render: (name, record) => {
           return (
             <div>

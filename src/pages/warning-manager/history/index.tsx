@@ -50,6 +50,7 @@ const columns = [
   {
     title: '告警方式',
     dataIndex: 'endTime',
+    className: 'select_text',
     editable: true,
   },
   {
@@ -78,7 +79,7 @@ interface State {
 class WraningHistory extends React.Component<Props, State> {
   constructor(props: any) {
     super(props);
-    this.updateData = this.updateData.bind(this);
+    // this.updateData = this.updateData.bind(this);
     // this.deleteColumn = this.deleteColumn.bind(this);
     this.state = {
       warnModeName: '',
@@ -208,10 +209,10 @@ class WraningHistory extends React.Component<Props, State> {
           <MainContent
             data={records}
             columns={columns}
-            updateData={this.updateData}
+            // updateData={this.updateData}
             // deleteColumn={this.deleteColumn}
             total={total}
-            showEdit={true}
+            // showEdit={true}
           />
         </Content>
       </div>

@@ -2,7 +2,7 @@
  * title: 灯具设置
  */
 import React from 'react';
-import { Layout, Form, Input, Row, Col, Select, Button, Icon, message } from 'antd';
+import { Layout, Form, Input, Row, Col, Select, Button, Icon, message, Modal } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import router from 'umi/router';
 import { connect } from 'dva';
@@ -17,6 +17,7 @@ import { GetMapLampsParams } from '../services/index.interface';
 import styles from './index.less';
 import publicStyles from '../index.less';
 
+const { confirm } = Modal;
 const { Content } = Layout;
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -113,11 +114,22 @@ class LampsSettings extends React.Component<Props> {
     }
   }
 
-  async deleteColumn(item) {
+  deleteColumn(item) {
     //TODO:修改人ID
-    await deleteMapLamps({ id: item.id });
-    //重新请求数据重绘
-    this.getAllMapLamps();
+    let self = this;
+    confirm({
+      title: '确定要删除这条信息吗？',
+      content: '',
+      okText: '确定',
+      okType: 'danger',
+      cancelText: '取消',
+      async onOk() {
+        await deleteMapLamps({ id: item.id });
+        //重新请求数据重绘
+        self.getAllMapLamps();
+      },
+      onCancel() {},
+    });
   }
 
   setupMapArea = () => {

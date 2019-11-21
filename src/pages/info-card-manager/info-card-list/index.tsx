@@ -2,7 +2,7 @@
  * title: 信息牌列表
  */
 import React from 'react';
-import { Layout, Form, Input, Row, message, Tag, Select, Button, Icon } from 'antd';
+import { Layout, Modal, Form, Input, Row, message, Tag, Select, Button, Icon } from 'antd';
 import router from 'umi/router';
 import * as _ from 'lodash';
 import { connect } from 'dva';
@@ -17,6 +17,7 @@ import { DeleteInfo } from '../services/index.interfaces';
 import styles from './index.less';
 import publicStyles from '../index.less';
 
+const { confirm } = Modal;
 const { Content } = Layout;
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -28,12 +29,12 @@ type StateProps = ReturnType<typeof mapState>;
 
 type Props = StateProps & UmiComponentProps;
 const columns = [
-  {
-    title: '序号',
-    dataIndex: 'id',
-    // width: '20%',
-    editable: true,
-  },
+  // {
+  //   title: '序号',
+  //   dataIndex: 'id',
+  //   // width: '20%',
+  //   editable: true,
+  // },
   {
     title: '信息牌编号',
     dataIndex: 'name',
@@ -42,6 +43,7 @@ const columns = [
   {
     title: '状态',
     dataIndex: 'onlineStatus',
+    className: 'select_text',
     editable: true,
     render: onlineStatus => {
       let color = onlineStatus == 1 ? 'white' : '#EB6262';
@@ -93,11 +95,13 @@ const columns = [
   {
     title: '部门',
     dataIndex: 'departmentName',
+    className: 'select_text',
     editable: true,
   },
   {
     title: '人员类型',
     dataIndex: 'type',
+    className: 'select_text',
     editable: true,
 
     render: (value, current) => {
@@ -108,6 +112,7 @@ const columns = [
     title: '保密等级',
     dataIndex: 'securityLevelName',
     key: 'securityLevelName',
+    className: 'select_text',
     editable: true,
 
     render: (securityLevelName, current) => {
@@ -118,6 +123,7 @@ const columns = [
   },
   {
     title: '在职状态',
+    className: 'select_text',
     dataIndex: 'incumbency',
     editable: true,
     render: onlineStatus => {
@@ -179,11 +185,23 @@ class SuperAdmin extends React.Component<Props, State> {
     router.push('/info-card-manager/info-card-list/add');
   };
 
-  async deleteColumn(item: DeleteInfo) {
+  deleteColumn(item: DeleteInfo) {
     //TODO:修改人ID
-    await deleteInfo({ id: item.id });
-    //重新请求数据重绘
-    this.getInfoListData();
+    let self = this
+    confirm({
+      title: '确定要删除这条信息吗？',
+      content: '',
+      okText: '确定',
+      okType: 'danger',
+      cancelText: '取消',
+      async onOk() {
+        await deleteInfo({ id: item.id });
+        //重新请求数据重绘
+        self.getInfoListData();
+      },
+      onCancel() {
+      },
+    })
   }
 
   async componentDidMount() {
@@ -248,7 +266,7 @@ class SuperAdmin extends React.Component<Props, State> {
     return (
       <div
         style={{ marginTop: '-3px' }}
-        // className={publicStyles.selection}
+      // className={publicStyles.selection}
       >
         <Select
           placeholder="请选择人员类型"

@@ -2,7 +2,7 @@
  * title: 巡检线设置
  */
 import React from 'react';
-import { Layout, Form, Input, Row, Col, Select, Button, Icon } from 'antd';
+import { Layout, Modal, Form, Input, Row, Col, Select, Button, Icon } from 'antd';
 import router from 'umi/router';
 import { connect } from 'dva';
 import * as _ from 'lodash';
@@ -15,6 +15,7 @@ import { GetPollingLineByNameParams } from '../services/index.interface';
 import styles from './index.less';
 import publicStyles from '../index.less';
 
+const { confirm } = Modal;
 const { Content } = Layout;
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -62,12 +63,14 @@ const columns = [
   {
     title: '告警方式',
     dataIndex: 'alarmName',
+    className: 'select_text',
     editable: true,
   },
 
   {
     title: '重复类型',
     dataIndex: 'repeatType',
+    className: 'select_text',
     editable: true,
   },
   {
@@ -120,11 +123,23 @@ class PollingLine extends React.Component<Props, State> {
     }
   }
 
-  async deleteColumn(item) {
+  deleteColumn(item) {
     //TODO:修改人ID
-    await deletePollingLine({ id: item.id });
-    //重新请求数据重绘
-    this.getPollingLines();
+    let self = this
+    confirm({
+      title: '确定要删除这条信息吗？',
+      content: '',
+      okText: '确定',
+      okType: 'danger',
+      cancelText: '取消',
+      async onOk() {
+        await deletePollingLine({ id: item.id });
+        //重新请求数据重绘
+        self.getPollingLines();
+      },
+      onCancel() {
+      },
+    })
   }
 
   onInputValueChange = e => {

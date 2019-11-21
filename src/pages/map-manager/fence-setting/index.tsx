@@ -2,7 +2,7 @@
  * title: 电子围栏设置
  */
 import React from 'react';
-import { Layout, Form, Input, Row, Col, Select, Button, Icon, message } from 'antd';
+import { Layout, Form, Input, Row, Col, Select, Button, Icon, message, Modal } from 'antd';
 import router from 'umi/router';
 import { FormComponentProps } from 'antd/lib/form';
 import { connect } from 'dva';
@@ -23,6 +23,7 @@ import { getAllFencingTypes } from '@/pages/login/login.service';
 import styles from './index.less';
 import publicStyles from '../index.less';
 
+const { confirm } = Modal;
 const { Content } = Layout;
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -123,11 +124,25 @@ class FencingSettings extends React.Component<Props> {
     }
   }
 
-  async deleteColumn(item) {
+  deleteColumn(item) {
     //TODO:修改人ID
-    await deleteFencingArea({ id: item.id });
-    //重新请求数据重绘
-    this.getMapFencing();
+    let self = this;
+    confirm({
+      title: '确定要删除这条信息吗？',
+      content: '',
+      okText: '确定',
+      okType: 'danger',
+      cancelText: '取消',
+      async onOk() {
+        let data = {
+          id: item.id,
+        };
+        await deleteFencingArea({ id: item.id });
+        //重新请求数据重绘
+        self.getMapFencing();
+      },
+      onCancel() {},
+    });
   }
 
   async componentDidMount() {

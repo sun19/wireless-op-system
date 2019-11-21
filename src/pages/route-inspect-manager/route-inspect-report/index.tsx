@@ -24,11 +24,11 @@ const IconFont = Icon.createFromIconfontCN({
 });
 
 const columns = [
-  {
-    title: '序号',
-    dataIndex: 'id',
-    editable: true,
-  },
+  // {
+  //   title: '序号',
+  //   dataIndex: 'id',
+  //   editable: true,
+  // },
   {
     title: '路线1',
     dataIndex: 'inspectionId',

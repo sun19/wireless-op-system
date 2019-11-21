@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import { UmiComponentProps } from '@/common/type';
-import { Layout, Form, Input, Row, Col, Button, Icon } from 'antd';
+import { Layout, Modal, Form, Select, Input, Row, Col, Button, Icon } from 'antd';
 import { connect } from 'dva';
 import * as _ from 'lodash';
 import router from 'umi/router';
@@ -16,6 +16,8 @@ import { DeleteUser } from '../services/index.interfaces';
 import styles from './index.less';
 import publicStyles from '../index.less';
 
+const { Option } = Select;
+const { confirm } = Modal;
 const { Content } = Layout;
 const IconFont = Icon.createFromIconfontCN({
   scriptUrl: ICON_FONTS_URL,
@@ -27,12 +29,6 @@ type StateProps = ReturnType<typeof mapState>;
 type Props = StateProps & UmiComponentProps;
 
 const columns = [
-  {
-    title: '用户ID',
-    dataIndex: 'id',
-    // width: '20%',
-    editable: false,
-  },
   {
     title: '登录名',
     dataIndex: 'loginName',
@@ -50,13 +46,18 @@ const columns = [
     dataIndex: 'roleName',
     // width: '15%',
     editable: true,
+    className:'select_text',
+
   },
   {
     title: '性别',
     dataIndex: 'sex',
     // width: '5%',
+    className: 'select_text',
     editable: true,
-  },
+    },
+       
+ 
   {
     title: '备注',
     dataIndex: 'remark',
@@ -80,7 +81,7 @@ class UserManager extends React.Component<Props, State> {
   constructor(props: any) {
     super(props);
     this.updateData = this.updateData.bind(this);
-    this.deleteColumn = this.deleteColumn.bind(this);
+    // this.deleteColumn = this.deleteColumn.bind(this);
     this.state = {
       loginName: '',
       name: '',
@@ -117,11 +118,26 @@ class UserManager extends React.Component<Props, State> {
     router.push('/system-setting/customer-manager/add');
   };
 
-  async deleteColumn(item: DeleteUser) {
+  deleteColumn = (item: DeleteUser) => {
     //TODO:修改人ID
-    await deleteUser({ id: item.id });
-    //重新请求数据重绘
-    this.getUserListData();
+    let self = this
+    confirm({
+      title: '确定要删除这条信息吗？',
+      content: '',
+      okText: '确定',
+      okType: 'danger',
+      cancelText: '取消',
+      async onOk() {
+        let data={ 
+          id: item.id
+        }
+        await deleteUser(data);
+        //重新请求数据重绘
+        self.getUserListData();
+      },
+      onCancel() {
+      },
+    })
   }
 
   async componentDidMount() {
