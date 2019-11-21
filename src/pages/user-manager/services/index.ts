@@ -1,4 +1,4 @@
-import request from '@/utils/request';
+import request, { format } from '@/utils/request';
 import { message } from 'antd';
 
 import {
@@ -32,7 +32,7 @@ export async function updateUser(params: UpdateUserParams) {
 }
 
 export async function deleteUser(params: DeleteUserParams) {
-  const resp = await request.post(USER_MANAGER_DELETE_USER, { data: params });
+  const resp = await request.post(USER_MANAGER_DELETE_USER, { data: format(params)  });
   resp.success === true && resp.code === 200
     ? message.success(resp.message)
     : message.error(resp.message);
@@ -48,7 +48,7 @@ export async function addCardNoInfo() {
 }
 
 export async function addUser(params: AddUserParams) {
-  const resp = await request.post(USER_MANAGER_ADD_USER, { data: params });
+  const resp = await request.post(USER_MANAGER_ADD_USER, { headers: { 'Content-Type': 'application/json;charset=utf-8' },data: params },  );
   resp.success === true && resp.code === 200
     ? message.success(resp.message)
     : message.error(resp.message);

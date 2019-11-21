@@ -24,7 +24,7 @@ interface UserType {
   roleId: string;
 }
 
-interface Props extends FormComponentProps {}
+interface Props extends FormComponentProps { }
 
 interface State {
   userTypes: UserType[];
@@ -57,7 +57,7 @@ class AddUser extends React.Component<Props, State> {
   goBack = () => {
     this.props.form.resetFields();
     router.push('/system-setting/customer-manager');
-  }; 
+  };
   onLoginNameChange = value => {
     this.props.form.setFieldsValue({
       loginName: value,
@@ -119,6 +119,7 @@ class AddUser extends React.Component<Props, State> {
                       {getFieldDecorator('loginName', {
                         rules: [
                           {
+                            //required: true,
                             message: '请输入登录名',
                           },
                         ],
@@ -132,6 +133,7 @@ class AddUser extends React.Component<Props, State> {
                       {getFieldDecorator('name', {
                         rules: [
                           {
+                            //required: true,
                             message: '请输入姓名',
                           },
                         ],
@@ -149,6 +151,7 @@ class AddUser extends React.Component<Props, State> {
                       {getFieldDecorator('roleId', {
                         rules: [
                           {
+                            //required: true,
                             message: '请选择人员类型',
                           },
                         ],
@@ -167,6 +170,7 @@ class AddUser extends React.Component<Props, State> {
                         initialValue: '男',
                         rules: [
                           {
+                            //required: true,
                             message: '请选择性别',
                           },
                         ],
@@ -194,7 +198,7 @@ class AddUser extends React.Component<Props, State> {
                   </Col>
                   <Col span={6} className={styles.select_padding_left}>
                     <Form.Item>
-                      <FormButton title="返回" onClick={this.goBack}/>
+                      <FormButton title="返回" onClick={this.goBack} />
                     </Form.Item>
                   </Col>
                 </Row>

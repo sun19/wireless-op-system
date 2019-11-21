@@ -1,4 +1,4 @@
-import request from '@/utils/request';
+import request, { format } from '@/utils/request';
 
 import { GET_LOG_LIST, EXPORT_LOG_LIST } from '@/config/api';
 import { GetLogListParams } from './index.interface';

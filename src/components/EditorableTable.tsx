@@ -1,7 +1,7 @@
 import React from 'react';
 import { Table, Select, Button, Input, InputNumber, Popconfirm, Form, Icon, Pagination } from 'antd';
 
-import request from '@/utils/request';
+import request, { format } from '@/utils/request';
 import { ICON_FONTS_URL } from '../config/constants';
 import styles from './table.less';
 

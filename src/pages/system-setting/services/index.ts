@@ -42,7 +42,7 @@ export async function getUserList(params: GetUserListParams) {
 
 export async function updateUserInfo(data: UpdateUserInfo) {
   const resp = await request.post(UPDATE_USER_INFO, {
-    data,
+    data:format(data)
   });
   resp.success === true && resp.code === 200
     ? message.success(resp.message)
@@ -85,7 +85,7 @@ export async function updateUserType(params: UpdateUserTypeParams) {
 }
 
 export async function deleteUserType(params: DeleteUserTypeParams) {
-  const resp = await request.delete(DELETE_USER_TYPE, { data: params });
+  const resp = await request.delete(DELETE_USER_TYPE, { data: format(params) });
   resp.success === true && resp.code === 200
     ? message.success(resp.message)
     : message.error(resp.message);
@@ -93,7 +93,7 @@ export async function deleteUserType(params: DeleteUserTypeParams) {
 }
 
 export async function addUserType(params: AddUserTypeParams) {
-  const resp = await request.post(ADD_USER_TYPE, { data: params });
+  const resp = await request.post(ADD_USER_TYPE, { data: format(params) });
   resp.success === true && resp.code === 200
     ? message.success(resp.message)
     : message.error(resp.message);
@@ -114,7 +114,7 @@ export async function updateMessageCard(params: UpdateMessageCardParams) {
 }
 
 export async function deleteMessageCard(params: DeleteMessageCardParams) {
-  const resp = await request.delete(DELETE_MESSAGE_CARD, { data: params });
+  const resp = await request.delete(DELETE_MESSAGE_CARD, { data: format(params) });
   resp.success === true && resp.code === 200
     ? message.success(resp.message)
     : message.error(resp.message);
@@ -135,7 +135,7 @@ export async function updateSuperAdmin(params: UpdateSuperAdminParams) {
 }
 
 export async function deleteSuperAdmin(params: DeleteSuperAdminParams) {
-  const resp = await request.delete(DELETE_SUPER_ADMIN, { data: params });
+  const resp = await request.delete(DELETE_SUPER_ADMIN, { data: format(params) });
   resp.success === true && resp.code === 200
     ? message.success(resp.message)
     : message.error(resp.message);

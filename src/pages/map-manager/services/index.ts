@@ -1,4 +1,4 @@
-import request from '@/utils/request';
+import request, { format } from '@/utils/request';
 import { message } from 'antd';
 
 import {
@@ -65,7 +65,7 @@ export async function updateMapArea(params: UpdateMapAreaParams) {
 }
 
 export async function deleteMapArea(params: DeleteMapAreaParams) {
-  const resp = await request.delete(MAP_MANAGER_AREA_SETTING_DELETE, { data: params });
+  const resp = await request.delete(MAP_MANAGER_AREA_SETTING_DELETE, { data: format(params) });
   resp.success === true && resp.code === 200
     ? message.success(resp.message)
     : message.error(resp.message);
@@ -89,7 +89,7 @@ export async function addMapFencingConnectUser(params: AddMapFencingConnectUserP
 }
 
 export async function deleteFencingArea(params: DeleteFencingAreaParams) {
-  const resp = await request.delete(MAP_MANAGER_FENCING_SETTING_DELETE, { data: params });
+  const resp = await request.delete(MAP_MANAGER_FENCING_SETTING_DELETE, { data: format(params) });
   resp.success === true && resp.code === 200
     ? message.success(resp.message)
     : message.error(resp.message);
@@ -131,7 +131,7 @@ export async function updateMapLamps(params: UpdateMapLampsParams) {
 }
 
 export async function deleteMapLamps(params: DeleteMapLampsParams) {
-  const resp = await request.delete(MAP_MANAGER_LAMP_SETTING_DELETE, { data: params });
+  const resp = await request.delete(MAP_MANAGER_LAMP_SETTING_DELETE, { data: format(params) });
   resp.success === true && resp.code === 200
     ? message.success(resp.message)
     : message.error(resp.message);
@@ -160,7 +160,7 @@ export async function updatePollingPoint(params: UpdatePollingPointParams) {
 }
 
 export async function deletePollingPoint(params: DeletePollingPointParams) {
-  const resp = await request.delete(MAP_MANAGER_POLLING_POINT_DELETE, { data: params });
+  const resp = await request.delete(MAP_MANAGER_POLLING_POINT_DELETE, { data: format(params) });
   resp.success === true && resp.code === 200
     ? message.success(resp.message)
     : message.error(resp.message);
@@ -186,7 +186,7 @@ export async function addPollingLine(params: AddPollingLineParams) {
 }
 
 export async function deletePollingLine(params: DeletePollingLineParams) {
-  const resp = await request.delete(MAP_MANAGER_POLLING_LINE_DELETE, { params });
+  const resp = await request.delete(MAP_MANAGER_POLLING_LINE_DELETE, { data: format(params) });
   resp.success === true && resp.code === 200
     ? message.success(resp.message)
     : message.error(resp.message);

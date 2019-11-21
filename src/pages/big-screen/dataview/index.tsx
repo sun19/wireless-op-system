@@ -4,7 +4,7 @@
 import React, { Component } from 'react';
 import { Row, Col, Icon, Table } from 'antd';
 import ReactEcharts from 'echarts-for-react';
-import request from '@/utils/request';
+import request, { format } from '@/utils/request';
 import { connect } from 'dva';
 
 import Navigation from '../components/navigation';

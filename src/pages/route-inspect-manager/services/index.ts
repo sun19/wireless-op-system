@@ -1,4 +1,4 @@
-import request from '@/utils/request';
+import request, { format } from '@/utils/request';
 import { message } from 'antd';
 
 import {

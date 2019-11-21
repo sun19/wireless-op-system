@@ -34,38 +34,38 @@ const columns = [
   // },
   {
     title: '告警名称',
-    dataIndex: 'informationBoardName',
+    dataIndex: 'warnName',
     editable: true,
   },
   {
     title: '所属地图',
-    dataIndex: 'task',
+    dataIndex: 'mapName',
     editable: true,
   },
   {
     title: '相关信息牌',
-    dataIndex: 'startTime',
+    dataIndex: 'informationBoardName',
     editable: true,
   },
   {
     title: '告警方式',
-    dataIndex: 'endTime',
+    dataIndex: 'warModeName',
     className: 'select_text',
     editable: true,
   },
   {
     title: '告警处理人',
-    dataIndex: 'remark1',
+    dataIndex: 'userName',
     editable: true,
   },
   {
     title: '告警处理结果',
-    dataIndex: 'remark2',
+    dataIndex: 'processResult',
     editable: true,
   },
   {
     title: '告警处理时间',
-    dataIndex: 'remark3',
+    dataIndex: 'processTime',
     editable: true,
   },
 ];
@@ -117,8 +117,8 @@ class WraningHistory extends React.Component<Props, State> {
       const { alarmStartTime, alarmEndTime, ...props } = values
       const data = {
         ...props,
-        alarmStartTime: values.alarmStartTime ? values.alarmStartTime.format('MM-DD hh:mm:ss') : '',
-        alarmEndTime: values.alarmEndTime ? values.alarmEndTime.format('MM-DD hh:mm:ss') : ''
+        alarmStartTime: values.alarmStartTime ? values.alarmStartTime.format('YYYY-MM-DD hh:mm:ss') : '',
+        alarmEndTime: values.alarmEndTime ? values.alarmEndTime.format('YYYY-MM-DD hh:mm:ss') : ''
       }
       this.getTaskListData(data);
     });

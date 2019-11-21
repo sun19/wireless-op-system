@@ -62,7 +62,7 @@ class AddUser extends React.Component<Props, State> {
         {getFieldDecorator('positionName', {
           rules: [
             {
-              //// required: true,
+              // required: true,
               message: '请选择职务',
             },
           ],
@@ -92,7 +92,7 @@ class AddUser extends React.Component<Props, State> {
               message: '请选择保密等级',
             },
           ],
-          initialValue: allSecretLevel[0].name,
+          initialValue: allSecretLevel[1].name,
         })(
           <Select placeholder="请选择保密等级">
             {allSecretLevel.map((level, index) => (
@@ -169,7 +169,7 @@ class AddUser extends React.Component<Props, State> {
                       {getFieldDecorator('userName', {
                         rules: [
                           {
-                            // required: true,
+                            //required: true,
                             message: '请输入姓名',
                           },
                         ],
@@ -181,7 +181,7 @@ class AddUser extends React.Component<Props, State> {
                       {getFieldDecorator('cardNo', {
                         rules: [
                           {
-                            // required: true,
+                            //required: true,
                             message: '请输入身份证号',
                           },
                         ],
@@ -195,7 +195,7 @@ class AddUser extends React.Component<Props, State> {
                       {getFieldDecorator('sex', {
                         rules: [
                           {
-                            // required: true,
+                            //required: true,
                             message: '请选择性别',
                           },
                         ],
@@ -213,7 +213,7 @@ class AddUser extends React.Component<Props, State> {
                       {getFieldDecorator('address', {
                         rules: [
                           {
-                            // required: true,
+                            //required: true,
                             message: '请输入家庭住址',
                           },
                         ],
@@ -227,7 +227,7 @@ class AddUser extends React.Component<Props, State> {
                       {getFieldDecorator('phone', {
                         rules: [
                           {
-                            // required: true,
+                            //required: true,
                             message: '请选输入联系方式',
                           },
                         ],
@@ -239,7 +239,7 @@ class AddUser extends React.Component<Props, State> {
                       {getFieldDecorator('departmentId', {
                         rules: [
                           {
-                            // required: true,
+                            //required: true,
                             message: '请选输入部门',
                           },
                         ],
@@ -254,7 +254,7 @@ class AddUser extends React.Component<Props, State> {
                       {getFieldDecorator('type', {
                         rules: [
                           {
-                            // required: true,
+                            //required: true,
                             message: '请选择人员类型',
                           },
                         ],
@@ -274,7 +274,7 @@ class AddUser extends React.Component<Props, State> {
                       {getFieldDecorator('incumbency', {
                         rules: [
                           {
-                            // required: true,
+                            //required: true,
                             message: '请选择在职状态',
                           },
                         ],
@@ -295,7 +295,7 @@ class AddUser extends React.Component<Props, State> {
                       {getFieldDecorator('name', {
                         rules: [
                           {
-                            // required: true,
+                            //required: true,
                             message: '请选输入信息牌编号',
                           },
                         ],
@@ -307,7 +307,7 @@ class AddUser extends React.Component<Props, State> {
                       {getFieldDecorator('id', {
                         rules: [
                           {
-                            // required: true,
+                            //required: true,
                             message: '请选输入信息牌ID',
                           },
                         ],

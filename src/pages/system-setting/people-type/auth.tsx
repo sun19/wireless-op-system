@@ -56,6 +56,7 @@ class UserAuth extends React.Component<Props> {
                       {getFieldDecorator('roleName', {
                         rules: [
                           {
+                            // required: true,
                             message: '请输入角色名称',
                           },
                         ],
@@ -67,6 +68,7 @@ class UserAuth extends React.Component<Props> {
                       {getFieldDecorator('roleCode', {
                         rules: [
                           {
+                            // required: true,
                             message: '请输入英文名称',
                           },
                         ],

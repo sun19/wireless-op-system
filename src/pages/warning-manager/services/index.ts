@@ -1,4 +1,4 @@
-import request from '@/utils/request';
+import request, { format } from '@/utils/request';
 import { message } from 'antd';
 
 import {
@@ -52,9 +52,12 @@ export async function wraningTypeEdit(data: WraningTypeEdit) {
 
 // 删除
 export async function wraningTypeDel(data: WraningTypeDel) {
-  const resp = await request.delete(WARNING_TYPE_DEL, {
-    data,
+  const resp = await request.post(WARNING_TYPE_DEL, {
+    data:format(data)
   });
+  if (resp.code == 500  ) {
+    message.error(resp.message);
+  }
   return resp.success === true && resp.code === 200;
 }
 /***********************************************告警管理： 告警信息********************** */
@@ -66,9 +69,7 @@ export async function warningInfoSearch(params: WarningInfoSearch) {
 }
 // 处理
 export async function warningInfoDeal(data: WarningInfoDeal) {
-  const resp = await request.delete(WARNING_INFO_DEAL, {
-    data,
-  });
+  const resp = await request.delete(WARNING_INFO_DEAL, { data: format(data) });
   return resp.success === true && resp.code === 200;
 }
 

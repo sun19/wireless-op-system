@@ -1,4 +1,6 @@
-import request from '@/utils/request';
+
+import request, { format } from '@/utils/request';
+
 
 import {
   COMMON_GET_ALL_MAP,

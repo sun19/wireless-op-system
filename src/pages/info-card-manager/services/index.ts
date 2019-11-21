@@ -1,4 +1,4 @@
-import request from '@/utils/request';
+import request, { format } from '@/utils/request';
 import { message } from 'antd';
 
 import {
@@ -41,9 +41,10 @@ export async function getInfoListParams(params: GetInfoListParams) {
 // 信息牌删除
 
 export async function deleteInfo(data: DeleteInfo) {
-  const resp = await request.delete(DEL_INFO_LIST, {
-    data,
-  });
+  const resp = await request.delete(DEL_INFO_LIST, { data: format(data) });
+  if (resp.code == 500) {
+    message.error(resp.message);
+  }
   return resp.success === true && resp.code === 200;
 }
 // 查看详情
@@ -55,9 +56,9 @@ export async function getInfoDetial(data: GetInfoDetial) {
 }
 // 信息牌添加
 export async function addInfoList(data: AddInfoList) {
-  const resp = await request.post(ADD_INFO_LIST, {
-    data,
-  });
+  const resp = await request.post(ADD_INFO_LIST, 
+    { headers: { 'Content-Type': 'application/json;charset=utf-8' }, data: format(data) }, 
+ );
   return resp.success === true && resp.code === 200;
 }
 
@@ -89,9 +90,7 @@ export async function getTaskDetail(data: GetTaskDetail) {
 }
 // 信息牌删除
 export async function delTaskList(data: DelTaskList) {
-  const resp = await request.delete(DEL_TASK_LIST, {
-    data,
-  });
+  const resp = await request.delete(DEL_TASK_LIST, { data: format(data) });
   return resp.success === true && resp.code === 200;
 }
 // 信息牌添加

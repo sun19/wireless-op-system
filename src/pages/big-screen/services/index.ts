@@ -1,4 +1,5 @@
-import request from '@/utils/request';
+import request, { format } from '@/utils/request';
+
 
 import {
   BIG_SCREEN_DEPARTMENT_PEOPLE_COUNT,
