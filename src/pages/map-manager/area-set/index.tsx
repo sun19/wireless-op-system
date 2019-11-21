@@ -146,7 +146,7 @@ class AreaSet extends React.Component<Props, State> {
     this.getMapArea();
   };
   addMapArea = () => {
-    message.success('待开发...');
+    message.success('UI图缺少这个界面...');
     // router.push('/map-manager/area-set');
   };
 
@@ -162,6 +162,9 @@ class AreaSet extends React.Component<Props, State> {
     this.setState({
       level: this.props.areaLevels[0].id,
     });
+  }
+  componentWillUnmount() {
+    message.destroy();
   }
 
   render() {

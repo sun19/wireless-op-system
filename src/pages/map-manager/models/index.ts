@@ -11,6 +11,7 @@ export default {
     fencingTypes: [],
     users: [],
     levels: [],
+    areas: [],
   },
   reducers: {
     update(state, { payload }) {

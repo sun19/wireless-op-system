@@ -2,8 +2,9 @@
  * title: 电子围栏设置
  */
 import React from 'react';
-import { Layout, Form, Input, Row, Col, Select, Button, Icon } from 'antd';
+import { Layout, Form, Input, Row, Col, Select, Button, Icon, message } from 'antd';
 import router from 'umi/router';
+import { FormComponentProps } from 'antd/lib/form';
 import { connect } from 'dva';
 import * as _ from 'lodash';
 
@@ -18,6 +19,7 @@ import {
   updateFencingArea,
 } from '../services';
 import { QueryFencingAreaParams } from '../services/index.interface';
+import { getAllFencingTypes } from '@/pages/login/login.service';
 import styles from './index.less';
 import publicStyles from '../index.less';
 
@@ -31,59 +33,62 @@ const IconFont = Icon.createFromIconfontCN({
 const columns = [
   {
     title: '地图名称',
-    dataIndex: 'name',
+    dataIndex: 'mapName',
     editable: true,
   },
   {
     title: '围栏名称',
-    dataIndex: 'cardNo',
+    dataIndex: 'name',
     editable: true,
   },
   {
     title: '围栏类型',
-    dataIndex: 'sex',
+    dataIndex: 'type',
     editable: true,
   },
   {
     title: '是否永久',
-    dataIndex: 'address',
+    dataIndex: 'isForever',
     editable: true,
   },
   {
     title: '生效时间',
-    dataIndex: 'phone',
+    dataIndex: 'effectiveTime',
     editable: true,
   },
   {
     title: '失效时间',
-    dataIndex: 'departmentName',
+    dataIndex: 'failureTime',
     editable: true,
   },
   {
     title: '级别',
-    dataIndex: 'positionName',
+    dataIndex: 'levelName',
     editable: true,
   },
 
   {
     title: '关联人员',
-    dataIndex: 'securityLevelName',
+    dataIndex: 'userName',
     editable: true,
+    render(values) {
+      return <span>{values.join('，')}</span>;
+    },
   },
   {
     title: '最大人员数量',
-    dataIndex: 'informationBoardName',
+    dataIndex: 'maxUser',
     editable: true,
   },
   {
     title: '区域',
-    dataIndex: 'entryTime',
+    dataIndex: 'regionalName',
     editable: true,
   },
 ];
 
 type StateProps = ReturnType<typeof mapState>;
-type Props = StateProps & UmiComponentProps;
+type Props = StateProps & UmiComponentProps & FormComponentProps;
 
 class FencingSettings extends React.Component<Props> {
   constructor(props: any) {
@@ -125,12 +130,38 @@ class FencingSettings extends React.Component<Props> {
     this.getMapFencing();
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.getMapFencing();
+    const fencingTypes = await getAllFencingTypes();
+    this.props.dispatch({
+      type: 'mapManager/update',
+      payload: {
+        fencingTypes: fencingTypes.result,
+      },
+    });
+  }
+  componentWillUnmount() {
+    message.destroy();
   }
 
+  onSubmit = e => {
+    e.preventDefault();
+    this.props.form.validateFields(async (err, values) => {
+      if (err) {
+        message.error(err);
+        return;
+      }
+      await this.getMapFencing(values);
+    });
+  };
+  onClear = () => {
+    this.props.form.resetFields();
+    this.getMapFencing();
+  };
+
   render() {
-    let { mapFencing } = this.props;
+    let { mapFencing, fencingTypes } = this.props;
+    const { getFieldDecorator } = this.props.form;
     if (_.isEmpty(mapFencing)) {
       mapFencing = {
         records: [],
@@ -146,7 +177,7 @@ class FencingSettings extends React.Component<Props> {
       <div className={publicStyles.public_hight}>
         <Content className={publicStyles.bg}>
           <div className={styles.public_hight_40}>
-            <Form layout="inline">
+            <Form layout="inline" onSubmit={this.onSubmit}>
               <Row
                 // type="flex"
                 justify="start"
@@ -155,20 +186,35 @@ class FencingSettings extends React.Component<Props> {
                 gutter={16}
               >
                 <FormItem label="围栏名称">
-                  <Input className={publicStyles.input_text} placeholder="请输入姓名" />
+                  {getFieldDecorator('name', {
+                    rules: [],
+                  })(<Input className={publicStyles.input_text} placeholder="请输入围栏名称" />)}
                 </FormItem>
                 <FormItem label="围栏类型">
                   <div style={{ marginTop: '-3px' }}>
-                    <Select className={publicStyles.select_text} defaultValue="lucy">
-                      <Option value="jack">Jack</Option>
-                      <Option value="lucy">Lucy</Option>
-                    </Select>
+                    {getFieldDecorator('typeId', {
+                      rules: [],
+                    })(
+                      <Select className={publicStyles.select_text}>
+                        {fencingTypes.map(item => (
+                          <Option key={item.name} value={item.name}>
+                            {item.name}
+                          </Option>
+                        ))}
+                      </Select>,
+                    )}
                   </div>
                 </FormItem>
 
                 <span className={publicStyles.button_type}>
-                  <Button className={publicStyles.form_btn}>查询</Button>
-                  <Button className={publicStyles.form_btn} style={{ marginLeft: 37 }}>
+                  <Button className={publicStyles.form_btn} htmlType="submit">
+                    查询
+                  </Button>
+                  <Button
+                    className={publicStyles.form_btn}
+                    style={{ marginLeft: 37 }}
+                    onClick={this.onClear}
+                  >
                     清空
                   </Button>
                 </span>
@@ -197,11 +243,14 @@ class FencingSettings extends React.Component<Props> {
   }
 }
 
+const FencingSettingHOC = Form.create<Props>({ name: 'fencing_setting' })(FencingSettings);
+
 const mapState = ({ mapManager }) => {
   const resp = mapManager.mapFencing;
   return {
     mapFencing: resp,
+    fencingTypes: mapManager.fencingTypes,
   };
 };
 
-export default connect(mapState)(FencingSettings);
+export default connect(mapState)(FencingSettingHOC);

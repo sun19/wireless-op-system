@@ -2,7 +2,8 @@
  * title: 灯具设置
  */
 import React from 'react';
-import { Layout, Form, Input, Row, Col, Select, Button, Icon } from 'antd';
+import { Layout, Form, Input, Row, Col, Select, Button, Icon, message } from 'antd';
+import { FormComponentProps } from 'antd/lib/form';
 import router from 'umi/router';
 import { connect } from 'dva';
 import * as _ from 'lodash';
@@ -79,23 +80,14 @@ const columns = [
 ];
 
 type StateProps = ReturnType<typeof mapState>;
-type Props = StateProps & UmiComponentProps;
+type Props = StateProps & UmiComponentProps & FormComponentProps;
 
-interface State {
-  lampInputValue: string;
-  areaSelectValue?: string;
-}
-
-class LampsSettings extends React.Component<Props, State> {
+class LampsSettings extends React.Component<Props> {
   constructor(props: any) {
     super(props);
     this.getAllMapLamps = this.getAllMapLamps.bind(this);
     this.updateData = this.updateData.bind(this);
     this.deleteColumn = this.deleteColumn.bind(this);
-    this.state = {
-      lampInputValue: '',
-      areaSelectValue: '',
-    };
   }
   addUser = () => {
     router.push('/map-manager/lamps-set/add');
@@ -130,52 +122,24 @@ class LampsSettings extends React.Component<Props, State> {
 
   setupMapArea = () => {
     let { allAreas } = this.props;
+    const { getFieldDecorator } = this.props.form;
     if (_.isEmpty(allAreas)) {
       allAreas = [];
     }
-    return (
-      <Select
-        className={publicStyles.select_text}
-        defaultValue={allAreas.length === 0 ? '' : allAreas[0].name}
-        onSelect={this.onMapSelectChange}
-      >
+    return getFieldDecorator('regionalId', { rules: [] })(
+      <Select className={publicStyles.select_text}>
         {allAreas.map((area, index) => (
-          <Option value={area.id} key={area.id || index}>
+          <Option value={area.id} key={area.id}>
             {area.name}
           </Option>
         ))}
-      </Select>
+      </Select>,
     );
   };
 
-  onMapSelectChange = value => {
-    this.setState({
-      areaSelectValue: value,
-    });
-  };
-
-  onInputChange = e => {
-    this.setState({
-      lampInputValue: e.target.value,
-    });
-  };
-
-  onSearch = () => {
-    const { lampInputValue, areaSelectValue } = this.state;
-    this.getAllMapLamps({
-      regionalId: areaSelectValue,
-      lampCode: lampInputValue,
-    });
-  };
-
   onClear = () => {
-    this.setState({
-      lampInputValue: '',
-      areaSelectValue: '',
-    });
-    this.forceUpdate(() => {
-      this.onSearch();
-    });
+    this.props.form.resetFields();
+    this.getAllMapLamps();
   };
 
   async componentDidMount() {
@@ -189,8 +153,20 @@ class LampsSettings extends React.Component<Props, State> {
     });
   }
 
+  onSubmit = e => {
+    e.preventDefault();
+    this.props.form.validateFields(async (err, values) => {
+      if (err) {
+        message.error(err);
+        return;
+      }
+      this.getAllMapLamps(values);
+    });
+  };
+
   render() {
     let { lamps, allAreas } = this.props;
+    const { getFieldDecorator } = this.props.form;
     if (_.isEmpty(lamps) || _.isEmpty(allAreas)) {
       lamps = {
         records: [],
@@ -205,7 +181,7 @@ class LampsSettings extends React.Component<Props, State> {
       <div className={publicStyles.public_hight}>
         <Content className={publicStyles.bg}>
           <div className={styles.public_hight_40}>
-            <Form layout="inline">
+            <Form layout="inline" onSubmit={this.onSubmit}>
               <Row
                 // type="flex"
                 justify="start"
@@ -214,19 +190,16 @@ class LampsSettings extends React.Component<Props, State> {
                 gutter={16}
               >
                 <FormItem label="编号">
-                  <Input
-                    className={publicStyles.input_text}
-                    placeholder="请输入编号"
-                    value={this.state.lampInputValue}
-                    onChange={this.onInputChange}
-                  />
+                  {getFieldDecorator('lampCode', { rules: [] })(
+                    <Input className={publicStyles.input_text} placeholder="请输入编号" />,
+                  )}
                 </FormItem>
                 <FormItem label="区域">
                   <div style={{ marginTop: '-3px' }}>{this.setupMapArea()}</div>
                 </FormItem>
 
                 <span className={publicStyles.button_type}>
-                  <Button className={publicStyles.form_btn} onClick={this.onSearch}>
+                  <Button className={publicStyles.form_btn} htmlType="submit">
                     查询
                   </Button>
                   <Button
@@ -262,6 +235,8 @@ class LampsSettings extends React.Component<Props, State> {
   }
 }
 
+const LampsSettingsHOC = Form.create<Props>({ name: 'lamp_setting' })(LampsSettings);
+
 const mapState = ({ mapManager, commonState }) => {
   const resp = mapManager.lamps;
   const allAreas = commonState.allAreas;
@@ -271,4 +246,4 @@ const mapState = ({ mapManager, commonState }) => {
   };
 };
 
-export default connect(mapState)(LampsSettings);
+export default connect(mapState)(LampsSettingsHOC);
