@@ -1,4 +1,4 @@
-import request from '@/utils/request';
+import request, { format } from '@/utils/request';
 import { message } from 'antd';
 
 import {
@@ -51,7 +51,7 @@ export async function updateUserInfo(data: UpdateUserInfo) {
 }
 
 export async function deleteUser(data: DeleteUser) {
-  const resp = await request.delete(DELETE_USER, {data});
+  const resp = await request.delete(DELETE_USER, { data: format(data) });
   resp.success === true && resp.code === 200
     ? message.success(resp.message)
     : message.error(resp.message);
