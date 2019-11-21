@@ -32,7 +32,7 @@ export async function updateUser(params: UpdateUserParams) {
 }
 
 export async function deleteUser(params: DeleteUserParams) {
-  const resp = await request.delete(USER_MANAGER_DELETE_USER, { data: params });
+  const resp = await request.post(USER_MANAGER_DELETE_USER, { data: params });
   resp.success === true && resp.code === 200
     ? message.success(resp.message)
     : message.error(resp.message);

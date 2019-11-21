@@ -1,6 +1,7 @@
 import React from 'react';
 import { Table, Select, Button, Input, InputNumber, Popconfirm, Form, Icon, Pagination } from 'antd';
 
+import request from '@/utils/request';
 import { ICON_FONTS_URL } from '../config/constants';
 import styles from './table.less';
 
@@ -10,18 +11,19 @@ const IconFont = Icon.createFromIconfontCN({
 });
 
 const EditableContext = React.createContext();
-
 class EditableCell extends React.Component<any> {
   getInput = () => {
+    // console.log(this.props, this.state)
     if (this.props.inputType === 'number') {
-      return <InputNumber  />;
-    } else if ((this.props.inputType === 'text'||this.props.inputType === 'number' )&& this.props.className === 'select_text'){
-      return  <Select defaultValue={this.props.record[this.props.dataIndex]} style={{ width: 120 }}  />
-           {/* <Option value="1"> 男</Option>
+      return <InputNumber />;
+    } else if
+      ((this.props.inputType === 'text' || this.props.inputType === 'number') && this.props.className === 'select_text') {
+      return <Select defaultValue={this.props.record[this.props.dataIndex]} style={{ width: 120 }} />
+      {/* <Option value="1"> 男</Option>
             <Option value="2"> 女</Option> */}
-        {/* </Select > */}
-    }else
-      return <Input  placeholder={`请输入${this.props.title}`}/>;
+      {/* </Select > */ }
+    } else
+      return <Input placeholder={`请输入${this.props.title}`} />;
   };
 
   renderCell = ({ getFieldDecorator }) => {
@@ -32,6 +34,7 @@ class EditableCell extends React.Component<any> {
       inputType,
       record,
       key,
+      index,
       children,
       ...restProps
     } = this.props;
@@ -46,12 +49,12 @@ class EditableCell extends React.Component<any> {
                   message: `请输入${title}!`,
                 },
               ],
-              initialValue: record[dataIndex]==''?'': record[dataIndex],
+              initialValue: record[dataIndex] == '' ? '' : record[dataIndex],
             })(this.getInput())}
           </Form.Item>
         ) : (
-          children
-        )}
+            children
+          )}
       </td>
     );
   };
@@ -77,32 +80,32 @@ export default class EditableTable extends React.Component<Props, State> {
     this.state = { editingKey: '' };
     this.columns = this.props.showEdit
       ? this.props.columns.concat([
-          {
-            title: '操作',
-            dataIndex: 'operation',
-            render: (text, record) => {
-              const editable = this.isEditing(record);
-              return editable ? (
-                <span>
-                  <EditableContext.Consumer>
-                    {form => (
-                      <IconFont
-                        type="icon-save1"
-                        onClick={this.onSave.bind(this, form, record)}
-                        style={{ marginRight: 8 }}
-                      />
-                    )}
-                  </EditableContext.Consumer>
-                  <Popconfirm
-                    title="确定要取消吗?"
-                    onConfirm={this.onCancel.bind(this, record)}
-                    okText="确定"
-                    cancelText="取消"
-                  >
-                    <IconFont type="icon-cancel" />
-                  </Popconfirm>
-                </span>
-              ) : (
+        {
+          title: '操作',
+          dataIndex: 'operation',
+          render: (text, record) => {
+            const editable = this.isEditing(record);
+            return editable ? (
+              <span>
+                <EditableContext.Consumer>
+                  {form => (
+                    <IconFont
+                      type="icon-save1"
+                      onClick={this.onSave.bind(this, form, record)}
+                      style={{ marginRight: 8 }}
+                    />
+                  )}
+                </EditableContext.Consumer>
+                <Popconfirm
+                  title="确定要取消吗?"
+                  onConfirm={this.onCancel.bind(this, record)}
+                  okText="确定"
+                  cancelText="取消"
+                >
+                  <IconFont type="icon-cancel" />
+                </Popconfirm>
+              </span>
+            ) : (
                 <span>
                   <IconFont
                     type="icon-edit"
@@ -112,9 +115,9 @@ export default class EditableTable extends React.Component<Props, State> {
                   <IconFont type="icon-delete" onClick={this.onDelete.bind(this, record)} />
                 </span>
               );
-            },
           },
-        ])
+        },
+      ])
       : this.props.columns;
   }
 

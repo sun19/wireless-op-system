@@ -44,10 +44,8 @@ const columns = [
   {
     title: '人员类型',
     dataIndex: 'roleName',
-    // width: '15%',
     editable: true,
-    className:'select_text',
-
+    className: 'select_text',
   },
   {
     title: '性别',
