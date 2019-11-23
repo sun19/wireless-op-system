@@ -42,7 +42,7 @@ export async function getUserList(params: GetUserListParams) {
 
 export async function updateUserInfo(data: UpdateUserInfo) {
   const resp = await request.post(UPDATE_USER_INFO, {
-    data:format(data)
+    data: format(data),
   });
   resp.success === true && resp.code === 200
     ? message.success(resp.message)

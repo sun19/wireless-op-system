@@ -19,7 +19,7 @@ export default class SelectText extends React.Component<Props> {
   setupOptions = () => {
     const options = this.props.options;
     return options.map(option => (
-      <Option value={option.key} key={option.key}>
+      <Option value={option['selectValue']} key={option.key}>
         {option.value}
       </Option>
     ));
