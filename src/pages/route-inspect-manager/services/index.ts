@@ -20,8 +20,8 @@ export async function getInspectList(params: GetInspectListParams) {
 export async function getInspectDetail(params: GetInspectDetailParams) {
   const resp = await request.post(INSPECT_MANAGER_DETAIL, { data: params });
   resp.success === true && resp.code === 200
-    ? message.success(resp.message)
-    : message.error(resp.message);
+    ? message.success(`${resp.message}`)
+    : message.error(`${resp.message}`);
   return resp.success === true && resp.code === 200;
 }
 

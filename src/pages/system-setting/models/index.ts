@@ -4,6 +4,7 @@ export default {
     customManager: {},
     customManagerRecord: {},
     peopleType: {},
+    peopleTypeRecord: {},
     infoCard: {},
     superAdmin: {},
   },

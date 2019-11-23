@@ -37,7 +37,7 @@ export async function warningTypeSearch(params: WarningTypeSearch) {
 // 添加
 export async function wraningTypeAdd(data: WraningTypeAdd) {
   const resp = await request.post(WARNING_TYPE_ADD, {
-    data:format(data)
+    data: format(data),
   });
   return resp.success === true && resp.code === 200;
 }
@@ -53,10 +53,10 @@ export async function wraningTypeEdit(data: WraningTypeEdit) {
 // 删除
 export async function wraningTypeDel(data: WraningTypeDel) {
   const resp = await request.post(WARNING_TYPE_DEL, {
-    data:format(data)
+    data: format(data),
   });
-  if (resp.code == 500  ) {
-    message.error(resp.message);
+  if (resp.code == 500) {
+    message.error(`${resp.message}`);
   }
   return resp.success === true && resp.code === 200;
 }
@@ -79,7 +79,7 @@ export async function warningInfoDeal(data: WarningInfoDeal) {
 export async function warningHistorySearch(params: WarningHistorySearch) {
   const resp = await request.get(WARNING_HISTORY_SEARCH, { params });
   if (resp.code == 500 || !resp) {
-    message.error(resp.message);
+    message.error(`${resp.message}`);
   }
   return resp.result;
 }

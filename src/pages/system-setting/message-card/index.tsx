@@ -85,7 +85,7 @@ class MessageCard extends React.Component<Props> {
 
   deleteColumn(item) {
     //TODO:修改人ID
-    let self = this
+    let self = this;
     confirm({
       title: '确定要删除这条信息吗？',
       content: '',
@@ -97,9 +97,8 @@ class MessageCard extends React.Component<Props> {
         //重新请求数据重绘
         self.getBuList();
       },
-      onCancel() {
-      },
-    })
+      onCancel() {},
+    });
   }
 
   componentDidMount() {
