@@ -1,10 +1,12 @@
 /**
- * title: 添加
+ * title: 修改
  */
 import React from 'react';
 import { Form, Row, Col, message, Select } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import router from 'umi/router';
+import { connect } from 'dva';
+import * as _ from 'lodash';
 
 import SelectText from '../components/SelectText';
 import AreaText from '../components/AreaText';
@@ -21,10 +23,10 @@ import './index.less';
 interface UserType {
   key?: string;
   value?: string;
-  selectValue?: string;
+  roleId: string;
 }
 
-interface Props extends FormComponentProps {}
+type Props = FormComponentProps & ReturnType<typeof mapState>;
 
 interface State {
   userTypes: UserType[];
@@ -48,7 +50,7 @@ const defaultGenderType = [
 
 const { Option } = Select;
 
-class AddUser extends React.Component<Props, State> {
+class EditUser extends React.Component<Props, State> {
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -82,15 +84,15 @@ class AddUser extends React.Component<Props, State> {
   }
 
   handleSubmit(e) {
+    const { customManagerRecord } = this.props;
     e.preventDefault();
     const formValues = {};
     this.props.form.validateFields(async (err, values) => {
       if (err) {
-        // console.error(err, values, 'err');
         message.error('填写信息有误 ', values);
         return;
       }
-      const isSuccessed = await updateUserInfo(values);
+      const isSuccessed = await updateUserInfo(Object.assign(customManagerRecord, values));
       if (isSuccessed) {
         setTimeout(() => router.push('/system-setting/customer-manager'), 1000);
       }
@@ -108,8 +110,8 @@ class AddUser extends React.Component<Props, State> {
   }
   render() {
     const { getFieldDecorator } = this.props.form;
+    const { customManagerRecord } = this.props;
     if (this.state.userTypes.length === 0) return null;
-    // console.log(this.state.userTypes[0].roleId, 'roleId');
     return (
       <ContentBorder className={styles.add_root}>
         <Form layout="inline" style={{ marginTop: '0.57rem' }} onSubmit={this.handleSubmit}>
@@ -126,6 +128,7 @@ class AddUser extends React.Component<Props, State> {
                             message: '请输入登录名',
                           },
                         ],
+                        initialValue: customManagerRecord['loginName'],
                       })(
                         <InputText placeholder="请输入登录名" onChange={this.onLoginNameChange} />,
                       )}
@@ -140,6 +143,7 @@ class AddUser extends React.Component<Props, State> {
                             message: '请输入姓名',
                           },
                         ],
+                        initialValue: customManagerRecord['name'],
                       })(<InputText placeholder="请输入姓名" onChange={this.onUserNameChange} />)}
                     </Form.Item>
                   </Col>
@@ -152,13 +156,8 @@ class AddUser extends React.Component<Props, State> {
                   >
                     <Form.Item label="人员类型">
                       {getFieldDecorator('roleId', {
-                        rules: [
-                          {
-                            //required: true,
-                            message: '请选择人员类型',
-                          },
-                        ],
-                        initialValue: this.state.userTypes[0].selectValue,
+                        rules: [],
+                        initialValue: customManagerRecord.roleId,
                       })(
                         <Select style={{ width: '2rem' }} className={styles.select_text}>
                           {this.state.userTypes.map(option => (
@@ -173,25 +172,21 @@ class AddUser extends React.Component<Props, State> {
                   <Col span={12}>
                     <Form.Item label="性别">
                       {getFieldDecorator('sex', {
-                        initialValue: '男',
+                        initialValue: customManagerRecord.sex,
                         rules: [
                           {
+                            //required: true,
                             message: '请选择性别',
                           },
                         ],
                       })(
-                        <Select
-                          // defaultValue={this.props.value}
-                          style={{ width: '2rem' }}
-                          className={styles.select_text}
-                        >
+                        <Select style={{ width: '2rem' }} className={styles.select_text}>
                           {defaultGenderType.map(option => (
-                            <Option value={option.value} key={option.key}>
+                            <Option value={option.key} key={option.key}>
                               {option.value}
                             </Option>
                           ))}
                         </Select>,
-                        // <SelectText options={defaultGenderType} style={{ width: '2rem' }} />
                       )}
                     </Form.Item>
                   </Col>
@@ -199,7 +194,9 @@ class AddUser extends React.Component<Props, State> {
                 <Row type="flex" justify="space-between">
                   <Col span={23} className={styles.text_areas}>
                     <Form.Item label="备注">
-                      {getFieldDecorator('remark')(
+                      {getFieldDecorator('remark', {
+                        initialValue: customManagerRecord['remark'],
+                      })(
                         <AreaText
                           autoSize={{ minRows: 6, maxRows: 8 }}
                           onChange={this.onTipsChange}
@@ -229,4 +226,11 @@ class AddUser extends React.Component<Props, State> {
   }
 }
 
-export default Form.create<Props>({ name: 'add_user' })(AddUser);
+const EditUserHOC = Form.create<Props>({ name: 'edit_user' })(EditUser);
+
+const mapState = ({ systemSetting }) => {
+  const resp = systemSetting.customManagerRecord;
+  return { customManagerRecord: resp };
+};
+
+export default connect(mapState)(EditUserHOC);

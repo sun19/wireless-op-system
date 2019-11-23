@@ -53,9 +53,10 @@ const columns = [
     // width: '5%',
     className: 'select_text',
     editable: true,
+    render(sex) {
+      return sex == '0' ? <span>男</span> : <span>女</span>;
     },
-       
- 
+  },
   {
     title: '备注',
     dataIndex: 'remark',
@@ -118,7 +119,7 @@ class UserManager extends React.Component<Props, State> {
 
   deleteColumn = (item: DeleteUser) => {
     //TODO:修改人ID
-    let self = this
+    let self = this;
     confirm({
       title: '确定要删除这条信息吗？',
       content: '',
@@ -126,17 +127,16 @@ class UserManager extends React.Component<Props, State> {
       okType: 'danger',
       cancelText: '取消',
       async onOk() {
-        let data={ 
-          id: item.id
-        }
+        let data = {
+          id: item.id,
+        };
         await deleteUser(data);
         //重新请求数据重绘
         self.getUserListData();
       },
-      onCancel() {
-      },
-    })
-  }
+      onCancel() {},
+    });
+  };
 
   async componentDidMount() {
     this.getUserListData();
@@ -152,13 +152,20 @@ class UserManager extends React.Component<Props, State> {
   }
 
   async updateData(data, item) {
-    const resp = await updateUserInfo(item);
-    if (resp) {
-      this.props.dispatch({
-        type: 'systemSetting/update',
-        payload: { customManager: { records: data } },
-      });
-    }
+    this.props.dispatch({
+      type: 'systemSetting/update',
+      payload: {
+        customManagerRecord: data,
+      },
+    });
+    router.push('/system-setting/customer-manager/edit');
+    // const resp = await updateUserInfo(item);
+    // if (resp) {
+    //   this.props.dispatch({
+    //     type: 'systemSetting/update',
+    //     payload: { customManager: { records: data } },
+    //   });
+    // }
   }
 
   render() {

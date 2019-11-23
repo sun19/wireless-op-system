@@ -2,6 +2,7 @@ export default {
   namespace: 'systemSetting',
   state: {
     customManager: {},
+    customManagerRecord: {},
     peopleType: {},
     infoCard: {},
     superAdmin: {},
