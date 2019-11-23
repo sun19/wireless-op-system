@@ -103,12 +103,12 @@ class FencingSetting extends React.Component<Props, State> {
   onSubmit = e => {
     e.preventDefault();
     this.props.form.validateFields(async (err, values) => {
-// console.log(values)
-const {...props}=values
-     const data={
-       operatTime: moment.format('YYYY-MM-DD HH:mm:ss'),
-       ...props
-     }
+      const { ...props } = values
+      const data = {
+        operatTime: moment().format('YYYY-MM-DD HH:mm:ss'),
+        ...props
+      }
+      // console.log(data)
 
       // await addMapFencingArea(data);
       // router.push('/map-manager/fence-setting');
