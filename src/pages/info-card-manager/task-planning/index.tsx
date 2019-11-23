@@ -12,7 +12,7 @@ import MainContent from '../components/MainContent';
 import { ICON_FONTS_URL } from '../../../config/constants';
 import styles from './index.less';
 import publicStyles from '../index.less';
-import { getTaskList, delTaskList } from '../services';
+import { getTaskList, delTaskList, TaskListEdit} from '../services';
 // import { getAllDuties, getAllSecretLevels } from '@/pages/login/login.service';
 import { DelTaskList } from '../services/index.interfaces';
 
@@ -36,12 +36,12 @@ const columns = [
   // },
   {
     title: '姓名',
-    dataIndex: 'remark',
+    dataIndex: 'name',
     editable: true,
   },
   {
     title: '信息牌编号',
-    dataIndex: 'informationBoardId',
+    dataIndex: 'informationBoardName',
     editable: true,
   },
   {
@@ -62,7 +62,7 @@ const columns = [
   },
 ];
 interface State {
-  remark: string;
+  name: string;
   informationBoardName: string;
   task: string;
   pageNo?: number;
@@ -74,7 +74,7 @@ class TaskPlan extends React.Component<Props, State> {
     this.updateData = this.updateData.bind(this);
     // this.deleteColumn = this.deleteColumn.bind(this);
     this.state = {
-      remark: '',
+      name: '',
       informationBoardName: '',
       task: '',
       pageNo: 1,
@@ -106,15 +106,13 @@ class TaskPlan extends React.Component<Props, State> {
     });
   }
   async updateData(data, item) {
-    this.getTaskListData() 
-     
-    // const resp = await getTaskList(item);
-    // if (resp) {
-    //   this.props.dispatch({
-    //     type: 'infoCardManager/update',
-    //     payload: { taskPlan: { records: data } },
-    //   });
-    // }
+    // console.log(data,item)
+    // this.getTaskListData(item)
+    const resp = await TaskListEdit(item);
+    // console.log(resp)
+    if (resp) {
+      this.getTaskListData()
+    }
   }
   // 删除
   deleteColumn(item: DelTaskList) {
@@ -191,7 +189,7 @@ class TaskPlan extends React.Component<Props, State> {
               >
                 <FormItem label="姓名">
                   {getFieldDecorator(
-                    'remark',
+                    'name',
                     {},
                   )(<Input className={publicStyles.input_text} placeholder="请输入姓名" />)}
                 </FormItem>

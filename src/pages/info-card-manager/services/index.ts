@@ -15,6 +15,7 @@ import {
   ADD_TASK_LIST,
   EXPORT_TASK_OUT,
   EXPORT_TASK_IN,
+  TASK_LIST_EDIT,
 } from '@/config/api';
 import {
   GetInfoListParams,
@@ -57,7 +58,8 @@ export async function getInfoDetial(data: GetInfoDetial) {
 // 信息牌添加
 export async function addInfoList(data: AddInfoList) {
   const resp = await request.post(ADD_INFO_LIST, 
-    { headers: { 'Content-Type': 'application/json;charset=utf-8' }, data: format(data) }, 
+    { data: format(data) },
+
  );
   return resp.success === true && resp.code === 200;
 }
@@ -109,5 +111,11 @@ export async function exportTaskIn() {
 // 导出
 export async function exportTaskOut() {
   const resp = await request.post(EXPORT_TASK_OUT);
+  return resp.success === true && resp.code === 200;
+}
+// 信息牌列表编辑
+export async function TaskListEdit(params: GetTaskList) {
+  const resp = await request.post(TASK_LIST_EDIT, { data: format(params)});
+  // console.log(resp)
   return resp.success === true && resp.code === 200;
 }

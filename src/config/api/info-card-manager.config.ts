@@ -37,4 +37,7 @@ export const EXPORT_TASK_OUT =
   'http://47.96.112.31:8086/jeecg-boot/intf/location/exportXlsTaskPlan';
 // 导入
 export const EXPORT_TASK_IN =
-  ' http://47.96.112.31:8086/jeecg-boot/intf/location/importExcelTaskPlan';
+  'http://47.96.112.31:8086/jeecg-boot/intf/location/importExcelTaskPlan';
+// 修改
+export const TASK_LIST_EDIT  =
+  'http://47.96.112.31:8086/jeecg-boot/intf/location/updateTaskPlan';
