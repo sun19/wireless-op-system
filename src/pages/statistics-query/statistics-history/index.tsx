@@ -2,7 +2,7 @@
  * title: 统计查询/历史轨迹
  */
 import React from 'react';
-import { Layout, Form, Input, Row, Col, Select, TimePicker, Button, Icon, Divider,DatePicker} from 'antd';
+import { Layout, Form, Input, Row, Col, Select, TimePicker, Button, Icon, Divider, DatePicker } from 'antd';
 import * as _ from 'lodash';
 import router from 'umi/router';
 import { connect } from 'dva';
@@ -33,8 +33,8 @@ const columns = [
     title: '信息牌编号',
     dataIndex: 'informationBoardId',
     editable: true,
-    ellipsis: true,
-    width: 100,
+    // ellipsis: true,
+    // width: 100,
     key: 'informationBoardId',
     // fixed: 'left',
 
@@ -82,19 +82,23 @@ const columns = [
     className: 'select_text',
     editable: true,
   },
-  {
-    title: 'Action',
-    key: 'action',
-    fixed: 'right',
-    width: 100,
-    render: (text, record) => (
-      <span>
-        <a>Invite {record.name}</a>
-        <Divider type="vertical" />
-        {/* <a>Delete</a> */}
-      </span>
-    ),
-  },
+  // {
+  //   title: 'Action',
+  //   key: 'action',
+  //   fixed: 'right',
+  //   width: 100,
+  //   render: (text, record) => (
+  //     <span >
+  //       <IconFont
+  //         type="icon-preview1"
+  //         // onClick={this.props.review.bind(this,record)}
+  //         style={{ marginRight: 8 }}
+  //       />
+
+
+  //     </span>
+  //   ),
+  // },
 ];
 
 interface UserType {
@@ -126,14 +130,28 @@ class StatisticsHistory extends React.Component<Props, State> {
       pageNo: 1,
       pageSize: 10,
     };
+    this.deleteColumn = this.deleteColumn.bind(this);
+    this.updateData = this.updateData.bind(this);
+
   }
-  
+  updateData(data, item) {
+    // console.log('ee')
+    router.push('/statistics-query/statistics-history/add');
+
+  }
+  deleteColumn(item) {
+    // console.log('ese')
+    router.push('/statistics-query/statistics-history/add');
+
+
+  }
   async componentDidMount() {
     this.getAllRole()
     this.getHistoryListData();
     this.props.form.validateFields();
   }
-  addUser = () => {
+  review = (record) => {
+    // console.log(record)
     router.push('/statistics-query/statistics-history/add');
   };
   search = e => {
@@ -145,27 +163,27 @@ class StatisticsHistory extends React.Component<Props, State> {
   };
   async getAllRole(data?: State) {
     let userTypes = await getAllRoles();
-      userTypes = userTypes.map(item => ({
+    userTypes = userTypes.map(item => ({
       key: item.id,
       value: item.roleName,
-      roleId: item.id,
+      roleId: item.roleCode,
     }));
-    this.setState({ userTypes})
+    this.setState({ userTypes })
     // this.props.dispatch({
     //   type: 'statisticsQuery/history',
     //   payload: { roles: userTypes },
     // });
-  
+
   }
   async getHistoryListData(data?: State) {
     const taskList = await getSatisticsHistory(data);
     this.props.dispatch({
       type: 'statisticsQuery/update',
-      payload: { history: taskList},
+      payload: { history: taskList },
     });
   }
   render() {
-    let { taskList} = this.props;
+    let { taskList } = this.props;
 
     const { getFieldDecorator } = this.props.form;
     if (_.isEmpty(taskList)) {
@@ -186,18 +204,18 @@ class StatisticsHistory extends React.Component<Props, State> {
               <Row justify="start" align="middle" style={{ paddingLeft: '39px' }} gutter={16}>
                 <FormItem label="信息牌">
                   {getFieldDecorator(
-                    'name',
+                    'informationBoardName',
                     {},
                   )(<Input className={publicStyles.input_text} placeholder="请输入信息牌" />)}
                 </FormItem>
                 <FormItem label="身份证号">
                   {getFieldDecorator(
-                    'name',
+                    'cardNo',
                     {},
                   )(<Input className={publicStyles.input_text} placeholder="请输入身份证号" />)}
                 </FormItem>
                 <Form.Item label="人员类型">
-                  {getFieldDecorator('roleId', {
+                  {getFieldDecorator('type', {
 
                     rules: [
                       {
@@ -205,54 +223,39 @@ class StatisticsHistory extends React.Component<Props, State> {
                       },
                     ],
 
-                    initialValue:'1',
+                    initialValue: '1',
                   })(
 
-                    <SelectText
-                      options={this.state.userTypes as OptionValue[]}
+                    <Select
+                      // options={this.state.userTypes as OptionValue[]}
                       style={{ width: '2rem' }}
-                    />,
+                    >
+
+                      {this.state.userTypes.map(item => (
+                        <Option value={item.key} key={item.value}>
+                          {item.value}
+                        </Option>
+                      ))}
+                    </Select>,
                   )}
                 </Form.Item>
-                {/* <FormItem label="开始时间" className={publicStyles.authInner}>
+                <Form.Item label="开始时间" className={publicStyles.authInner}>
                   {getFieldDecorator('startTime', {
-                    // initialValue: moment('12:08:23', 'HH:mm:ss'),
                   })(
-                    <span className={publicStyles.timePicker}>
-                    <TimePicker placeholder="请选择开始时间" /></span>,
-                    // <span className={publicStyles.timePicker}>
-                    // </span>,
+                    <DatePicker showTime={true} placeholder="请选择开始时间" />
                   )}
-                </FormItem>
-                <FormItem label="结束时间" className={publicStyles.authInner}>
+                </Form.Item>
+                <Form.Item label="结束时间" className={publicStyles.authInner}>
                   {getFieldDecorator('endTime', {
-                    // initialValue: moment('12:08:23', 'HH:mm:ss'),
                   })(
-                    <span className={publicStyles.timePicker}>
-                      <TimePicker placeholder="请选择结束时间" /></span>,
+                    <DatePicker showTime={true} placeholder="请选择结束时间" />
                   )}
-                </FormItem> */}
-                <FormItem label="结束时间" className={publicStyles.authInner}>
-                  {getFieldDecorator('endTime', {
-                    // initialValue: moment('12:08:23', 'HH:mm:ss'),
-                  })(
-                    <span className={publicStyles.timePicker}>
-                      <RangePicker
-                        showTime={{ format: 'HH:mm:ss' }}
-                        format="YYYY-MM-DD HH:mm:ss"
-                        placeholder={['开始时间', '结束时间']}
-                        // onChange={this.onRangePickerChange}
-                        // onOk={this.onRangePickerOK}
-                        // value={this.state.time}
-                      />
-                      </span>
-                  )}
-                </FormItem>  
+                </Form.Item>
 
-             
+
 
                 <span className={publicStyles.button_type}>
-                  <Button className={publicStyles.form_btn} style={{ marginLeft: 10 }}>
+                  <Button className={publicStyles.form_btn} style={{ marginLeft: 10 }} htmlType="submit">
                     查询
                   </Button>
                   <Button className={publicStyles.form_btn} style={{ marginLeft: 10 }}>
@@ -262,7 +265,7 @@ class StatisticsHistory extends React.Component<Props, State> {
                 <span className={[`${publicStyles.form_btns}`].join(' ')}>
                   <span
                     className={[`${publicStyles.form_btn_add}`].join('')}
-                    onClick={this.addUser}
+                  // onClick={this.addUser}
                   >
                     <IconFont type="icon-upload-light" />
                   </span>
@@ -273,9 +276,11 @@ class StatisticsHistory extends React.Component<Props, State> {
           <MainContent
             data={records}
             columns={columns}
-            // updateData={this.updateData}
-            // deleteColumn={this.deleteColumn}
+            updateData={this.updateData}
+            deleteColumn={this.deleteColumn}
             total={total}
+            showEdit={true}
+
           />
         </Content>
       </div>
@@ -286,6 +291,6 @@ class StatisticsHistory extends React.Component<Props, State> {
 const TaskPlanFrom = Form.create<Props>({ name: 'statistics_history_query' })(StatisticsHistory);
 const mapState = ({ statisticsQuery }) => {
   const resp = statisticsQuery.history;
-  return { taskList: resp};
+  return { taskList: resp };
 };
 export default connect(mapState)(TaskPlanFrom);

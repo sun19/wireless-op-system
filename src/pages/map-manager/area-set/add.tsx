@@ -21,7 +21,7 @@ import {
   getAllLevels,
   getAllArea,
 } from '@/pages/login/login.service';
-import { addMapFencingArea } from '../services';
+import { mapAreaAdd } from '../services';
 
 import styles from './index.less';
 
@@ -109,8 +109,10 @@ class FencingSetting extends React.Component<Props, State> {
         ...props
       }
       // console.log(data)
-
-      // await addMapFencingArea(data);
+     let res= await mapAreaAdd(data);
+     if(res){
+       router.push('/map-manager/fence-setting');
+     }
       // router.push('/map-manager/fence-setting');
       // // this.getRouteInspectList(data);
     });

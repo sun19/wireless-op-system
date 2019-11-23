@@ -27,6 +27,7 @@ import {
   MAP_MANAGER_POLLING_LINE_DETAIL,
 } from '@/config/api';
 import {
+  AddMapAreaParams,
   GetMapAreaParams,
   UpdateMapAreaParams,
   DeleteMapAreaParams,
@@ -50,6 +51,15 @@ import {
   DeletePollingLineParams,
   GetPollingLineDetailParams,
 } from './index.interface';
+
+export async function mapAreaAdd(params: AddMapAreaParams) {
+  // console.log(params)
+  let resp = await request.get(MAP_MANAGER_AREA_SETTING_ADD, { data: format(params) });
+  resp.success === true && resp.code === 200
+    ? message.success(resp.message)
+    : message.error(resp.message);
+  return resp.success === true && resp.code === 200;
+}
 
 export async function getMapArea(params: GetMapAreaParams) {
   let resp = await request.get(MAP_MANAGER_AREA_SETTING_QUERY, { params });
