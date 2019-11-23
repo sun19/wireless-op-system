@@ -104,12 +104,12 @@ class RouteInspectReport extends React.Component<Props> {
   onSearch = e => {
     e.preventDefault();
     this.props.form.validateFields(async (err, values) => {
-      const { createtime, inspectionTime, ...props } = values
+      const { createtime, endTime, ...props } = values
       const data = {
         ...props,
-        createtime: values.createtime ?values.createtime.format('YYYY-MM-DD hh:mm:ss'):'',
+        createtime: values.createtime ?values.createtime.format('YYYY-MM-DD HH:mm:ss'):'',
 
-        inspectionTime: values.inspectionTime ? values.inspectionTime.format('YYYY-MM-DD hh:mm:ss') : ''
+        endTime: values.endTime ? values.endTime.format('YYYY-MM-DD HH:mm:ss') : ''
       }
       this.getRouteInspectReports(data);
     });
@@ -157,7 +157,7 @@ class RouteInspectReport extends React.Component<Props> {
                   )}
                 </FormItem>
                 <FormItem label="结束时间">
-                  {getFieldDecorator('inspectionTime', {
+                  {getFieldDecorator('endTime', {
                     // initialValue: moment('12:08:23', 'HH:mm:ss'),
                   })(
                     <DatePicker showTime={true} format="YYYY-MM-DD HH:mm:ss" placeholder="请选择结束时间" />,

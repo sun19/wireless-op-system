@@ -183,17 +183,17 @@ class SuperAdmin extends React.Component<Props, State> {
     message.destroy();
   }
 
-  renderTypeOptions = () => {
-    return (
-      <Select className={publicStyles.select_text} defaultValue={this.state.type[0].value}>
-        {this.state.type.map(item => (
-          <Option value={item.value} key={item.value}>
-            {item.label}
-          </Option>
-        ))}
-      </Select>
-    );
-  };
+  // renderTypeOptions = () => {
+  //   return (
+  //     <Select className={publicStyles.select_text} defaultValue={this.state.type[0].value}>
+  //       {this.state.type.map(item => (
+  //         <Option value={item.value} key={item.value}>
+  //           {item.label}
+  //         </Option>
+  //       ))}
+  //     </Select>
+  //   );
+  // };
 
   render() {
     const { superAdmin } = this.props;
@@ -216,12 +216,18 @@ class SuperAdmin extends React.Component<Props, State> {
                 gutter={16}
               >
                 <FormItem label="类型">
-                  <div
+                  {/* <div
                     style={{ marginTop: '-3px' }}
                   // className={publicStyles.selection}
-                  >
-                    {this.renderTypeOptions()}
-                  </div>
+                  > */}
+                    {/* {this.renderTypeOptions()} */}
+                    <Input
+                      className={publicStyles.input_text}
+                      placeholder="请输入类型"
+                      value={this.state.remark}
+                      onChange={this.onRemarkChange}
+                    />
+                  {/* </div> */}
                 </FormItem>
                 <FormItem label="描述">
                   <Input

@@ -37,7 +37,7 @@ export async function warningTypeSearch(params: WarningTypeSearch) {
 // 添加
 export async function wraningTypeAdd(data: WraningTypeAdd) {
   const resp = await request.post(WARNING_TYPE_ADD, {
-    data,
+    data:format(data)
   });
   return resp.success === true && resp.code === 200;
 }

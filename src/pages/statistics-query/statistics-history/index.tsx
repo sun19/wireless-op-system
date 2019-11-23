@@ -2,7 +2,7 @@
  * title: 统计查询/历史轨迹
  */
 import React from 'react';
-import { Layout, Form, Input, Row, Col, Select, TimePicker, Button, Icon } from 'antd';
+import { Layout, Form, Input, Row, Col, Select, TimePicker, Button, Icon, Divider,DatePicker} from 'antd';
 import * as _ from 'lodash';
 import router from 'umi/router';
 import { connect } from 'dva';
@@ -20,6 +20,7 @@ import moment from 'moment';
 import { getSatisticsHistory, getAllRoles } from '../services';
 // import { DelTaskList } from '../services/index.interfaces';
 
+const { RangePicker } = DatePicker;
 const { Option } = Select;
 const { Content } = Layout;
 const FormItem = Form.Item;
@@ -32,6 +33,11 @@ const columns = [
     title: '信息牌编号',
     dataIndex: 'informationBoardId',
     editable: true,
+    ellipsis: true,
+    width: 100,
+    key: 'informationBoardId',
+    // fixed: 'left',
+
   },
   {
     title: '状态',
@@ -75,6 +81,19 @@ const columns = [
     dataIndex: 'type',
     className: 'select_text',
     editable: true,
+  },
+  {
+    title: 'Action',
+    key: 'action',
+    fixed: 'right',
+    width: 100,
+    render: (text, record) => (
+      <span>
+        <a>Invite {record.name}</a>
+        <Divider type="vertical" />
+        {/* <a>Delete</a> */}
+      </span>
+    ),
   },
 ];
 
@@ -195,7 +214,7 @@ class StatisticsHistory extends React.Component<Props, State> {
                     />,
                   )}
                 </Form.Item>
-                <FormItem label="开始时间" className={publicStyles.authInner}>
+                {/* <FormItem label="开始时间" className={publicStyles.authInner}>
                   {getFieldDecorator('startTime', {
                     // initialValue: moment('12:08:23', 'HH:mm:ss'),
                   })(
@@ -212,7 +231,25 @@ class StatisticsHistory extends React.Component<Props, State> {
                     <span className={publicStyles.timePicker}>
                       <TimePicker placeholder="请选择结束时间" /></span>,
                   )}
-                </FormItem>
+                </FormItem> */}
+                <FormItem label="结束时间" className={publicStyles.authInner}>
+                  {getFieldDecorator('endTime', {
+                    // initialValue: moment('12:08:23', 'HH:mm:ss'),
+                  })(
+                    <span className={publicStyles.timePicker}>
+                      <RangePicker
+                        showTime={{ format: 'HH:mm:ss' }}
+                        format="YYYY-MM-DD HH:mm:ss"
+                        placeholder={['开始时间', '结束时间']}
+                        // onChange={this.onRangePickerChange}
+                        // onOk={this.onRangePickerOK}
+                        // value={this.state.time}
+                      />
+                      </span>
+                  )}
+                </FormItem>  
+
+             
 
                 <span className={publicStyles.button_type}>
                   <Button className={publicStyles.form_btn} style={{ marginLeft: 10 }}>

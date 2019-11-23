@@ -1,5 +1,5 @@
 /**
- * title: 修改
+ * title: 添加
  */
 import React from 'react';
 import { Form, Row, Col, Button, Input, Select, DatePicker, Cascader } from 'antd';
@@ -119,10 +119,10 @@ class FencingSetting extends React.Component<Props, State> {
       const data = {
         ...props,
         effectiveTime: values.effectiveTime
-          ? values.effectiveTime.format('YYYY-MM-DD hh:mm:ss').toString()
+          ? values.effectiveTime.format('YYYY-MM-DD HH:mm:ss').toString()
           : '',
         failureTime: values.failureTime
-          ? values.failureTime.format('YYYY-MM-DD hh:mm:ss').toString()
+          ? values.failureTime.format('YYYY-MM-DD HH:mm:ss').toString()
           : '',
         userId: userId.join(','),
       };

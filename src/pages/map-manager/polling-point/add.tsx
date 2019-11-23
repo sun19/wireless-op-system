@@ -1,26 +1,49 @@
 /**
- * title: 修改
+  * title: 添加
  */
 import React from 'react';
 import { Form, Row, Col, Button, Input, Select, message } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
+import { connect } from 'dva';
 import router from 'umi/router';
 
 import ContentBorder from '../../../components/ContentBorder';
 import { addPollingPoint } from '../services';
+import { getAllMap} from '@/pages/login/login.service';
+import { UmiComponentProps } from '@/common/type';
+
 // import { InputText, TreeNodeMenu } from '../components';
 
 import styles from './index.less';
 
 const { TextArea } = Input;
 const { Option } = Select;
+ 
 
-interface Props extends FormComponentProps {}
-
-class AddPollingPoint extends React.Component<Props> {
+type StateProps = ReturnType<typeof mapState>;
+type Props = StateProps& UmiComponentProps & FormComponentProps;
+// interface Props extends FormComponentProps {}
+interface State {}
+class AddPollingPoint extends React.Component<Props, State> {
   constructor(props) {
     super(props);
+  
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.initRequest = this.initRequest.bind(this);
+
+  }
+  async componentDidMount() {
+    this.initRequest();
+  }
+  async initRequest() {
+    let maps  = await getAllMap();
+  
+    this.props.dispatch({
+      type: 'mapManager/update',
+      payload: {
+        allMaps: maps.result,
+      },
+    });
   }
 
   handleSubmit(e) {
@@ -44,6 +67,7 @@ class AddPollingPoint extends React.Component<Props> {
 
   render() {
     const { getFieldDecorator } = this.props.form;
+    const { maps } = this.props;
     return (
       <ContentBorder className={styles.auth_root}>
         <Form
@@ -60,11 +84,29 @@ class AddPollingPoint extends React.Component<Props> {
                     {getFieldDecorator('mapName', {
                       rules: [
                         {
+                          message: '请选择地图名称',
+                        },
+                      ],
+                    })(
+                      <Select placeholder="请选择地图名称">
+                        {
+                         maps.map(item => (
+                          <Option value={item.id} key={item.name}>
+                            {item.name}
+                          </Option>
+                        ))}
+                      </Select>,
+                    )}
+                  </Form.Item>
+                  {/* <Form.Item label="地图名称">
+                    {getFieldDecorator('mapName', {
+                      rules: [
+                        {
                           message: '请输入地图名称',
                         },
                       ],
                     })(<Input placeholder="请输入地图名称" />)}
-                  </Form.Item>
+                  </Form.Item> */}
                   <Form.Item label="巡检点名称">
                     {getFieldDecorator('name', {
                       rules: [
@@ -188,4 +230,15 @@ class AddPollingPoint extends React.Component<Props> {
   }
 }
 
-export default Form.create<Props>({ name: 'add_polling_point' })(AddPollingPoint);
+const AddPollingPointHOC = Form.create<Props>({ name: 'fencing_setting_add' })(AddPollingPoint);
+
+const mapState = ({ mapManager }) => {
+  const { allMaps } = mapManager;
+  return {
+    maps: allMaps,
+  };
+};
+
+export default connect(mapState)(AddPollingPointHOC);
+
+// export default Form.create<Props>({ name: 'add_polling_point' })(AddPollingPoint);

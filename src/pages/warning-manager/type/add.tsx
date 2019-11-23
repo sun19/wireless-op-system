@@ -118,12 +118,12 @@ class UserAuth extends React.Component<Props, State> {
   async onSearch(e) {
     e.preventDefault();
     this.props.form.validateFields(async (err, values) => {
-      const { startTime, endTime, ...props } = values;
+      const { startTime, endTime, overrunTime, ...props } = values;
       const data = {
         ...props,
-        startTime: values.startTime.format('YYYY-MM-DD hh:mm:ss').toString(),
-
-        endTime: values.endTime ? values.endTime.format('YYYY-MM-DD hh:mm:ss').toString() : '',
+        startTime: values.startTime?values.startTime.format('YYYY-MM-DD HH:mm:ss').toString():'',
+        endTime: values.endTime ? values.endTime.format('YYYY-MM-DD HH:mm:ss').toString() : '',
+        overrunTime: values.overrunTime ? values.overrunTime.format('YYYY-MM-DD HH:mm:ss').toString():'',
       };
 
       await wraningTypeAdd(data);

@@ -117,8 +117,8 @@ class WraningHistory extends React.Component<Props, State> {
       const { alarmStartTime, alarmEndTime, ...props } = values
       const data = {
         ...props,
-        alarmStartTime: values.alarmStartTime ? values.alarmStartTime.format('YYYY-MM-DD hh:mm:ss') : '',
-        alarmEndTime: values.alarmEndTime ? values.alarmEndTime.format('YYYY-MM-DD hh:mm:ss') : ''
+        alarmStartTime: values.alarmStartTime ? values.alarmStartTime.format('YYYY-MM-DD HH:mm:ss') : '',
+        alarmEndTime: values.alarmEndTime ? values.alarmEndTime.format('YYYY-MM-DD HH:mm:ss') : ''
       }
       this.getTaskListData(data);
     });

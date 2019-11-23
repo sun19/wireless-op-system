@@ -36,13 +36,13 @@ const columns = [
   {
     title: '所属地图',
     dataIndex: 'mapName',
-    className: 'select_text',
+    // className: 'select_text',
     editable: true,
   },
   {
     title: '区域选择',
     dataIndex: 'regionalName',
-    className: 'select_text',
+    // className: 'select_text',
     editable: true,
   },
   {
@@ -53,12 +53,10 @@ const columns = [
   {
     title: '开始时间',
     dataIndex: 'startTime',
-    editable: true,
   },
   {
     title: '结束时间',
     dataIndex: 'endTime',
-    editable: true,
   },
 
   {
@@ -74,18 +72,17 @@ const columns = [
   {
     title: '超限时间',
     dataIndex: 'overrunTime',
-    editable: true,
   },
   {
     title: '重复类型',
     dataIndex: 'repeatType',
-    className: 'select_text',
+    // className: 'select_text',
     editable: true,
   },
   {
     title: '告警方式',
     dataIndex: 'warnMode',
-    className: 'select_text',
+    // className: 'select_text',
     editable: true,
   },
 ];

@@ -120,6 +120,7 @@ class AreaSet extends React.Component<Props, State> {
 
   setupAreaLevelSelect = () => {
     const { areaLevels } = this.props;
+    // console.log(areaLevels)
     return (
       <Select
         className={publicStyles.select_text}
@@ -162,8 +163,7 @@ class AreaSet extends React.Component<Props, State> {
     this.getMapArea();
   };
   addMapArea = () => {
-    message.success('UI图缺少这个界面...');
-    // router.push('/map-manager/area-set');
+    router.push('/map-manager/area-set/add');
   };
 
   async componentDidMount() {

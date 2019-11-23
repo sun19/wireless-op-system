@@ -168,7 +168,7 @@ class LogList extends React.Component<Props, State> {
                     style={{ marginLeft: 30 }}
                     onClick={this.onResetLogList}
                   >
-                    清空
+                    清空 
                   </Button>
                 </span>
                 <span className={[`${publicStyles.form_btns}`].join(' ')}>
@@ -176,7 +176,7 @@ class LogList extends React.Component<Props, State> {
                     className={[`${publicStyles.form_btn_add}`].join('')}
                     onClick={this.exportLogs}
                   >
-                    <IconFont type="icon-download-simple" />
+                    <IconFont type="icon-upload-light" />
                   </span>
                 </span>
               </Row>
