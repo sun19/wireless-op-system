@@ -116,6 +116,5 @@ export async function exportTaskOut() {
 // 信息牌列表编辑
 export async function TaskListEdit(params: GetTaskList) {
   const resp = await request.post(TASK_LIST_EDIT, { data: format(params)});
-  // console.log(resp)
   return resp.success === true && resp.code === 200;
 }

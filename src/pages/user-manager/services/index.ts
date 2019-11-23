@@ -22,9 +22,9 @@ export async function getUserList(params: GetUserListParams) {
   const resp = await request.get(USER_MANAGER_GET_USER_LIST, { params });
   return resp;
 }
-
+// { headers: { 'Content-Type': 'application/json;charset=utf-8' },data: params }, 
 export async function updateUser(params: UpdateUserParams) {
-  const resp = await request.post(USER_MANAGER_UPDATE_USER, { data: params });
+  const resp = await request.post(USER_MANAGER_UPDATE_USER, { headers: { 'Content-Type': 'application/json;charset=utf-8' }, data: params });
   resp.success === true && resp.code === 200
     ? message.success(resp.message)
     : message.error(resp.message);
@@ -46,7 +46,7 @@ export async function addCardNoInfo() {
     : message.error(resp.message);
   return resp.success === true && resp.code === 200;
 }
-
+// 新增
 export async function addUser(params: AddUserParams) {
   const resp = await request.post(USER_MANAGER_ADD_USER, { headers: { 'Content-Type': 'application/json;charset=utf-8' },data: params },  );
   resp.success === true && resp.code === 200

@@ -2,7 +2,7 @@
  * title: 任务规划
  */
 import React from 'react';
-import { Layout, Modal, Form, Input, Row, Col, Select, Button, Icon } from 'antd';
+import { Layout, Modal, Form, Input, Row, Col, Select, Button, Alert, message, Icon } from 'antd';
 import * as _ from 'lodash';
 import { connect } from 'dva';
 import { UmiComponentProps } from '@/common/type';
@@ -106,17 +106,15 @@ class TaskPlan extends React.Component<Props, State> {
     });
   }
   async updateData(data, item) {
-    // console.log(data,item)
-    // this.getTaskListData(item)
     const resp = await TaskListEdit(item);
-    // console.log(resp)
     if (resp) {
+      message.success('修改成功！');
       this.getTaskListData()
     }
   }
   // 删除
   deleteColumn(item: DelTaskList) {
-    //TODO:修改人ID   
+    //TODO:修改人ID
     let self = this
     confirm({
       title: '确定要删除这条信息吗？',
