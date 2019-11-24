@@ -72,7 +72,7 @@ const columns = [
     title: '关联人员',
     dataIndex: 'userName',
     editable: true,
-    render(values) {
+    render(values = []) {
       return <span>{values.join('，')}</span>;
     },
   },

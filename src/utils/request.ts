@@ -1,4 +1,5 @@
 import { extend } from 'umi-request';
+import * as _ from 'lodash';
 
 const request = extend({
   params: {
@@ -12,7 +13,14 @@ export const format = details => {
   const formBody = [];
   for (var property in details) {
     var encodedKey = encodeURIComponent(property);
-    var encodedValue = encodeURIComponent(details[property]);
+    let value = details[property];
+
+    if (_.isNil(value)) {
+      value = '';
+    } else if (_.isObject(value) || _.isArray(value)) {
+      value = JSON.stringify(value);
+    }
+    var encodedValue = encodeURIComponent(value);
     formBody.push(encodedKey + '=' + encodedValue);
   }
   return formBody.join('&');

@@ -18,7 +18,7 @@ import {
   getAllLevels,
   getAllArea,
 } from '@/pages/login/login.service';
-import { addMapFencingArea } from '../services';
+import { updateFencingArea } from '../services';
 
 import styles from './index.less';
 
@@ -127,10 +127,11 @@ class FencingSetting extends React.Component<Props, State> {
           : '',
         userId: userId.join(','),
       };
+      const { userInfo = [], id, ...rest } = fencingTypesRecord;
+      const user_id = userInfo.map(item => item.id).join(',');
 
-      await addMapFencingArea(Object.assign(fencingTypesRecord, data));
+      await updateFencingArea(Object.assign(rest, { userId: user_id }, data));
       router.push('/map-manager/fence-setting');
-      // this.getRouteInspectList(data);
     });
   };
 

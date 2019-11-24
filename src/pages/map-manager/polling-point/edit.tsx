@@ -4,7 +4,13 @@
 import React from 'react';
 import { Form, Row, Col, Button, Input, Select, message, DatePicker } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
-import { Stage, Layer, Image as ImageLayer, Line as LineLayer } from 'react-konva';
+import {
+  Stage,
+  Layer,
+  Image as ImageLayer,
+  Line as LineLayer,
+  Circle as CircleLayer,
+} from 'react-konva';
 import { connect } from 'dva';
 import router from 'umi/router';
 
@@ -24,6 +30,9 @@ interface State {
   mapImage: any;
   width: number;
   height: number;
+  circleX: number;
+  circleY: number;
+  circleShow: boolean;
 }
 
 type StateProps = ReturnType<typeof mapState>;
@@ -39,6 +48,9 @@ class AddPollingPoint extends React.Component<Props, State> {
       mapImage: null,
       width: 0,
       height: 0,
+      circleX: 10,
+      circleY: 10,
+      circleShow: true,
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.initRequest = this.initRequest.bind(this);
@@ -94,6 +106,37 @@ class AddPollingPoint extends React.Component<Props, State> {
 
   back = () => {
     router.goBack();
+  };
+  setupCircle = () => {
+    const x = this.state.circleX;
+    const y = this.state.circleY;
+    const circleShow = this.state.circleShow;
+    if (!circleShow) return;
+    return (
+      <CircleLayer
+        x={x}
+        y={y}
+        radius={10}
+        fill="red"
+        draggable={true}
+        listening={true}
+        onDragMove={this.onCircleDragging}
+      />
+    );
+  };
+  onCircleDragging = (event: any) => {
+    const defaultWidth = 1920;
+    const defaultHeight = 1080;
+    const { clientWidth, clientHeight } = this.map.current;
+
+    const evt = event.evt;
+    //换算由于地图拉伸造成的坐标不一致
+    this.props.form.setFieldsValue({
+      xCoordinate: Math.floor((evt.x * defaultWidth) / clientWidth),
+    });
+    this.props.form.setFieldsValue({
+      yCoordinate: Math.floor((evt.y * defaultHeight) / clientHeight),
+    });
   };
 
   render() {
@@ -153,11 +196,7 @@ class AddPollingPoint extends React.Component<Props, State> {
                   </Form.Item>
                   <Form.Item label="横坐标" className={styles.small_style}>
                     {getFieldDecorator('xCoordinate', {
-                      rules: [
-                        {
-                          message: '横坐标',
-                        },
-                      ],
+                      rules: [],
                       initialValue: pollingPointsRecord.xCoordinate,
                     })(
                       <Input
@@ -168,11 +207,7 @@ class AddPollingPoint extends React.Component<Props, State> {
                   </Form.Item>
                   <Form.Item label="纵坐标" className={styles.small_style}>
                     {getFieldDecorator('yCoordinate', {
-                      rules: [
-                        {
-                          message: '纵坐标',
-                        },
-                      ],
+                      rules: [],
                       initialValue: pollingPointsRecord.yCoordinate,
                     })(
                       <Input
@@ -245,6 +280,7 @@ class AddPollingPoint extends React.Component<Props, State> {
                     <Stage width={width} height={height} draggable={false}>
                       <Layer>
                         <ImageLayer image={mapImage} x={0} y={0} width={width} height={height} />
+                        {this.setupCircle()}
                       </Layer>
                     </Stage>
                   </div>

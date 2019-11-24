@@ -56,7 +56,7 @@ export const MAP_MANAGER_FENCING_SETTING_QUERY =
  * 电子围栏——修改
  */
 export const MAP_MANAGER_FENCING_SETTING_UPDATE =
-  'http://47.96.112.31:8086/jeecg-boot/intf/location/addElectronicFence';
+  'http://47.96.112.31:8086/jeecg-boot/intf/location/editElectronicFence';
 
 //----------------------地图设置：灯具设置--------------------------------
 

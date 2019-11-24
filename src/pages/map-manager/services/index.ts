@@ -113,7 +113,7 @@ export async function queryFencingArea(params: QueryFencingAreaParams) {
 }
 
 export async function updateFencingArea(params: UpdateFencingAreaParams) {
-  const resp = await request.post(MAP_MANAGER_FENCING_SETTING_UPDATE, { data: params });
+  const resp = await request.post(MAP_MANAGER_FENCING_SETTING_UPDATE, { data: format(params) });
   resp.success === true && resp.code === 200
     ? message.success(`${resp.message}`)
     : message.error(`${resp.message}`);
@@ -163,7 +163,7 @@ export async function addPollingPoint(params: AddPollingPointParams) {
 }
 
 export async function updatePollingPoint(params: UpdatePollingPointParams) {
-  const resp = await request.post(MAP_MANAGER_POLLING_POINT_UPDATE, { data: params });
+  const resp = await request.post(MAP_MANAGER_POLLING_POINT_UPDATE, { data: format(params) });
   resp.success === true && resp.code === 200
     ? message.success(`${resp.message}`)
     : message.error(`${resp.message}`);

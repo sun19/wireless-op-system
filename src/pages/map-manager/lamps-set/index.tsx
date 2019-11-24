@@ -51,11 +51,17 @@ const columns = [
     title: '横坐标',
     dataIndex: 'xCoordinate',
     editable: true,
+    render(value, column) {
+      return <span>{column.xcoordinate}</span>;
+    },
   },
   {
     title: '纵坐标',
     dataIndex: 'yCoordinate',
     editable: true,
+    render(value, column) {
+      return <span>{column.ycoordinate}</span>;
+    },
   },
   {
     title: '所属区域',

@@ -48,7 +48,7 @@ const columns = [
     // width: '15%',
     className: 'select_text',
     editable: true,
-    className:'select_text',
+    className: 'select_text',
     // render: (name, record) => {
     //   return (
     //     <div>
@@ -135,7 +135,7 @@ class SuperAdmin extends React.Component<Props, State> {
   deleteColumn(item) {
     //TODO:修改人ID
 
-    let self = this
+    let self = this;
     confirm({
       title: '确定要删除这条信息吗？',
       content: '',
@@ -147,9 +147,8 @@ class SuperAdmin extends React.Component<Props, State> {
         //重新请求数据重绘
         self.getSuperAdminList();
       },
-      onCancel() {
-      },
-    })
+      onCancel() {},
+    });
   }
 
   onRemarkChange = e => {
@@ -220,13 +219,13 @@ class SuperAdmin extends React.Component<Props, State> {
                     style={{ marginTop: '-3px' }}
                   // className={publicStyles.selection}
                   > */}
-                    {/* {this.renderTypeOptions()} */}
-                    <Input
-                      className={publicStyles.input_text}
-                      placeholder="请输入类型"
-                      value={this.state.remark}
-                      onChange={this.onRemarkChange}
-                    />
+                  {/* {this.renderTypeOptions()} */}
+                  <Input
+                    className={publicStyles.input_text}
+                    placeholder="请输入类型"
+                    value={this.state.remark}
+                    onChange={this.onRemarkChange}
+                  />
                   {/* </div> */}
                 </FormItem>
                 <FormItem label="描述">
