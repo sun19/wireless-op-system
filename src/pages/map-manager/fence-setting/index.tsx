@@ -115,13 +115,13 @@ class FencingSettings extends React.Component<Props> {
   }
 
   async updateData(data, item) {
-    const resp = await updateFencingArea(item);
-    if (resp) {
-      this.props.dispatch({
-        type: 'userManager/update',
-        payload: { innerUserList: { records: data } },
-      });
-    }
+    this.props.dispatch({
+      type: 'mapManager/update',
+      payload: {
+        fencingTypesRecord: data,
+      },
+    });
+    router.push('/map-manager/fence-setting/edit');
   }
 
   deleteColumn(item) {

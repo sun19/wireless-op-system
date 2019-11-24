@@ -1,21 +1,15 @@
 /**
- * title: 添加
+ * title: 修改
  */
 import React from 'react';
 import { Form, Row, Col, Button, Input, Select, message, DatePicker } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
-import {
-  Stage,
-  Layer,
-  Image as ImageLayer,
-  Line as LineLayer,
-  Circle as CircleLayer,
-} from 'react-konva';
+import { Stage, Layer, Image as ImageLayer, Line as LineLayer } from 'react-konva';
 import { connect } from 'dva';
 import router from 'umi/router';
 
 import ContentBorder from '../../../components/ContentBorder';
-import { addPollingPoint } from '../services';
+import { updatePollingPoint } from '../services';
 import { getAllMap } from '@/pages/login/login.service';
 import { UmiComponentProps } from '@/common/type';
 
@@ -30,9 +24,6 @@ interface State {
   mapImage: any;
   width: number;
   height: number;
-  circleX: number;
-  circleY: number;
-  circleShow: boolean;
 }
 
 type StateProps = ReturnType<typeof mapState>;
@@ -48,9 +39,6 @@ class AddPollingPoint extends React.Component<Props, State> {
       mapImage: null,
       width: 0,
       height: 0,
-      circleX: 10,
-      circleY: 10,
-      circleShow: true,
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.initRequest = this.initRequest.bind(this);
@@ -77,38 +65,6 @@ class AddPollingPoint extends React.Component<Props, State> {
       };
     });
   }
-  setupCircle = () => {
-    const x = this.state.circleX;
-    const y = this.state.circleY;
-    const circleShow = this.state.circleShow;
-    if (!circleShow) return;
-    return (
-      <CircleLayer
-        x={x}
-        y={y}
-        radius={10}
-        fill="red"
-        draggable={true}
-        listening={true}
-        onDragMove={this.onCircleDragging}
-      />
-    );
-  };
-  onCircleDragging = (event: any) => {
-    const defaultWidth = 1920;
-    const defaultHeight = 1080;
-    const { clientWidth, clientHeight } = this.map.current;
-
-    const evt = event.evt;
-    //换算由于地图拉伸造成的坐标不一致
-    this.props.form.setFieldsValue({
-      xCoordinate: Math.floor((evt.x * defaultWidth) / clientWidth),
-    });
-    this.props.form.setFieldsValue({
-      yCoordinate: Math.floor((evt.y * defaultHeight) / clientHeight),
-    });
-  };
-
   async initRequest() {
     let maps = await getAllMap();
 
@@ -122,13 +78,14 @@ class AddPollingPoint extends React.Component<Props, State> {
 
   handleSubmit(e) {
     e.preventDefault();
+    const { pollingPointsRecord } = this.props;
     this.props.form.validateFields(async (err, values) => {
       if (err) {
         // console.error(err, values, 'err');
         message.error('填写信息有误 ', values);
         return;
       }
-      const isSuccessed = await addPollingPoint(values);
+      const isSuccessed = await updatePollingPoint(Object.assign(pollingPointsRecord, values));
       if (isSuccessed) {
         setTimeout(() => router.push('/map-manager/polling-point'), 1000);
       }
@@ -142,7 +99,7 @@ class AddPollingPoint extends React.Component<Props, State> {
   render() {
     const { getFieldDecorator } = this.props.form;
     const { mapImage, width, height } = this.state;
-    const { maps } = this.props;
+    const { maps, pollingPointsRecord } = this.props;
 
     return (
       <ContentBorder className={styles.auth_root}>
@@ -163,6 +120,7 @@ class AddPollingPoint extends React.Component<Props, State> {
                           message: '请选择地图名称',
                         },
                       ],
+                      initialValue: pollingPointsRecord.mapId,
                     })(
                       <Select placeholder="请选择地图名称">
                         {maps.map(item => (
@@ -180,6 +138,7 @@ class AddPollingPoint extends React.Component<Props, State> {
                           message: '请输入巡检点名称',
                         },
                       ],
+                      initialValue: pollingPointsRecord.name,
                     })(<Input placeholder="请输入巡检点名称" />)}
                   </Form.Item>
                   <Form.Item label="巡检点位置">
@@ -189,27 +148,36 @@ class AddPollingPoint extends React.Component<Props, State> {
                           message: '请输入巡检点位置',
                         },
                       ],
+                      initialValue: pollingPointsRecord.address,
                     })(<Input placeholder="请输入巡检点位置" />)}
                   </Form.Item>
                   <Form.Item label="横坐标" className={styles.small_style}>
                     {getFieldDecorator('xCoordinate', {
-                      rules: [],
+                      rules: [
+                        {
+                          message: '横坐标',
+                        },
+                      ],
+                      initialValue: pollingPointsRecord.xCoordinate,
                     })(
                       <Input
                         style={{ width: '1rem', backgroundSize: '1rem 0.4rem' }}
                         placeholder="横坐标"
-                        disabled={true}
                       />,
                     )}
                   </Form.Item>
                   <Form.Item label="纵坐标" className={styles.small_style}>
                     {getFieldDecorator('yCoordinate', {
-                      rules: [],
+                      rules: [
+                        {
+                          message: '纵坐标',
+                        },
+                      ],
+                      initialValue: pollingPointsRecord.yCoordinate,
                     })(
                       <Input
                         style={{ width: '1rem', backgroundSize: '1rem 0.4rem' }}
                         placeholder="纵坐标"
-                        disabled={true}
                       />,
                     )}
                   </Form.Item>
@@ -252,6 +220,7 @@ class AddPollingPoint extends React.Component<Props, State> {
                           message: '请输入备注',
                         },
                       ],
+                      initialValue: pollingPointsRecord.remark,
                     })(
                       <Input
                         placeholder="请输入备注"
@@ -276,7 +245,6 @@ class AddPollingPoint extends React.Component<Props, State> {
                     <Stage width={width} height={height} draggable={false}>
                       <Layer>
                         <ImageLayer image={mapImage} x={0} y={0} width={width} height={height} />
-                        {this.setupCircle()}
                       </Layer>
                     </Stage>
                   </div>
@@ -309,9 +277,10 @@ class AddPollingPoint extends React.Component<Props, State> {
 const AddPollingPointHOC = Form.create<Props>({ name: 'fencing_setting_add' })(AddPollingPoint);
 
 const mapState = ({ mapManager }) => {
-  const { allMaps } = mapManager;
+  const { allMaps, pollingPointsRecord } = mapManager;
   return {
     maps: allMaps,
+    pollingPointsRecord,
   };
 };
 

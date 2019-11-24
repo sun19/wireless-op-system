@@ -1,5 +1,5 @@
 /**
- * title: 添加
+ * title: 修改
  */
 import React from 'react';
 import { Form, Row, Col, Button, Input, Select, DatePicker } from 'antd';
@@ -19,7 +19,7 @@ import ContentBorder from '../../../components/ContentBorder';
 import { warningTypeSearch } from '@/pages/warning-manager/services';
 import { UmiComponentProps } from '@/common/type';
 import { getAllMap } from '@/pages/login/login.service';
-import { getAllWarningType, addPollingLine } from '../services';
+import { getAllWarningType, updatePollingLine } from '../services';
 
 import styles from './index.less';
 
@@ -81,7 +81,6 @@ class AddPollingLine extends React.Component<Props, State> {
       </Form.Item>
     );
   };
-
   dynamicLoadMapImage() {
     return new Promise(resolve => {
       const mapImage = new Image();
@@ -91,11 +90,11 @@ class AddPollingLine extends React.Component<Props, State> {
       };
     });
   }
+
   async componentDidMount() {
     const mapImage = await this.dynamicLoadMapImage();
     if (this.map.current) {
       const { clientWidth, clientHeight } = this.map.current;
-
       this.setState({
         mapImage,
         width: clientWidth,
@@ -110,32 +109,17 @@ class AddPollingLine extends React.Component<Props, State> {
   }
   async initRequest() {
     const maps = await getAllMap();
-    // const fencingTypes = await getAllFencingTypes();
-    // let usersResp = await getAllUserInfo();
-    // let users = [];
-    // for (let i = 0; i < usersResp.result.length; i++) {
-    //   const dept = usersResp.result[i];
-    //   for (let j = 0; j < dept.relatePeopleResponses.length; j++) {
-    //     const item = dept.relatePeopleResponses[j];
-    //     users.push(item);
-    //   }
-    // }
-    // const levels = await getAllLevels();
-    // const areas = await getAllArea();
     this.props.dispatch({
       type: 'mapManager/update',
       payload: {
         allMaps: maps.result,
-        // fencingTypes: fencingTypes.result,
-        // users: users,
-        // levels: levels.result,
-        // areas: areas.result,
       },
     });
   }
 
   onSubmit = e => {
     e.preventDefault();
+    const { pollingLinesRecord } = this.props;
     this.props.form.validateFields(async (err, values) => {
       const { startTime, endTime, ...props } = values;
       const data = {
@@ -146,9 +130,8 @@ class AddPollingLine extends React.Component<Props, State> {
         endTime: values.endTime ? values.endTime.format('YYYY-MM-DD HH:mm:ss').toString() : '',
       };
 
-      await addPollingLine(data);
+      await updatePollingLine(Object.assign(pollingLinesRecord, data));
       router.push('/map-manager/polling-line');
-      // this.getRouteInspectList(data);
     });
   };
   setupCircle = () => {
@@ -184,7 +167,7 @@ class AddPollingLine extends React.Component<Props, State> {
   };
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { maps } = this.props;
+    const { maps, pollingLinesRecord } = this.props;
     return (
       <ContentBorder className={styles.auth_root}>
         <Form
@@ -204,6 +187,7 @@ class AddPollingLine extends React.Component<Props, State> {
                           message: '请选择地图名称',
                         },
                       ],
+                      initialValue: pollingLinesRecord.mapId,
                     })(
                       <Select placeholder="请选择地图名称">
                         {maps.map(item => (
@@ -221,6 +205,7 @@ class AddPollingLine extends React.Component<Props, State> {
                           message: '请输入巡检人员',
                         },
                       ],
+                      initialValue: pollingLinesRecord.login_id,
                     })(<Input placeholder="请输入巡检人员" />)}
                   </Form.Item>
 
@@ -231,6 +216,7 @@ class AddPollingLine extends React.Component<Props, State> {
                           message: '请输入信息牌',
                         },
                       ],
+                      initialValue: pollingLinesRecord.informationBoardId,
                     })(<Input placeholder="请输入信息牌" />)}
                   </Form.Item>
                   {this.setupAlarmSelect()}
@@ -246,6 +232,7 @@ class AddPollingLine extends React.Component<Props, State> {
                           message: '请输入巡检路线',
                         },
                       ],
+                      initialValue: pollingLinesRecord.inspectionRoute,
                     })(<Input placeholder="请输入巡检路线" />)}
                   </Form.Item>
                   <Form.Item label="开始时间">
@@ -282,6 +269,7 @@ class AddPollingLine extends React.Component<Props, State> {
                           message: '请输入备注',
                         },
                       ],
+                      initialValue: pollingLinesRecord.remark,
                     })(
                       <Input
                         placeholder="请输入备注"
@@ -350,7 +338,7 @@ class AddPollingLine extends React.Component<Props, State> {
 const AddPollingLineHOC = Form.create<Props>({ name: 'add_polling_line' })(AddPollingLine);
 
 const mapState = ({ mapManager }) => {
-  const { allMaps, fencingTypes, users, levels, areas } = mapManager;
+  const { allMaps, fencingTypes, users, levels, areas, pollingLinesRecord } = mapManager;
   return {
     mapFencing: mapManager.mapFencing,
     maps: allMaps,
@@ -358,6 +346,7 @@ const mapState = ({ mapManager }) => {
     users,
     levels,
     areas,
+    pollingLinesRecord,
   };
 };
 

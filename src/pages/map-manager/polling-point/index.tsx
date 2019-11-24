@@ -106,19 +106,19 @@ class PollingPoint extends React.Component<Props, State> {
   }
 
   async updateData(data, item) {
-    const resp = await updatePollingPoint(item);
-    if (resp) {
-      this.props.dispatch({
-        type: 'mapManager/update',
-        payload: { pollingPoints: { records: data } },
-      });
-    }
+    this.props.dispatch({
+      type: 'mapManager/update',
+      payload: {
+        pollingPointsRecord: data,
+      },
+    });
+    router.push('/map-manager/polling-point/edit');
   }
 
   deleteColumn(item) {
     //TODO:修改人ID
 
-    let self = this
+    let self = this;
     confirm({
       title: '确定要删除这条信息吗？',
       content: '',
@@ -127,15 +127,14 @@ class PollingPoint extends React.Component<Props, State> {
       cancelText: '取消',
       async onOk() {
         let data = {
-          id: item.id
-        }
+          id: item.id,
+        };
         await deletePollingPoint({ id: item.id });
         //重新请求数据重绘
         self.getPollingPoints();
       },
-      onCancel() {
-      },
-    })
+      onCancel() {},
+    });
   }
 
   onInputNameChange = e => {

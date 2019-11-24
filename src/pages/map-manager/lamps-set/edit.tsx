@@ -19,7 +19,7 @@ import { UmiComponentProps } from '@/common/type';
 import ContentBorder from '../../../components/ContentBorder';
 // import Map from '../components/Map';
 import { getAllArea, getAllMap } from '@/pages/login/login.service';
-import { addMapLamps } from '../services';
+import { updateMapLamps } from '../services';
 
 import styles from './index.less';
 
@@ -59,8 +59,9 @@ class halmpAdd extends React.Component<Props, State> {
   };
   onSubmit = e => {
     e.preventDefault();
+    const { lampRecord } = this.props;
     this.props.form.validateFields(async (err, values) => {
-      await addMapLamps(values);
+      await updateMapLamps(Object.assign(lampRecord, values));
       router.push('/map-manager/lamps-set');
     });
   };
@@ -255,6 +256,9 @@ class halmpAdd extends React.Component<Props, State> {
                 <Col className={styles.line_type} span={11} />
                 <Col span={2}>地图</Col>
                 <Col className={styles.line_type} span={11} />
+              </Row>
+              <Row>
+                <div className={styles.tips}>请拖拽灯具至指定位置</div>
               </Row>
               <Row className={styles.line_style}>
                 <Col className={styles.img_type} span={24}>
