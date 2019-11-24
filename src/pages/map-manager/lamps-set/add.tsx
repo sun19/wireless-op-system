@@ -31,6 +31,7 @@ interface State {
   height: number;
   circleX: number;
   circleY: number;
+  circleShow: boolean;
 }
 interface FormProps extends FormComponentProps {}
 
@@ -49,6 +50,7 @@ class halmpAdd extends React.Component<Props, State> {
       height: 0,
       circleX: 10,
       circleY: 10,
+      circleShow: true,
     };
     this.initRequest = this.initRequest.bind(this);
   }
@@ -114,9 +116,30 @@ class halmpAdd extends React.Component<Props, State> {
       yCoordinate: Math.floor((evt.y * defaultHeight) / clientHeight),
     });
   };
+  onCircleClick = (event: any) => {
+    const defaultWidth = 1920;
+    const defaultHeight = 1080;
+    const { clientWidth, clientHeight } = this.map.current;
+
+    const evt = event.evt;
+    //换算由于地图拉伸造成的坐标不一致
+    this.props.form.setFieldsValue({
+      xCoordinate: Math.floor((evt.x * defaultWidth) / clientWidth),
+    });
+    this.props.form.setFieldsValue({
+      yCoordinate: Math.floor((evt.y * defaultHeight) / clientHeight),
+    });
+    this.setState({
+      circleX: evt.x,
+      circleY: evt.y,
+      circleShow: true,
+    });
+  };
   setupCircle = () => {
     const x = this.state.circleX;
     const y = this.state.circleY;
+    const circleShow = this.state.circleShow;
+    if (!circleShow) return;
     return (
       <CircleLayer
         x={x}
@@ -249,10 +272,18 @@ class halmpAdd extends React.Component<Props, State> {
                 <Col span={2}>地图</Col>
                 <Col className={styles.line_type} span={11} />
               </Row>
+              <Row>
+                <div className={styles.tips}>请拖拽灯具至指定位置</div>
+              </Row>
               <Row className={styles.line_style}>
                 <Col className={styles.img_type} span={24}>
                   <div style={{ width: '100%', height: '100%' }} ref={this.map}>
-                    <Stage width={this.state.width} height={this.state.height} draggable={false}>
+                    <Stage
+                      width={this.state.width}
+                      height={this.state.height}
+                      draggable={false}
+                      // onClick={this.onCircleClick}
+                    >
                       <Layer>
                         <ImageLayer
                           image={this.state.mapImage}

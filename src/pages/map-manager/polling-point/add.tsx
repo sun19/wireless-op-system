@@ -4,7 +4,13 @@
 import React from 'react';
 import { Form, Row, Col, Button, Input, Select, message, DatePicker } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
-import { Stage, Layer, Image as ImageLayer, Line as LineLayer } from 'react-konva';
+import {
+  Stage,
+  Layer,
+  Image as ImageLayer,
+  Line as LineLayer,
+  Circle as CircleLayer,
+} from 'react-konva';
 import { connect } from 'dva';
 import router from 'umi/router';
 
@@ -24,6 +30,9 @@ interface State {
   mapImage: any;
   width: number;
   height: number;
+  circleX: number;
+  circleY: number;
+  circleShow: boolean;
 }
 
 type StateProps = ReturnType<typeof mapState>;
@@ -39,6 +48,9 @@ class AddPollingPoint extends React.Component<Props, State> {
       mapImage: null,
       width: 0,
       height: 0,
+      circleX: 10,
+      circleY: 10,
+      circleShow: true,
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.initRequest = this.initRequest.bind(this);
@@ -65,6 +77,38 @@ class AddPollingPoint extends React.Component<Props, State> {
       };
     });
   }
+  setupCircle = () => {
+    const x = this.state.circleX;
+    const y = this.state.circleY;
+    const circleShow = this.state.circleShow;
+    if (!circleShow) return;
+    return (
+      <CircleLayer
+        x={x}
+        y={y}
+        radius={10}
+        fill="red"
+        draggable={true}
+        listening={true}
+        onDragMove={this.onCircleDragging}
+      />
+    );
+  };
+  onCircleDragging = (event: any) => {
+    const defaultWidth = 1920;
+    const defaultHeight = 1080;
+    const { clientWidth, clientHeight } = this.map.current;
+
+    const evt = event.evt;
+    //换算由于地图拉伸造成的坐标不一致
+    this.props.form.setFieldsValue({
+      xCoordinate: Math.floor((evt.x * defaultWidth) / clientWidth),
+    });
+    this.props.form.setFieldsValue({
+      yCoordinate: Math.floor((evt.y * defaultHeight) / clientHeight),
+    });
+  };
+
   async initRequest() {
     let maps = await getAllMap();
 
@@ -149,29 +193,23 @@ class AddPollingPoint extends React.Component<Props, State> {
                   </Form.Item>
                   <Form.Item label="横坐标" className={styles.small_style}>
                     {getFieldDecorator('xCoordinate', {
-                      rules: [
-                        {
-                          message: '横坐标',
-                        },
-                      ],
+                      rules: [],
                     })(
                       <Input
                         style={{ width: '1rem', backgroundSize: '1rem 0.4rem' }}
                         placeholder="横坐标"
+                        disabled={true}
                       />,
                     )}
                   </Form.Item>
                   <Form.Item label="纵坐标" className={styles.small_style}>
                     {getFieldDecorator('yCoordinate', {
-                      rules: [
-                        {
-                          message: '纵坐标',
-                        },
-                      ],
+                      rules: [],
                     })(
                       <Input
                         style={{ width: '1rem', backgroundSize: '1rem 0.4rem' }}
                         placeholder="纵坐标"
+                        disabled={true}
                       />,
                     )}
                   </Form.Item>
@@ -229,12 +267,16 @@ class AddPollingPoint extends React.Component<Props, State> {
                 <Col span={2}>地图</Col>
                 <Col className={styles.line_type} span={11} />
               </Row>
+              <Row>
+                <div className={styles.tips}>请拖拽巡检点至指定位置</div>
+              </Row>
               <Row className={styles.line_style}>
                 <Col className={styles.img_type} span={24}>
                   <div className={styles.map_manager} ref={this.map}>
                     <Stage width={width} height={height} draggable={false}>
                       <Layer>
                         <ImageLayer image={mapImage} x={0} y={0} width={width} height={height} />
+                        {this.setupCircle()}
                       </Layer>
                     </Stage>
                   </div>

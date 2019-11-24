@@ -6,6 +6,14 @@ import { Form, Row, Col, Button, Input, Select, DatePicker } from 'antd';
 import router from 'umi/router';
 import { FormComponentProps } from 'antd/lib/form';
 import { connect } from 'dva';
+import Konva from 'konva';
+import {
+  Stage,
+  Layer,
+  Image as ImageLayer,
+  Circle as CircleLayer,
+  Line as LineLayer,
+} from 'react-konva';
 
 import ContentBorder from '../../../components/ContentBorder';
 import { warningTypeSearch } from '@/pages/warning-manager/services';
@@ -23,13 +31,27 @@ type Props = StateProps & UmiComponentProps & FormComponentProps;
 
 interface State {
   warningTypes: any[];
+  mapImage: any;
+  width: number;
+  height: number;
+  circleX: number;
+  circleY: number;
+  circleShow: boolean;
 }
 
 class AddPollingLine extends React.Component<Props, State> {
+  map: React.RefObject<HTMLDivElement>;
   constructor(props) {
     super(props);
+    this.map = React.createRef<HTMLDivElement>();
     this.state = {
       warningTypes: [],
+      mapImage: null,
+      width: 0,
+      height: 0,
+      circleX: 10,
+      circleY: 10,
+      circleShow: true,
     };
   }
   goBack = () => {
@@ -59,8 +81,26 @@ class AddPollingLine extends React.Component<Props, State> {
       </Form.Item>
     );
   };
+  dynamicLoadMapImage() {
+    return new Promise(resolve => {
+      const mapImage = new Image();
+      mapImage.src = require('../../big-screen/assets/map.png');
+      mapImage.onload = function() {
+        resolve(mapImage);
+      };
+    });
+  }
 
   async componentDidMount() {
+    const mapImage = await this.dynamicLoadMapImage();
+    if (this.map.current) {
+      const { clientWidth, clientHeight } = this.map.current;
+      this.setState({
+        mapImage,
+        width: clientWidth,
+        height: clientHeight,
+      });
+    }
     const warningTypes = await getAllWarningType();
     this.setState({
       warningTypes: warningTypes.result.records,
@@ -92,6 +132,37 @@ class AddPollingLine extends React.Component<Props, State> {
 
       await updatePollingLine(Object.assign(pollingLinesRecord, data));
       router.push('/map-manager/polling-line');
+    });
+  };
+  setupCircle = () => {
+    const x = this.state.circleX;
+    const y = this.state.circleY;
+    const circleShow = this.state.circleShow;
+    if (!circleShow) return;
+    return (
+      <CircleLayer
+        x={x}
+        y={y}
+        radius={10}
+        fill="red"
+        draggable={true}
+        listening={true}
+        onDragMove={this.onCircleDragging}
+      />
+    );
+  };
+  onCircleDragging = (event: any) => {
+    const defaultWidth = 1920;
+    const defaultHeight = 1080;
+    const { clientWidth, clientHeight } = this.map.current;
+
+    const evt = event.evt;
+    //换算由于地图拉伸造成的坐标不一致
+    this.props.form.setFieldsValue({
+      xCoordinate: Math.floor((evt.x * defaultWidth) / clientWidth),
+    });
+    this.props.form.setFieldsValue({
+      yCoordinate: Math.floor((evt.y * defaultHeight) / clientHeight),
     });
   };
   render() {
@@ -214,8 +285,31 @@ class AddPollingLine extends React.Component<Props, State> {
                 <Col span={2}>地图</Col>
                 <Col className={styles.line_type} span={11} />
               </Row>
+              <Row>
+                <div className={styles.tips}>请拖拽灯具至指定位置</div>
+              </Row>
               <Row className={styles.line_style}>
-                <Col className={styles.img_type} span={24} />
+                <Col className={styles.img_type} span={24}>
+                  <div style={{ width: '100%', height: '100%' }} ref={this.map}>
+                    <Stage
+                      width={this.state.width}
+                      height={this.state.height}
+                      draggable={false}
+                      // onClick={this.onCircleClick}
+                    >
+                      <Layer>
+                        <ImageLayer
+                          image={this.state.mapImage}
+                          x={0}
+                          y={0}
+                          width={this.state.width}
+                          height={this.state.height}
+                        />
+                        {this.setupCircle()}
+                      </Layer>
+                    </Stage>
+                  </div>
+                </Col>
               </Row>
               <Row type="flex" justify="center" style={{ marginTop: '0.35rem' }}>
                 <Col span={2}>

@@ -257,6 +257,9 @@ class halmpAdd extends React.Component<Props, State> {
                 <Col span={2}>地图</Col>
                 <Col className={styles.line_type} span={11} />
               </Row>
+              <Row>
+                <div className={styles.tips}>请拖拽灯具至指定位置</div>
+              </Row>
               <Row className={styles.line_style}>
                 <Col className={styles.img_type} span={24}>
                   <div style={{ width: '100%', height: '100%' }} ref={this.map}>
