@@ -7,6 +7,15 @@ export interface GetMapAreaParams extends Params {
   regionalLevelId?: string;
   regionName?: string;
 }
+export interface AddMapAreaParams extends Params {
+  mapId?: string;
+  regionalLevelId?: string;
+  regionName?: string;
+  operatTime?: string;
+  remark?: string;
+
+}
+
 
 export interface UpdateMapAreaParams {
   id?: string;
