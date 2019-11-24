@@ -73,17 +73,9 @@ class PeopelType extends React.Component<Props> {
       });
       router.push('/system-setting/people-type/edit');
     }
-    // const resp = await updateUserType(item);
-    // if (resp) {
-    //   this.props.dispatch({
-    //     type: 'systemSetting/update',
-    //     payload: { peopleType: { records: data } },
-    //   });
-    // }
-
   deleteColumn(item) {
     //TODO:修改人ID
-    let self = this
+    let self = this;
     confirm({
       title: '确定要删除这条信息吗？',
       content: '',
@@ -95,9 +87,8 @@ class PeopelType extends React.Component<Props> {
         //重新请求数据重绘
         self.getUserTypes();
       },
-      onCancel() {
-      },
-    })
+      onCancel() {},
+    });
   }
 
   addUserType() {

@@ -3,8 +3,10 @@ export default {
   state: {
     mapImport: {},
     mapArea: {},
+    mapAreaRecord: {},
     mapFencing: {},
     lamps: {},
+    lampRecord: {},
     pollingPoints: {},
     pollingLines: {},
     allMaps: [],

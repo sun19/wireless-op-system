@@ -2,20 +2,20 @@
  * title: 修改
  */
 import React from 'react';
-import { Form, Row, Col, message, Select } from 'antd';
+import { Form, Row, Col, message, Select, Input } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
+import { InputProps } from 'antd/lib/input';
 import router from 'umi/router';
 import { connect } from 'dva';
 import * as _ from 'lodash';
 
-import SelectText from '../components/SelectText';
 import AreaText from '../components/AreaText';
 import FormButton from '../components/FormButton';
 import ContentBorder from '../../../components/ContentBorder';
 import { getAllRoles } from '../services';
 import { OptionValue } from '../components/SelectText';
 import { updateUserInfo } from '../services';
-import { InputText, TreeNodeMenu } from '../components';
+// import { InputText, TreeNodeMenu } from '../components';
 
 import styles from '../index.less';
 import './index.less';
@@ -26,7 +26,7 @@ interface UserType {
   roleId: string;
 }
 
-type Props = FormComponentProps & ReturnType<typeof mapState>;
+type Props = FormComponentProps & InputProps & ReturnType<typeof mapState>;
 
 interface State {
   userTypes: UserType[];
@@ -123,13 +123,16 @@ class EditUser extends React.Component<Props, State> {
                       {getFieldDecorator('loginName', {
                         rules: [
                           {
-                            //required: true,
                             message: '请输入登录名',
                           },
                         ],
                         initialValue: customManagerRecord['loginName'],
                       })(
-                        <InputText placeholder="请输入登录名" onChange={this.onLoginNameChange} />,
+                        <Input
+                          className={styles.input_text}
+                          placeholder="请输入登录名"
+                          onChange={this.onLoginNameChange}
+                        />,
                       )}
                     </Form.Item>
                   </Col>
@@ -138,12 +141,17 @@ class EditUser extends React.Component<Props, State> {
                       {getFieldDecorator('name', {
                         rules: [
                           {
-                            //required: true,
                             message: '请输入姓名',
                           },
                         ],
                         initialValue: customManagerRecord['name'],
-                      })(<InputText placeholder="请输入姓名" onChange={this.onUserNameChange} />)}
+                      })(
+                        <Input
+                          className={styles.input_text}
+                          placeholder="请输入姓名"
+                          onChange={this.onUserNameChange}
+                        />,
+                      )}
                     </Form.Item>
                   </Col>
                 </Row>

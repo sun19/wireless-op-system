@@ -115,7 +115,7 @@ class FencingSetting extends React.Component<Props, State> {
   onSubmit = e => {
     e.preventDefault();
     this.props.form.validateFields(async (err, values) => {
-      const { effectiveTime, failureTime, userId, ...props } = values;
+      const { effectiveTime, failureTime, userId = [], ...props } = values;
       const data = {
         ...props,
         effectiveTime: values.effectiveTime
@@ -154,7 +154,7 @@ class FencingSetting extends React.Component<Props, State> {
               <Row type="flex" justify="space-between">
                 <Col span={24}>
                   <Form.Item label="地图名称">
-                    {getFieldDecorator('mapName', {
+                    {getFieldDecorator('mapId', {
                       rules: [
                         {
                           message: '请选择地图名称',
@@ -163,7 +163,7 @@ class FencingSetting extends React.Component<Props, State> {
                     })(
                       <Select placeholder="请选择地图名称">
                         {maps.map(item => (
-                          <Option value={item.name} key={item.name}>
+                          <Option value={item.id} key={item.name}>
                             {item.name}
                           </Option>
                         ))}
@@ -180,7 +180,7 @@ class FencingSetting extends React.Component<Props, State> {
                     })(<Input placeholder="请输入围栏名称" />)}
                   </Form.Item>
                   <Form.Item label="围栏类型">
-                    {getFieldDecorator('type', {
+                    {getFieldDecorator('typeId', {
                       rules: [
                         {
                           message: '请选择围栏类型',
@@ -189,7 +189,7 @@ class FencingSetting extends React.Component<Props, State> {
                     })(
                       <Select placeholder="请选择围栏类型">
                         {fencingTypes.map(item => (
-                          <Option value={item.name} key={item.name}>
+                          <Option value={item.id} key={item.name}>
                             {item.name}
                           </Option>
                         ))}
@@ -205,8 +205,8 @@ class FencingSetting extends React.Component<Props, State> {
                       ],
                     })(
                       <Select placeholder="请选择是否永久">
-                        <Option value="是">是</Option>
-                        <Option value="否">否</Option>
+                        <Option value="0">是</Option>
+                        <Option value="1">否</Option>
                       </Select>,
                     )}
                   </Form.Item>
@@ -238,7 +238,7 @@ class FencingSetting extends React.Component<Props, State> {
                     )}
                   </Form.Item>
                   <Form.Item label="级别">
-                    {getFieldDecorator('level', {
+                    {getFieldDecorator('levelId', {
                       rules: [
                         {
                           message: '请选择级别',
@@ -247,7 +247,7 @@ class FencingSetting extends React.Component<Props, State> {
                     })(
                       <Select placeholder="请选择级别">
                         {levels.map(item => (
-                          <Option value={item.name} key={item.name}>
+                          <Option value={item.id} key={item.name}>
                             {item.name}
                           </Option>
                         ))}
@@ -270,7 +270,7 @@ class FencingSetting extends React.Component<Props, State> {
                   <Form.Item label="关联人员">{this.setupRelationPeople()}</Form.Item>
 
                   <Form.Item className={styles.area_style} label="区域">
-                    {getFieldDecorator('regionalName', {
+                    {getFieldDecorator('regionalId', {
                       rules: [
                         {
                           message: '请选择区域',
@@ -282,7 +282,7 @@ class FencingSetting extends React.Component<Props, State> {
                         style={{ width: '5.25rem', backgroundSize: '5.25rem 0.4rem' }}
                       >
                         {areas.map(item => (
-                          <Option key={item.name} value={item.name}>
+                          <Option key={item.name} value={item.id}>
                             {item.name}
                           </Option>
                         ))}

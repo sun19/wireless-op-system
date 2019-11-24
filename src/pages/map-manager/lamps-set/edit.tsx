@@ -1,5 +1,5 @@
 /**
- * title: 添加
+ * title: 修改
  */
 import React from 'react';
 import { Form, Row, Col, Button, Input, Select } from 'antd';
@@ -132,7 +132,7 @@ class halmpAdd extends React.Component<Props, State> {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { areas, maps } = this.props;
+    const { areas, lampRecord } = this.props;
     return (
       <ContentBorder className={styles.auth_root}>
         <Form
@@ -148,6 +148,7 @@ class halmpAdd extends React.Component<Props, State> {
                   <Form.Item label="编号">
                     {getFieldDecorator('lampCode', {
                       rules: [],
+                      initialValue: lampRecord.lampCode,
                     })(<Input placeholder="请输入编号" />)}
                   </Form.Item>
                   <Form.Item label="型号">
@@ -157,11 +158,13 @@ class halmpAdd extends React.Component<Props, State> {
                           message: '请输入型号',
                         },
                       ],
+                      initialValue: lampRecord.model,
                     })(<Input placeholder="请输入型号" />)}
                   </Form.Item>
                   <Form.Item label="横坐标" className={styles.small_style}>
                     {getFieldDecorator('xCoordinate', {
                       rules: [],
+                      initialValue: lampRecord.xCoordinate,
                     })(
                       <Input
                         style={{ width: '1rem', backgroundSize: '1rem 0.4rem' }}
@@ -173,6 +176,7 @@ class halmpAdd extends React.Component<Props, State> {
                   <Form.Item label="纵坐标" className={styles.small_style}>
                     {getFieldDecorator('yCoordinate', {
                       rules: [],
+                      initialValue: lampRecord.yCoordinate,
                     })(
                       <Input
                         style={{ width: '1rem', backgroundSize: '1rem 0.4rem' }}
@@ -184,6 +188,7 @@ class halmpAdd extends React.Component<Props, State> {
                   <Form.Item label="区域">
                     {getFieldDecorator('regionalName', {
                       rules: [],
+                      initialValue: lampRecord.regionalName,
                     })(
                       <Select placeholder="请选择区域">
                         {areas.map(item => (
@@ -202,6 +207,7 @@ class halmpAdd extends React.Component<Props, State> {
                   <Form.Item label="出入口" className={styles.area_style}>
                     {getFieldDecorator('entranceExit', {
                       rules: [],
+                      initialValue: lampRecord.entranceExit,
                     })(
                       <Select placeholder="请选择出入口">
                         <Option value="0">出口</Option>
@@ -234,6 +240,7 @@ class halmpAdd extends React.Component<Props, State> {
                           message: '请输入备注',
                         },
                       ],
+                      initialValue: lampRecord.remark,
                     })(
                       <Input
                         placeholder="请输入备注"
@@ -298,6 +305,7 @@ const mapState = ({ mapManager }) => {
     lamps: resp,
     maps: mapManager.allMaps,
     areas: mapManager.areas,
+    lampRecord: mapManager.lampRecord,
   };
 };
 

@@ -105,13 +105,13 @@ class LampsSettings extends React.Component<Props> {
   }
 
   async updateData(data, item) {
-    const resp = await updateMapLamps(item);
-    if (resp) {
-      this.props.dispatch({
-        type: 'mapManager/update',
-        payload: { lamps: { records: data } },
-      });
-    }
+    this.props.dispatch({
+      type: 'mapManager/update',
+      payload: {
+        lampRecord: data,
+      },
+    });
+    router.push('/map-manager/lamps-set/edit');
   }
 
   deleteColumn(item) {

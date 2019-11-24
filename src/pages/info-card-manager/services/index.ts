@@ -35,7 +35,7 @@ import {
 export async function getInfoListParams(params: GetInfoListParams) {
   const resp = await request.get(GET_INFO_LIST, { params });
   if (resp.code == 500) {
-    message.error(resp.message);
+    message.error(`${resp.message}`);
   }
   return resp.result;
 }
@@ -44,7 +44,7 @@ export async function getInfoListParams(params: GetInfoListParams) {
 export async function deleteInfo(data: DeleteInfo) {
   const resp = await request.delete(DEL_INFO_LIST, { data: format(data) });
   if (resp.code == 500) {
-    message.error(resp.message);
+    message.error(`${resp.message}`);
   }
   return resp.success === true && resp.code === 200;
 }
@@ -57,10 +57,7 @@ export async function getInfoDetial(data: GetInfoDetial) {
 }
 // 信息牌添加
 export async function addInfoList(data: AddInfoList) {
-  const resp = await request.post(ADD_INFO_LIST, 
-    { data: format(data) },
-
- );
+  const resp = await request.post(ADD_INFO_LIST, { data: format(data) });
   return resp.success === true && resp.code === 200;
 }
 
@@ -115,6 +112,6 @@ export async function exportTaskOut() {
 }
 // 信息牌列表编辑
 export async function TaskListEdit(params: GetTaskList) {
-  const resp = await request.post(TASK_LIST_EDIT, { data: format(params)});
+  const resp = await request.post(TASK_LIST_EDIT, { data: format(params) });
   return resp.success === true && resp.code === 200;
 }

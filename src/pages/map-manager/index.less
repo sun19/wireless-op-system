@@ -80,6 +80,12 @@
       }
     }
   }
+  #fencing_setting_add_userId {
+    .ant-select-selection.ant-select-selection--multiple {
+      background: rgba(0, 0, 0, 0);
+      border-width: 0;
+    }
+  }
 }
 .select_text {
   width: 2rem;
@@ -171,11 +177,13 @@
       color: rgba(255, 255, 255, 0.8);
     }
   }
+  .ant-input[disabled] {
+    color: rgba(255, 255, 255, 0.8);
+  }
 }
 
 .button_type {
   display: inline-block;
-  // padding-top: 2px;
   .form_btn {
     width: 0.88rem;
     height: 0.38rem;
