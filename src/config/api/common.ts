@@ -22,10 +22,17 @@ export const COMMON_GET_ALL_MAP = 'http://47.96.112.31:8086/jeecg-boot/intf/loca
 export const COMMON_GET_ALL_ROLES = 'http://47.96.112.31:8086/jeecg-boot/intf/location/getAllRole';
 
 /**
- * 获取所有等级
+ * 获取所有区域等级和电子围栏等级
  */
 export const COMMON_GET_ALL_LEVELS =
   'http://47.96.112.31:8086/jeecg-boot/intf/location/getAllLevel';
+
+
+/**
+ * 获取区域下的所有灯具信息
+ */
+export const COMMON_GET_ALL_LAMP_ID =
+  'http://47.96.112.31:8086/jeecg-boot/intf/location/getAllLampByRegionId';
 
 /**
  * 获取所有围栏类型
@@ -49,4 +56,9 @@ export const COMMON_GET_ALL_DUTIES =
  * 保密等级列表
  */
 export const COMMON_GET_ALL_SECRET_LEVELS =
-  'http://47.96.112.31:8086/jeecg-boot/intf/location/querySecurityLevelList';
+  'http://47.96.112.31:8086/jeecg-boot/intf/location/queryAllSecurityLevel';
+/**
+ * 获取所有部门
+ */
+export const COMMON_GET_ALL_POSITION =
+  'http://47.96.112.31:8086/jeecg-boot/intf/location/queryAllPosition'

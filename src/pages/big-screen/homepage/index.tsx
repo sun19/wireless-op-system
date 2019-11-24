@@ -308,11 +308,14 @@ class DataView extends React.Component<Props, State> {
           <div className="ele_title"> {type && type.name ? type.name : '闯入电子围栏'}</div>
         </div>
         <div className="ele_bag" >
-          {item.userName.map((num,index) => {
+            {
+         !!item.lampCode?
+         (   item.lampCode.split(',').map((num,index) => {
             return (
               <span key={index} className="ele_bag_round">{num}</span>
             )
-          })}
+          })):''
+          }
         </div>
       </div >)
 

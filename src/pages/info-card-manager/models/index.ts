@@ -6,6 +6,8 @@ export default {
     infoCard: {},
     superAdmin: {},
     peopleType: {},
+    infoCardList:{},
+    allPosition:{}
   },
   reducers: {
     update(state, { payload }) {

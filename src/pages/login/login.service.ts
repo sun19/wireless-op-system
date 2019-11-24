@@ -11,6 +11,7 @@ import {
   COMMON_GET_ALL_FENCING_TYPES,
   COMMON_GET_ALL_DUTIES,
   COMMON_GET_ALL_SECRET_LEVELS,
+  COMMON_GET_ALL_POSITION,
 } from '@/config/api';
 
 export async function getAllMap() {
@@ -50,5 +51,9 @@ export async function getAllDuties() {
 
 export async function getAllSecretLevels() {
   const resp = await request.get(COMMON_GET_ALL_SECRET_LEVELS);
+  return resp;
+}
+export async function getAllPosition() {
+  const resp = await request.get(COMMON_GET_ALL_POSITION);
   return resp;
 }

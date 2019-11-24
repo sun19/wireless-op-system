@@ -8,6 +8,7 @@ import {
   ADD_INFO_LIST,
   EXPORT_INFO_IN,
   EXPORT_INFO_OUT,
+  EDIT_INFO_LIST,
   // 任务
   GET_TASK_LIST,
   GRT_TASK_DETAIL,
@@ -58,6 +59,11 @@ export async function getInfoDetial(data: GetInfoDetial) {
 // 信息牌添加
 export async function addInfoList(data: AddInfoList) {
   const resp = await request.post(ADD_INFO_LIST, { data: format(data) });
+  return resp.success === true && resp.code === 200;
+}
+// 信息牌编辑
+export async function editInfoList(data: AddInfoList) {
+  const resp = await request.post(EDIT_INFO_LIST, { data: format(data) });
   return resp.success === true && resp.code === 200;
 }
 

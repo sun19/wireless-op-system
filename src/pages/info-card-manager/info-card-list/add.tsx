@@ -142,7 +142,7 @@ class AddUser extends React.Component<Props, State> {
       type: 'commonState/update',
       payload: {
         allDuties: dutiesResp.result.records,
-        allSecretLevel: secretsLevelsResp.result.records,
+        allSecretLevel: secretsLevelsResp.result,
       },
     });
   }

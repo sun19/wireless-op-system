@@ -13,7 +13,15 @@ const IconFont = Icon.createFromIconfontCN({
 });
 
 class LeftMenuList extends Component<any> {
+  constructor(props){
+    super(props);
+    this.state = {
+      openKeys: ['设置'],
+    }
+  }
   handleClick = value => {
+    // console.log(value)
+    // this.setState({ openKeys: [value.keyPath[1]]})
     this.props.dispatch({
       type: 'menu/clickMenuItem',
       payload: {
@@ -23,8 +31,6 @@ class LeftMenuList extends Component<any> {
     });
   };
   onOpenChange = (openKeys: string[]) => {
-
-
     openKeys = openKeys.length > 0 ? openKeys.slice(-1) : [];
     // TODO:暂时不做点击`menu`切换路由操作
     this.props.dispatch({
@@ -95,6 +101,22 @@ class LeftMenuList extends Component<any> {
         >
           {leftMenuItem.children && leftMenuItem.children.length > 0
             ? leftMenuItem.children.map(item => {
+              item.children && leftMenuItem.children.length > 0
+              if (item.children && item.children.length > 0){
+                return (
+                  <Menu.ItemGroup key={item.name} title={item.name}>
+                {item.children.map(child=>{
+                  return(
+                      <Menu.Item key={child.name}>
+                        <Link className={`${styles.menu_item}`} to={child.path}>
+                          {child.name}
+                        </Link>
+                      </Menu.Item>
+                  ) } 
+                    )}
+                     </Menu.ItemGroup>
+                );
+              }else{
                 return (
                   <Menu.Item key={item.name}>
                     <Link className={`${styles.menu_item}`} to={item.path}>
@@ -102,6 +124,7 @@ class LeftMenuList extends Component<any> {
                     </Link>
                   </Menu.Item>
                 );
+              }
               })
             : ''}
         </SubMenu>
@@ -111,16 +134,17 @@ class LeftMenuList extends Component<any> {
 
   render() {
     const { rootKeys, current, openKeys } = this.props;
+    // console.log(current, openKeys, rootKeys)
     const LeftMenu = this.renderLeftMenu();
     return (
       <Menu
         mode="inline"
-        defaultOpenKeys={[rootKeys[0]]}
+        defaultOpenKeys={[openKeys[0] ? openKeys[0]:rootKeys[0]]}
         defaultSelectedKeys={openKeys}
         onClick={this.handleClick}
         selectedKeys={[current]}
-        openKeys={openKeys}
-        onOpenChange={this.onOpenChange}
+        // openKeys={openKeys}
+        // onOpenChange={this.onOpenChange}
         style={{ width: 256 }}
         className={[`${styles.no_background}`, `${styles.menu_bar}`].join(' ')}
       >

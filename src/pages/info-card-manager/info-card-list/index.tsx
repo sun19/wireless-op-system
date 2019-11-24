@@ -247,13 +247,13 @@ class SuperAdmin extends React.Component<Props, State> {
   }
 
   async updateData(data, item) {
-    const resp = await getInfoListParams(item);
-    if (resp) {
-      this.props.dispatch({
-        type: 'infoCardManager/update',
-        payload: { customManager: { records: data } },
-      });
-    }
+    this.props.dispatch({
+      type: 'infoCardManager/update',
+      payload: {
+        infoCardList: data,
+      },
+    });
+    router.push('/info-card-manager/info-card-list/edit');
   }
 
   setupUserType = () => {
