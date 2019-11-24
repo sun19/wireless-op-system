@@ -58,7 +58,7 @@ export async function getMapArea(params: GetMapAreaParams) {
 }
 
 export async function updateMapArea(params: UpdateMapAreaParams) {
-  const resp = await request.post(MAP_MANAGER_AREA_SETTING_UPDATE, { data: params });
+  const resp = await request.post(MAP_MANAGER_AREA_SETTING_UPDATE, { data: format(params) });
   resp.success === true && resp.code === 200
     ? message.success(`${resp.message}`)
     : message.error(`${resp.message}`);

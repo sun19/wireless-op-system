@@ -1,5 +1,5 @@
 /**
- * title: 添加
+ * title: 编辑
  */
 import React from 'react';
 import { Form, Row, Col, Button, Input, Select, DatePicker, Cascader } from 'antd';
@@ -19,7 +19,7 @@ import {
   getAllLevels,
   getAllArea,
 } from '@/pages/login/login.service';
-import { addMapArea } from '../services';
+import { updateMapArea } from '../services';
 
 import styles from './index.less';
 import publicStyles from '../index.less';
@@ -88,18 +88,10 @@ class FencingSetting extends React.Component<Props, State> {
     });
   }
 
-  // dynamicLoadMapImage() {
-  //   return new Promise(resolve => {
-  //     const mapImage = new Image();
-  //     mapImage.src = require('../../big-screen/assets/map.png');
-  //     mapImage.onload = function() {
-  //       resolve(mapImage);
-  //     };
-  //   });
-  // }
-
   onSubmit = e => {
     e.preventDefault();
+    const { mapAreaRecord } = this.props;
+
     this.props.form.validateFields(async (err, values) => {
       const { ...props } = values;
       const data = {
@@ -107,8 +99,9 @@ class FencingSetting extends React.Component<Props, State> {
         ...props,
       };
 
-      await addMapArea(data);
+      await updateMapArea(Object.assign(mapAreaRecord, data));
       router.push('/map-manager/area-set');
+      // // this.getRouteInspectList(data);
     });
   };
 
@@ -118,8 +111,7 @@ class FencingSetting extends React.Component<Props, State> {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { mapImage, width, height } = this.state;
-    const { maps, fencingTypes, users, levels, areas } = this.props;
+    const { maps, levels, mapAreaRecord } = this.props;
     return (
       <ContentBorder className={styles.auth_root}>
         <Form layout="inline" style={{ marginTop: '0.57rem' }} onSubmit={this.onSubmit}>
@@ -136,6 +128,7 @@ class FencingSetting extends React.Component<Props, State> {
                             message: '请输入区域名称',
                           },
                         ],
+                        initialValue: mapAreaRecord.regionName,
                       })(<Input placeholder="请输入区域名称" />)}
                     </Form.Item>
                   </Col>
@@ -147,6 +140,7 @@ class FencingSetting extends React.Component<Props, State> {
                             message: '请选择地图名称',
                           },
                         ],
+                        initialValue: mapAreaRecord.mapId,
                       })(
                         <Select placeholder="请选择地图名称">
                           {maps.map(item => (
@@ -168,6 +162,7 @@ class FencingSetting extends React.Component<Props, State> {
                             message: '请选择区域级别',
                           },
                         ],
+                        initialValue: mapAreaRecord.regionalLevelId,
                       })(
                         <Select placeholder="请选择区域级别">
                           {levels.map(item => (
@@ -183,7 +178,10 @@ class FencingSetting extends React.Component<Props, State> {
                 <Row type="flex" justify="space-between">
                   <Col span={23} className={styles.text_areas}>
                     <Form.Item label="备注">
-                      {getFieldDecorator('remark')(
+                      {getFieldDecorator('remark', {
+                        rules: [],
+                        initialValue: mapAreaRecord.remark,
+                      })(
                         <TextArea
                           className={publicStyles.text_area}
                           autoSize={{ minRows: 6, maxRows: 8 }}
@@ -225,7 +223,7 @@ class FencingSetting extends React.Component<Props, State> {
 const FencingSettingHOC = Form.create<Props>({ name: 'fencing_setting_add' })(FencingSetting);
 
 const mapState = ({ mapManager }) => {
-  const { allMaps, fencingTypes, users, levels, areas } = mapManager;
+  const { allMaps, fencingTypes, users, levels, areas, mapAreaRecord } = mapManager;
   return {
     mapFencing: mapManager.mapFencing,
     maps: allMaps,
@@ -233,6 +231,7 @@ const mapState = ({ mapManager }) => {
     users,
     levels,
     areas,
+    mapAreaRecord,
   };
 };
 
