@@ -159,13 +159,6 @@ class UserManager extends React.Component<Props, State> {
       },
     });
     router.push('/system-setting/customer-manager/edit');
-    // const resp = await updateUserInfo(item);
-    // if (resp) {
-    //   this.props.dispatch({
-    //     type: 'systemSetting/update',
-    //     payload: { customManager: { records: data } },
-    //   });
-    // }
   }
 
   render() {

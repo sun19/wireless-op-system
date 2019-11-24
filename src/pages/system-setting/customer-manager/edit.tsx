@@ -49,7 +49,6 @@ const defaultGenderType = [
 ];
 
 const { Option } = Select;
-
 class EditUser extends React.Component<Props, State> {
   constructor(props) {
     super(props);

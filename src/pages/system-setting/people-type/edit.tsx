@@ -1,28 +1,34 @@
 /**
- * title: 授权
+ * title: 编辑
  */
 import React from 'react';
 import { Form, Row, Col, Button, Input, message, Select, Tree } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
+import { connect } from 'dva';
 import router from 'umi/router';
 
 import ContentBorder from '../../../components/ContentBorder';
 import { InputText, TreeNodeMenu } from '../components';
-import { addUserType, getAllRoles } from '../services';
+import { updateUserType,getAllRoles } from '../services';
+
 
 import styles from './index.less';
 
-const { Option } = Select;
 const { TreeNode } = Tree;
+const { Option } = Select;
 import { LEFT_MENUS } from '../../../config/menus';
 const defaultMenuNodes = LEFT_MENUS
 
-interface Props extends FormComponentProps { }
+
+// interface Props extends FormComponentProps {}
+type Props = FormComponentProps & ReturnType<typeof mapState>;
+
 interface UserType {
   key?: string;
   value?: string;
   roleId: string;
 }
+
 
 interface State {
   userTypes: UserType[];
@@ -33,7 +39,7 @@ interface State {
 }
 
 
-class UserAuth extends React.Component<Props, State> {
+class EditUserAuth extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.onSubmit = this.onSubmit.bind(this);
@@ -48,18 +54,25 @@ class UserAuth extends React.Component<Props, State> {
   }
   async componentDidMount() {
     let userTypes = await getAllRoles();
-    // console.log(userTypes)
     userTypes = userTypes.map(item => ({
       key: item.id,
       value: item.roleName,
       selectValue: item.roleCode,
     }));
     this.setState({ userTypes });
+    const { peopleTypeRecord } = this.props
+    // console.log(peopleTypeRecord)
+    this.setState({
+      expandedKeys: peopleTypeRecord.roleId ? peopleTypeRecord.roleId:[],
+      selectedKeys: peopleTypeRecord.roleId ? peopleTypeRecord.roleId : [],
+      // autoExpandParent: true,
+      checkedKeys: peopleTypeRecord.roleId ? peopleTypeRecord.roleId : [],
+    })
   }
   goBack = () => {
     this.props.form.resetFields();
     router.push('/system-setting/people-type');
-  };
+  }; 
   onSelect = (selectedKeys, info) => {
     // console.log('onSelect', info);
     this.setState({ selectedKeys });
@@ -81,7 +94,7 @@ class UserAuth extends React.Component<Props, State> {
         message.error('填写信息有误', data);
         return;
       }
-      const isSuccessed = await addUserType(data);
+      const isSuccessed = await updateUserType(data);
       if (isSuccessed) {
         setTimeout(() => router.push('/system-setting/people-type'), 1000);
       }
@@ -91,8 +104,6 @@ class UserAuth extends React.Component<Props, State> {
   onCancel() {
     router.push('/system-setting/people-type');
   }
-
-
   renderTreeNodes = data =>
     data.map(item => {
       if (item.children) {
@@ -105,33 +116,33 @@ class UserAuth extends React.Component<Props, State> {
       return <TreeNode title={item.name} key={item.path} />;
     });
   render() {
+   const {peopleTypeRecord}=this.props
+    // console.log(peopleTypeRecord)
     const { getFieldDecorator } = this.props.form;
-    // console.log(this.state.userTypes)
-    // if (this.state.userTypes.length === 0) return null;
+    if (this.state.userTypes.length === 0) return null;
+
     return (
       <ContentBorder className={styles.auth_root}>
         <Form layout="inline" style={{ marginTop: '0.57rem' }} onSubmit={this.onSubmit}>
           <Row type="flex" justify="center" align="middle" className={styles.add}>
-            <Col span={12}>
+            <Col span={12}> 
               <div className="auth__inner--container">
                 <Row type="flex" justify="space-between">
                   <Col span={12}>
                     <Form.Item label="人员类型">
-                      {getFieldDecorator('roleId', {
-                        // roleName
+                      {getFieldDecorator('roleCode', {
                         rules: [],
-                        initialValue: (this.state.userTypes.length === 0)?'':this.state.userTypes[0].key,
+                        initialValue: peopleTypeRecord.roleCode,
                       })(
                         <Select style={{ width: '2rem' }} className={styles.select_text}>
-                          {this.state.userTypes.map((option, index) => (
-                            <Option value={option.key} key={index}>
+                          {this.state.userTypes.map(option => (
+                            <Option value={option['selectValue']} key={option.key}>
                               {option.value}
                             </Option>
                           ))}
                         </Select>,
                       )}
                     </Form.Item>
-
                   </Col>
                   <Col span={12}>
                     <Form.Item label="英文名称">
@@ -142,6 +153,7 @@ class UserAuth extends React.Component<Props, State> {
                             message: '请输入英文名称',
                           },
                         ],
+                        initialValue: peopleTypeRecord.roleName,
                       })(<Input placeholder="请输入英文名称" />)}
                     </Form.Item>
                   </Col>
@@ -187,4 +199,15 @@ class UserAuth extends React.Component<Props, State> {
   }
 }
 
-export default Form.create<Props>({ name: 'auth_user' })(UserAuth);
+
+
+const EditUserHOC = Form.create<Props>({ name: 'edit_user' })(EditUserAuth);
+
+const mapState = ({ systemSetting }) => {
+  const resp = systemSetting.peopleTypeRecord;
+  return { peopleTypeRecord: resp };
+};
+
+export default connect(mapState)(EditUserHOC);
+
+// export default Form.create<Props>({ name: 'auth_user' })(UserAuth);

@@ -29,14 +29,14 @@ const columns = [
   // },
   {
     title: '人员类型',
-    dataIndex: 'roleName',
+    dataIndex: 'roleCode',
     // width: '30%',
     className: 'select_text',
     editable: true,
   },
   {
     title: '英文名称',
-    dataIndex: 'roleCode',
+    dataIndex: 'roleName',
     // width: '40%',
     editable: true,
   },
@@ -63,15 +63,23 @@ class PeopelType extends React.Component<Props> {
     });
   }
 
-  async updateData(data, item) {
-    const resp = await updateUserType(item);
-    if (resp) {
+
+    async updateData(data, item) {
       this.props.dispatch({
         type: 'systemSetting/update',
-        payload: { peopleType: { records: data } },
+        payload: {
+          peopleTypeRecord: data,
+        },
       });
+      router.push('/system-setting/people-type/edit');
     }
-  }
+    // const resp = await updateUserType(item);
+    // if (resp) {
+    //   this.props.dispatch({
+    //     type: 'systemSetting/update',
+    //     payload: { peopleType: { records: data } },
+    //   });
+    // }
 
   deleteColumn(item) {
     //TODO:修改人ID

@@ -3,8 +3,10 @@ export default {
   state: {
     customManager: {},
     customManagerRecord: {},
+    peopleTypeRecord:{},
     peopleType: {},
     infoCard: {},
+    messageCard:{},
     superAdmin: {},
   },
   reducers: {

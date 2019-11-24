@@ -169,13 +169,20 @@ class UserInside extends React.Component<Props, State> {
   }
 
   async updateData(data, item) {
-    const resp = await updateUser(item);
-    if (resp) {
-      this.props.dispatch({
-        type: 'userManager/update',
-        payload: { innerUserList: { records: data } },
-      });
-    }
+    // const resp = await updateUser(item);
+    // if (resp) {
+    //   this.props.dispatch({
+    //     type: 'userManager/update',
+    //     payload: { innerUserList: { records: data } },
+    //   });
+    // }
+    this.props.dispatch({
+      type: 'userManager/update',
+      payload: {
+        userInside: data,
+      },
+    });
+    router.push('/user-manager/user-inside/edit');
   }
 
   deleteColumn(item) {

@@ -23,6 +23,7 @@ export async function getUserList(params: GetUserListParams) {
   return resp;
 }
 // { headers: { 'Content-Type': 'application/json;charset=utf-8' },data: params }, 
+//编辑
 export async function updateUser(params: UpdateUserParams) {
   const resp = await request.post(USER_MANAGER_UPDATE_USER, { headers: { 'Content-Type': 'application/json;charset=utf-8' }, data: params });
   resp.success === true && resp.code === 200

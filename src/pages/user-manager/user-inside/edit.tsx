@@ -11,7 +11,7 @@ import router from 'umi/router';
 import ContentBorder from '../../../components/ContentBorder';
 import { UmiComponentProps } from '@/common/type';
 import { getAllDuties, getAllSecretLevels } from '@/pages/login/login.service';
-import { addUser } from '../services';
+import { updateUser } from '../services';
 
 import styles from './index.less';
 
@@ -37,7 +37,7 @@ class UserAuth extends React.Component<Props> {
     router.push('/user-manager/user-inside');
   }; 
   setupDuties = () => {
-    const { allDuties } = this.props;
+    const { allDuties, userInside } = this.props;
     const { getFieldDecorator } = this.props.form;
     return (
       <Form.Item label="职务">
@@ -47,11 +47,11 @@ class UserAuth extends React.Component<Props> {
               message: '请选择职务',
             },
           ],
-          initialValue: allDuties[0].name,
+          initialValue: userInside.positionId ? userInside.positionId:'',
         })(
           <Select placeholder="请选择职务">
             {allDuties.map((duty, index) => (
-              <Option value={duty.id} key={index}>
+              <Option value={duty.name} key={index}>
                 {duty.name}
               </Option>
             ))}
@@ -62,7 +62,7 @@ class UserAuth extends React.Component<Props> {
   };
 
   setupAllSecretLevel = () => {
-    const { allSecretLevel } = this.props;
+    const { allSecretLevel, userInside } = this.props;
     const { getFieldDecorator } = this.props.form;
 
     return (
@@ -73,11 +73,12 @@ class UserAuth extends React.Component<Props> {
               message: '请选择保密等级',
             },
           ],
-          initialValue: allSecretLevel[0].name,
+          initialValue: userInside.securityLevelId ? userInside.securityLevelId:'',
+
         })(
           <Select placeholder="请选择保密等级">
             {allSecretLevel.map((level, index) => (
-              <Option value={level.id} key={index}>
+              <Option value={level.name} key={index}>
                 {level.name}
               </Option>
             ))}
@@ -108,7 +109,7 @@ class UserAuth extends React.Component<Props> {
         message.error('填写信息有误 ', values);
         return;
       }
-      const isSuccessed = await addUser(values);
+      const isSuccessed = await updateUser(values);
       if (isSuccessed) {
         setTimeout(() => router.push('/user-manager/user-inside'), 1000);
       }
@@ -118,6 +119,8 @@ class UserAuth extends React.Component<Props> {
   render() {
     const props = this.props;
     const { getFieldDecorator } = props.form;
+    const { userInside}=this.props
+    // console.log(userInside)
     if (_.isEmpty(props.allDuties) || _.isEmpty(props.allSecretLevel)) return null;
     return (
       <ContentBorder className={styles.auth_root}>
@@ -136,9 +139,11 @@ class UserAuth extends React.Component<Props> {
                       {getFieldDecorator('name', {
                         rules: [
                           {
+                            
                             message: '请输入姓名',
                           },
                         ],
+                        initialValue: userInside.name,
                       })(<Input placeholder="请输入姓名" />)}
                     </Form.Item>
                   </Col>
@@ -150,6 +155,8 @@ class UserAuth extends React.Component<Props> {
                             message: '请输入身份证号',
                           },
                         ],
+                        initialValue: userInside.cardNo,
+
                       })(<Input placeholder="请输入身份证号" />)}
                     </Form.Item>
                   </Col>
@@ -163,7 +170,8 @@ class UserAuth extends React.Component<Props> {
                             message: '请选择性别',
                           },
                         ],
-                        initialValue: '男',
+                        initialValue: userInside.sex,
+
                       })(
                         <Select placeholder="请选择性别">
                           <Option value="0">男</Option>
@@ -180,6 +188,8 @@ class UserAuth extends React.Component<Props> {
                             message: '请输入家庭住址',
                           },
                         ],
+                        initialValue: userInside.address,
+
                       })(<Input placeholder="请输入家庭住址" />)}
                     </Form.Item>
                   </Col>
@@ -193,17 +203,21 @@ class UserAuth extends React.Component<Props> {
                             message: '请选输入联系方式',
                           },
                         ],
+                        initialValue: userInside.phone,
+
                       })(<Input placeholder="请输入联系方式" />)}
                     </Form.Item>
                   </Col>
                   <Col span={12}>
                     <Form.Item label="部门">
-                      {getFieldDecorator('departmentName', {
+                      {getFieldDecorator('departmentId', {
                         rules: [
                           {
                             message: '请选输入部门',
                           },
                         ],
+                        initialValue: userInside.departmentId,
+
                       })(<Input placeholder="请输入部门" />)}
                     </Form.Item>
                   </Col>
@@ -218,7 +232,8 @@ class UserAuth extends React.Component<Props> {
                             message: '请选择在职状态',
                           },
                         ],
-                        initialValue: '在职',
+                        initialValue: userInside.address,
+
                       })(
                         <Select placeholder="请选择在职状态">
                           <Option value="0">在职</Option>
@@ -256,13 +271,14 @@ class UserAuth extends React.Component<Props> {
 
 const AddUserForm = Form.create<Props>({ name: 'auth_user' })(UserAuth);
 
-const mapState = ({ userManager, commonState }) => {
+const mapState = ({ userManager, commonState,  }) => {
   const resp = userManager.innerUserList;
   const { allDuties, allSecretLevel } = commonState;
   return {
     innerUserList: resp,
     allDuties: allDuties,
     allSecretLevel: allSecretLevel,
+    userInside: userManager.userInside
   };
 };
 

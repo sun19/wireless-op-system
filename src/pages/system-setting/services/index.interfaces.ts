@@ -50,12 +50,13 @@ export interface BulistParams {
 }
 
 export interface UpdateMessageCardParams {
-  id: string;
-  name: string;
-  color: string;
-  sort: string;
-  remark: string;
-  updateId: string;
+  id?: string;
+  name?: string;
+  color?: string;
+  sort?: string;
+  remark?: string;
+  updateId?: string;
+  key?: string;
 }
 
 export interface DeleteMessageCardParams {
