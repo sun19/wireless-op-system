@@ -82,7 +82,7 @@ export async function deleteMapArea(params: DeleteMapAreaParams) {
 }
 
 export async function addMapFencingArea(params: AddMapFencingAreaParams) {
-  const resp = await request.post(MAP_MANAGER_FENCING_SETTING_ADD, { data: params });
+  const resp = await request.post(MAP_MANAGER_FENCING_SETTING_ADD, { data: format(params) });
   resp.success === true && resp.code === 200
     ? message.success(`${resp.message}`)
     : message.error(`${resp.message}`);
@@ -124,7 +124,7 @@ export async function getMapLamps(params: GetMapLampsParams) {
 }
 
 export async function addMapLamps(params: AddMapLampsParams) {
-  const resp = await request.post(MAP_MANAGER_LAMP_SETTING_ADD, { data: params });
+  const resp = await request.post(MAP_MANAGER_LAMP_SETTING_ADD, { data: format(params) });
   resp.success === true && resp.code === 200
     ? message.success(`${resp.message}`)
     : message.error(`${resp.message}`);

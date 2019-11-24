@@ -6,6 +6,7 @@ export default {
     mapAreaRecord: {},
     mapFencing: {},
     lamps: {},
+    lampRecord: {},
     pollingPoints: {},
     pollingLines: {},
     allMaps: [],
