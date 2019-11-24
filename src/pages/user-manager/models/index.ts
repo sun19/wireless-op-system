@@ -3,6 +3,7 @@ export default {
   state: {
     innerUserList: {},
     outerUserList: {},
+    userInside:{}
   },
   reducers: {
     update(state, { payload }) {

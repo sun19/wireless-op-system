@@ -6,6 +6,7 @@ import { Layout, Modal, Form, Input, Row, Col, Button, Icon } from 'antd';
 import { connect } from 'dva';
 import * as _ from 'lodash';
 import router from 'umi/router';
+import { ChromePicker } from 'react-color';
 
 import MainContent from '../components/MainContent';
 import { ICON_FONTS_URL } from '@/config/constants';
@@ -30,16 +31,17 @@ const columns = [
   {
     title: '部门',
     dataIndex: 'name',
-    width: '30%',
+    // width: '30%',
     editable: true,
   },
   {
     title: '颜色',
     dataIndex: 'color',
-    width: '30%',
+    // width: '30%',
     className: 'select_text',
     editable: true,
     render: color => {
+      // console.log(color)
       return (
         <span
           className={styles.color_span}
@@ -55,12 +57,33 @@ const columns = [
 type StateProps = ReturnType<typeof mapState>;
 type Props = StateProps & UmiComponentProps;
 
-class MessageCard extends React.Component<Props> {
+interface colorInfo {
+  color?: string,
+  id?: string,
+  key?: string,
+  name?: string,
+
+}
+interface State {
+  visible: boolean,
+  displayColorPicker: boolean,
+  colorInfo: colorInfo,
+  cardMessage: colorInfo
+}
+class MessageCard extends React.Component<Props, State> {
   constructor(props: any) {
     super(props);
     this.getBuList = this.getBuList.bind(this);
     this.updateData = this.updateData.bind(this);
     this.deleteColumn = this.deleteColumn.bind(this);
+
+    this.state = {
+      visible: false,
+      displayColorPicker: false,
+      colorInfo: {},
+      cardMessage: {},
+
+    };
   }
 
   async getBuList() {
@@ -72,15 +95,58 @@ class MessageCard extends React.Component<Props> {
       },
     });
   }
+  showModal = () => {
+    this.setState({
+      visible: true,
+    });
+  };
 
-  async updateData(data, item) {
-    const resp = await updateMessageCard(item);
-    if (resp) {
-      this.props.dispatch({
-        type: 'systemSetting/update',
-        payload: { infoCard: { records: data } },
-      });
+  handleOk = e => {
+    // console.log(this.state.colorInfo, this.state.cardMessage)
+    const { color, ...props } = this.state.cardMessage
+    const data = {
+      ...props,
+      color: this.state.colorInfo.color
     }
+    updateMessageCard(data).then(
+      () => {
+        this.getBuList()
+
+        this.setState({
+          visible: false,
+        });
+      }
+    )
+
+  };
+
+  handleCancel = e => {
+    this.setState({
+      visible: false,
+    });
+  };
+  handleChangeComplete = e => {
+    this.setState({
+      colorInfo: {
+        color: e.hex
+      },
+    });
+  }
+  handleClick = () => {
+    this.setState({ displayColorPicker: !this.state.displayColorPicker })
+  };
+
+  handleClose = () => {
+    this.setState({ displayColorPicker: false })
+  };
+  async updateData(data, item) {
+    this.setState({
+      visible: true,
+    });
+    this.setState({
+      cardMessage: data,
+      colorInfo: data
+    })
   }
 
   deleteColumn(item) {
@@ -112,7 +178,20 @@ class MessageCard extends React.Component<Props> {
     records = records.map(item => {
       return _.assign(item, { key: item.id });
     });
+
     //TODO:渲染颜色块
+    const popover = {
+      position: 'absolute',
+      zIndex: '2',
+    }
+    const cover = {
+      position: 'fixed',
+      top: '0px',
+      right: '0px',
+      bottom: '0px',
+      left: '0px',
+    }
+
     return (
       <div className={publicStyles.public_hight}>
         <div className={publicStyles.bg}>
@@ -125,6 +204,35 @@ class MessageCard extends React.Component<Props> {
             deleteColumn={this.deleteColumn}
             showEdit={true}
           />
+          <Modal
+            title="编辑"
+            visible={this.state.visible}
+            onOk={this.handleOk}
+            // width='500'
+            onCancel={this.handleCancel}
+            okText="确认"
+            cancelText="取消"
+          >
+            <Form labelCol={{ span: 5 }} wrapperCol={{ span: 12 }} >
+              <Form.Item label="部门">
+                <span>{this.state.colorInfo.name}</span>
+              </Form.Item>
+              <Form.Item label="颜色">
+                <div className={styles.color_pick}>
+                  <div>
+                    <div onClick={this.handleClick} className={styles.color_span} style={{   background: this.state.colorInfo.color,  }} />
+                    {/* Pick Color</div> */}
+                    {this.state.displayColorPicker ? <div>
+                      <div style={{position: 'fixed', top: '0px', right: '0px',  bottom: '0px',  left: '0px', }} onClick={this.handleClose} />
+                      <ChromePicker style={{ width: '400px' }} color={this.state.colorInfo.color} onChangeComplete={this.handleChangeComplete} />
+                    </div> : null}
+                  </div>
+                </div>
+              </Form.Item>
+            </Form>
+
+
+          </Modal>
         </div>
       </div>
     );

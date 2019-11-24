@@ -2,36 +2,86 @@
  * title: 授权
  */
 import React from 'react';
-import { Form, Row, Col, Button, Input, message } from 'antd';
+import { Form, Row, Col, Button, Input, message, Select, Tree } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import router from 'umi/router';
 
 import ContentBorder from '../../../components/ContentBorder';
 import { InputText, TreeNodeMenu } from '../components';
-import { addUserType } from '../services';
+import { addUserType, getAllRoles } from '../services';
 
 import styles from './index.less';
 
-interface Props extends FormComponentProps {}
+const { Option } = Select;
+const { TreeNode } = Tree;
+import { LEFT_MENUS } from '../../../config/menus';
+const defaultMenuNodes = LEFT_MENUS
 
-class UserAuth extends React.Component<Props> {
+interface Props extends FormComponentProps { }
+interface UserType {
+  key?: string;
+  value?: string;
+  roleId: string;
+}
+
+interface State {
+  userTypes: UserType[];
+  expandedKeys: any;
+  selectedKeys: any,
+  checkedKeys: any;
+  // autoExpandParent:boolean;
+}
+
+
+class UserAuth extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.onSubmit = this.onSubmit.bind(this);
     this.onCancel = this.onCancel.bind(this);
+    this.state = {
+      userTypes: [],
+      expandedKeys: [],
+      selectedKeys: [],
+      // autoExpandParent: true,
+      checkedKeys: [],
+    };
+  }
+  async componentDidMount() {
+    let userTypes = await getAllRoles();
+    // console.log(userTypes)
+    userTypes = userTypes.map(item => ({
+      key: item.id,
+      value: item.roleName,
+      selectValue: item.roleCode,
+    }));
+    this.setState({ userTypes });
   }
   goBack = () => {
     this.props.form.resetFields();
     router.push('/system-setting/people-type');
-  }; 
+  };
+  onSelect = (selectedKeys, info) => {
+    // console.log('onSelect', info);
+    this.setState({ selectedKeys });
+  };
+  onCheck = checkedKeys => {
+    // console.log('onCheck', checkedKeys);
+    this.setState({ checkedKeys });
+  };
+
   onSubmit(e) {
     e.preventDefault();
     this.props.form.validateFields(async (err, values) => {
+      const { rolePath, ...props } = values
+      let data = {
+        ...props,
+        rolePath: this.state.checkedKeys
+      }
       if (err) {
-        message.error('填写信息有误', values);
+        message.error('填写信息有误', data);
         return;
       }
-      const isSuccessed = await addUserType(values);
+      const isSuccessed = await addUserType(data);
       if (isSuccessed) {
         setTimeout(() => router.push('/system-setting/people-type'), 1000);
       }
@@ -42,8 +92,22 @@ class UserAuth extends React.Component<Props> {
     router.push('/system-setting/people-type');
   }
 
+
+  renderTreeNodes = data =>
+    data.map(item => {
+      if (item.children) {
+        return (
+          <TreeNode title={item.name} key={item.path} dataRef={item}>
+            {this.renderTreeNodes(item.children)}
+          </TreeNode>
+        );
+      }
+      return <TreeNode title={item.name} key={item.path} />;
+    });
   render() {
     const { getFieldDecorator } = this.props.form;
+    // console.log(this.state.userTypes)
+    // if (this.state.userTypes.length === 0) return null;
     return (
       <ContentBorder className={styles.auth_root}>
         <Form layout="inline" style={{ marginTop: '0.57rem' }} onSubmit={this.onSubmit}>
@@ -52,20 +116,26 @@ class UserAuth extends React.Component<Props> {
               <div className="auth__inner--container">
                 <Row type="flex" justify="space-between">
                   <Col span={12}>
-                    <Form.Item label="角色名称">
-                      {getFieldDecorator('roleName', {
-                        rules: [
-                          {
-                            // required: true,
-                            message: '请输入角色名称',
-                          },
-                        ],
-                      })(<Input placeholder="请输入角色名称" />)}
+                    <Form.Item label="人员类型">
+                      {getFieldDecorator('roleId', {
+                        // roleName
+                        rules: [],
+                        initialValue: (this.state.userTypes.length === 0)?'':this.state.userTypes[0].key,
+                      })(
+                        <Select style={{ width: '2rem' }} className={styles.select_text}>
+                          {this.state.userTypes.map((option, index) => (
+                            <Option value={option.key} key={index}>
+                              {option.value}
+                            </Option>
+                          ))}
+                        </Select>,
+                      )}
                     </Form.Item>
+
                   </Col>
                   <Col span={12}>
                     <Form.Item label="英文名称">
-                      {getFieldDecorator('roleCode', {
+                      {getFieldDecorator('roleName', {
                         rules: [
                           {
                             // required: true,
@@ -76,13 +146,24 @@ class UserAuth extends React.Component<Props> {
                     </Form.Item>
                   </Col>
                 </Row>
-                {/* <Row type="flex" justify="space-between">
+                <Row type="flex" justify="space-between">
                   <Col span={23}>
-                    <Form.Item label="人员类型">
-                      {getFieldDecorator('人员类型')(<TreeNodeMenu />)}
+                    <Form.Item label="人员权限">
+                      {getFieldDecorator('rolePath')(
+                        <Tree
+                          checkable={true}
+                          defaultExpandedKeys={this.state.expandedKeys}
+                          defaultSelectedKeys={this.state.expandedKeys}
+                          defaultCheckedKeys={this.state.expandedKeys}
+                          onSelect={this.onSelect}
+                          onCheck={this.onCheck}
+                        >
+                          {this.renderTreeNodes(defaultMenuNodes)}
+                        </Tree>
+                      )}
                     </Form.Item>
                   </Col>
-                </Row> */}
+                </Row>
                 <Row type="flex" justify="center" style={{ marginTop: '0.35rem' }}>
                   <Col span={6}>
                     <Form.Item className={styles.button_type}>
