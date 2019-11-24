@@ -90,7 +90,7 @@ type AdminTypes = typeof staticTypes;
 type StateProps = ReturnType<typeof mapState>;
 type Props = StateProps & UmiComponentProps;
 interface State {
-  type: AdminTypes;
+  type: string;
   remark: string;
 }
 
@@ -106,7 +106,7 @@ class SuperAdmin extends React.Component<Props, State> {
     this.updateData = this.updateData.bind(this);
     this.deleteColumn = this.deleteColumn.bind(this);
     this.state = {
-      type: staticTypes,
+      type: '',
       remark: '',
     };
   }
@@ -154,6 +154,11 @@ class SuperAdmin extends React.Component<Props, State> {
   onRemarkChange = e => {
     this.setState({ remark: e.target.value });
   };
+  onTypeChange = e => {
+    this.setState({
+      type: e.target.value,
+    });
+  };
 
   onClear = () => {
     this.setState({ remark: '' });
@@ -161,8 +166,9 @@ class SuperAdmin extends React.Component<Props, State> {
   };
 
   onSearchSubmit = () => {
-    const { remark } = this.state;
+    const { remark, type } = this.state;
     this.getSuperAdminList({
+      type,
       remark,
     });
   };
@@ -223,8 +229,8 @@ class SuperAdmin extends React.Component<Props, State> {
                   <Input
                     className={publicStyles.input_text}
                     placeholder="请输入类型"
-                    value={this.state.remark}
-                    onChange={this.onRemarkChange}
+                    value={this.state.type}
+                    onChange={this.onTypeChange}
                   />
                   {/* </div> */}
                 </FormItem>

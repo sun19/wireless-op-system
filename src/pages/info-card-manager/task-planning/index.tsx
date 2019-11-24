@@ -12,7 +12,7 @@ import MainContent from '../components/MainContent';
 import { ICON_FONTS_URL } from '../../../config/constants';
 import styles from './index.less';
 import publicStyles from '../index.less';
-import { getTaskList, delTaskList, TaskListEdit} from '../services';
+import { getTaskList, delTaskList, TaskListEdit } from '../services';
 // import { getAllDuties, getAllSecretLevels } from '@/pages/login/login.service';
 import { DelTaskList } from '../services/index.interfaces';
 
@@ -24,7 +24,7 @@ const IconFont = Icon.createFromIconfontCN({
   scriptUrl: ICON_FONTS_URL,
 });
 
-interface FormProps extends FormComponentProps { }
+interface FormProps extends FormComponentProps {}
 type StateProps = ReturnType<typeof mapState>;
 type Props = StateProps & UmiComponentProps & FormProps;
 
@@ -90,8 +90,8 @@ class TaskPlan extends React.Component<Props, State> {
     records = _.isEmpty(taskList)
       ? []
       : records.map(item => {
-        return _.assign(item, { key: item.id });
-      });
+          return _.assign(item, { key: item.id });
+        });
     const arr: any[] = _.uniqBy(records, 'task');
     this.setState({
       taskTypes: arr,
@@ -109,13 +109,13 @@ class TaskPlan extends React.Component<Props, State> {
     const resp = await TaskListEdit(item);
     if (resp) {
       message.success('修改成功！');
-      this.getTaskListData()
+      this.getTaskListData();
     }
   }
   // 删除
   deleteColumn(item: DelTaskList) {
     //TODO:修改人ID
-    let self = this
+    let self = this;
     confirm({
       title: '确定要删除这条信息吗？',
       content: '',
@@ -127,9 +127,8 @@ class TaskPlan extends React.Component<Props, State> {
         //重新请求数据重绘
         self.updateData('data', item);
       },
-      onCancel() {
-      },
-    })
+      onCancel() {},
+    });
   }
   // 查询
   search = e => {
@@ -171,8 +170,8 @@ class TaskPlan extends React.Component<Props, State> {
     records = _.isEmpty(taskList)
       ? []
       : records.map(item => {
-        return _.assign(item, { key: item.id });
-      });
+          return _.assign(item, { key: item.id });
+        });
     return (
       <div className={publicStyles.public_hight}>
         <Content className={publicStyles.bg}>
@@ -206,7 +205,7 @@ class TaskPlan extends React.Component<Props, State> {
                     className={publicStyles.form_btn}
                     style={{ marginLeft: 37 }}
                     onClick={this.handleReset}
-                  // htmlType="submit"
+                    // htmlType="submit"
                   >
                     清空
                   </Button>

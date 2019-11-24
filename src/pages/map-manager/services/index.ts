@@ -163,7 +163,7 @@ export async function addPollingPoint(params: AddPollingPointParams) {
 }
 
 export async function updatePollingPoint(params: UpdatePollingPointParams) {
-  const resp = await request.post(MAP_MANAGER_POLLING_POINT_UPDATE, { data: format(params) });
+  const resp = await request.get(MAP_MANAGER_POLLING_POINT_UPDATE, { params: params });
   resp.success === true && resp.code === 200
     ? message.success(`${resp.message}`)
     : message.error(`${resp.message}`);
