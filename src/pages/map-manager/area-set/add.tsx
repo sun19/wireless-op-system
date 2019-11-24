@@ -10,8 +10,6 @@ import { Stage, Layer, Image as ImageLayer, Line as LineLayer } from 'react-konv
 import router from 'umi/router';
 import moment from 'moment';
 
-
-import AreaText from '../components/AreaText';
 import ContentBorder from '../../../components/ContentBorder';
 import { UmiComponentProps } from '@/common/type';
 import {
@@ -21,9 +19,10 @@ import {
   getAllLevels,
   getAllArea,
 } from '@/pages/login/login.service';
-import { addMapFencingArea } from '../services';
+import { addMapArea } from '../services';
 
 import styles from './index.less';
+import publicStyles from '../index.less';
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -50,16 +49,16 @@ class FencingSetting extends React.Component<Props, State> {
     this.initRequest = this.initRequest.bind(this);
   }
   async componentDidMount() {
-    const mapImage = await this.dynamicLoadMapImage();
-    if (this.map.current) {
-      const { clientWidth, clientHeight } = this.map.current;
+    // const mapImage = await this.dynamicLoadMapImage();
+    // if (this.map.current) {
+    //   const { clientWidth, clientHeight } = this.map.current;
 
-      this.setState({
-        mapImage,
-        width: clientWidth,
-        height: clientHeight,
-      });
-    }
+    //   this.setState({
+    //     mapImage,
+    //     width: clientWidth,
+    //     height: clientHeight,
+    //   });
+    // }
     this.initRequest();
   }
 
@@ -89,29 +88,27 @@ class FencingSetting extends React.Component<Props, State> {
     });
   }
 
-  dynamicLoadMapImage() {
-    return new Promise(resolve => {
-      const mapImage = new Image();
-      mapImage.src = require('../../big-screen/assets/map.png');
-      mapImage.onload = function () {
-        resolve(mapImage);
-      };
-    });
-  }
-
+  // dynamicLoadMapImage() {
+  //   return new Promise(resolve => {
+  //     const mapImage = new Image();
+  //     mapImage.src = require('../../big-screen/assets/map.png');
+  //     mapImage.onload = function() {
+  //       resolve(mapImage);
+  //     };
+  //   });
+  // }
 
   onSubmit = e => {
     e.preventDefault();
     this.props.form.validateFields(async (err, values) => {
-      const { ...props } = values
+      const { ...props } = values;
       const data = {
         operatTime: moment().format('YYYY-MM-DD HH:mm:ss'),
-        ...props
-      }
-      // console.log(data)
+        ...props,
+      };
 
-      // await addMapFencingArea(data);
-      // router.push('/map-manager/fence-setting');
+      await addMapArea(data);
+      router.push('/map-manager/area-set');
       // // this.getRouteInspectList(data);
     });
   };
@@ -126,9 +123,7 @@ class FencingSetting extends React.Component<Props, State> {
     const { maps, fencingTypes, users, levels, areas } = this.props;
     return (
       <ContentBorder className={styles.auth_root}>
-
         <Form layout="inline" style={{ marginTop: '0.57rem' }} onSubmit={this.onSubmit}>
-
           <Row type="flex" justify="center" align="middle" className={styles.add}>
             <Col span={12}>
               {/* <Col span={12}> */}
@@ -190,7 +185,11 @@ class FencingSetting extends React.Component<Props, State> {
                   <Col span={23} className={styles.text_areas}>
                     <Form.Item label="备注">
                       {getFieldDecorator('remark')(
-                        <TextArea autoSize={{ minRows: 6, maxRows: 8 }} />,
+                        <TextArea
+                          className={publicStyles.text_area}
+                          autoSize={{ minRows: 6, maxRows: 8 }}
+                          style={{ width: '90%' }}
+                        />,
                         // <AreaText
                         //   autoSize={{ minRows: 6, maxRows: 8 }}
                         //   onChange={this.onTipsChange}
@@ -204,14 +203,14 @@ class FencingSetting extends React.Component<Props, State> {
                     <Form.Item>
                       <Button className={styles.form_btn} htmlType="submit">
                         确认
-                    </Button>
+                      </Button>
                     </Form.Item>
                   </Col>
                   <Col span={6} className={styles.select_padding_left}>
                     <Form.Item>
                       <Button className={styles.form_btn} onClick={this.onBack}>
                         返回
-                    </Button>
+                      </Button>
                     </Form.Item>
                   </Col>
                 </Row>

@@ -30,6 +30,7 @@ import {
   GetMapAreaParams,
   UpdateMapAreaParams,
   DeleteMapAreaParams,
+  AddMapAreaParams,
   AddMapFencingAreaParams,
   AddMapFencingConnectUserParams,
   DeleteFencingAreaParams,
@@ -58,6 +59,14 @@ export async function getMapArea(params: GetMapAreaParams) {
 
 export async function updateMapArea(params: UpdateMapAreaParams) {
   const resp = await request.post(MAP_MANAGER_AREA_SETTING_UPDATE, { data: params });
+  resp.success === true && resp.code === 200
+    ? message.success(`${resp.message}`)
+    : message.error(`${resp.message}`);
+  return resp.success === true && resp.code === 200;
+}
+
+export async function addMapArea(params: AddMapAreaParams) {
+  const resp = await request.post(MAP_MANAGER_AREA_SETTING_ADD, { data: format(params) });
   resp.success === true && resp.code === 200
     ? message.success(`${resp.message}`)
     : message.error(`${resp.message}`);

@@ -23,6 +23,14 @@ export interface DeleteMapAreaParams {
   id: string;
 }
 
+export interface AddMapAreaParams {
+  mapId?: string;
+  regionalLevelId?: string;
+  regionName?: string;
+  operatTime?: string;
+  remark?: string;
+}
+
 export interface AddMapFencingAreaParams {
   mapId?: string;
   mapName?: string;
