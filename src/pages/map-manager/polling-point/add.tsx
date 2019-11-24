@@ -113,7 +113,7 @@ class AddPollingPoint extends React.Component<Props, State> {
               <Row type="flex" justify="space-between">
                 <Col span={24}>
                   <Form.Item label="地图名称">
-                    {getFieldDecorator('mapName', {
+                    {getFieldDecorator('mapId', {
                       rules: [
                         {
                           message: '请选择地图名称',
