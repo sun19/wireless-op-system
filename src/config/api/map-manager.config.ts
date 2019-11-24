@@ -76,7 +76,7 @@ export const MAP_MANAGER_LAMP_SETTING_ADD =
  * 灯具设置——修改
  */
 export const MAP_MANAGER_LAMP_SETTING_UPDATE =
-  'http://47.96.112.31:8086/jeecg-boot/intf/location/editLamp';
+  'http://47.96.112.31:8086/jeecg-boot/intf/location/updateLamp';
 
 /**
  * 灯具设置——删除
@@ -101,7 +101,7 @@ export const MAP_MANAGER_POLLING_POINT_ADD =
  * 修改
  */
 export const MAP_MANAGER_POLLING_POINT_UPDATE =
-  'http://47.96.112.31:8086/jeecg-boot/intf/location/editPoint';
+  'http://47.96.112.31:8086/jeecg-boot/intf/location/updatePoint';
 
 /**
  * 删除
@@ -139,7 +139,7 @@ export const MAP_MANAGER_POLLING_LINE_DELETE =
  * 修改
  */
 export const MAP_MANAGER_POLLING_LINE_UPDATE =
-  'http://47.96.112.31:8086/jeecg-boot/intf/location/editRoute';
+  'http://47.96.112.31:8086/jeecg-boot/intf/location/updateRoute';
 
 /**
  * 查看详情

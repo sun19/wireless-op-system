@@ -114,18 +114,25 @@ class PollingLine extends React.Component<Props, State> {
   }
 
   async updateData(data, item) {
-    const resp = await updatePollingLine(item);
-    if (resp) {
-      this.props.dispatch({
-        type: 'mapManager/update',
-        payload: { pollingLines: { records: data } },
-      });
-    }
+    // const resp = await updatePollingLine(item);
+    // if (resp) {
+    //   this.props.dispatch({
+    //     type: 'mapManager/update',
+    //     payload: { pollingLines: { records: data } },
+    //   });
+    // }
+    this.props.dispatch({
+      type: 'mapManager/update',
+      payload: {
+        pollingLinesRecord: data,
+      },
+    });
+    router.push('/map-manager/polling-line/edit');
   }
 
   deleteColumn(item) {
     //TODO:修改人ID
-    let self = this
+    let self = this;
     confirm({
       title: '确定要删除这条信息吗？',
       content: '',
@@ -137,9 +144,8 @@ class PollingLine extends React.Component<Props, State> {
         //重新请求数据重绘
         self.getPollingLines();
       },
-      onCancel() {
-      },
-    })
+      onCancel() {},
+    });
   }
 
   onInputValueChange = e => {

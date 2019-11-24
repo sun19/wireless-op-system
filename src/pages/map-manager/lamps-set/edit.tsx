@@ -19,7 +19,7 @@ import { UmiComponentProps } from '@/common/type';
 import ContentBorder from '../../../components/ContentBorder';
 // import Map from '../components/Map';
 import { getAllArea, getAllMap } from '@/pages/login/login.service';
-import { addMapLamps } from '../services';
+import { updateMapLamps } from '../services';
 
 import styles from './index.less';
 
@@ -59,8 +59,9 @@ class halmpAdd extends React.Component<Props, State> {
   };
   onSubmit = e => {
     e.preventDefault();
+    const { lampRecord } = this.props;
     this.props.form.validateFields(async (err, values) => {
-      await addMapLamps(values);
+      await updateMapLamps(Object.assign(lampRecord, values));
       router.push('/map-manager/lamps-set');
     });
   };

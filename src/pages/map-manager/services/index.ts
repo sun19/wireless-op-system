@@ -25,6 +25,7 @@ import {
   MAP_MANAGER_POLLING_LINE_DELETE,
   MAP_MANAGER_POLLING_LINE_UPDATE,
   MAP_MANAGER_POLLING_LINE_DETAIL,
+  GET_SUPER_ADMIN_LIST,
 } from '@/config/api';
 import {
   GetMapAreaParams,
@@ -51,6 +52,7 @@ import {
   DeletePollingLineParams,
   GetPollingLineDetailParams,
 } from './index.interface';
+import { async } from 'q';
 
 export async function getMapArea(params: GetMapAreaParams) {
   let resp = await request.get(MAP_MANAGER_AREA_SETTING_QUERY, { params });
@@ -132,7 +134,7 @@ export async function addMapLamps(params: AddMapLampsParams) {
 }
 
 export async function updateMapLamps(params: UpdateMapLampsParams) {
-  const resp = await request.post(MAP_MANAGER_LAMP_SETTING_UPDATE, { data: params });
+  const resp = await request.post(MAP_MANAGER_LAMP_SETTING_UPDATE, { data: format(params) });
   resp.success === true && resp.code === 200
     ? message.success(`${resp.message}`)
     : message.error(`${resp.message}`);
@@ -187,7 +189,7 @@ export async function getPollingLineByName(params: GetPollingLineByNameParams) {
 }
 
 export async function addPollingLine(params: AddPollingLineParams) {
-  const resp = await request.post(MAP_MANAGER_POLLING_LINE_ADD, { data: params });
+  const resp = await request.post(MAP_MANAGER_POLLING_LINE_ADD, { data: format(params) });
   resp.success === true && resp.code === 200
     ? message.success(`${resp.message}`)
     : message.error(`${resp.message}`);
@@ -195,7 +197,7 @@ export async function addPollingLine(params: AddPollingLineParams) {
 }
 
 export async function deletePollingLine(params: DeletePollingLineParams) {
-  const resp = await request.delete(MAP_MANAGER_POLLING_LINE_DELETE, { data: format(params) });
+  const resp = await request.get(MAP_MANAGER_POLLING_LINE_DELETE, { params: params });
   resp.success === true && resp.code === 200
     ? message.success(`${resp.message}`)
     : message.error(`${resp.message}`);
@@ -203,7 +205,7 @@ export async function deletePollingLine(params: DeletePollingLineParams) {
 }
 
 export async function updatePollingLine(params: UpdatePollingLineParams) {
-  const resp = await request.post(MAP_MANAGER_POLLING_LINE_UPDATE, { data: params });
+  const resp = await request.post(MAP_MANAGER_POLLING_LINE_UPDATE, { data: format(params) });
   resp.success === true && resp.code === 200
     ? message.success(`${resp.message}`)
     : message.error(`${resp.message}`);
@@ -212,5 +214,12 @@ export async function updatePollingLine(params: UpdatePollingLineParams) {
 
 export async function getPollingLineDetail(params: GetPollingLineDetailParams) {
   const resp = await request.get(MAP_MANAGER_POLLING_LINE_DETAIL, { params: params });
+  return resp;
+}
+/**
+ * 获取所有告警类型
+ */
+export async function getAllWarningType() {
+  const resp = await request.get(GET_SUPER_ADMIN_LIST, { params: { type: 'alarmType' } });
   return resp;
 }
