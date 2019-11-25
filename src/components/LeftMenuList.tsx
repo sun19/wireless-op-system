@@ -16,12 +16,11 @@ class LeftMenuList extends Component<any> {
   constructor(props) {
     super(props);
     this.state = {
-      openKeys: ['设置'],
+      // openKeys: ['设置'],
     };
   }
   handleClick = value => {
-    // console.log(value)
-    // this.setState({ openKeys: [value.keyPath[1]]})
+    // console.log(value, 'value');
     this.props.dispatch({
       type: 'menu/clickMenuItem',
       payload: {
@@ -44,6 +43,7 @@ class LeftMenuList extends Component<any> {
     const { router, menus } = this.props;
     //根据路由匹配菜单状态
     const pathname = router.location.pathname;
+
     const result = this.matchCurrentRouter(menus, pathname);
     this.props.dispatch({
       type: 'menu/changeOpen',
@@ -53,8 +53,8 @@ class LeftMenuList extends Component<any> {
     });
   }
   matchCurrentRouter = (menus, pathname) => {
-    let current = '';
-    let openKeys = [];
+    let { current = '', openKeys = [] } = this.props;
+
     for (let i = 0, len = menus.length; i < len; i++) {
       const menu = menus[i];
       if (menu.path === pathname) {
@@ -102,9 +102,10 @@ class LeftMenuList extends Component<any> {
           {leftMenuItem.children && leftMenuItem.children.length > 0
             ? leftMenuItem.children.map(item => {
                 item.children && leftMenuItem.children.length > 0;
+                // console.log(item.children, 'item.children');
                 if (item.children && item.children.length > 0) {
                   return (
-                    <Menu.ItemGroup key={item.name} title={item.name}>
+                    <Menu.ItemGroup key={item.name} title={`${item.name}  `}>
                       {item.children.map(child => {
                         return (
                           <Menu.Item key={child.name}>
@@ -134,7 +135,6 @@ class LeftMenuList extends Component<any> {
 
   render() {
     const { rootKeys, current, openKeys } = this.props;
-    // console.log(current, openKeys, rootKeys)
     const LeftMenu = this.renderLeftMenu();
     return (
       <Menu
