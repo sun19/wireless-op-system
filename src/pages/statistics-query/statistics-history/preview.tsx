@@ -13,11 +13,10 @@ import styles from './index.less';
 const { TextArea } = Input;
 const { Option } = Select;
 
-interface FormProps extends FormComponentProps { }
+interface FormProps extends FormComponentProps {}
 
 type StateProps = ReturnType<typeof mapState>;
 type Props = StateProps & UmiComponentProps & FormProps;
-
 
 // const UserAuth: React.FC<Props> = (props: Props) => {
 class historyAdd extends React.Component<Props> {
@@ -32,6 +31,7 @@ class historyAdd extends React.Component<Props> {
   render() {
     const props = this.props;
     const { getFieldDecorator } = props.form;
+    const { historyRecord } = this.props;
     return (
       <ContentBorder className={styles.auth_root}>
         <Form layout="inline" labelAlign="right" style={{ marginTop: '0.57rem' }}>
@@ -40,31 +40,22 @@ class historyAdd extends React.Component<Props> {
               <Row type="flex" justify="space-between">
                 <Col span={24}>
                   <Form.Item label="信息牌">
-                    {getFieldDecorator('信息牌', {
-                      rules: [
-                        {
-                          message: '请输入信息牌',
-                        },
-                      ],
-                    })(<Input placeholder="请输入信息牌" />)}
+                    {getFieldDecorator('informationBoardName', {
+                      rules: [],
+                      initialValue: historyRecord.informationBoardName,
+                    })(<Input placeholder="请输入信息牌" disabled={true} />)}
                   </Form.Item>
-                  <Form.Item label="姓名">
-                    {getFieldDecorator('姓名', {
-                      rules: [
-                        {
-                          message: '请输入姓名',
-                        },
-                      ],
-                    })(<Input placeholder="请输入姓名" />)}
+                  <Form.Item label="当前定位">
+                    {getFieldDecorator('userName', {
+                      rules: [],
+                      initialValue: historyRecord.userName,
+                    })(<Input placeholder="请输入姓名" disabled={true} />)}
                   </Form.Item>
                   <Form.Item label="类型">
-                    {getFieldDecorator('类型', {
-                      rules: [
-                        {
-                          message: '请输入类型',
-                        },
-                      ],
-                    })(<Input placeholder="请输入类型" />)}
+                    {getFieldDecorator('type', {
+                      rules: [],
+                      initialValue: historyRecord.type,
+                    })(<Input placeholder="请输入类型" disabled={true} />)}
                   </Form.Item>
                 </Col>
               </Row>
@@ -85,7 +76,9 @@ class historyAdd extends React.Component<Props> {
                 </Col>
                 <Col span={2} className={styles.select_padding_left}>
                   <Form.Item>
-                    <Button className={styles.form_btn} onClick={this.goBack}>返回</Button>
+                    <Button className={styles.form_btn} onClick={this.goBack}>
+                      返回
+                    </Button>
                   </Form.Item>
                 </Col>
               </Row>
@@ -95,7 +88,7 @@ class historyAdd extends React.Component<Props> {
       </ContentBorder>
     );
   }
-};
+}
 
 const HistoryAdd = Form.create<Props>({ name: 'history_add' })(historyAdd);
 
@@ -104,7 +97,7 @@ const mapState = ({ statisticsQuery }) => {
   // const { allDuties, allSecretLevel } = commonState;
   return {
     history: resp,
-
+    historyRecord: statisticsQuery.historyRecord,
   };
 };
 

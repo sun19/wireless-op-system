@@ -97,21 +97,6 @@ const columns = [
     className: 'select_text',
     editable: true,
   },
-  // {
-  //   title: 'Action',
-  //   key: 'action',
-  //   fixed: 'right',
-  //   width: 100,
-  //   render: (text, record) => (
-  //     <span >
-  //       <IconFont
-  //         type="icon-preview1"
-  //         // onClick={this.props.review.bind(this,record)}
-  //         style={{ marginRight: 8 }}
-  //       />
-  //     </span>
-  //   ),
-  // },
 ];
 
 interface UserType {
@@ -142,24 +127,24 @@ class StatisticsHistory extends React.Component<Props, State> {
       pageNo: 1,
       pageSize: 10,
     };
-    this.deleteColumn = this.deleteColumn.bind(this);
-    this.updateData = this.updateData.bind(this);
+    this.previewData = this.previewData.bind(this);
   }
-  updateData(data, item) {
-    // console.log('ee')
-    router.push('/statistics-query/statistics-history/add');
+  previewData(data, item) {
+    this.props.dispatch({
+      type: 'statisticsQuery/update',
+      payload: {
+        historyRecord: data,
+      },
+    });
+    router.push('/statistics-query/statistics-history/preview');
   }
-  deleteColumn(item) {
-    // console.log('ese')
-    router.push('/statistics-query/statistics-history/add');
-  }
+
   async componentDidMount() {
     this.getAllRole();
     this.getHistoryListData();
     this.props.form.validateFields();
   }
   review = record => {
-    // console.log(record)
     router.push('/statistics-query/statistics-history/add');
   };
   search = e => {
@@ -282,10 +267,10 @@ class StatisticsHistory extends React.Component<Props, State> {
           <MainContent
             data={records}
             columns={columns}
-            updateData={this.updateData}
-            deleteColumn={this.deleteColumn}
             total={total}
             showEdit={false}
+            showLookOver={true}
+            preview={this.previewData}
           />
         </Content>
       </div>
