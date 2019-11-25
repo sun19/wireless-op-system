@@ -95,7 +95,7 @@ class Navigation extends React.Component<Props, State> {
     return (
       <Row>
         <div className={styles.navigation}>
-          <Col span={5} className="left_panel">
+          <Col span={6} className="left_panel">
             <Menu onClick={this.handleClick} selectedKeys={[this.state.current]} mode="horizontal">
               <Menu.Item key="homepage">首页</Menu.Item>
               <Menu.Item key="realtime">实时</Menu.Item>
@@ -112,7 +112,7 @@ class Navigation extends React.Component<Props, State> {
           <Col span={13} className={styles.middle_panel}>
             <div className={styles.title_back} />
           </Col>
-          <Col span={4} className={styles.right_panel}>
+          <Col span={5} className={styles.right_panel}>
             {this.setupTime()}
           </Col>
         </div>

@@ -59,6 +59,5 @@ export async function getInnerOrOuterPeopleCount() {
 //  获取大屏停留时长
 export async function getInnerStayTime() {
   const resp = await request.get(BIG_SCREEN_STAY_TIME);
-  
   return resp;
 }
