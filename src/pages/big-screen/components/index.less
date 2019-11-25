@@ -2,7 +2,6 @@
   min-width: 1200px;
   :global(.ant-menu-horizontal) {
     border-bottom-right-radius: 65px;
-    padding-left: 30px;
     background: #091e52;
     color: #016597;
     border: 0px;
@@ -24,29 +23,37 @@
     margin-top: 25px;
     .year {
       padding: 0px 10px;
-      font-size: 0.15rem;
+      font-size: 0.24rem;
       color: #00a7fe;
     }
     .split {
       color: white;
-      font-weight: 500;
+      // font-weight: 500;
       margin-right: 2px;
     }
     .hours {
+      font-size: 0.24rem;
       margin-left: 2px;
       display: inline-block;
-      width: 0.15rem;
-      height: 0.25rem;
+      width: 0.22rem;
+      height: 0.4rem;
+      line-height:0.4rem;
       color: white;
       font-weight: 500;
       padding: 1px 0px 0px 3px;
       background: no-repeat url(../../../assets/bigScreen/05_time.png);
-      background-size: 0.15rem 0.25rem;
+      background-size: 0.22rem 0.4rem;
       // border: 0.5px solid #00edfd;
     }
   }
 }
-
+ 
+  :global(.left_panel .ant-menu-horizontal > .ant-menu-item-selected) {
+      font-size: 0.2rem;
+    }
+ :global(.left_panel .ant-menu-horizontal > .ant-menu-item){
+      font-size: 0.2rem;
+ }
 .title {
   position: relative;
   padding: 0.12rem 0.1rem;
@@ -60,7 +67,7 @@
       background-repeat: no-repeat;
     }
     .titlename {
-      font-size: 0.15rem;
+      font-size: 0.2rem;
       letter-spacing: 0.02rem;
       margin-left: 0.1rem;
       font-family: Source Han Sans CN;

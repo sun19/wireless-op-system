@@ -12,6 +12,7 @@ import {
   BIG_SCREEN_SECRET_LEVEL_PEOPLE_COUNT,
   BIG_SCREEN_WARN_TYPE_BY_TIME,
   BIG_SCREEN_WARNING_INFO,
+  BIG_SCREEN_STAY_TIME,
 } from '@/config/api';
 import { GetWarnTypeByTimeParams } from './index.interface';
 import { async } from 'q';
@@ -53,5 +54,10 @@ export async function getRealTimePeopleInfo() {
 
 export async function getInnerOrOuterPeopleCount() {
   const resp = await request.get(BIG_SCREEN_INNER_OR_OUTER_POEPLE_COUNT);
+  return resp;
+}
+//  获取大屏停留时长
+export async function getInnerStayTime() {
+  const resp = await request.get(BIG_SCREEN_STAY_TIME);
   return resp;
 }

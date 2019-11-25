@@ -8,7 +8,7 @@ export default class RolePanel extends React.Component {
     return (
       <div className={styles.role_panel_box}>
         <span className={styles.role_panel_box_span}>管理员</span>
-        <Icon type="down" />
+        {/* <Icon type="down" /> */}
       </div>
     );
   }

@@ -6,6 +6,7 @@ import { Row, Col, Icon, Table } from 'antd';
 import ReactEcharts from 'echarts-for-react';
 import request, { format } from '@/utils/request';
 import { connect } from 'dva';
+import moment from 'moment';
 
 import Navigation from '../components/navigation';
 import Title from '../components/Title';
@@ -15,6 +16,7 @@ import {
   getSecretLevelPeopleCount,
   getInnerOrOuterPeopleCount,
   getWarnTypeByTime,
+  getInnerStayTime
 } from '../services';
 
 import styles from './index.less';
@@ -79,10 +81,18 @@ class DataView extends Component<any, State> {
     });
     const warningType = await getWarnTypeByTime({ dataStr: this.state.dataStr });
     this.props.dispatch({
-      type: 'bigScreen/update',
+      type: 'bigScreen/update', 
       payload: {
         warningTypeInfo: warningType.result,
       },
+    });
+    //获取大屏停留时长
+    const stayTime = await getInnerStayTime()
+    this.props.dispatch({
+      type: 'bigScreen/update',
+      payload: {
+        stayTimeInfo: stayTime,
+      }
     });
   }
 
@@ -91,15 +101,15 @@ class DataView extends Component<any, State> {
     positionPeopleCount = positionPeopleCount;
     if (positionPeopleCount.length === 0) return null;
     var dataStyle = {
-      normal: {
-        label: {
-          show: true,
-          position: 'inside',
+    
+        normal: {
+          label: {
+            show: false,
+          },
+          labelLine: {
+            show: false,
+          },
         },
-        labelLine: {
-          show: false,
-        },
-      },
     };
     var placeHolderStyle = {
       normal: {
@@ -193,14 +203,22 @@ class DataView extends Component<any, State> {
     return <ReactEcharts option={option} style={{ height: '100%', width: '100%' }} />;
   };
 
+  // 停留时长分析
   createStayTimeAnalyzeGraph = () => {
+    const { stayTimeInfo } = this.props;
+    if (stayTimeInfo.length === 0) return null;
+    const dataFormat = stayTimeInfo.map((item) => (
+      {
+        value: item.num,
+        name: item.name,
+      }))
+    const dataEg = stayTimeInfo.map((item) => (item.name))
     const option = {
-      backgroundColor: '#0B1837',
       color: ['#EAEA26', '#906BF9', '#FE5656', '#01E17E', '#3DD1F9', '#FFAD05'],
 
       grid: {
-        left: -100,
-        top: 50,
+        left: 0,
+        top: 20,
         bottom: 10,
         right: 10,
         containLabel: true,
@@ -221,7 +239,7 @@ class DataView extends Component<any, State> {
           fontSize: 12,
           fontWeight: 0,
         },
-        data: ['<=1h', '1~2h', '2~3h', '3~4h'],
+        data: dataEg,
       },
       polar: {},
       angleAxis: {
@@ -275,65 +293,11 @@ class DataView extends Component<any, State> {
       calculable: true,
       series: [
         {
-          type: 'pie',
-          radius: ['5%', '10%'],
-          hoverAnimation: false,
-          labelLine: {
-            show: false,
-            normal: {
-              show: false,
-              length: 30,
-              length2: 55,
-            },
-            emphasis: {
-              show: false,
-            },
-          },
-          data: [
-            {
-              name: '',
-              value: 0,
-              itemStyle: {
-                normal: {
-                  color: '#0B4A6B',
-                },
-              },
-            },
-          ],
-        },
-        {
-          type: 'pie',
-          radius: ['90%', '95%'],
-          hoverAnimation: false,
-          labelLine: {
-            normal: {
-              show: false,
-              length: 30,
-              length2: 55,
-            },
-            emphasis: {
-              show: false,
-            },
-          },
-          name: '',
-          data: [
-            {
-              name: '',
-              value: 0,
-              itemStyle: {
-                normal: {
-                  color: '#0B4A6B',
-                },
-              },
-            },
-          ],
-        },
-        {
           stack: 'a',
           type: 'pie',
           radius: ['20%', '80%'],
           roseType: 'area',
-          zlevel: 10,
+          zlevel: 5,
           label: {
             normal: {
               show: false,
@@ -341,40 +305,22 @@ class DataView extends Component<any, State> {
               textStyle: {
                 fontSize: 12,
               },
-              position: 'outside',
-            },
-            emphasis: {
-              show: true,
-            },
-          },
-          labelLine: {
-            normal: {
-              show: true,
-              length: 20,
-              length2: 55,
             },
             emphasis: {
               show: false,
             },
           },
-          data: [
-            {
-              value: 10,
-              name: '<=1h',
+          labelLine: {
+            normal: {
+              show: false,
+              length: 20,
+              length2: 35,
             },
-            {
-              value: 5,
-              name: '1~2h',
+            emphasis: {
+              show: false,
             },
-            {
-              value: 15,
-              name: '2~3h',
-            },
-            {
-              value: 25,
-              name: '3~4h',
-            },
-          ],
+          },
+          data: dataFormat
         },
       ],
     };
@@ -623,11 +569,13 @@ class DataView extends Component<any, State> {
   };
   createSecretLevel = () => {
     let { secretLevelPeopleCount = [] } = this.props;
+
     const allSecretLevel = secretLevelPeopleCount.reduce((prev, next) => {
       return prev + Number(next.num);
     }, 0);
+
     const setupSecretLevels = secretLevelPeopleCount.map(item => {
-      return { ...item, percent: (+item.num / allSecretLevel) * 100 };
+      return { ...item, percent: Math.ceil((+item.num / allSecretLevel).toFixed(1) * 100 )};
     });
     var valdata = secretLevelPeopleCount.map(item => +item.num);
     var titlename = secretLevelPeopleCount.map(item => item.securityLevel);
@@ -728,12 +676,18 @@ class DataView extends Component<any, State> {
         dataIndex: 'inspectionTime',
         editable: true,
         ellipsis: true,
+        render:(item)=>{
+         return moment(item).format('MM-DD HH:mm')
+        }
       },
       {
         title: '结束时间',
         dataIndex: 'endTime',
         editable: true,
         ellipsis: true,
+        render: (item) => {
+          return moment(item).format('MM-DD HH:mm')
+        }
       },
       {
         title: '巡检人员',
