@@ -6,3 +6,7 @@ export interface SatisticsHistory {
   pageNo?: number;
   pageSize?: number;
 }
+
+export interface GetHistoryDetailParams {
+  boardNumber: string;
+}

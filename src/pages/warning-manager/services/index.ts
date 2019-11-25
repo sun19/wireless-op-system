@@ -45,7 +45,7 @@ export async function wraningTypeAdd(data: WraningTypeAdd) {
 
 export async function wraningTypeEdit(data: WraningTypeEdit) {
   const resp = await request.post(WARNING_TYPE_EDIT, {
-    data,
+    data: format(data),
   });
   return resp.result;
 }

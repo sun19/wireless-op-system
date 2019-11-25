@@ -18,7 +18,7 @@ import publicStyles from '../index.less';
 import moment from 'moment';
 
 const { Content } = Layout;
- const { Option } = Select;
+const { Option } = Select;
 const FormItem = Form.Item;
 const dateFormat = 'YYYY/MM/DD';
 const monthFormat = 'YYYY/MM';
@@ -59,11 +59,9 @@ const columns = [
         <div>
           {record.whether == '1' ? (
             <IconFont type="icon-correct" />
-
           ) : (
-              <IconFont type="icon-error" />
-
-            )}
+            <IconFont type="icon-error" />
+          )}
         </div>
       );
     },
@@ -100,13 +98,13 @@ class RouteInspectList extends React.Component<Props> {
   onSearch = e => {
     e.preventDefault();
     this.props.form.validateFields(async (err, values) => {
-      const { startTime, endTime, ...props } = values
+      const { startTime, endTime, ...props } = values;
       const data = {
         ...props,
-        startTime: values.startTime?values.startTime.format('YYYY-MM-DD HH:mm:ss'):'',
+        startTime: values.startTime ? values.startTime.format('YYYY-MM-DD HH:mm:ss') : '',
 
-        endTime: values.endTime ? values.endTime.format('YYYY-MM-DD HH:mm:ss') : ''
-      }
+        endTime: values.endTime ? values.endTime.format('YYYY-MM-DD HH:mm:ss') : '',
+      };
 
       this.getRouteInspectList(data);
     });
@@ -147,26 +145,32 @@ class RouteInspectList extends React.Component<Props> {
                 gutter={16}
               >
                 <FormItem label="巡检路线">
-                  {getFieldDecorator('inspectionRoute', {})(
-                    <Input className={publicStyles.input_text} placeholder="请输入巡检路线" />,
-                  )}
+                  {getFieldDecorator(
+                    'inspectionRoute',
+                    {},
+                  )(<Input className={publicStyles.input_text} placeholder="请输入巡检路线" />)}
                 </FormItem>
                 <FormItem label="巡检人员">
-                  {getFieldDecorator('createId', {})(
-                    <Input className={publicStyles.input_text} placeholder="请输入巡检人员" />,
-                  )}
+                  {getFieldDecorator(
+                    'createId',
+                    {},
+                  )(<Input className={publicStyles.input_text} placeholder="请输入巡检人员" />)}
                 </FormItem>
                 <FormItem label="开始时间">
-                  {getFieldDecorator('startTime', {
-                  })(
-                    <DatePicker showTime={true} placeholder="请选择开始时间" />,
-                  )}
+                  {getFieldDecorator(
+                    'startTime',
+                    {},
+                  )(<DatePicker showTime={true} placeholder="请选择开始时间" />)}
                 </FormItem>
                 <FormItem label="结束时间">
                   {getFieldDecorator('endTime', {
                     // initialValue: moment('12:08:23', 'HH:mm:ss'),
                   })(
-                    <DatePicker showTime={true} format="YYYY-MM-DD HH:mm:ss" placeholder="请选择结束时间" />,
+                    <DatePicker
+                      showTime={true}
+                      format="YYYY-MM-DD HH:mm:ss"
+                      placeholder="请选择结束时间"
+                    />,
                   )}
                 </FormItem>
                 <span className={publicStyles.button_type}>

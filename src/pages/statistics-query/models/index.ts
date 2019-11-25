@@ -4,7 +4,8 @@ export default {
     type: {},
     info: {},
     history: {},
-    roles:[]
+    historyRecord: {},
+    roles: [],
   },
   reducers: {
     update(state, { payload }) {

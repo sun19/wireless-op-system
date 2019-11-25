@@ -24,7 +24,7 @@ const IconFont = Icon.createFromIconfontCN({
   scriptUrl: ICON_FONTS_URL,
 });
 
-interface FormProps extends FormComponentProps { }
+interface FormProps extends FormComponentProps {}
 type StateProps = ReturnType<typeof mapState>;
 type Props = StateProps & UmiComponentProps & FormProps;
 const columns = [
@@ -116,19 +116,26 @@ class WraningType extends React.Component<Props, State> {
     });
   }
   async updateData(data, item) {
-    const resp = await warningTypeSearch(item);
-    if (resp) {
-      this.props.dispatch({
-        type: 'warningManager/update',
-        payload: { type: { records: data } },
-      });
-    }
+    // const resp = await warningTypeSearch(item);
+    // if (resp) {
+    //   this.props.dispatch({
+    //     type: 'warningManager/update',
+    //     payload: { type: { records: data } },
+    //   });
+    // }
+    this.props.dispatch({
+      type: 'warningManager/update',
+      payload: {
+        typeRecord: data,
+      },
+    });
+    router.push('/warning-manager/type/edit');
   }
   // 删除
   deleteColumn(item: WraningTypeDel) {
     //TODO:修改人ID
 
-    let self = this
+    let self = this;
     confirm({
       title: '确定要删除这条信息吗？',
       content: '',
@@ -140,10 +147,8 @@ class WraningType extends React.Component<Props, State> {
         //重新请求数据重绘
         self.getwarningTypeList();
       },
-      onCancel() {
-      },
-    })
-
+      onCancel() {},
+    });
   }
   addUser = () => {
     router.push('/warning-manager/type/add');
