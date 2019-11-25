@@ -8,6 +8,7 @@ import ReactEcharts from 'echarts-for-react';
 import { Stage, Layer, Image as ImageLayer, Line as LineLayer } from 'react-konva';
 import { connect } from 'dva';
 import * as _ from 'lodash';
+import moment from 'moment';
 
 import Title from '../components/Title';
 import Navigation from '../components/navigation';
@@ -21,6 +22,7 @@ import {
   getRoutingData,
   getSecretLevelPeopleCount,
   getWarnTypeByTime,
+  getInnerStayTime,
 } from '../services';
 import { warningHistorySearch } from '../../warning-manager/services';
 import { queryFencingArea } from '../../map-manager/services';
@@ -166,6 +168,15 @@ class DataView extends React.Component<Props, State> {
         eleTypeInfo: eleType.result,
       }
     });
+    //获取大屏停留时长
+    const stayTime = await getInnerStayTime()
+    // console.log(stayTime)
+    this.props.dispatch({
+      type: 'bigScreen/update',
+      payload: {
+        stayTimeInfo: stayTime,
+      }
+    });
   };
 
 
@@ -248,7 +259,7 @@ class DataView extends React.Component<Props, State> {
     return new Promise(resolve => {
       const mapImage = new Image();
       mapImage.src = require('../assets/map.png');
-      mapImage.onload = function() {
+      mapImage.onload = function () {
         resolve(mapImage);
       };
     });
@@ -257,7 +268,7 @@ class DataView extends React.Component<Props, State> {
     return new Promise(resolve => {
       const mapImage = new Image();
       mapImage.src = require('../assets/baoan.png');
-      mapImage.onload = function() {
+      mapImage.onload = function () {
         resolve(mapImage);
       };
     });
@@ -266,7 +277,7 @@ class DataView extends React.Component<Props, State> {
     return new Promise(resolve => {
       const mapImage = new Image();
       mapImage.src = require('../assets/baoan.red.png');
-      mapImage.onload = function() {
+      mapImage.onload = function () {
         resolve(mapImage);
       };
     });
@@ -302,22 +313,22 @@ class DataView extends React.Component<Props, State> {
     const data = records.map((item, index) => {
       const type = _.find(eleTypeInfo, { id: item.type })
       return (
-      < div className="flex_outer" key={index}>
-        <div className="ele_title_top">
-          <div className="ele_title">{item.name}</div>
-          <div className="ele_title"> {type && type.name ? type.name : '闯入电子围栏'}</div>
-        </div>
-        <div className="ele_bag" >
+        < div className="flex_outer" key={index}>
+          <div className="ele_title_top">
+            <div className="ele_title">{item.name}</div>
+            <div className="ele_title"> {type && type.name ? type.name : '闯入电子围栏'}</div>
+          </div>
+          <div className="ele_bag" >
             {
-         !!item.lampCode?
-         (   item.lampCode.split(',').map((num,index) => {
-            return (
-              <span key={index} className="ele_bag_round">{num}</span>
-            )
-          })):''
-          }
-        </div>
-      </div >)
+              !!item.lampCode ?
+                (item.lampCode.split(',').map((num, index) => {
+                  return (
+                    <span key={index} className="ele_bag_round">{num}</span>
+                  )
+                })) : ''
+            }
+          </div>
+        </div >)
 
     })
     return data
@@ -428,13 +439,22 @@ class DataView extends React.Component<Props, State> {
     };
     return <ReactEcharts option={option} style={{ height: '100%', width: '100%' }} />;
   };
+  // 停留时长分析
   createStayTimeAnalyzeGraph = () => {
+    const { stayTimeInfo } = this.props;
+    if (stayTimeInfo.length === 0) return null;
+    const dataFormat = stayTimeInfo.map((item) => (
+      {
+        value: item.num,
+        name: item.name,
+      }))
+    const dataEg = stayTimeInfo.map((item) => (item.name))
     const option = {
       color: ['#EAEA26', '#906BF9', '#FE5656', '#01E17E', '#3DD1F9', '#FFAD05'],
 
       grid: {
-        left: -100,
-        top: 50,
+        left: 0,
+        top: 20,
         bottom: 10,
         right: 10,
         containLabel: true,
@@ -445,8 +465,8 @@ class DataView extends React.Component<Props, State> {
       },
       legend: {
         orient: 'horizontal',
-        // bottom: '0',
-        // left: '0',
+        bottom: '0',
+        left: '0',
         itemWidth: 16,
         itemHeight: 8,
         itemGap: 16,
@@ -455,7 +475,7 @@ class DataView extends React.Component<Props, State> {
           fontSize: 12,
           fontWeight: 0,
         },
-        data: ['<=1h', '1~2h', '2~3h', '3~4h'],
+        data: dataEg,
       },
       polar: {},
       angleAxis: {
@@ -509,65 +529,11 @@ class DataView extends React.Component<Props, State> {
       calculable: true,
       series: [
         {
-          type: 'pie',
-          radius: ['5%', '10%'],
-          hoverAnimation: false,
-          labelLine: {
-            show: false,
-            normal: {
-              show: false,
-              length: 30,
-              length2: 55,
-            },
-            emphasis: {
-              show: false,
-            },
-          },
-          data: [
-            {
-              name: '',
-              value: 0,
-              itemStyle: {
-                normal: {
-                  color: '#0B4A6B',
-                },
-              },
-            },
-          ],
-        },
-        {
-          type: 'pie',
-          radius: ['90%', '95%'],
-          hoverAnimation: false,
-          labelLine: {
-            normal: {
-              show: false,
-              length: 30,
-              length2: 55,
-            },
-            emphasis: {
-              show: false,
-            },
-          },
-          name: '',
-          data: [
-            {
-              name: '',
-              value: 0,
-              itemStyle: {
-                normal: {
-                  color: '#0B4A6B',
-                },
-              },
-            },
-          ],
-        },
-        {
           stack: 'a',
           type: 'pie',
           radius: ['20%', '80%'],
           roseType: 'area',
-          zlevel: 10,
+          zlevel: 5,
           label: {
             normal: {
               show: false,
@@ -575,40 +541,22 @@ class DataView extends React.Component<Props, State> {
               textStyle: {
                 fontSize: 12,
               },
-              position: 'outside',
-            },
-            emphasis: {
-              show: true,
-            },
-          },
-          labelLine: {
-            normal: {
-              show: true,
-              length: 20,
-              length2: 55,
             },
             emphasis: {
               show: false,
             },
           },
-          data: [
-            {
-              value: 10,
-              name: '<=1h',
+          labelLine: {
+            normal: {
+              show: false,
+              length: 20,
+              length2: 35,
             },
-            {
-              value: 5,
-              name: '1~2h',
+            emphasis: {
+              show: false,
             },
-            {
-              value: 15,
-              name: '2~3h',
-            },
-            {
-              value: 25,
-              name: '3~4h',
-            },
-          ],
+          },
+          data: dataFormat
         },
       ],
     };
@@ -731,17 +679,18 @@ class DataView extends React.Component<Props, State> {
         dataIndex: 'warnName',
         editable: true,
         ellipsis: true,
-    className:'select_text',
+        className: 'select_text',
 
         render: (name, record) => {
+          // console.log(record)
           return (
             <div>
               <span>{name}</span>
               {record.processResult == '1' ? (
                 <span className={styles.notResolved}>未处理</span>
               ) : (
-                <span className={styles.resolveed}>已处理</span>
-              )}
+                  <span className={styles.resolveed}>已处理</span>
+                )}
             </div>
           );
         },
@@ -751,6 +700,9 @@ class DataView extends React.Component<Props, State> {
         dataIndex: 'processTime',
         editable: true,
         ellipsis: true,
+        render: (item) => {
+          return item? moment(item).format('MM-DD HH:mm'):'/'
+        }
       },
     ];
     let historyWarns = this.props.historyWarns;
@@ -788,23 +740,29 @@ class DataView extends React.Component<Props, State> {
     onlinePeople = _.padStart(onlinePeople, 5, '0');
     return (
       <div className="top">
-        <div className="title">当前在线人数</div>
-        <div className="number">
-          {_.map(_.split(`${onlinePeople}`, ''), item => (
-            <span>{item}</span>
-          ))}
-        </div>
-        <div className="today-data">
-          <span className="icon" />
+        <div className='statics'>
+          <div className="people_type_title">
+            <span className="icon" />
+            <span className="titlename">流量统计</span>
+          </div>
+          <div className="title">当前在线人数</div>
+          <div className="number">
+            {_.map(_.split(`${onlinePeople}`, ''), item => (
+              <span>{item}</span>
+            ))}
+          </div>
+          <div className="today-data">
+            <span className="icon" />
 
-          <span className="data-title">今日最高值</span>
-          <span className="data-number">{toHigh}</span>
-        </div>
-        <div className="yesterday-data">
-          <span className="icon" />
+            <span className="data-title">今日最高值</span>
+            <span className="data-number">{toHigh}</span>
+          </div>
+          <div className="yesterday-data">
+            <span className="icon" />
 
-          <span className="data-title">昨日最高值</span>
-          <span className="data-number">{yesHigh}</span>
+            <span className="data-title">昨日最高值</span>
+            <span className="data-number">{yesHigh}</span>
+          </div>
         </div>
         <div className="people_type">
           <div className="people_type_title">
@@ -934,17 +892,17 @@ class DataView extends React.Component<Props, State> {
                           <Title title="电子围栏" />
                         </div>
                         <div className="ele_from"> {this.getEleFrom()} </div>
-              </div>
-                  </div>
-
-                  <div className="right_wraning_panel">
-                    <div className="ele_text">
-                      <Title title="告警信息" />
+                      </div>
                     </div>
-                    <div className="ele_from">{this.createRouteCheckData()}</div>
+
+                    <div className="right_wraning_panel">
+                      <div className="ele_text">
+                        <Title title="告警信息" />
+                      </div>
+                      <div className="ele_from">{this.createRouteCheckData()}</div>
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
             </Col>
             }
           </Row>

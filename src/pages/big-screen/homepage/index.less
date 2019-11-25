@@ -27,6 +27,27 @@
         // background: pink;
         padding: 0.05rem;
         .top {
+            padding-top: 20px;
+            .statics{
+              padding:10px;
+           background: center / contain no-repeat url(../../../assets/bigScreen/08_bg-weilan.png);
+          background-size: 100% 100%;
+            .people_type_title {
+              padding: 0.08rem 0px;
+              font-size: 0.25rem;
+              color: white;
+              .icon {
+                display: inline-block;
+                width: 0.17rem;
+                margin-top: 7px;
+                position: absolute;
+                height: 0.17rem;
+                background: center / contain no-repeat url(../assets/09_circle.png);
+              }
+              span.titlename {
+                margin-left: 0.2rem;
+              }
+            }
           .people-type {
             padding: 10px 0;
             font-size: 0.18rem;
@@ -39,7 +60,7 @@
               margin-top: 7px;
               position: absolute;
               height: 0.17rem;
-              background: no-repeat url(../assets/09_circle.png);
+              background: center / contain no-repeat url(../assets/09_circle.png);
             }
             span.titlename {
               margin-left: 0.2rem;
@@ -74,12 +95,12 @@
           }
           .today-data {
             .icon {
-              background: no-repeat url(../assets/12_today.png);
+              background: center / contain no-repeat url(../assets/12_today.png);
             }
           }
           .yesterday-data {
             .icon {
-              background: no-repeat url(../assets/13_yesterday.png);
+              background:center / contain no-repeat url(../assets/13_yesterday.png);
             }
           }
           .today-data,
@@ -98,23 +119,30 @@
             }
             .data-title {
               margin-left: 0.5rem;
-              font-size: 0.2rem;
+              font-size: 0.23rem;
               font-weight: 400;
               color: rgba(56, 142, 215, 1);
             }
             .data-number {
               margin-left: 0.3rem;
-              font-size: 0.37rem;
+              font-size: 0.38rem;
               font-family: Source Han Sans CN;
               font-weight: 800;
               color: rgba(1, 216, 255, 1);
             }
           }
+           }
+             .people-secret,.people_type  {
+            // font-size: 0.17rem;
+            margin-top: 10px;
+                 padding:10px;
+           background: center / contain no-repeat url(../../../assets/bigScreen/08_bg-weilan.png);
+          background-size: 100% 100%;
+           }
           .people_type {
-            padding-top: 20px;
             .people_type_title {
               padding: 0.08rem 0px;
-              font-size: 0.18rem;
+              font-size: 0.25rem;
               color: white;
               .icon {
                 display: inline-block;
@@ -122,23 +150,25 @@
                 margin-top: 7px;
                 position: absolute;
                 height: 0.17rem;
-                background: no-repeat url(../assets/09_circle.png);
+                background: center / contain no-repeat url(../assets/09_circle.png);
               }
               span.titlename {
+                color:white;
                 margin-left: 0.2rem;
               }
             }
+         
             .inner_or_outer {
-              font-size: 0.13rem;
+              font-size: 0.25rem;
               color: #01d8ff;
               .number_span {
-                font-size: 0.18rem;
+                font-size: 0.25rem;
                 font-weight: 600;
                 padding: 0px 4px;
               }
               .icon {
                 border-radius: 2px;
-                font-size: 0.09rem;
+                font-size: 0.12rem;
                 color: white;
                 text-align: center;
                 line-height: 0.15rem;
@@ -181,10 +211,20 @@
             }
           }
           .people-secret {
-            font-size: 0.15rem;
-            padding-top: 20px;
             .people-type {
-              font-size: 0.18rem;
+              font-size: 0.25rem;
+                .icon {
+                display: inline-block;
+                width: 0.17rem;
+                margin-top: 7px;
+                position: absolute;
+                height: 0.17rem;
+                background: center / contain no-repeat url(../assets/09_circle.png);
+              }
+              span.titlename {
+                color:white;
+                margin-left: 0.2rem;
+              }
             }
             .people_progress {
               padding: 0.08rem 0px;
@@ -229,7 +269,7 @@
         height: 100%;
         .middle_text {
           color: #7ab2e2;
-          font-size: 0.18rem;
+          font-size: 0.25rem;
           position: relative;
           // position:absolute;
           float: right;
@@ -286,7 +326,7 @@
         .right_wraning_panel {
           width: 100%;
           height: 3.5rem;
-          background: no-repeat url(../../../assets/bigScreen/08_bg-weilan.png);
+          background: center / contain no-repeat url(../../../assets/bigScreen/08_bg-weilan.png);
           background-size: 100% 3.5rem;
           margin-bottom: 10px;
           // border: 2px solid #234798;
@@ -295,7 +335,7 @@
           // box-shadow: 0px 0px 40px 0px rgba(12, 21, 48, 0.3);
           // border-radius: 8px;
           .ele_text {
-            font-size: 18px;
+            font-size: 19px;
             color: white;
             // padding:0.1rem 0.1rem !important;
           }
@@ -326,7 +366,7 @@
                   padding-top: 5px;
                   .ele_title {
                     padding-left: 5px;
-                    font-size: 0.1rem;
+                    font-size: 0.13rem;
                     font-weight: 400px;
                   }
                 }
@@ -347,7 +387,7 @@ align-items:center;
                     display: inline-block;
     line-height: 17px;
     height: 0.19rem;
-    font-size: 0.1rem;
+    font-size: 0.13rem;
     text-align: center;
     padding: 0px 1px;
     margin: 2px 4px;
@@ -406,7 +446,7 @@ align-items:center;
 
 .notResolved {
   background: rgba(240, 108, 34, 1);
-  font-size: 12px;
+  font-size: 14px;
   border-radius: 0.04rem;
   color: rgba(222, 240, 255, 1);
   padding: 0.02rem 0.04rem;
@@ -414,7 +454,7 @@ align-items:center;
 
 .resolveed {
   background: rgba(2, 217, 106, 1);
-  font-size: 12px;
+  font-size: 14px;
   border-radius: 0.04rem;
   color: rgba(222, 240, 255, 1);
   padding: 0.02rem 0.04rem;

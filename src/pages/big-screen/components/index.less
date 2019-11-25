@@ -2,7 +2,6 @@
   min-width: 1200px;
   :global(.ant-menu-horizontal) {
     border-bottom-right-radius: 65px;
-    padding-left: 30px;
     background: #091e52;
     color: #016597;
     border: 0px;
@@ -46,7 +45,13 @@
     }
   }
 }
-
+ 
+  :global(.left_panel .ant-menu-horizontal > .ant-menu-item-selected) {
+      font-size: 0.2rem;
+    }
+ :global(.left_panel .ant-menu-horizontal > .ant-menu-item,){
+      font-size: 0.19rem;
+ }
 .title {
   position: relative;
   padding: 0.12rem 0.1rem;
@@ -60,7 +65,7 @@
       background-repeat: no-repeat;
     }
     .titlename {
-      font-size: 0.15rem;
+      font-size: 0.2rem;
       letter-spacing: 0.02rem;
       margin-left: 0.1rem;
       font-family: Source Han Sans CN;

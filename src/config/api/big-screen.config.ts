@@ -51,3 +51,6 @@ export const BIG_SCREEN_REAL_TIME_PEOPLE_INFO =
  */
 export const BIG_SCREEN_INNER_OR_OUTER_POEPLE_COUNT =
   'http://47.96.112.31:8086/jeecg-boot/intf/location/listInnerOut';
+//  获取大屏停留时长
+export const BIG_SCREEN_STAY_TIME =
+  ' http://47.96.112.31:8086/jeecg-boot/intf/location/getStayTime';
