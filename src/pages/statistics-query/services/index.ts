@@ -4,11 +4,10 @@ import { message } from 'antd';
 import {
   // 历史轨迹
   GET_STATISTICS_HISTORY_LIST,
-  GET_ALL_ROLES
+  GET_ALL_ROLES,
+  GET_HISTORY_DETAIL,
 } from '@/config/api';
-import {
-  SatisticsHistory
-} from './index.interfaces';
+import { SatisticsHistory, GetHistoryDetailParams } from './index.interfaces';
 
 /************************************类型******************************** */
 
@@ -18,9 +17,14 @@ export async function getSatisticsHistory(params: SatisticsHistory) {
   return resp.result;
 }
 
-// 
+//
 export async function getAllRoles() {
   const resp = await request.get(GET_ALL_ROLES);
   // console.log(resp)
+  return resp;
+}
+
+export async function getHistoryDetail(params: GetHistoryDetailParams) {
+  const resp = await request.get(GET_HISTORY_DETAIL, { params });
   return resp;
 }
