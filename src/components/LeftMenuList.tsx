@@ -13,11 +13,11 @@ const IconFont = Icon.createFromIconfontCN({
 });
 
 class LeftMenuList extends Component<any> {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       openKeys: ['设置'],
-    }
+    };
   }
   handleClick = value => {
     // console.log(value)
@@ -80,18 +80,18 @@ class LeftMenuList extends Component<any> {
   };
 
   renderLeftMenu = () => {
-    const { menus, rootKeys,openKeys } = this.props;
-    return menus.map((leftMenuItem,index) => {
+    const { menus, rootKeys, openKeys } = this.props;
+    return menus.map((leftMenuItem, index) => {
       return (
         <SubMenu
           key={leftMenuItem.name}
           className={[`${styles.no_background}`, `${styles.sub_menu_list}`].join(' ')}
           title={
             <span>
-              <IconFont
-                type={leftMenuItem.icon}
-              />
-              <span className={`${styles.icon_title}`}>{leftMenuItem.name} {rootKeys[index] == leftMenuItem.name}</span>
+              <IconFont type={leftMenuItem.icon} />
+              <span className={`${styles.icon_title}`}>
+                {leftMenuItem.name} {rootKeys[index] == leftMenuItem.name}
+              </span>
               <IconFont
                 className={`${styles.icon_down}`}
                 type={openKeys == leftMenuItem.name ? 'icon-down1' : 'icon-up1'}
@@ -101,30 +101,30 @@ class LeftMenuList extends Component<any> {
         >
           {leftMenuItem.children && leftMenuItem.children.length > 0
             ? leftMenuItem.children.map(item => {
-              item.children && leftMenuItem.children.length > 0
-              if (item.children && item.children.length > 0){
-                return (
-                  <Menu.ItemGroup key={item.name} title={item.name}>
-                {item.children.map(child=>{
-                  return(
-                      <Menu.Item key={child.name}>
-                        <Link className={`${styles.menu_item}`} to={child.path}>
-                          {child.name}
-                        </Link>
-                      </Menu.Item>
-                  ) } 
-                    )}
-                     </Menu.ItemGroup>
-                );
-              }else{
-                return (
-                  <Menu.Item key={item.name}>
-                    <Link className={`${styles.menu_item}`} to={item.path}>
-                      {item.name}
-                    </Link>
-                  </Menu.Item>
-                );
-              }
+                item.children && leftMenuItem.children.length > 0;
+                if (item.children && item.children.length > 0) {
+                  return (
+                    <Menu.ItemGroup key={item.name} title={item.name}>
+                      {item.children.map(child => {
+                        return (
+                          <Menu.Item key={child.name}>
+                            <Link className={`${styles.menu_item}`} to={child.path}>
+                              {child.name}
+                            </Link>
+                          </Menu.Item>
+                        );
+                      })}
+                    </Menu.ItemGroup>
+                  );
+                } else {
+                  return (
+                    <Menu.Item key={item.name}>
+                      <Link className={`${styles.menu_item}`} to={item.path}>
+                        {item.name}
+                      </Link>
+                    </Menu.Item>
+                  );
+                }
               })
             : ''}
         </SubMenu>
@@ -139,7 +139,7 @@ class LeftMenuList extends Component<any> {
     return (
       <Menu
         mode="inline"
-        defaultOpenKeys={[openKeys[0] ? openKeys[0]:rootKeys[0]]}
+        defaultOpenKeys={[openKeys[0] ? openKeys[0] : rootKeys[0]]}
         defaultSelectedKeys={openKeys}
         onClick={this.handleClick}
         selectedKeys={[current]}
