@@ -171,8 +171,13 @@ class PollingLine extends React.Component<Props, State> {
   }
 
   render() {
-    const { pollingLines } = this.props;
-    if (_.isEmpty(pollingLines)) return null;
+    let { pollingLines } = this.props;
+    if (_.isEmpty(pollingLines)) {
+      pollingLines = {
+        records: [],
+        total: 0,
+      };
+    }
     let { records, total } = pollingLines;
     records = records.map(item => {
       return _.assign(item, { key: item.id });

@@ -106,7 +106,7 @@ class Navigation extends React.Component<Props, State> {
                 <Menu.Item key="setting:2">Option 2</Menu.Item>
                 <Menu.Item key="setting:3">Option 3</Menu.Item> */}
               {/* </SubMenu> */}
-              <Menu.Item key="admin">admin</Menu.Item>
+              <Menu.Item key="admin">管理员</Menu.Item>
             </Menu>
           </Col>
           <Col span={13} className={styles.middle_panel}>

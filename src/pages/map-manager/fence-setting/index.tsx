@@ -168,7 +168,7 @@ class FencingSettings extends React.Component<Props> {
       }
       await this.getMapFencing(values);
     });
-  };
+  }; 
   onClear = () => {
     this.props.form.resetFields();
     this.getMapFencing();

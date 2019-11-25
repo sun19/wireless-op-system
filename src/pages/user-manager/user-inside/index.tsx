@@ -79,7 +79,7 @@ const columns = [
     title: '保密登记名称',
     dataIndex: 'securityLevelName',
     editable: true,
-    className:'select_text',
+    className: 'select_text',
   },
   {
     title: '信息牌名称',
@@ -222,9 +222,14 @@ class UserInside extends React.Component<Props, State> {
   }
 
   render() {
-    const { innerUserList } = this.props;
+    let { innerUserList } = this.props;
     const { name, cardNo } = this.state;
-    if (_.isEmpty(innerUserList)) return null;
+    if (_.isEmpty(innerUserList)) {
+      innerUserList = {
+        records: [],
+        total: 0,
+      };
+    }
     let { records, total } = innerUserList;
     records = records.map(item => {
       return _.assign(item, { key: item.id });

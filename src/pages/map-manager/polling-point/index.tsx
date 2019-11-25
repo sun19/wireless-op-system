@@ -162,8 +162,13 @@ class PollingPoint extends React.Component<Props, State> {
   }
 
   render() {
-    const { pollingPoints } = this.props;
-    if (_.isEmpty(pollingPoints)) return null;
+    let { pollingPoints } = this.props;
+    if (_.isEmpty(pollingPoints)) {
+      pollingPoints = {
+        records: [],
+        total: 0,
+      };
+    }
     let { records, total } = pollingPoints;
     records = records.map(item => {
       return _.assign(item, { key: item.id });

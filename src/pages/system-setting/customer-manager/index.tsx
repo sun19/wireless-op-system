@@ -162,8 +162,13 @@ class UserManager extends React.Component<Props, State> {
   }
 
   render() {
-    const { userList } = this.props;
-    if (_.isEmpty(userList)) return null;
+    let { userList } = this.props;
+    if (_.isEmpty(userList)) {
+      userList = {
+        records: [],
+        total: 0,
+      };
+    }
     let { records, total } = userList;
     records = records.map(item => {
       return _.assign(item, { key: item.id, remark: item.remark ? item.remark : '-' });

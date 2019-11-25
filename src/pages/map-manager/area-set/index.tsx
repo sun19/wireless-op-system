@@ -119,19 +119,22 @@ class AreaSet extends React.Component<Props, State> {
 
   setupAreaLevelSelect = () => {
     const { areaLevels } = this.props;
-    return (
-      <Select
-        className={publicStyles.select_text}
-        defaultValue={areaLevels[0].name}
-        onSelect={this.onLevelSelectChange}
-      >
-        {areaLevels.map((level, index) => (
-          <Option value={level.id} key={index}>
-            {level.name}
-          </Option>
-        ))}
-      </Select>
-    );
+    if (areaLevels.length > 0){
+      return (
+        <Select
+          className={publicStyles.select_text}
+          defaultValue={areaLevels[0].name}
+          onSelect={this.onLevelSelectChange}
+        >
+          {areaLevels.map((level, index) => (
+            <Option value={level.id} key={index}>
+              {level.name}
+            </Option>
+          ))}
+        </Select>
+      );
+    }
+   
   };
   onAreaInputChange = e => {
     this.setState({
@@ -182,8 +185,17 @@ class AreaSet extends React.Component<Props, State> {
   }
 
   render() {
-    const { mapArea, areaLevels } = this.props;
-    if (_.isEmpty(mapArea) || _.isEmpty(areaLevels)) return null;
+    let { mapArea, areaLevels } = this.props;
+    // if (_.isEmpty(mapArea) || _.isEmpty(areaLevels)) return null;
+    if (_.isEmpty(mapArea)) {
+      mapArea = {
+        records: [],
+        total: 0,
+      };
+    }
+    if (_.isEmpty(areaLevels)) {
+      areaLevels = []
+    }
     let { records, total } = mapArea;
     records = records.map(item => {
       return _.assign(item, { key: item.id });

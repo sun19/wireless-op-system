@@ -64,15 +64,15 @@ class PeopelType extends React.Component<Props> {
   }
 
 
-    async updateData(data, item) {
-      this.props.dispatch({
-        type: 'systemSetting/update',
-        payload: {
-          peopleTypeRecord: data,
-        },
-      });
-      router.push('/system-setting/people-type/edit');
-    }
+  async updateData(data, item) {
+    this.props.dispatch({
+      type: 'systemSetting/update',
+      payload: {
+        peopleTypeRecord: data,
+      },
+    });
+    router.push('/system-setting/people-type/edit');
+  }
   deleteColumn(item) {
     //TODO:修改人ID
     let self = this;
@@ -87,7 +87,7 @@ class PeopelType extends React.Component<Props> {
         //重新请求数据重绘
         self.getUserTypes();
       },
-      onCancel() {},
+      onCancel() { },
     });
   }
 
@@ -100,8 +100,13 @@ class PeopelType extends React.Component<Props> {
   }
 
   render() {
-    const { userTypes } = this.props;
-    if (_.isEmpty(userTypes)) return null;
+    let { userTypes } = this.props;
+    if (_.isEmpty(userTypes)) {
+      userTypes = {
+        records: [],
+        total: 0,
+      };
+    }
     let { records, total } = userTypes;
     records = records.map(item => {
       return _.assign(item, { key: item.id });

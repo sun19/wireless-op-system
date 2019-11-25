@@ -172,8 +172,14 @@ class MessageCard extends React.Component<Props, State> {
   }
 
   render() {
-    const { infoCard } = this.props;
-    if (_.isEmpty(infoCard)) return null;
+    let { infoCard } = this.props;
+    // if (_.isEmpty(infoCard)) return null;
+    if (_.isEmpty(infoCard)) {
+      infoCard = {
+        records: [],
+        total: 0,
+      };
+    }
     let { records, total } = infoCard;
     records = records.map(item => {
       return _.assign(item, { key: item.id });

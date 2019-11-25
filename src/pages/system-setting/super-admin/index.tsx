@@ -201,8 +201,13 @@ class SuperAdmin extends React.Component<Props, State> {
   // };
 
   render() {
-    const { superAdmin } = this.props;
-    if (_.isEmpty(superAdmin)) return null;
+    let { superAdmin } = this.props;
+    if (_.isEmpty(superAdmin)) {
+      superAdmin = {
+        records: [],
+        total: 0,
+      };
+    }
     let { records, total } = superAdmin;
     records = records.map(item => {
       return _.assign(item, { key: item.id });
