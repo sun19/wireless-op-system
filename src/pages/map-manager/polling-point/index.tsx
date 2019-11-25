@@ -59,11 +59,17 @@ const columns = [
     title: '巡检开始时间',
     dataIndex: 'startTime',
     editable: true,
+    render:(item)=>{
+      return <span className={publicStyles.time_start_bac}>{item ? item : '/'}</span>
+    }
   },
   {
     title: '巡检结束时间',
     dataIndex: 'endTime',
     editable: true,
+    render: (item) => {
+      return <span className={publicStyles.time_end_bac}>{item ? item : '/'}</span>
+    }
   },
   {
     title: '备注',

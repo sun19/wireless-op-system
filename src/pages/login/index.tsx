@@ -1,5 +1,6 @@
 import React, { Component, Props } from 'react';
 import { Row, Col, Radio, Input, Icon, Layout, Form } from 'antd';
+import moment from 'moment';
 
 import WrappedNormalLoginForm from './components/LoginForm';
 import styles from './index.less';
@@ -13,7 +14,7 @@ const IconFont = Icon.createFromIconfontCN({
 
 interface State {
   year: string;
-  time: string[];
+  time?: string[];
 }
 
 export default class Login extends Component {
@@ -23,7 +24,7 @@ export default class Login extends Component {
     const time = new Date();
     this.state = {
       year: this.getYear(time),
-      time: this.getTime(time),
+      time: '',
     } as State;
   }
 
@@ -46,7 +47,7 @@ export default class Login extends Component {
       const time = new Date();
       this.setState({
         year: this.getYear(time),
-        time: this.getTime(time),
+        time: moment().format('HH:mm'),
       });
     }, 1000);
   }
@@ -64,8 +65,9 @@ export default class Login extends Component {
           <div className={styles.date_string}>{(this.state as State).year}</div>
           <div className={styles.time_string}>
             <span>{state.time[0]}</span>
-            <span>{state.time[1]}</span>:<span>{state.time[2]}</span>
+            <span>{state.time[1]}</span>: 
             <span>{state.time[3]}</span>
+            <span>{state.time[4]}</span>
           </div>
         </div>
         <Header className={[`${styles.no_bg}`].join(' ')}>

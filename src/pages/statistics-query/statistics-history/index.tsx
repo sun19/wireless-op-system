@@ -151,8 +151,12 @@ class StatisticsHistory extends React.Component<Props, State> {
     e.preventDefault();
     this.props.form.validateFields(async (err, values) => {
       // console.log('1', values);
-      // this.getHistoryListData(values);
+      this.getHistoryListData(values);
     });
+  };
+  handleReset = () => {
+    this.props.form.resetFields();
+    this.getHistoryListData();
   };
   async getAllRole(data?: State) {
     let userTypes = await getAllRoles();
@@ -249,7 +253,7 @@ class StatisticsHistory extends React.Component<Props, State> {
                   >
                     查询
                   </Button>
-                  <Button className={publicStyles.form_btn} style={{ marginLeft: 10 }}>
+                  <Button className={publicStyles.form_btn} style={{ marginLeft: 10 }} onClick={this.handleReset}>
                     清空
                   </Button>
                 </span>

@@ -71,8 +71,8 @@ class LogList extends React.Component<Props, State> {
   constructor(props: any) {
     super(props);
     this.state = {
-      time: [moment('2019-11-11 14:36:31'), moment('2019-11-11 14:36:31')],
-      dateStrings: ['2019-11-11 14:36:31', '2019-11-11 14:36:31'],
+      time: [],
+      dateStrings: [],
     };
     this.getLogList = this.getLogList.bind(this);
     this.exportLogs = this.exportLogs.bind(this);
@@ -102,6 +102,10 @@ class LogList extends React.Component<Props, State> {
   };
   onRangePickerOK = () => {
     const { dateStrings } = this.state;
+    if (dateStrings.length==0){
+      message.warn('请选择时间');
+      return
+    }
     this.getLogList({
       createTime: dateStrings[0],
       updateTime: dateStrings[1],
@@ -109,6 +113,10 @@ class LogList extends React.Component<Props, State> {
   };
 
   onResetLogList = () => {
+    this.setState({
+      time:[],
+      dateStrings:[]
+    })
     this.forceUpdate(() => {
       this.getLogList();
     });

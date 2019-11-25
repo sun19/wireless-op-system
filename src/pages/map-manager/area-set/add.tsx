@@ -180,7 +180,7 @@ class FencingSetting extends React.Component<Props, State> {
                     </Form.Item>
                   </Col>
                 </Row>
-                <Row type="flex" justify="space-between">
+                <Row type="flex" justify="space-between" className={styles.remark_area}>
                   <Col span={23} className={styles.text_areas}>
                     <Form.Item label="备注">
                       {getFieldDecorator('remark')(

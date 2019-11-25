@@ -48,7 +48,6 @@ const columns = [
     // width: '15%',
     className: 'select_text',
     editable: true,
-    className: 'select_text',
     // render: (name, record) => {
     //   return (
     //     <div>
@@ -161,7 +160,7 @@ class SuperAdmin extends React.Component<Props, State> {
   };
 
   onClear = () => {
-    this.setState({ remark: '' });
+    this.setState({ type:'', remark: '' });
     this.getSuperAdminList();
   };
 
