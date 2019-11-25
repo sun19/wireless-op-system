@@ -1,6 +1,4 @@
 export const LEFT_MENUS = [
-
-
   {
     name: '设置',
     key: '01',
@@ -27,23 +25,25 @@ export const LEFT_MENUS = [
         path: '',
         component: '',
         children: [
-           // {
-      //   name: '地图导入',
-      //   key: '13',
-      //   path: '/map-manager/map-import',
-      //   component: './pages/map-manager/map-import/index.tsx',
-      // },
+          // {
+          //   name: '地图导入',
+          //   key: '13',
+          //   path: '/map-manager/map-import',
+          //   component: './pages/map-manager/map-import/index.tsx',
+          // },
           {
             name: '信息牌设置',
             key: '04',
             path: '/system-setting/message-card',
             component: './pages/system-setting/message-card/index.tsx',
-          }, {
+          },
+          {
             name: '区域设置',
             key: '14',
             path: '/map-manager/area-set',
             component: './pages/map-manager/area-set/index.tsx',
-          }, {
+          },
+          {
             name: '电子围栏设置',
             key: '15',
             path: '/map-manager/fence-setting',
@@ -67,7 +67,7 @@ export const LEFT_MENUS = [
             path: '/map-manager/polling-line',
             component: './pages/map-manager/polling-line/index.tsx',
           },
-        ]
+        ],
       },
       {
         name: '值班员设置',
@@ -83,7 +83,7 @@ export const LEFT_MENUS = [
           },
         ],
       },
-    ]
+    ],
   },
 
   {
@@ -95,7 +95,7 @@ export const LEFT_MENUS = [
     children: [
       // { name: '轨迹查询',
       //   key: '31',
-      
+
       // },
       // { name: '位置查询', },
       {
@@ -109,66 +109,71 @@ export const LEFT_MENUS = [
         key: '25',
         path: '/route-inspect-manager/route-inspect-report',
         component: './pages/route-inspect-manager/route-inspect-report/index.tsx',
-      }, {
+      },
+      {
         name: '日志列表',
         key: '27',
         path: '/log-manager/log-list',
         component: './pages/log-manager/log-list/index.tsx',
       },
-    ]},
-{
-  name: '显示',
-  key: '01',
+    ],
+  },
+  {
+    name: '显示',
+    key: '01',
     path: 'show',
     component: 'show',
-  icon: 'icon-system1',
-  children: [
-    {
-      name: '用户管理',
-      key: '02',
-      path: '/system-setting/customer-manager',
-      component: './pages/system-setting/customer-manager/index.tsx',
-    },
-    {
-      name: '人员类型',
-      key: '03',
-      path: '/system-setting/people-type',
-      component: './pages/system-setting/people-type/index.tsx',
-    }, {
-      name: '用户列表-内部',
-      key: '07',
-      path: '/user-manager/user-inside',
-      component: './pages/user-manager/user-inside/index.tsx',
-    }, {
-      name: '信息牌列表',
-      key: '10',
-      path: '/info-card-manager/info-card-list',
-      component: './pages/info-card-manager/info-card-list/index.tsx',
-    }, {
-      name: '告警类型',
-      key: '20',
-      path: '/warning-manager/type',
-      component: './pages/warning-manager/type/index.tsx',
-    },
-    {
-      name: '告警信息',
-      key: '21',
-      path: '/warning-manager/info',
-      component: './pages/warning-manager/info/index.tsx',
-    },
-    {
-      name: '历史告警',
-      key: '22',
-      path: '/warning-manager/history',
-      component: './pages/warning-manager/history/index.tsx',
-    },
-    {
-      // name: '首页',
-      name: '实时位置',
-      path: '/big-screen/homepage',
-      component: './pages/big-screen/homepage',
-    },
-    {
+    icon: 'icon-system1',
+    children: [
+      {
+        name: '用户管理',
+        key: '02',
+        path: '/system-setting/customer-manager',
+        component: './pages/system-setting/customer-manager/index.tsx',
+      },
+      {
+        name: '人员类型',
+        key: '03',
+        path: '/system-setting/people-type',
+        component: './pages/system-setting/people-type/index.tsx',
+      },
+      {
+        name: '用户列表-内部',
+        key: '07',
+        path: '/user-manager/user-inside',
+        component: './pages/user-manager/user-inside/index.tsx',
+      },
+      {
+        name: '信息牌列表',
+        key: '10',
+        path: '/info-card-manager/info-card-list',
+        component: './pages/info-card-manager/info-card-list/index.tsx',
+      },
+      {
+        name: '告警类型',
+        key: '20',
+        path: '/warning-manager/type',
+        component: './pages/warning-manager/type/index.tsx',
+      },
+      {
+        name: '告警信息',
+        key: '21',
+        path: '/warning-manager/info',
+        component: './pages/warning-manager/info/index.tsx',
+      },
+      {
+        name: '历史告警',
+        key: '22',
+        path: '/warning-manager/history',
+        component: './pages/warning-manager/history/index.tsx',
+      },
+      {
+        // name: '首页',
+        name: '实时位置',
+        path: '/big-screen/homepage',
+        component: './pages/big-screen/homepage',
+      },
+      {
         name: '历史轨迹',
         key: '30',
         path: '/statistics-query/statistics-history',
@@ -179,13 +184,6 @@ export const LEFT_MENUS = [
         path: '/big-screen/dataview',
         component: './pages/big-screen/dataview',
       },
-  ]
-},
-
-
-]
-
-
-
-
- 
+    ],
+  },
+];

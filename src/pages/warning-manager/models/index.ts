@@ -6,6 +6,8 @@ export default {
     history: {},
     maps: [],
     areas: [],
+    warningTypes: [],
+    repeatTypes: [],
   },
   reducers: {
     update(state, { payload }) {

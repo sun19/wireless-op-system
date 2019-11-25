@@ -12,6 +12,7 @@ import router from 'umi/router';
 import ContentBorder from '../../../components/ContentBorder';
 import { UmiComponentProps } from '@/common/type';
 import { getAllMaps, getAllAreas, wraningTypeAdd } from '../services';
+import { getSuperAdminList } from '@/pages/system-setting/services';
 
 import styles from './index.less';
 
@@ -56,11 +57,19 @@ class UserAuth extends React.Component<Props, State> {
   async initRequest() {
     const maps = await getAllMaps();
     const areas = await getAllAreas();
+    const warningTypes = await getSuperAdminList({
+      type: 'alarmType',
+    });
+    const repeatTypes = await getSuperAdminList({
+      type: 'repeatType',
+    });
     this.props.dispatch({
       type: 'warningManager/update',
       payload: {
         maps: maps.result,
         areas: areas.result,
+        warningTypes: warningTypes.records || [],
+        repeatTypes: repeatTypes.records || [],
       },
     });
   }
@@ -121,9 +130,13 @@ class UserAuth extends React.Component<Props, State> {
       const { startTime, endTime, overrunTime, ...props } = values;
       const data = {
         ...props,
-        startTime: values.startTime?values.startTime.format('YYYY-MM-DD HH:mm:ss').toString():'',
+        startTime: values.startTime
+          ? values.startTime.format('YYYY-MM-DD HH:mm:ss').toString()
+          : '',
         endTime: values.endTime ? values.endTime.format('YYYY-MM-DD HH:mm:ss').toString() : '',
-        overrunTime: values.overrunTime ? values.overrunTime.format('YYYY-MM-DD HH:mm:ss').toString():'',
+        overrunTime: values.overrunTime
+          ? values.overrunTime.format('YYYY-MM-DD HH:mm:ss').toString()
+          : '',
       };
 
       await wraningTypeAdd(data);
@@ -144,7 +157,7 @@ class UserAuth extends React.Component<Props, State> {
   render() {
     const { getFieldDecorator } = this.props.form;
     const { mapImage, width, height } = this.state;
-
+    const { warningTypes, repeatTypes } = this.props;
     return (
       <ContentBorder className={styles.auth_root}>
         <Form
@@ -248,11 +261,13 @@ class UserAuth extends React.Component<Props, State> {
                           message: '请输入重复类型',
                         },
                       ],
-                      initialValue: '每天',
                     })(
                       <Select placeholder="每天">
-                        <Option value="每天">每天</Option>
-                        <Option value="每天">每周</Option>
+                        {repeatTypes.map(type => (
+                          <Option value={type.dictValue} key={type.dictValue}>
+                            {type.dictName}
+                          </Option>
+                        ))}
                       </Select>,
                     )}
                   </Form.Item>
@@ -263,10 +278,13 @@ class UserAuth extends React.Component<Props, State> {
                           message: '告警方式',
                         },
                       ],
-                      initialValue: '弹框',
                     })(
                       <Select placeholder="弹框">
-                        <Option value="弹框">弹框</Option>
+                        {warningTypes.map(type => (
+                          <Option value={type.dictValue} key={type.dictValue}>
+                            {type.dictName}
+                          </Option>
+                        ))}
                       </Select>,
                     )}
                   </Form.Item>
@@ -317,7 +335,8 @@ const FormUserAuth = Form.create<Props>({ name: 'warn_manager_type_add' })(UserA
 
 const mapState = ({ warningManager }) => {
   return {
-    warningTypes: warningManager.type,
+    warningTypes: warningManager.warningTypes,
+    repeatTypes: warningManager.repeatTypes,
     maps: warningManager.maps,
     areas: warningManager.areas,
   };
