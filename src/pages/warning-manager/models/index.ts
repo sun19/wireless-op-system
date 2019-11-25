@@ -2,6 +2,7 @@ export default {
   namespace: 'warningManager',
   state: {
     type: {},
+    typeRecord: {},
     info: {},
     history: {},
     maps: [],
