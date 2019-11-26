@@ -102,10 +102,10 @@ class AddPollingPoint extends React.Component<Props, State> {
     const evt = event.evt;
     //换算由于地图拉伸造成的坐标不一致
     this.props.form.setFieldsValue({
-      xCoordinate: Math.floor((evt.x * defaultWidth) / clientWidth),
+      xCoordinate: Math.floor((evt.layerX * defaultWidth) / clientWidth),
     });
     this.props.form.setFieldsValue({
-      yCoordinate: Math.floor((evt.y * defaultHeight) / clientHeight),
+      yCoordinate: Math.floor((evt.layerY * defaultHeight) / clientHeight),
     });
   };
 

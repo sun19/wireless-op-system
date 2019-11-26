@@ -49,22 +49,24 @@ const columns = [
     title: '巡检路线',
     dataIndex: 'inspectionRoute',
     editable: true,
+    // ellipsis: true,
+    width: '15%',
   },
   {
     title: '巡检开始时间',
     dataIndex: 'startTime',
     editable: true,
-    render: (item) => {
-      return <span className={publicStyles.time_start_bac}>{item ? item : '/'}</span>
-    }
+    render: item => {
+      return <span className={publicStyles.time_start_bac}>{item ? item : '/'}</span>;
+    },
   },
   {
     title: '巡检结束时间',
     dataIndex: 'endTime',
     editable: true,
-    render: (item) => {
-      return <span className={publicStyles.time_end_bac}>{item ? item:'/'}</span>
-    }
+    render: item => {
+      return <span className={publicStyles.time_end_bac}>{item ? item : '/'}</span>;
+    },
   },
   {
     title: '告警方式',
@@ -214,7 +216,11 @@ class PollingLine extends React.Component<Props, State> {
                   <Button className={publicStyles.form_btn} onClick={this.onSearch}>
                     查询
                   </Button>
-                  <Button className={publicStyles.form_btn} style={{ marginLeft: 37 }} onClick={this.onClear}>
+                  <Button
+                    className={publicStyles.form_btn}
+                    style={{ marginLeft: 37 }}
+                    onClick={this.onClear}
+                  >
                     清空
                   </Button>
                 </span>

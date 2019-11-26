@@ -14,12 +14,13 @@ import {
   Circle as CircleLayer,
   Line as LineLayer,
 } from 'react-konva';
+import * as _ from 'lodash';
 
 import ContentBorder from '../../../components/ContentBorder';
 import { warningTypeSearch } from '@/pages/warning-manager/services';
 import { UmiComponentProps } from '@/common/type';
 import { getAllMap } from '@/pages/login/login.service';
-import { getAllWarningType, addPollingLine } from '../services';
+import { getAllWarningType, addPollingLine, getMapLamps } from '../services';
 
 import styles from './index.less';
 
@@ -29,6 +30,11 @@ const { Option } = Select;
 type StateProps = ReturnType<typeof mapState>;
 type Props = StateProps & UmiComponentProps & FormComponentProps;
 
+interface Lamp {
+  x: number;
+  y: number;
+  id: string;
+}
 interface State {
   warningTypes: any[];
   mapImage: any;
@@ -37,6 +43,8 @@ interface State {
   circleX: number;
   circleY: number;
   circleShow: boolean;
+  showLamps: Lamp[];
+  icon: any;
 }
 
 class AddPollingLine extends React.Component<Props, State> {
@@ -52,6 +60,8 @@ class AddPollingLine extends React.Component<Props, State> {
       circleX: 10,
       circleY: 10,
       circleShow: true,
+      showLamps: [],
+      icon: null,
     };
   }
   goBack = () => {
@@ -91,12 +101,22 @@ class AddPollingLine extends React.Component<Props, State> {
       };
     });
   }
+  dynamicLoadIconImage() {
+    return new Promise(resolve => {
+      const mapImage = new Image();
+      mapImage.src = require('../../map-manager/assets/baoan.png');
+      mapImage.onload = function() {
+        resolve(mapImage);
+      };
+    });
+  }
   async componentDidMount() {
-    const mapImage = await this.dynamicLoadMapImage();
     if (this.map.current) {
       const { clientWidth, clientHeight } = this.map.current;
-
+      const mapImage = await this.dynamicLoadMapImage();
+      const iconImage = await this.dynamicLoadIconImage();
       this.setState({
+        icon: iconImage,
         mapImage,
         width: clientWidth,
         height: clientHeight,
@@ -109,33 +129,72 @@ class AddPollingLine extends React.Component<Props, State> {
     this.initRequest();
   }
   async initRequest() {
+    if (!this.map.current) return;
+    const { clientWidth, clientHeight } = this.map.current;
     const maps = await getAllMap();
-    // const fencingTypes = await getAllFencingTypes();
-    // let usersResp = await getAllUserInfo();
-    // let users = [];
-    // for (let i = 0; i < usersResp.result.length; i++) {
-    //   const dept = usersResp.result[i];
-    //   for (let j = 0; j < dept.relatePeopleResponses.length; j++) {
-    //     const item = dept.relatePeopleResponses[j];
-    //     users.push(item);
-    //   }
-    // }
-    // const levels = await getAllLevels();
-    // const areas = await getAllArea();
+    let lamps = await getMapLamps({});
     this.props.dispatch({
       type: 'mapManager/update',
       payload: {
         allMaps: maps.result,
-        // fencingTypes: fencingTypes.result,
-        // users: users,
-        // levels: levels.result,
-        // areas: areas.result,
+        lamps: lamps.result,
       },
     });
+    let _lamps = lamps.result || {};
+    if (_.isEmpty(_lamps)) _lamps = { records: [] };
+    //根据已选择的巡检路线，匹配灯具
+    const { pollingLinesRecord } = this.props;
+    const { inspectionRoute = '' } = pollingLinesRecord;
+    const routes = inspectionRoute.split(',');
+    let showLamps = _.filter(_lamps.records, route => routes.includes(route.id));
+    // let showLamps = _lamps.records;
+    showLamps = showLamps.map(lamp => ({
+      x: _.isString(lamp.xcoordinate) && lamp.xcoordinate != '' ? +lamp.xcoordinate : 0,
+      y: _.isString(lamp.ycoordinate) && lamp.ycoordinate != '' ? +lamp.ycoordinate : 0,
+      id: lamp.id,
+    }));
+    const currentLamps = this.setupLampData(showLamps, clientWidth, clientHeight);
+    this.setState({
+      showLamps: currentLamps,
+    });
   }
+  setupLampData = (data, currentWidth, currentHeight) => {
+    const defaultWidth = 1920;
+    const defaultHeight = 1080;
+    return data.map(item => ({
+      x: (item.x / defaultWidth) * currentWidth,
+      y: (item.y / defaultHeight) * currentHeight,
+    }));
+  };
+  createLamps() {
+    const lamps = this.state.showLamps;
+    if (lamps.length === 0) return;
+    return lamps.map((lamp, index) => (
+      <ImageLayer
+        image={this.state.icon}
+        x={lamp.x - 16}
+        y={lamp.y - 16}
+        width={32}
+        height={32}
+        key={index}
+      />
+    ));
+  }
+  createLampLines = () => {
+    const lamps = this.state.showLamps;
+    const line = [];
+    lamps.forEach(lamp => {
+      line.push(lamp.x);
+      line.push(lamp.y);
+    });
+    return (
+      <LineLayer points={line} stroke="#1296db" strokeWidth={5} linecap="round" lineJoin="round" />
+    );
+  };
 
   onSubmit = e => {
     e.preventDefault();
+    const { pollingLinesRecord } = this.props;
     this.props.form.validateFields(async (err, values) => {
       const { startTime, endTime, ...props } = values;
       const data = {
@@ -144,6 +203,7 @@ class AddPollingLine extends React.Component<Props, State> {
           ? values.startTime.format('YYYY-MM-DD HH:mm:ss').toString()
           : '',
         endTime: values.endTime ? values.endTime.format('YYYY-MM-DD HH:mm:ss').toString() : '',
+        inspectionRoute: values.inspectionRoute.join(','),
       };
 
       await addPollingLine(data);
@@ -151,23 +211,23 @@ class AddPollingLine extends React.Component<Props, State> {
       // this.getRouteInspectList(data);
     });
   };
-  setupCircle = () => {
-    const x = this.state.circleX;
-    const y = this.state.circleY;
-    const circleShow = this.state.circleShow;
-    if (!circleShow) return;
-    return (
-      <CircleLayer
-        x={x}
-        y={y}
-        radius={10}
-        fill="red"
-        draggable={true}
-        listening={true}
-        onDragMove={this.onCircleDragging}
-      />
-    );
+  onLampSelectChange = e => {
+    if (!this.map.current) return;
+    const { clientWidth, clientHeight } = this.map.current;
+    let _lamps = this.props.lamps;
+    let showLamps = _.filter(_lamps.records, route => e.includes(route.id));
+    // let showLamps = _lamps.records;
+    showLamps = showLamps.map(lamp => ({
+      x: _.isString(lamp.xcoordinate) && lamp.xcoordinate != '' ? +lamp.xcoordinate : 0,
+      y: _.isString(lamp.ycoordinate) && lamp.ycoordinate != '' ? +lamp.ycoordinate : 0,
+      id: lamp.id,
+    }));
+    const currentLamps = this.setupLampData(showLamps, clientWidth, clientHeight);
+    this.setState({
+      showLamps: currentLamps,
+    });
   };
+
   onCircleDragging = (event: any) => {
     const defaultWidth = 1920;
     const defaultHeight = 1080;
@@ -176,15 +236,19 @@ class AddPollingLine extends React.Component<Props, State> {
     const evt = event.evt;
     //换算由于地图拉伸造成的坐标不一致
     this.props.form.setFieldsValue({
-      xCoordinate: Math.floor((evt.x * defaultWidth) / clientWidth),
+      xCoordinate: Math.floor((evt.layerX * defaultWidth) / clientWidth),
     });
     this.props.form.setFieldsValue({
-      yCoordinate: Math.floor((evt.y * defaultHeight) / clientHeight),
+      yCoordinate: Math.floor((evt.layerY * defaultHeight) / clientHeight),
     });
   };
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { maps } = this.props;
+    let { maps, pollingLinesRecord, lamps } = this.props;
+    if (_.isEmpty(lamps)) lamps = { records: [] };
+    const createdLamps = this.createLamps();
+    const createdLine = this.createLampLines();
+    const { mapImage, width, height } = this.state;
     return (
       <ContentBorder className={styles.auth_root}>
         <Form
@@ -241,12 +305,24 @@ class AddPollingLine extends React.Component<Props, State> {
                 <Col span={24}>
                   <Form.Item label="巡检路线">
                     {getFieldDecorator('inspectionRoute', {
-                      rules: [
-                        {
-                          message: '请输入巡检路线',
-                        },
-                      ],
-                    })(<Input placeholder="请输入巡检路线" />)}
+                      rules: [],
+                      initialValue:
+                        (pollingLinesRecord.inspectionRoute &&
+                          pollingLinesRecord.inspectionRoute.split(',')) ||
+                        [],
+                    })(
+                      <Select
+                        mode="multiple"
+                        placeholder="请选择灯具，设置巡检路线"
+                        onChange={this.onLampSelectChange}
+                      >
+                        {lamps.records.map(lamp => (
+                          <Option key={lamp.id} value={lamp.id}>
+                            {lamp.lampCode}
+                          </Option>
+                        ))}
+                      </Select>,
+                    )}
                   </Form.Item>
                   <Form.Item label="开始时间">
                     {getFieldDecorator('startTime', {
@@ -317,7 +393,8 @@ class AddPollingLine extends React.Component<Props, State> {
                           width={this.state.width}
                           height={this.state.height}
                         />
-                        {this.setupCircle()}
+                        {createdLamps}
+                        {createdLine}
                       </Layer>
                     </Stage>
                   </div>
@@ -350,7 +427,7 @@ class AddPollingLine extends React.Component<Props, State> {
 const AddPollingLineHOC = Form.create<Props>({ name: 'add_polling_line' })(AddPollingLine);
 
 const mapState = ({ mapManager }) => {
-  const { allMaps, fencingTypes, users, levels, areas } = mapManager;
+  const { allMaps, fencingTypes, users, levels, areas, pollingLinesRecord, lamps } = mapManager;
   return {
     mapFencing: mapManager.mapFencing,
     maps: allMaps,
@@ -358,6 +435,8 @@ const mapState = ({ mapManager }) => {
     users,
     levels,
     areas,
+    pollingLinesRecord,
+    lamps,
   };
 };
 
