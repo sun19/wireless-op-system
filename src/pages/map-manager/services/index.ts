@@ -155,7 +155,7 @@ export async function getPollingPointByName(params: GetPollingPointByNameParams)
 }
 
 export async function addPollingPoint(params: AddPollingPointParams) {
-  const resp = await request.post(MAP_MANAGER_POLLING_POINT_ADD, { data: format(params) });
+  const resp = await request.get(MAP_MANAGER_POLLING_POINT_ADD, { params: params });
   resp.success === true && resp.code === 200
     ? message.success(`${resp.message}`)
     : message.error(`${resp.message}`);
