@@ -141,3 +141,11 @@ export async function deleteSuperAdmin(params: DeleteSuperAdminParams) {
     : message.error(`${resp.message}`);
   return resp.success === true && resp.code === 200;
 }
+
+export async function uploadSuperAdmin() {
+  const resp = await request.post(UPLOAD_SUPER_ADMIN);
+  resp.success === true && resp.code === 200
+    ? message.success(`${resp.message}`)
+    : message.error(`${resp.message}`);
+  return resp.success === true && resp.code === 200;
+}

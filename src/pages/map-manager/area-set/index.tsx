@@ -119,7 +119,7 @@ class AreaSet extends React.Component<Props, State> {
 
   setupAreaLevelSelect = () => {
     const { areaLevels } = this.props;
-    if (areaLevels.length > 0){
+    if (areaLevels.length > 0) {
       return (
         <Select
           className={publicStyles.select_text}
@@ -133,8 +133,9 @@ class AreaSet extends React.Component<Props, State> {
           ))}
         </Select>
       );
+    } else {
+      return <Select className={publicStyles.select_text} onSelect={this.onLevelSelectChange} />;
     }
-   
   };
   onAreaInputChange = e => {
     this.setState({
@@ -194,7 +195,7 @@ class AreaSet extends React.Component<Props, State> {
       };
     }
     if (_.isEmpty(areaLevels)) {
-      areaLevels = []
+      areaLevels = [];
     }
     let { records, total } = mapArea;
     records = records.map(item => {

@@ -1,7 +1,7 @@
 /**
  * title: 设置 > 超级管理员设置
  */
-import React from 'react'; 
+import React from 'react';
 import { Layout, Modal, Form, Input, Row, Col, Select, Button, Icon, Divider, message } from 'antd';
 import { connect } from 'dva';
 import router from 'umi/router';
@@ -10,7 +10,12 @@ import * as _ from 'lodash';
 import MainContent from '../components/MainContent';
 import { ICON_FONTS_URL } from '../../../config/constants';
 import { UmiComponentProps } from '@/common/type';
-import { getSuperAdminList, updateSuperAdmin, deleteSuperAdmin } from '../services';
+import {
+  getSuperAdminList,
+  updateSuperAdmin,
+  deleteSuperAdmin,
+  uploadSuperAdmin,
+} from '../services';
 import { GetSuperAdminListParams } from '../services/index.interfaces';
 import styles from './index.less';
 import publicStyles from '../index.less';
@@ -84,19 +89,12 @@ const columns = [
   // },
 ];
 
-type AdminTypes = typeof staticTypes;
-
 type StateProps = ReturnType<typeof mapState>;
 type Props = StateProps & UmiComponentProps;
 interface State {
   type: string;
   remark: string;
 }
-
-const staticTypes = [
-  { label: 'lucy', value: 'lucy' },
-  { label: 'jack', value: 'jack' },
-];
 
 class SuperAdmin extends React.Component<Props, State> {
   constructor(props: any) {
@@ -160,7 +158,7 @@ class SuperAdmin extends React.Component<Props, State> {
   };
 
   onClear = () => {
-    this.setState({ type:'', remark: '' });
+    this.setState({ type: '', remark: '' });
     this.getSuperAdminList();
   };
 
@@ -173,7 +171,7 @@ class SuperAdmin extends React.Component<Props, State> {
   };
 
   onUploadTemp = () => {
-    message.success('模板导入成功');
+    uploadSuperAdmin();
   };
 
   addSuperAdmin = () => {
