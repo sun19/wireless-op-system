@@ -72,13 +72,16 @@ const columns = [
     title: '出入口',
     dataIndex: 'entranceExit',
     editable: true,
+    render(value, column) {
+      return <span>{column.entranceExitName}</span>;
+    },
   },
-
-  {
-    title: '出入口顺序',
-    dataIndex: 'sort',
-    editable: true,
-  },
+  //出入口顺序不要了
+  // {
+  //   title: '出入口顺序',
+  //   dataIndex: 'sort',
+  //   editable: true,
+  // },
   {
     title: '备注',
     dataIndex: 'remark',
