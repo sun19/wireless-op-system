@@ -6,6 +6,7 @@ import { Layout, Form, Select, Input, Row, Col, TimePicker, Button, DatePicker, 
 import { connect } from 'dva';
 import * as _ from 'lodash';
 import { FormComponentProps } from 'antd/lib/form';
+import router from 'umi/router';
 
 // const { MonthPicker, RangePicker } = DatePicker;
 import MainContent from '../components/MainContent';
@@ -80,6 +81,7 @@ class RouteInspectList extends React.Component<Props> {
   constructor(props: any) {
     super(props);
     this.getRouteInspectList = this.getRouteInspectList.bind(this);
+    this.previewData = this.previewData.bind(this);
     // this.updateData = this.updateData.bind(this);
     // this.deleteColumn = this.deleteColumn.bind(this);
   }
@@ -117,6 +119,15 @@ class RouteInspectList extends React.Component<Props> {
 
   componentDidMount() {
     this.getRouteInspectList();
+  }
+  previewData(data, item) {
+    // this.props.dispatch({
+    //   type: 'statisticsQuery/update',
+    //   payload: {
+    //     historyRecord: data,
+    //   },
+    // });
+    // router.push('/statistics-query/statistics-history/preview');
   }
 
   render() {
@@ -192,7 +203,14 @@ class RouteInspectList extends React.Component<Props> {
               </Row>
             </Form>
           </div>
-          <MainContent columns={columns} data={records} total={total} showEdit={false} />
+          <MainContent
+            columns={columns}
+            data={records}
+            total={total}
+            showEdit={false}
+            showLookOver={true}
+            preview={this.previewData}
+          />
         </Content>
       </div>
     );

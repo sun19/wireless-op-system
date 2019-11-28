@@ -76,7 +76,7 @@ export async function getUserTypes(params: GetUserTypesParams) {
 
 export async function updateUserType(params: UpdateUserTypeParams) {
   const resp = await request.post(UPDATE_USER_TYPE, {
-    data: params,
+    data: format(params),
   });
   resp.success === true && resp.code === 200
     ? message.success(`${resp.message}`)

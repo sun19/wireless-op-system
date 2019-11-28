@@ -102,21 +102,21 @@ class LogList extends React.Component<Props, State> {
   };
   onRangePickerOK = () => {
     const { dateStrings } = this.state;
-    if (dateStrings.length==0){
+    if (dateStrings.length == 0) {
       message.warn('请选择时间');
-      return
+      return;
     }
     this.getLogList({
-      createTime: dateStrings[0],
-      updateTime: dateStrings[1],
+      startTime: dateStrings[0],
+      endTime: dateStrings[1],
     });
   };
 
   onResetLogList = () => {
     this.setState({
-      time:[],
-      dateStrings:[]
-    })
+      time: [],
+      dateStrings: [],
+    });
     this.forceUpdate(() => {
       this.getLogList();
     });
@@ -176,7 +176,7 @@ class LogList extends React.Component<Props, State> {
                     style={{ marginLeft: 30 }}
                     onClick={this.onResetLogList}
                   >
-                    清空 
+                    清空
                   </Button>
                 </span>
                 <span className={[`${publicStyles.form_btns}`].join(' ')}>

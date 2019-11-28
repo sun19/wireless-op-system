@@ -127,7 +127,7 @@ class FencingSetting extends React.Component<Props, State> {
           : '',
         userId: userId.join(','),
       };
-      const { userInfo = [], id, ...rest } = fencingTypesRecord;
+      const { userInfo = [], ...rest } = fencingTypesRecord;
       const user_id = userInfo.map(item => item.id).join(',');
 
       await updateFencingArea(Object.assign(rest, { userId: user_id }, data));

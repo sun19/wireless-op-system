@@ -9,16 +9,14 @@ import router from 'umi/router';
 
 import ContentBorder from '../../../components/ContentBorder';
 import { InputText, TreeNodeMenu } from '../components';
-import { updateUserType,getAllRoles } from '../services';
-
+import { updateUserType, getAllRoles } from '../services';
 
 import styles from './index.less';
 
 const { TreeNode } = Tree;
 const { Option } = Select;
 import { LEFT_MENUS } from '../../../config/menus';
-const defaultMenuNodes = LEFT_MENUS
-
+const defaultMenuNodes = LEFT_MENUS;
 
 // interface Props extends FormComponentProps {}
 type Props = FormComponentProps & ReturnType<typeof mapState>;
@@ -29,15 +27,13 @@ interface UserType {
   roleId: string;
 }
 
-
 interface State {
   userTypes: UserType[];
   expandedKeys: any;
-  selectedKeys: any,
+  selectedKeys: any;
   checkedKeys: any;
   // autoExpandParent:boolean;
 }
-
 
 class EditUserAuth extends React.Component<Props, State> {
   constructor(props: Props) {
@@ -60,19 +56,19 @@ class EditUserAuth extends React.Component<Props, State> {
       selectValue: item.roleCode,
     }));
     this.setState({ userTypes });
-    const { peopleTypeRecord } = this.props
+    const { peopleTypeRecord } = this.props;
     // console.log(peopleTypeRecord)
     this.setState({
-      expandedKeys: peopleTypeRecord.roleId ? peopleTypeRecord.roleId:[],
+      expandedKeys: peopleTypeRecord.roleId ? peopleTypeRecord.roleId : [],
       selectedKeys: peopleTypeRecord.roleId ? peopleTypeRecord.roleId : [],
       // autoExpandParent: true,
       checkedKeys: peopleTypeRecord.roleId ? peopleTypeRecord.roleId : [],
-    })
+    });
   }
   goBack = () => {
     this.props.form.resetFields();
     router.push('/system-setting/people-type');
-  }; 
+  };
   onSelect = (selectedKeys, info) => {
     // console.log('onSelect', info);
     this.setState({ selectedKeys });
@@ -84,17 +80,18 @@ class EditUserAuth extends React.Component<Props, State> {
 
   onSubmit(e) {
     e.preventDefault();
+    const { peopleTypeRecord } = this.props;
     this.props.form.validateFields(async (err, values) => {
-      const { rolePath, ...props } = values
+      const { rolePath, ...props } = values;
       let data = {
         ...props,
-        rolePath: this.state.checkedKeys
-      }
+        rolePath: this.state.checkedKeys,
+      };
       if (err) {
         message.error('填写信息有误', data);
         return;
       }
-      const isSuccessed = await updateUserType(data);
+      const isSuccessed = await updateUserType(Object.assign(peopleTypeRecord, data));
       if (isSuccessed) {
         setTimeout(() => router.push('/system-setting/people-type'), 1000);
       }
@@ -116,7 +113,7 @@ class EditUserAuth extends React.Component<Props, State> {
       return <TreeNode title={item.name} key={item.path} />;
     });
   render() {
-   const {peopleTypeRecord}=this.props
+    const { peopleTypeRecord } = this.props;
     // console.log(peopleTypeRecord)
     const { getFieldDecorator } = this.props.form;
     if (this.state.userTypes.length === 0) return null;
@@ -125,35 +122,27 @@ class EditUserAuth extends React.Component<Props, State> {
       <ContentBorder className={styles.auth_root}>
         <Form layout="inline" style={{ marginTop: '0.57rem' }} onSubmit={this.onSubmit}>
           <Row type="flex" justify="center" align="middle" className={styles.add}>
-            <Col span={12}> 
+            <Col span={12}>
               <div className="auth__inner--container">
                 <Row type="flex" justify="space-between">
                   <Col span={12}>
-                    <Form.Item label="人员类型">
-                      {getFieldDecorator('roleCode', {
+                    <Form.Item label="角色名称">
+                      {getFieldDecorator('roleName', {
                         rules: [],
-                        initialValue: peopleTypeRecord.roleCode,
-                      })(
-                        <Select style={{ width: '2rem' }} className={styles.select_text}>
-                          {this.state.userTypes.map(option => (
-                            <Option value={option['selectValue']} key={option.key}>
-                              {option.value}
-                            </Option>
-                          ))}
-                        </Select>,
-                      )}
+                        initialValue: peopleTypeRecord.roleName,
+                      })(<Input placeholder="请输入角色名称" />)}
                     </Form.Item>
                   </Col>
                   <Col span={12}>
                     <Form.Item label="英文名称">
-                      {getFieldDecorator('roleName', {
+                      {getFieldDecorator('roleCode', {
                         rules: [
                           {
                             // required: true,
                             message: '请输入英文名称',
                           },
                         ],
-                        initialValue: peopleTypeRecord.roleName,
+                        initialValue: peopleTypeRecord.roleCode,
                       })(<Input placeholder="请输入英文名称" />)}
                     </Form.Item>
                   </Col>
@@ -171,7 +160,7 @@ class EditUserAuth extends React.Component<Props, State> {
                           onCheck={this.onCheck}
                         >
                           {this.renderTreeNodes(defaultMenuNodes)}
-                        </Tree>
+                        </Tree>,
                       )}
                     </Form.Item>
                   </Col>
@@ -186,7 +175,9 @@ class EditUserAuth extends React.Component<Props, State> {
                   </Col>
                   <Col span={6} className={styles.select_padding_left}>
                     <Form.Item>
-                      <Button className={styles.form_btn} onClick={this.goBack}>返回</Button>
+                      <Button className={styles.form_btn} onClick={this.goBack}>
+                        返回
+                      </Button>
                     </Form.Item>
                   </Col>
                 </Row>
@@ -198,8 +189,6 @@ class EditUserAuth extends React.Component<Props, State> {
     );
   }
 }
-
-
 
 const EditUserHOC = Form.create<Props>({ name: 'edit_user' })(EditUserAuth);
 

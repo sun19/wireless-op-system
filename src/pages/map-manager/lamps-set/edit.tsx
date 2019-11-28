@@ -187,9 +187,9 @@ class halmpAdd extends React.Component<Props, State> {
                     )}
                   </Form.Item>
                   <Form.Item label="区域">
-                    {getFieldDecorator('regionalName', {
+                    {getFieldDecorator('regionalId', {
                       rules: [],
-                      initialValue: lampRecord.regionalName,
+                      initialValue: lampRecord.regionalId,
                     })(
                       <Select placeholder="请选择区域">
                         {areas.map(item => (

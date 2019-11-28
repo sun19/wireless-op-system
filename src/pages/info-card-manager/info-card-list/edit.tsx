@@ -29,7 +29,7 @@ interface UserType {
   roleId: string;
 }
 
-interface FormProps extends FormComponentProps { }
+interface FormProps extends FormComponentProps {}
 type StateProps = ReturnType<typeof mapState>;
 type Props = StateProps & UmiComponentProps & FormProps;
 
@@ -55,7 +55,7 @@ class EditUser extends React.Component<Props, State> {
     };
   }
   setupDuties = () => {
-    const { allDuties,infoCardList } = this.props;
+    const { allDuties, infoCardList } = this.props;
     const { getFieldDecorator } = this.props.form;
     return (
       <Form.Item label="职务">
@@ -92,7 +92,7 @@ class EditUser extends React.Component<Props, State> {
               message: '请选择保密等级',
             },
           ],
-          initialValue:infoCardList.securityLevelId,
+          initialValue: infoCardList.securityLevelId,
         })(
           <Select placeholder="请选择保密等级">
             {allSecretLevel.map((level, index) => (
@@ -138,7 +138,7 @@ class EditUser extends React.Component<Props, State> {
     this.setState({ userTypes });
     const dutiesResp = await getAllDuties();
     const secretsLevelsResp = await getAllSecretLevels();
-    const allPositions = await getAllPosition()
+    const allPositions = await getAllPosition();
     this.props.dispatch({
       type: 'commonState/update',
       payload: {
@@ -151,7 +151,7 @@ class EditUser extends React.Component<Props, State> {
   render() {
     const props = this.props;
     const { getFieldDecorator, getFieldsError } = this.props.form;
-    const { infoCardList, allPosition } = this.props
+    const { infoCardList, allPosition } = this.props;
     if (this.state.userTypes.length === 0) return null;
     // console.log(infoCardList)
     if (_.isEmpty(props.allDuties) || _.isEmpty(props.allSecretLevel)) return null;
@@ -191,7 +191,6 @@ class EditUser extends React.Component<Props, State> {
                           },
                         ],
                         initialValue: infoCardList.cardNo,
-
                       })(<Input placeholder="请输入身份证号" />)}
                     </Form.Item>
                   </Col>
@@ -207,7 +206,6 @@ class EditUser extends React.Component<Props, State> {
                           },
                         ],
                         initialValue: infoCardList.sex,
-
                       })(
                         <Select placeholder="请选择性别">
                           <Option value="0">男</Option>
@@ -226,7 +224,6 @@ class EditUser extends React.Component<Props, State> {
                           },
                         ],
                         initialValue: infoCardList.address,
-
                       })(<Input placeholder="请输入家庭住址" />)}
                     </Form.Item>
                   </Col>
@@ -242,7 +239,6 @@ class EditUser extends React.Component<Props, State> {
                           },
                         ],
                         initialValue: infoCardList.phone,
-
                       })(<Input placeholder="请输入联系方式" />)}
                     </Form.Item>
                   </Col>
@@ -262,7 +258,7 @@ class EditUser extends React.Component<Props, State> {
                               {option.name}
                             </Option>
                           ))}
-                        </Select>
+                        </Select>,
                       )}
                     </Form.Item>
                   </Col>
@@ -285,7 +281,7 @@ class EditUser extends React.Component<Props, State> {
                               {option.value}
                             </Option>
                           ))}
-                        </Select>
+                        </Select>,
                       )}
                     </Form.Item>
                   </Col>
@@ -335,7 +331,6 @@ class EditUser extends React.Component<Props, State> {
                           },
                         ],
                         initialValue: infoCardList.id,
-
                       })(<Input placeholder="请输入信息牌ID" />)}
                     </Form.Item>
                   </Col>
@@ -363,7 +358,9 @@ class EditUser extends React.Component<Props, State> {
                   </Col>
                   <Col span={6} className={styles.select_padding_left}>
                     <Form.Item>
-                      <Button className={styles.form_btn} onClick={this.goBack}>返回</Button>
+                      <Button className={styles.form_btn} onClick={this.goBack}>
+                        返回
+                      </Button>
                     </Form.Item>
                   </Col>
                 </Row>
@@ -382,7 +379,7 @@ const mapState = ({ userManager, infoCardManager, commonState }) => {
     allDuties: allDuties,
     allSecretLevel: allSecretLevel,
     allPosition: allPosition,
-    infoCardList: infoCardManager.infoCardList
-  }
+    infoCardList: infoCardManager.infoCardList,
+  };
 };
 export default connect(mapState)(AddUserForm);

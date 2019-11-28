@@ -97,7 +97,15 @@ class AddPollingPoint extends React.Component<Props, State> {
         message.error('填写信息有误 ', values);
         return;
       }
-      const isSuccessed = await updatePollingPoint(Object.assign(pollingPointsRecord, values));
+      const { startTime, endTime, userId = [], ...props } = values;
+      const data = {
+        ...props,
+        startTime: values.startTime
+          ? values.startTime.format('YYYY-MM-DD HH:mm:ss').toString()
+          : '',
+        endTime: values.endTime ? values.endTime.format('YYYY-MM-DD HH:mm:ss').toString() : '',
+      };
+      const isSuccessed = await updatePollingPoint(Object.assign(pollingPointsRecord, data));
       if (isSuccessed) {
         setTimeout(() => router.push('/map-manager/polling-point'), 1000);
       }

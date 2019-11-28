@@ -29,14 +29,14 @@ const columns = [
   // },
   {
     title: '人员类型',
-    dataIndex: 'roleCode',
+    dataIndex: 'roleName',
     // width: '30%',
     className: 'select_text',
     editable: true,
   },
   {
     title: '英文名称',
-    dataIndex: 'roleName',
+    dataIndex: 'roleCode',
     // width: '40%',
     editable: true,
   },
@@ -63,7 +63,6 @@ class PeopelType extends React.Component<Props> {
     });
   }
 
-
   async updateData(data, item) {
     this.props.dispatch({
       type: 'systemSetting/update',
@@ -87,7 +86,7 @@ class PeopelType extends React.Component<Props> {
         //重新请求数据重绘
         self.getUserTypes();
       },
-      onCancel() { },
+      onCancel() {},
     });
   }
 

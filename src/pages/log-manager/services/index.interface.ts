@@ -1,6 +1,6 @@
 export interface GetLogListParams {
-  createTime?: string;
-  updateTime?: string;
+  startTime?: string;
+  endTime?: string;
   pageSize?: number;
   pageNo?: number;
 }

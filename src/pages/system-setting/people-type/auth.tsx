@@ -15,9 +15,9 @@ import styles from './index.less';
 const { Option } = Select;
 const { TreeNode } = Tree;
 import { LEFT_MENUS } from '../../../config/menus';
-const defaultMenuNodes = LEFT_MENUS
+const defaultMenuNodes = LEFT_MENUS;
 
-interface Props extends FormComponentProps { }
+interface Props extends FormComponentProps {}
 interface UserType {
   key?: string;
   value?: string;
@@ -27,11 +27,10 @@ interface UserType {
 interface State {
   userTypes: UserType[];
   expandedKeys: any;
-  selectedKeys: any,
+  selectedKeys: any;
   checkedKeys: any;
   // autoExpandParent:boolean;
 }
-
 
 class UserAuth extends React.Component<Props, State> {
   constructor(props: Props) {
@@ -72,11 +71,11 @@ class UserAuth extends React.Component<Props, State> {
   onSubmit(e) {
     e.preventDefault();
     this.props.form.validateFields(async (err, values) => {
-      const { rolePath, ...props } = values
+      const { rolePath, ...props } = values;
       let data = {
         ...props,
-        rolePath: this.state.checkedKeys
-      }
+        rolePath: this.state.checkedKeys,
+      };
       if (err) {
         message.error('填写信息有误', data);
         return;
@@ -91,7 +90,6 @@ class UserAuth extends React.Component<Props, State> {
   onCancel() {
     router.push('/system-setting/people-type');
   }
-
 
   renderTreeNodes = data =>
     data.map(item => {
@@ -116,32 +114,28 @@ class UserAuth extends React.Component<Props, State> {
               <div className="auth__inner--container">
                 <Row type="flex" justify="space-between">
                   <Col span={12}>
-                    <Form.Item label="人员类型">
-                      {getFieldDecorator('roleId', {
+                    <Form.Item label="角色名称">
+                      {getFieldDecorator('roleName', {
                         // roleName
                         rules: [],
-                        initialValue: (this.state.userTypes.length === 0)?'':this.state.userTypes[0].key,
+                        // initialValue: '',
+                        // this.state.userTypes.length === 0 ? '' : this.state.userTypes[0].key,
                       })(
-                        <Select style={{ width: '2rem' }} className={styles.select_text}>
-                          {this.state.userTypes.map((option, index) => (
-                            <Option value={option.key} key={index}>
-                              {option.value}
-                            </Option>
-                          ))}
-                        </Select>,
+                        <Input placeholder="请输入角色名称" />,
+                        // <Select style={{ width: '2rem' }} className={styles.select_text}>
+                        //   {this.state.userTypes.map((option, index) => (
+                        //     <Option value={option.key} key={index}>
+                        //       {option.value}
+                        //     </Option>
+                        //   ))}
+                        // </Select>,
                       )}
                     </Form.Item>
-
                   </Col>
                   <Col span={12}>
                     <Form.Item label="英文名称">
-                      {getFieldDecorator('roleName', {
-                        rules: [
-                          {
-                            // required: true,
-                            message: '请输入英文名称',
-                          },
-                        ],
+                      {getFieldDecorator('roleCode', {
+                        rules: [],
                       })(<Input placeholder="请输入英文名称" />)}
                     </Form.Item>
                   </Col>
@@ -159,7 +153,7 @@ class UserAuth extends React.Component<Props, State> {
                           onCheck={this.onCheck}
                         >
                           {this.renderTreeNodes(defaultMenuNodes)}
-                        </Tree>
+                        </Tree>,
                       )}
                     </Form.Item>
                   </Col>
@@ -174,7 +168,9 @@ class UserAuth extends React.Component<Props, State> {
                   </Col>
                   <Col span={6} className={styles.select_padding_left}>
                     <Form.Item>
-                      <Button className={styles.form_btn} onClick={this.goBack}>返回</Button>
+                      <Button className={styles.form_btn} onClick={this.goBack}>
+                        返回
+                      </Button>
                     </Form.Item>
                   </Col>
                 </Row>
