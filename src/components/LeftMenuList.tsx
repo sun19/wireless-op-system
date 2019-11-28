@@ -16,21 +16,20 @@ class LeftMenuList extends Component<any> {
   constructor(props) {
     super(props);
     this.state = {
-      // openKeys: ['设置'],
+      // openKeys: ['设置','管理员设置'],
     };
   }
   handleClick = value => {
-    // console.log(value, 'value');
     this.props.dispatch({
       type: 'menu/clickMenuItem',
       payload: {
         current: value.key,
-        openKeys: [value.keyPath[1]],
+        openKeys: value.keyPath,
       },
     });
   };
   onOpenChange = (openKeys: string[]) => {
-    openKeys = openKeys.length > 0 ? openKeys.slice(-1) : [];
+    // openKeys = openKeys.length > 0 ? openKeys.slice(-1) : [];
     // TODO:暂时不做点击`menu`切换路由操作
     this.props.dispatch({
       type: 'menu/changeOpen',
@@ -82,6 +81,7 @@ class LeftMenuList extends Component<any> {
   renderLeftMenu = () => {
     const { menus, rootKeys, openKeys } = this.props;
     return menus.map((leftMenuItem, index) => {
+      // console.log(leftMenuItem.name)
       return (
         <SubMenu
           key={leftMenuItem.name}
@@ -92,10 +92,10 @@ class LeftMenuList extends Component<any> {
               <span className={`${styles.icon_title}`}>
                 {leftMenuItem.name} {rootKeys[index] == leftMenuItem.name}
               </span>
-              <IconFont
+              {/* <IconFont
                 className={`${styles.icon_down}`}
                 type={openKeys == leftMenuItem.name ? 'icon-down1' : 'icon-up1'}
-              />
+              /> */}
             </span>
           }
         >
@@ -105,7 +105,8 @@ class LeftMenuList extends Component<any> {
                 // console.log(item.children, 'item.children');
                 if (item.children && item.children.length > 0) {
                   return (
-                    <Menu.ItemGroup key={item.name} title={`${item.name}  `}>
+             
+                    <SubMenu key={item.name} title={`${item.name}  `} className='sub_menus_second'>
                       {item.children.map(child => {
                         return (
                           <Menu.Item key={child.name}>
@@ -115,7 +116,8 @@ class LeftMenuList extends Component<any> {
                           </Menu.Item>
                         );
                       })}
-                    </Menu.ItemGroup>
+                    </SubMenu>
+       
                   );
                 } else {
                   return (
@@ -139,7 +141,7 @@ class LeftMenuList extends Component<any> {
     return (
       <Menu
         mode="inline"
-        defaultOpenKeys={[openKeys[0] ? openKeys[0] : rootKeys[0]]}
+        defaultOpenKeys={openKeys}
         defaultSelectedKeys={openKeys}
         onClick={this.handleClick}
         selectedKeys={[current]}

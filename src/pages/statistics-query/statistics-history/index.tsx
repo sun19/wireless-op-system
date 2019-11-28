@@ -1,5 +1,5 @@
 /**
- * title: 统计查询/历史轨迹
+ * title:  显示 > 历史轨迹
  */
 import React from 'react';
 import {

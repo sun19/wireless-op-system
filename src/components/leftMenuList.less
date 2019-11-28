@@ -2,7 +2,6 @@
   background-color: rgba(0, 0, 0, 0);
   font-family: Source Han Sans CN;
   font-weight: 400;
-  color: rgba(229, 229, 229, 1);
   border-width: 0;
 }
 .no_background ul {
@@ -12,58 +11,32 @@
   background-color: rgba(0, 0, 0, 0);
   font-family: Source Han Sans CN;
   font-weight: 400;
-  color: rgba(229, 229, 229, 1);
+  color: #44658C;
   a {
-    color: rgba(229, 229, 229, 1);
+  font-size: 0.2rem;//系统字体设定
+
+    color: #44658C;
     display: inline-block;
     height: 32px;
   }
 }
-
-// .sub_menu_list{
-:global(.ant-menu-inline .ant-menu-submenu-title) {
-  width: 206px;
-  height: 60px !important;
-  padding-left: 40px !important ;
-  background: no-repeat url(../assets/homepage/04-normal.png);
-  color: #00d8ff;
-  background-size: 206px 60px;
-
-  // background-size: cover;
+:global(.ant-menu-inline .ant-menu-submenu-title ) {
+  font-size: 0.3rem;//系统字体设定
+  font-weight: 600;
+  color:#00D8FF;
 }
-.no_background {
-  :global(li.ant-menu-submenu-open .ant-menu-submenu-title) {
-    width: 206px;
-    height: 60px !important;
-    padding-left: 40px !important ;
-    background: no-repeat url(../assets/homepage/03-chose.png);
-    color: rgba(251, 117, 52, 1);
-    background-size: 206px 60px;
+:global(.ant-menu-sub .ant-menu-submenu-inline div.ant-menu-submenu-title){
+  font-size: 0.25rem;//系统字体设定
+  font-weight: 400;
+  color:#71C9D9;
 
-    :global(:visited) {
-      background: url(../assets/homepage/03-chose.png);
-      color: rgba(251, 117, 52, 1);
-      background-size: 206px 60px;
-    }
-    span {
-      padding-bottom: 10px;
-    }
-  }
+
 }
-
 :global(.ant-menu-submenu-title:hover) {
   color: white;
 }
 :global(.ant-menu-item:active) {
   background: rgba(0, 0, 0, 0);
-}
-:global(.ant-menu-submenu-inline > .ant-menu-submenu-title .ant-menu-submenu-arrow) {
-  display: none;
-}
-:global(li.no_background .ant-menu-submenu-title:active) {
-  background: url(../assets/homepage/04-normal.png);
-  background-size: 206px 60px;
-  border: 0px;
 }
 
 :global(.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected) {
@@ -75,9 +48,7 @@
     border-image-slice: 30% 0%;
     background-size: repeat;
     padding-bottom: 3px;
-    color: #fb7534 !important;
-    border-bottom-style: dashed;
-    border-image: url(../assets/homepage/21-light.png) 15 stretch;
+    color: #FFFFFF !important;
   }
 }
 
@@ -94,23 +65,45 @@
   }
   .icon_down {
     position: absolute;
-    /* position: relative; */
     padding: 0px;
     padding-left: 0px;
     margin-left: 13px;
     margin-top: 15px;
     font-size: 6px !important;
   }
-  // ul.ant-menu {
-  //   li.ant-menu-item {
-  //     a.menu_item {
-  //       display: block;
-  //       color: rgba(251, 117, 52, 1) !important ;
-  //     }
-  //   }
-  // }
+ 
 }
-:global(.ant-menu-item-group-title) {
-  color: #40a9ff;
-  font-weight: bold;
+
+:global(.ant-menu-submenu-inline > .ant-menu-submenu-title .ant-menu-submenu-arrow::before){
+  transform: rotate(-55deg) translateX(5px);
+}:global(
+.ant-menu-submenu-inline > .ant-menu-submenu-title .ant-menu-submenu-arrow::after){
+  transform: rotate(55deg) translateX(-5px);
 }
+ :global(.ant-menu-submenu-inline > .ant-menu-submenu-title .ant-menu-submenu-arrow::after){
+      width: 12px;
+    height: 2.8px;
+}
+ :global(.ant-menu-submenu-inline > .ant-menu-submenu-title .ant-menu-submenu-arrow::before){
+       width: 12px;
+    height: 2.8px;
+}
+ :global(.ant-menu-submenu-inline > .ant-menu-submenu-title:hover .ant-menu-submenu-arrow::after){
+       background-image: linear-gradient(to right,#fff, #fff);
+
+}
+ :global(.ant-menu-submenu-inline > .ant-menu-submenu-title:hover .ant-menu-submenu-arrow::before){
+    background-image: linear-gradient(to right,#fff, #fff);
+
+}
+:global(.ant-menu-submenu-open.ant-menu-submenu-inline > .ant-menu-submenu-title .ant-menu-submenu-arrow::before){
+  transform: rotate(55deg) translateX(5px);
+  top: -2px;
+}
+:global(.ant-menu-submenu-open.ant-menu-submenu-inline > .ant-menu-submenu-title .ant-menu-submenu-arrow::after){
+  transform: rotate(-55deg) translateX(-5px);
+  top: -2px;
+}
+ :global(  .ant-menu-submenu-title .anticon){
+   font-size: 0.28rem;
+ }

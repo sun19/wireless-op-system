@@ -1,5 +1,5 @@
 /**
- * title: 信息牌设置
+ * title: 设置 > 管理员设置 > 信息牌设置
  */
 import React from 'react';
 import { Layout, Modal, Form, Input, Row, Col, Button, Icon } from 'antd';

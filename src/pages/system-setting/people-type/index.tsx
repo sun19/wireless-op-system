@@ -1,5 +1,5 @@
 /**
- * title: 人员类型
+ * title: 显示 > 人员类型
  */
 import React from 'react';
 import { Layout, Modal, Form, Input, Row, Col, Button, Icon } from 'antd';

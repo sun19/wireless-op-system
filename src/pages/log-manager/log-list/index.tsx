@@ -1,5 +1,5 @@
 /**
- * title: 日志管理
+ * title: 应用 > 日志管理
  */
 import React from 'react';
 import { Layout, Form, message, Row, Col, DatePicker, Button, Icon } from 'antd';

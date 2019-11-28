@@ -1,5 +1,5 @@
 /**
- * title: 告警类型
+ * title: 显示 > 告警类型
  */
 import React from 'react';
 import { Layout, Modal, Form, Input, Row, Col, Select, Button, Icon } from 'antd';

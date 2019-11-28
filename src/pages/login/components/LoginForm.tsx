@@ -1,6 +1,6 @@
 import React from 'react';
 import router from 'umi/router';
-import { Form, Icon, Input, Row, Col, Radio, Button, message } from 'antd';
+import { Form, Icon, Input, Row, Col, Radio, Button, Alert, message } from 'antd';
 import request, { format } from '@/utils/request';
 import { connect } from 'dva';
 
@@ -34,7 +34,7 @@ class NormalLoginForm extends React.Component<Props> {
   constructor(props: any) {
     super(props);
     this.state = {
-      value: 1,
+      value: '1',
     };
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -45,10 +45,11 @@ class NormalLoginForm extends React.Component<Props> {
         let data = {
           username: values.username,
           password: values.password,
+          roleId:this.state.value
         };
         this.showLoadingMessage();
         const resp = await request(
-          `http://47.96.112.31:8086/jeecg-boot/intf/location/login?username=${data.username}&password=${data.password}`,
+          `http://47.96.112.31:8086/jeecg-boot/intf/location/login?username=${data.username}&password=${data.password}&roleId=${this.state.value}`,
           {
             method: 'GET',
           },
@@ -57,10 +58,10 @@ class NormalLoginForm extends React.Component<Props> {
           const token = resp.result.token;
           localStorage.setItem('token', token);
           await this.preFetchAllCommonState();
-          router.push('/big-screen/homepage');
+          setTimeout(() => router.push('/big-screen/homepage'),1000)
+          message.success('恭喜您，登录成功!', 100);
         } else {
-          this.showErrorMessage('账号或密码输入不正常，登录失败');
-          await this.preFetchAllCommonState();
+          message.warning('登录失败!请重新登录！',5);
         }
       }
     });
@@ -92,16 +93,12 @@ class NormalLoginForm extends React.Component<Props> {
   }
 
   showLoadingMessage() {
-    message.loading('努力登录中...', 0);
+    message.loading('努力登录中...');
   }
 
-  showMessage() {
-    message.success('恭喜您，登录成功!', 1000);
-  }
-
-  showErrorMessage(msg: string) {
-    message.error(msg, 1000);
-  }
+  // showErrorMessage(msg: string) {
+  //   message.error(msg, 1000);
+  // }
 
   componentWillUnmount() {
     message.destroy();

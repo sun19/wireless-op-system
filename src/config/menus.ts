@@ -89,7 +89,7 @@ export const LEFT_MENUS = [
   {
     name: '应用',
     key: '01',
-    icon: 'icon-system1',
+    icon: 'icon-polling1',
     path: 'use',
     component: 'use',
     children: [
@@ -123,7 +123,7 @@ export const LEFT_MENUS = [
     key: '01',
     path: 'show',
     component: 'show',
-    icon: 'icon-system1',
+    icon: 'icon-show1',
     children: [
       {
         name: '用户管理',

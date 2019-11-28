@@ -1,5 +1,5 @@
 /**
- * title: 信息牌列表
+ * title: 显示 > 信息牌列表
  */
 import React from 'react';
 import { Layout, Modal, Form, Input, Row, message, Tag, Select, Button, Icon } from 'antd';

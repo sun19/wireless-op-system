@@ -12,15 +12,27 @@ body {
 :global(.ant-menu-submenu-open.ant-menu-submenu-inline
     > .ant-menu-submenu-title
     .ant-menu-submenu-arrow::before) {
-  background-image: linear-gradient(to right, rgba(251, 117, 52, 1), rgba(251, 117, 52, 1));
+  background-image: linear-gradient(to right,#00D8FF,#00D8FF);
 }
 
 :global(.ant-menu-submenu-open.ant-menu-submenu-inline
     > .ant-menu-submenu-title
     .ant-menu-submenu-arrow::after) {
-  background-image: linear-gradient(to right, rgba(251, 117, 52, 1), rgba(251, 117, 52, 1));
+  background-image: linear-gradient(to right,#00D8FF, #00D8FF);
 }
 
+:global(.ant-menu-submenu-open.ant-menu-submenu-inline
+    > .ant-menu-submenu-title:hover
+    .ant-menu-submenu-arrow::before) {
+  background-image: linear-gradient(to right,#fff,#fff);
+}
+
+:global(.ant-menu-submenu-open.ant-menu-submenu-inline
+    > .ant-menu-submenu-title:hover
+    .ant-menu-submenu-arrow::after) {
+  background-image: linear-gradient(to right,#fff, #fff);
+}
+ 
 .fade-enter {
   opacity: 0;
   z-index: 1;
@@ -88,4 +100,9 @@ body {
       }
     }
   }
+}
+ 
+
+:global(.ant-table-column-title){
+  font-size: 0.17rem
 }

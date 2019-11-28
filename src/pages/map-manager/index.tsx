@@ -1,6 +1,4 @@
-/**
- * title: 地图管理
- */
+
 import React from 'react';
 import Konva from 'konva';
 import { Stage, Layer, Image as ImageLayer } from 'react-konva';

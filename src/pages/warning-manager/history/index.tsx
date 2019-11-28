@@ -1,5 +1,5 @@
 /**
- * title: 历史告警
+ * title: 显示 > 历史告警
  */
 import React from 'react';
 import { Layout, Form, Input, Row, Col, TimePicker, Button, DatePicker, Icon } from 'antd';

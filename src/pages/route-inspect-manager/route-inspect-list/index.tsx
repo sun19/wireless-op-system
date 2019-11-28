@@ -1,5 +1,5 @@
 /**
- * title: 巡检列表
+ * title: 应用 > 巡检列表
  */
 import React from 'react';
 import { Layout, Form, Select, Input, Row, Col, TimePicker, Button, DatePicker, Icon } from 'antd';
