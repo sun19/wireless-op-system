@@ -29,7 +29,7 @@ const BasicLayout: React.FC = (props: any) => {
   }
   return (
     <Layout className={[`${styles.layout}`, `${styles.no_background}`].join(' ')}>
-      <Sider className={[`${styles.left_bar_bg}`].join(' ')} width="258">
+      <Sider className={[`${styles.left_bar_bg}`].join(' ')} width="280">
         <AppTitle />
         <LeftMenuList />
       </Sider>
