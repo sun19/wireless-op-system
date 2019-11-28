@@ -1,6 +1,8 @@
 import React, { Component, Props } from 'react';
 import { Row, Col, Radio, Input, Icon, Layout, Form } from 'antd';
 import moment from 'moment';
+import request, { format } from '@/utils/request';
+
 
 import WrappedNormalLoginForm from './components/LoginForm';
 import styles from './index.less';
@@ -13,6 +15,7 @@ const IconFont = Icon.createFromIconfontCN({
 });
 
 interface State {
+  title:string;
   year: string;
   time?: string[];
 }
@@ -23,6 +26,7 @@ export default class Login extends Component {
     super(props);
     const time = new Date();
     this.state = {
+      title:'',
       year: this.getYear(time),
       time: '',
     } as State;
@@ -42,7 +46,20 @@ export default class Login extends Component {
       .split('')
       .filter(str => str !== ':');
   };
+  async gettitle(){
+    const resp = await request(
+      ' http://47.96.112.31:8086/jeecg-boot/intf/location/getSystemLogoTitle',
+      {
+        method: 'GET',
+      },
+    );
+    // console.log(resp)
+    if (resp.isShow==='0'){
+      this.setState({ title:resp.content})
+    }
+    }
   componentDidMount() {
+    this.gettitle()
     this.timer = setInterval(() => {
       const time = new Date();
       this.setState({
@@ -92,7 +109,7 @@ export default class Login extends Component {
           </Row>
         </Content>
         <Footer className={[`${styles.no_bg}`].join(' ')}>
-          <div className={styles.foot_text}>©智谷光频产业研究院</div>
+          <div className={styles.foot_text}>{this.state.title}</div>
         </Footer>
       </Layout>
     );
