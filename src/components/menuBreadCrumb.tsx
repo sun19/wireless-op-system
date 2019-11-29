@@ -10,16 +10,15 @@ class MenuBreadCrumb extends React.Component<any, any> {
   render() {
     const { breadcrumbs } = this.props;
   let titles = breadcrumbs.map(({ title, match }) => (title))
- 
-  
-    const childrens = _.compact(titles)[1].split('>')
+    let childrens=[];
+    if (!!_.compact(titles)[1]) {
+       childrens =   _.compact(titles)[1].split('>')
+    }
     return (
       <Breadcrumb separator=">" className={styles.bread_box}>
         {childrens.map((title, index ) => (
           <Breadcrumb.Item className={styles.current_item} key={index}>
-       {
-              index === childrens.length-1 ? < span className={styles.last_child}> {title}</span> : <span> {title}</span>}
-
+       {index === childrens.length-1 ? < span className={styles.last_child}> {title}</span> : <span> {title}</span>}
           </Breadcrumb.Item>
         ))}
       </Breadcrumb>
