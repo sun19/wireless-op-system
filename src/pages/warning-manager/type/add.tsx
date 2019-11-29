@@ -78,7 +78,7 @@ class UserAuth extends React.Component<Props, State> {
     return new Promise(resolve => {
       const mapImage = new Image();
       mapImage.src = require('../../big-screen/assets/map.png');
-      mapImage.onload = function() {
+      mapImage.onload = function () {
         resolve(mapImage);
       };
     });
@@ -130,13 +130,9 @@ class UserAuth extends React.Component<Props, State> {
       const { startTime, endTime, overrunTime, ...props } = values;
       const data = {
         ...props,
-        startTime: values.startTime
-          ? values.startTime.format('YYYY-MM-DD HH:mm:ss').toString()
-          : '',
-        endTime: values.endTime ? values.endTime.format('YYYY-MM-DD HH:mm:ss').toString() : '',
-        overrunTime: values.overrunTime
-          ? values.overrunTime.format('YYYY-MM-DD HH:mm:ss').toString()
-          : '',
+        startTime: values.startTime&&values.startTime.format('YYYY-MM-DD HH:mm:ss').toString()||'',
+        endTime: values.endTime&&values.endTime.format('YYYY-MM-DD HH:mm:ss').toString()||'',
+        overrunTime: values.overrunTime&&values.overrunTime.format('YYYY-MM-DD HH:mm:ss').toString()||'',
       };
 
       await wraningTypeAdd(data);

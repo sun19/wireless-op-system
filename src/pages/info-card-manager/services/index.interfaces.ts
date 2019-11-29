@@ -37,9 +37,9 @@ export interface AddInfoList {
 
   // 表格
 export interface GetTaskList {
-  remark: string;
-  informationBoardName: string;
-  task: string;
+  remark?: string;
+  informationBoardName?: string;
+  task?: string;
   pageNo?: number;
   pageSize?: number;
 }

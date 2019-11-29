@@ -3,10 +3,12 @@
  */
 import React from 'react';
 import { Layout, Modal, Form, Input, Row, Col, Select, Button, Alert, message, Icon } from 'antd';
+import router from 'umi/router';
 import * as _ from 'lodash';
 import { connect } from 'dva';
 import { UmiComponentProps } from '@/common/type';
 import { FormComponentProps } from 'antd/lib/form';
+
 
 import MainContent from '../components/MainContent';
 import { ICON_FONTS_URL } from '../../../config/constants';
@@ -29,16 +31,6 @@ type StateProps = ReturnType<typeof mapState>;
 type Props = StateProps & UmiComponentProps & FormProps;
 
 const columns = [
-  // {
-  //   title: '序号',
-  //   dataIndex: 'id',
-  //   editable: true,
-  // },
-  {
-    title: '姓名',
-    dataIndex: 'name',
-    editable: true,
-  },
   {
     title: '信息牌编号',
     dataIndex: 'informationBoardName',
@@ -49,6 +41,10 @@ const columns = [
     className: 'select_text',
     dataIndex: 'task',
     editable: true,
+    render(item) {
+      return (['巡更路线', '责任区', '禁止区'][item])
+    }
+   
   },
   {
     title: '开始时间',
@@ -59,6 +55,10 @@ const columns = [
     title: '结束时间',
     dataIndex: 'endTime',
     editable: true,
+  }, {
+    title: '备注',
+    dataIndex: 'remark',
+    editable: true,
   },
 ];
 interface State {
@@ -67,12 +67,13 @@ interface State {
   task: string;
   pageNo?: number;
   taskTypes?: any[];
+  remark?: string;
 }
 class TaskPlan extends React.Component<Props, State> {
   constructor(props: any) {
     super(props);
     this.updateData = this.updateData.bind(this);
-    // this.deleteColumn = this.deleteColumn.bind(this);
+    this.deleteColumn = this.deleteColumn.bind(this);
     this.state = {
       name: '',
       informationBoardName: '',
@@ -106,12 +107,16 @@ class TaskPlan extends React.Component<Props, State> {
     });
   }
   async updateData(data, item) {
-    const resp = await TaskListEdit(item);
-    if (resp) {
-      message.success('修改成功！');
-      this.getTaskListData();
-    }
+    router.push('/info-card-manager/task-planning/edit');
+    this.props.dispatch({
+      type: 'infoCardManager/update',
+      payload: { editData: data },
+    });
+  
   }
+  addUser = () => {
+    router.push('/info-card-manager/task-planning/add');
+  };
   // 删除
   deleteColumn(item: DelTaskList) {
     //TODO:修改人ID
@@ -125,7 +130,7 @@ class TaskPlan extends React.Component<Props, State> {
       async onOk() {
         await delTaskList({ id: item.id });
         //重新请求数据重绘
-        self.updateData('data', item);
+        self.getTaskListData()
       },
       onCancel() {},
     });
@@ -211,11 +216,11 @@ class TaskPlan extends React.Component<Props, State> {
                   </Button>
                 </span>
                 {/* TODO:任务规划缺少UI界面 */}
-                {/* <span className={[`${publicStyles.form_btns}`].join(' ')}>
+                <span className={[`${publicStyles.form_btns}`].join(' ')} onClick={this.addUser}>
                   <span className={[`${publicStyles.form_btn_add}`].join('')}>
                     <IconFont type="icon-plus" />
                   </span>
-                </span> */}
+                </span>
               </Row>
             </Form>
           </div>

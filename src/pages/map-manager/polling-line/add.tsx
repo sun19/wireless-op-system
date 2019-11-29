@@ -199,10 +199,8 @@ class AddPollingLine extends React.Component<Props, State> {
       const { startTime, endTime, ...props } = values;
       const data = {
         ...props,
-        startTime: values.startTime
-          ? values.startTime.format('YYYY-MM-DD HH:mm:ss').toString()
-          : '',
-        endTime: values.endTime ? values.endTime.format('YYYY-MM-DD HH:mm:ss').toString() : '',
+        startTime: values.startTime&&values.startTime.format('YYYY-MM-DD HH:mm:ss').toString()||'',
+        endTime: values.endTime&&values.endTime.format('YYYY-MM-DD HH:mm:ss').toString()|| '',
         inspectionRoute: values.inspectionRoute.join(','),
       };
 

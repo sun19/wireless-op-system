@@ -9,6 +9,7 @@ export default {
     allAreas: [],
     allDuties: [],
     allSecretLevel: [],
+    route:[],
   },
   reducers: {
     update(state, { payload }) {

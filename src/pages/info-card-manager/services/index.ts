@@ -101,7 +101,9 @@ export async function delTaskList(data: DelTaskList) {
 // 信息牌添加
 export async function addTaskList(data: AddTaskList) {
   const resp = await request.post(ADD_TASK_LIST, {
-    data,
+    // data ,
+    // headers: { 'Content-Type': 'application/json;charset=utf-8' },
+    data: format(data)
   });
   return resp.success === true && resp.code === 200;
 }
