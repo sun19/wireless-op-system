@@ -51,6 +51,9 @@ const columns = [
     dataIndex: 'sex',
     className: 'select_text',
     editable: true,
+    render(value) {
+      return value == 0 ? <span>男</span> : <span>女</span>;
+    },
   },
   {
     title: '家庭住址',
@@ -187,7 +190,7 @@ class UserInside extends React.Component<Props, State> {
 
   deleteColumn(item) {
     //TODO:修改人ID
-    let self = this
+    let self = this;
     confirm({
       title: '确定要删除这条信息吗？',
       content: '',
@@ -199,9 +202,8 @@ class UserInside extends React.Component<Props, State> {
         //重新请求数据重绘
         self.getUserList();
       },
-      onCancel() {
-      },
-    })
+      onCancel() {},
+    });
   }
 
   async getCardNoInfo() {

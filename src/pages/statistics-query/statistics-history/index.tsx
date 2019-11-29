@@ -163,7 +163,7 @@ class StatisticsHistory extends React.Component<Props, State> {
     userTypes = userTypes.map(item => ({
       key: item.id,
       value: item.roleName,
-      roleId: item.roleCode,
+      roleId: item.id,
     }));
     this.setState({ userTypes });
     // this.props.dispatch({
@@ -217,11 +217,10 @@ class StatisticsHistory extends React.Component<Props, State> {
                         message: '请选择人员类型',
                       },
                     ],
-
-                    initialValue: '1',
                   })(
                     <Select
                       // options={this.state.userTypes as OptionValue[]}
+                      placeholder="请选择人员类型"
                       style={{ width: '2rem' }}
                     >
                       {this.state.userTypes.map(item => (
@@ -253,7 +252,11 @@ class StatisticsHistory extends React.Component<Props, State> {
                   >
                     查询
                   </Button>
-                  <Button className={publicStyles.form_btn} style={{ marginLeft: 10 }} onClick={this.handleReset}>
+                  <Button
+                    className={publicStyles.form_btn}
+                    style={{ marginLeft: 10 }}
+                    onClick={this.handleReset}
+                  >
                     清空
                   </Button>
                 </span>

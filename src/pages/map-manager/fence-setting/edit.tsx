@@ -8,6 +8,7 @@ import { connect } from 'dva';
 import Konva from 'konva';
 import { Stage, Layer, Image as ImageLayer, Line as LineLayer } from 'react-konva';
 import router from 'umi/router';
+import moment from 'moment';
 
 import ContentBorder from '../../../components/ContentBorder';
 import { UmiComponentProps } from '@/common/type';
@@ -224,6 +225,7 @@ class FencingSetting extends React.Component<Props, State> {
                   <Form.Item label="生效时间">
                     {getFieldDecorator('effectiveTime', {
                       rules: [],
+                      initialValue: moment(fencingTypesRecord.effectiveTime),
                     })(
                       <DatePicker
                         showTime={true}
@@ -235,6 +237,7 @@ class FencingSetting extends React.Component<Props, State> {
                   <Form.Item label="失效时间">
                     {getFieldDecorator('failureTime', {
                       rules: [],
+                      initialValue: moment(fencingTypesRecord.failureTime),
                     })(
                       <DatePicker
                         showTime={true}

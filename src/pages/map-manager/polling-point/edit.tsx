@@ -22,6 +22,7 @@ import { UmiComponentProps } from '@/common/type';
 // import { InputText, TreeNodeMenu } from '../components';
 
 import styles from './index.less';
+import moment from 'moment';
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -232,6 +233,7 @@ class AddPollingPoint extends React.Component<Props, State> {
                   <Form.Item label="开始时间">
                     {getFieldDecorator('startTime', {
                       rules: [],
+                      initialValue: moment(pollingPointsRecord.startTime),
                     })(
                       <DatePicker
                         showTime={true}
@@ -243,6 +245,7 @@ class AddPollingPoint extends React.Component<Props, State> {
                   <Form.Item label="结束时间">
                     {getFieldDecorator('endTime', {
                       rules: [],
+                      initialValue: moment(pollingPointsRecord.endTime),
                     })(
                       <DatePicker
                         showTime={true}

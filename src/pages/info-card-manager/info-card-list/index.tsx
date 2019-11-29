@@ -147,7 +147,7 @@ class SuperAdmin extends React.Component<Props, State> {
     this.state = {
       userName: '',
       name: '',
-      type: '',
+      type: undefined,
       pageNo: 1,
       hasData: true,
     };
@@ -187,7 +187,7 @@ class SuperAdmin extends React.Component<Props, State> {
 
   deleteColumn(item: DeleteInfo) {
     //TODO:修改人ID
-    let self = this
+    let self = this;
     confirm({
       title: '确定要删除这条信息吗？',
       content: '',
@@ -199,9 +199,8 @@ class SuperAdmin extends React.Component<Props, State> {
         //重新请求数据重绘
         self.getInfoListData();
       },
-      onCancel() {
-      },
-    })
+      onCancel() {},
+    });
   }
 
   async componentDidMount() {
@@ -266,7 +265,7 @@ class SuperAdmin extends React.Component<Props, State> {
     return (
       <div
         style={{ marginTop: '-3px' }}
-      // className={publicStyles.selection}
+        // className={publicStyles.selection}
       >
         <Select
           placeholder="请选择人员类型"

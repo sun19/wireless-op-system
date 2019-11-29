@@ -2,7 +2,7 @@
  * title: 编辑
  */
 import React from 'react';
-import { Form, Row, Col, Button, Input, Select, DatePicker, Cascader } from 'antd';
+import { Form, Row, Col, Button, Input, Select, Cascader } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import { connect } from 'dva';
 import Konva from 'konva';

@@ -35,7 +35,7 @@ class UserAuth extends React.Component<Props> {
   goBack = () => {
     this.props.form.resetFields();
     router.push('/user-manager/user-inside');
-  }; 
+  };
   setupDuties = () => {
     const { allDuties } = this.props;
     const { getFieldDecorator } = this.props.form;
@@ -47,7 +47,7 @@ class UserAuth extends React.Component<Props> {
               message: '请选择职务',
             },
           ],
-          initialValue: allDuties[0].name,
+          initialValue: allDuties[0] && allDuties[0].name,
         })(
           <Select placeholder="请选择职务">
             {allDuties.map((duty, index) => (
@@ -73,7 +73,7 @@ class UserAuth extends React.Component<Props> {
               message: '请选择保密等级',
             },
           ],
-          initialValue: allSecretLevel[0].name,
+          initialValue: allSecretLevel[0] && allSecretLevel[0].name,
         })(
           <Select placeholder="请选择保密等级">
             {allSecretLevel.map((level, index) => (
@@ -90,12 +90,11 @@ class UserAuth extends React.Component<Props> {
   async componentDidMount() {
     const dutiesResp = await getAllDuties();
     const secretsLevelsResp = await getAllSecretLevels();
-
     this.props.dispatch({
       type: 'commonState/update',
       payload: {
         allDuties: dutiesResp.result.records,
-        allSecretLevel: secretsLevelsResp.result.records,
+        allSecretLevel: secretsLevelsResp.result.records || [],
       },
     });
   }
@@ -118,7 +117,7 @@ class UserAuth extends React.Component<Props> {
   render() {
     const props = this.props;
     const { getFieldDecorator } = props.form;
-    if (_.isEmpty(props.allDuties) || _.isEmpty(props.allSecretLevel)) return null;
+    // if (_.isEmpty(props.allDuties) || _.isEmpty(props.allSecretLevel)) return null;
     return (
       <ContentBorder className={styles.auth_root}>
         <Form
@@ -241,7 +240,9 @@ class UserAuth extends React.Component<Props> {
                   </Col>
                   <Col span={6} className={styles.select_padding_left}>
                     <Form.Item>
-                      <Button className={styles.form_btn} onClick={this.goBack}>返回</Button>
+                      <Button className={styles.form_btn} onClick={this.goBack}>
+                        返回
+                      </Button>
                     </Form.Item>
                   </Col>
                 </Row>

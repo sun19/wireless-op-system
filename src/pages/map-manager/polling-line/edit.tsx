@@ -15,6 +15,7 @@ import {
   Line as LineLayer,
 } from 'react-konva';
 import * as _ from 'lodash';
+import moment from 'moment';
 
 import ContentBorder from '../../../components/ContentBorder';
 import { warningTypeSearch } from '@/pages/warning-manager/services';
@@ -316,6 +317,7 @@ class AddPollingLine extends React.Component<Props, State> {
                   <Form.Item label="开始时间">
                     {getFieldDecorator('startTime', {
                       rules: [],
+                      initialValue: moment(pollingLinesRecord.startTime),
                     })(
                       <DatePicker
                         showTime={true}
@@ -327,6 +329,7 @@ class AddPollingLine extends React.Component<Props, State> {
                   <Form.Item label="结束时间">
                     {getFieldDecorator('endTime', {
                       rules: [],
+                      initialValue: moment(pollingLinesRecord.endTime),
                     })(
                       <DatePicker
                         showTime={true}

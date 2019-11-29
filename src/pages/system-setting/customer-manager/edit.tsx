@@ -103,7 +103,7 @@ class EditUser extends React.Component<Props, State> {
     userTypes = userTypes.map(item => ({
       key: item.id,
       value: item.roleName,
-      selectValue: item.roleCode,
+      selectValue: item.id,
     }));
     this.setState({ userTypes });
   }
