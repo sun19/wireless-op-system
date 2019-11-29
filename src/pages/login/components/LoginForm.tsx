@@ -59,9 +59,9 @@ class NormalLoginForm extends React.Component<Props> {
           localStorage.setItem('token', token);
           await this.preFetchAllCommonState();
           setTimeout(() => router.push('/big-screen/homepage'),1000)
-          message.success('恭喜您，登录成功!', 100);
+          message.success(<span style={{ fontSize: '25px' }}  >登录成功！</span>, 1000);
         } else {
-          message.warning('登录失败!请重新登录！',5);
+          message.warning(<span style={{fontSize:'25px'}}  >登录失败!请重新登录！</span>,1000);
         }
       }
     });
@@ -93,7 +93,7 @@ class NormalLoginForm extends React.Component<Props> {
   }
 
   showLoadingMessage() {
-    message.loading('努力登录中...');
+    // message.loading('努力登录中...');
   }
 
   // showErrorMessage(msg: string) {
