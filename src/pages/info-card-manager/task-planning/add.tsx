@@ -1,5 +1,5 @@
 /**
- * title: 发放
+ * title: 设置 > 值班员设置 > 任务规划 > 新增
  */
 import React from 'react';
 import { Form, Row, Col, Button, Input, Select, message, DatePicker } from 'antd';
@@ -48,7 +48,7 @@ interface State {
 function hasErrors(fieldsError) {
   return Object.keys(fieldsError).some(field => fieldsError[field]);
 }
-class AddUser extends React.Component<Props, State> {
+class TaskAdd extends React.Component<Props, State> {
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -105,7 +105,7 @@ class AddUser extends React.Component<Props, State> {
             })(
               <Select placeholder="请选择巡更路线">
                 {route.map(item => (
-                  <Option value={item.id}>{item.name}</Option>
+                  <Option key={item.name} value={item.id}>{item.name}</Option>
                 ))}
               </Select>,
             )}
@@ -235,7 +235,7 @@ class AddUser extends React.Component<Props, State> {
     );
   }
 }
-const AddUserForm = Form.create<Props>({ name: 'add_user' })(AddUser);
+const AddUserForm = Form.create<Props>({ name: 'add_user' })(TaskAdd);
 const mapState = ({ userManager, commonState }) => {
   const { route } = commonState;
   return {

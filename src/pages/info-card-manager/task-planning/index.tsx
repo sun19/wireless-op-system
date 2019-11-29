@@ -148,21 +148,16 @@ class TaskPlan extends React.Component<Props, State> {
     this.getTaskListData();
   };
   setupSelectOptions = records => {
-    // if (records.length === 0) return <Option value="" />;
-    const arr = this.state.taskTypes;
     const { getFieldDecorator } = this.props.form;
-    // if(records){return}
     return (
       <Form.Item label="任务">
         {getFieldDecorator('task', {
           initialValue: '',
         })(
           <Select placeholder="请选择任务" style={{ marginTop: '-3px' }}>
-            {arr.map((item: any) => (
-              <Option value={item.task} key={item.task}>
-                {item.task}
-              </Option>
-            ))}
+            <Option value="0">巡更路线</Option>
+            <Option value="1">责任区</Option>
+            <Option value="2">禁止区</Option>
           </Select>,
         )}
       </Form.Item>

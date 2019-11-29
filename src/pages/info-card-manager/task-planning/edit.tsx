@@ -13,7 +13,7 @@ import ContentBorder from '../../../components/ContentBorder';
 import { UmiComponentProps } from '@/common/type';
 
 import { getPollingLineByName } from '../../map-manager/services';
-import {  TaskListEdit } from '../services';
+import { TaskListEdit } from '../services';
 
 import styles from './index.less';
 
@@ -47,7 +47,7 @@ interface State {
 function hasErrors(fieldsError) {
   return Object.keys(fieldsError).some(field => fieldsError[field]);
 }
-class AddUser extends React.Component<Props, State> {
+class TaskEdit extends React.Component<Props, State> {
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -73,18 +73,18 @@ class AddUser extends React.Component<Props, State> {
         message.error('参数错误', err);
         return;
       }
-    const { editData}=this.props
+      const { editData } = this.props
       // const { startTime, endTime, task, informationBoardName, inspectionId, remark,...propsData}=editData
       const { startTime, endTime, ...props } = values
-      let data={
+      let data = {
         id: editData.id,
         ...props,
-        startTime: values.startTime&&values.startTime.format('YYYY-MM-DD HH:mm:ss').toString()||'',
-        endTime: values.endTime&&values.endTime.format('YYYY-MM-DD HH:mm:ss').toString() ||'',
+        startTime: values.startTime && values.startTime.format('YYYY-MM-DD HH:mm:ss').toString() || '',
+        endTime: values.endTime && values.endTime.format('YYYY-MM-DD HH:mm:ss').toString() || '',
 
       }
- 
-   
+
+
       const isSuccessed = await TaskListEdit(data);
       if (isSuccessed) {
         message.success('修改成功！!', 1000);
@@ -93,37 +93,36 @@ class AddUser extends React.Component<Props, State> {
     });
   };
   getRoute() {
-    const { editData}=this.props
+    const { editData } = this.props
 
     const { getFieldDecorator, getFieldsError } = this.props.form;
     const { route } = this.props
     if (this.props.form.getFieldsValue().task === '0' && route.length > 0) {
       return (
-      <Row type="flex" justify="space-between" >
-        <Col span={12}>
-          <Form.Item label="巡更路线">
-            {getFieldDecorator('inspectionId', {
-              rules: [
-                {
-                  message: '请选择巡更路线',
-                },
-              ],
-              initialValue: editData.inspectionId,
+        <Row type="flex" justify="space-between" >
+          <Col span={12}>
+            <Form.Item label="巡更路线">
+              {getFieldDecorator('inspectionId', {
+                rules: [
+                  {
+                    message: '请选择巡更路线',
+                  },
+                ],
+                initialValue: editData.inspectionId,
 
-            })(
-              <Select placeholder="请选择巡更路线">
-                {route.map(item => (
-                  <Option value={item.id}>{item.name}</Option>
-                ))}
-              </Select>,
-            )}
-          </Form.Item>
-        </Col>
-      </Row >
+              })(
+                <Select placeholder="请选择巡更路线">
+                  {route.map(item => (
+                    <Option value={item.id}>{item.name}</Option>
+                  ))}
+                </Select>,
+              )}
+            </Form.Item>
+          </Col>
+        </Row >
       )
     }
   }
-
   async componentWillMount() {
     const route = await getPollingLineByName({})
     this.props.dispatch({
@@ -133,15 +132,13 @@ class AddUser extends React.Component<Props, State> {
       },
     });
   }
-
   async componentDidMount() {
     this.props.form.validateFields();
 
   }
   render() {
-    // const props = this.props;
     const { getFieldDecorator, getFieldsError } = this.props.form;
-    const { editData}=this.props
+    const { editData } = this.props
     return (
       <ContentBorder className={styles.auth_root}>
         <Form
@@ -192,10 +189,10 @@ class AddUser extends React.Component<Props, State> {
                   <Col span={12}>
                     <Form.Item label="开始时间">
                       {getFieldDecorator(
-                        'startTime',{
+                        'startTime', {
                         initialValue: editData.startTime,
 
-                        },
+                      },
                       )(<DatePicker showTime={true} placeholder="请选择开始时间" />)}
                     </Form.Item>
                   </Col>
@@ -218,7 +215,7 @@ class AddUser extends React.Component<Props, State> {
                 <Row type="flex" justify="space-between">
                   <Col span={24} className="textarea">
                     <Form.Item label="备注">
-                      {getFieldDecorator('remark',{
+                      {getFieldDecorator('remark', {
                         initialValue: editData.remark,
                       })(
                         <TextArea autoSize={{ minRows: 6, maxRows: 8 }} />,
@@ -252,8 +249,8 @@ class AddUser extends React.Component<Props, State> {
     );
   }
 }
-const AddUserForm = Form.create<Props>({ name: 'add_user' })(AddUser);
-const mapState = ({ userManager, commonState, infoCardManager}) => {
+const AddUserForm = Form.create<Props>({ name: 'add_user' })(TaskEdit);
+const mapState = ({ userManager, commonState, infoCardManager }) => {
   const { route } = commonState;
   return {
     route,

@@ -46,7 +46,7 @@ interface State {
 function hasErrors(fieldsError) {
   return Object.keys(fieldsError).some(field => fieldsError[field]);
 }
-class AddUser extends React.Component<Props, State> {
+class AddUsers extends React.Component<Props, State> {
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -350,7 +350,7 @@ class AddUser extends React.Component<Props, State> {
     );
   }
 }
-const AddUserForm = Form.create<Props>({ name: 'add_user' })(AddUser);
+const AddUserForm = Form.create<Props>({ name: 'add_user' })(AddUsers);
 const mapState = ({ userManager, commonState }) => {
   const { allDuties, allSecretLevel } = commonState;
   return {
