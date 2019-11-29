@@ -9,15 +9,16 @@ export const LEFT_MENUS = [
       {
         name: '超级管理员设置',
         key: '055',
-        path: '/system-setting/super-admin',
-        component: './pages/system-setting/super-admin/index.tsx',
-        // children: [
-        //  { name: '字典设置',
-        //   key: '05',
-        //   // path: '/system-setting/super-admin',
-        //   // component: './pages/system-setting/super-admin/index.tsx',
-        // }
-        // ]
+        path: '',
+        component: '',
+        children: [
+          {
+            name: '管理员设置',
+          key: '0555',
+         path: '/system-setting/super-admin',
+          component: './pages/system-setting/super-admin/index.tsx',
+          },
+        ]
       },
       {
         name: '管理员设置',
