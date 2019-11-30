@@ -173,7 +173,7 @@ class AddUser extends React.Component<Props, State> {
                   <Col span={12}>
                     <Form.Item label="性别">
                       {getFieldDecorator('sex', {
-                        initialValue: '男',
+                        initialValue: '0',
                         rules: [
                           {
                             message: '请选择性别',
@@ -186,7 +186,7 @@ class AddUser extends React.Component<Props, State> {
                           className={styles.select_text}
                         >
                           {defaultGenderType.map(option => (
-                            <Option value={option.value} key={option.key}>
+                            <Option value={option.key} key={option.key}>
                               {option.value}
                             </Option>
                           ))}

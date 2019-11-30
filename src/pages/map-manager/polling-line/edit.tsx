@@ -7,6 +7,8 @@ import router from 'umi/router';
 import { FormComponentProps } from 'antd/lib/form';
 import { connect } from 'dva';
 import Konva from 'konva';
+import moment from 'moment';
+
 import {
   Stage,
   Layer,
@@ -23,6 +25,7 @@ import { getAllMap } from '@/pages/login/login.service';
 import { getAllWarningType, updatePollingLine, getMapLamps } from '../services';
 
 import styles from './index.less';
+import { moment } from 'moment';
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -146,7 +149,7 @@ class AddPollingLine extends React.Component<Props, State> {
     //根据已选择的巡检路线，匹配灯具
     const { pollingLinesRecord } = this.props;
     const { inspectionRoute = '' } = pollingLinesRecord;
-    const routes = inspectionRoute.split(',');
+    const routes = inspectionRoute&& inspectionRoute.split(',');
     let showLamps = _.filter(_lamps.records, route => routes.includes(route.id));
     // let showLamps = _lamps.records;
     showLamps = showLamps.map(lamp => ({
@@ -314,6 +317,8 @@ class AddPollingLine extends React.Component<Props, State> {
                   <Form.Item label="开始时间">
                     {getFieldDecorator('startTime', {
                       rules: [],
+                      initialValue: moment(pollingLinesRecord.startTime),
+
                     })(
                       <DatePicker
                         showTime={true}
@@ -325,6 +330,8 @@ class AddPollingLine extends React.Component<Props, State> {
                   <Form.Item label="结束时间">
                     {getFieldDecorator('endTime', {
                       rules: [],
+                      initialValue: moment(pollingLinesRecord.endTime),
+
                     })(
                       <DatePicker
                         showTime={true}

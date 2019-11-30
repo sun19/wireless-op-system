@@ -13,6 +13,8 @@ import {
 } from 'react-konva';
 import { connect } from 'dva';
 import router from 'umi/router';
+import moment from 'moment';
+
 
 import ContentBorder from '../../../components/ContentBorder';
 import { updatePollingPoint } from '../services';
@@ -224,6 +226,8 @@ class AddPollingPoint extends React.Component<Props, State> {
                   <Form.Item label="开始时间">
                     {getFieldDecorator('startTime', {
                       rules: [],
+                      initialValue: moment(pollingPointsRecord.startTime),
+
                     })(
                       <DatePicker
                         showTime={true}
@@ -235,6 +239,9 @@ class AddPollingPoint extends React.Component<Props, State> {
                   <Form.Item label="结束时间">
                     {getFieldDecorator('endTime', {
                       rules: [],
+                      initialValue: moment(pollingPointsRecord.endTime),
+
+
                     })(
                       <DatePicker
                         showTime={true}

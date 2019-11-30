@@ -7,6 +7,7 @@ import { FormComponentProps } from 'antd/lib/form';
 import { connect } from 'dva';
 import * as _ from 'lodash';
 import router from 'umi/router';
+import moment from 'moment';
 
 import ContentBorder from '../../../components/ContentBorder';
 // import { InputText, TreeNodeMenu } from '../components';
@@ -177,9 +178,9 @@ class TaskEdit extends React.Component<Props, State> {
 
                       })(
                         <Select placeholder="请选择任务">
-                          <Option value="0">巡更路线</Option>
-                          <Option value="1">责任区</Option>
-                          <Option value="2">禁止区</Option>
+                          <Option value="0" key='1'>巡更路线</Option>
+                          <Option value="1" key='2'>责任区</Option>
+                          <Option value="2" key='3'>禁止区</Option>
                         </Select>,
                       )}
                     </Form.Item>
@@ -190,7 +191,7 @@ class TaskEdit extends React.Component<Props, State> {
                     <Form.Item label="开始时间">
                       {getFieldDecorator(
                         'startTime', {
-                        initialValue: editData.startTime,
+                          initialValue: moment(editData.startTime),
 
                       },
                       )(<DatePicker showTime={true} placeholder="请选择开始时间" />)}
@@ -199,7 +200,7 @@ class TaskEdit extends React.Component<Props, State> {
                   <Col span={12}>
                     <Form.Item label="结束时间">
                       {getFieldDecorator('endTime', {
-                        initialValue: editData.endTime,
+                        initialValue: moment(editData.endTime),
 
                       })(
                         <DatePicker

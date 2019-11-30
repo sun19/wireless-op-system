@@ -8,6 +8,7 @@ import { connect } from 'dva';
 import Konva from 'konva';
 import { Stage, Layer, Image as ImageLayer, Line as LineLayer } from 'react-konva';
 import router from 'umi/router';
+import moment from 'moment';
 
 import ContentBorder from '../../../components/ContentBorder';
 import { UmiComponentProps } from '@/common/type';
@@ -90,11 +91,11 @@ class UserAuth extends React.Component<Props, State> {
     if (maps.length === 0) return;
     return getFieldDecorator('mapName', {
       rules: [],
-      initialValue: typeRecord.mapName,
+      initialValue: typeRecord.mapId,
     })(
       <Select placeholder="请选择所属地图">
         {maps.map(item => (
-          <Option value={item.name} key={item.name}>
+          <Option value={item.id} key={item.name}>
             {item.name}
           </Option>
         ))}
@@ -105,13 +106,13 @@ class UserAuth extends React.Component<Props, State> {
     let { areas, typeRecord } = this.props;
     const { getFieldDecorator } = this.props.form;
     if (areas.length === 0) return;
-    return getFieldDecorator('regionalName', {
+    return getFieldDecorator('regionalId', {
       rules: [],
-      initialValue: typeRecord.mapName,
+      initialValue: typeRecord.regionalId,
     })(
       <Select placeholder="请选择所属区域">
         {areas.map(item => (
-          <Option value={item.name} key={item.name}>
+          <Option value={item.id} key={item.name}>
             {item.name}
           </Option>
         ))}
@@ -181,6 +182,7 @@ class UserAuth extends React.Component<Props, State> {
                   <Form.Item label="开始时间">
                     {getFieldDecorator('startTime', {
                       rules: [],
+                      initialValue: moment(typeRecord.startTime)
                     })(
                       <DatePicker
                         showTime={true}
@@ -193,6 +195,8 @@ class UserAuth extends React.Component<Props, State> {
                   <Form.Item label="结束时间">
                     {getFieldDecorator('endTime', {
                       rules: [],
+                      initialValue:moment(typeRecord.endTime)
+
                     })(
                       <DatePicker
                         showTime={true}
@@ -222,6 +226,7 @@ class UserAuth extends React.Component<Props, State> {
                   <Form.Item label="超限时间">
                     {getFieldDecorator('overrunTime', {
                       rules: [],
+                      initialValue: moment(typeRecord.overrunTime)
                     })(
                       <DatePicker
                         showTime={true}
@@ -236,7 +241,7 @@ class UserAuth extends React.Component<Props, State> {
                       rules: [],
                       initialValue: typeRecord.repeatType,
                     })(
-                      <Select placeholder="每天">
+                      <Select placeholder="请选择重复类型">
                         {repeatTypes.map(type => (
                           <Option value={type.dictValue} key={type.dictValue}>
                             {type.dictName}
@@ -250,7 +255,7 @@ class UserAuth extends React.Component<Props, State> {
                       rules: [],
                       initialValue: typeRecord.warnMode,
                     })(
-                      <Select placeholder="弹框">
+                      <Select placeholder="请选择告警方式">
                         {warningTypes.map(type => (
                           <Option value={type.dictValue} key={type.dictValue}>
                             {type.dictName}

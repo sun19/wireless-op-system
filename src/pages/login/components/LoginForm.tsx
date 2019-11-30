@@ -12,7 +12,7 @@ import {
   getAllLevels,
   getAllUserInfo,
   getAllFencingTypes,
-  getAllDuties,
+  getAllPosition,
   getAllSecretLevels,
 } from '../login.service';
 import { UmiComponentProps } from '@/common/type';
@@ -74,7 +74,7 @@ class NormalLoginForm extends React.Component<Props> {
     const levelsResp = await getAllLevels();
     const userInfoResp = await getAllUserInfo();
     const fencingTypesResp = await getAllFencingTypes();
-    const dutiesResp = await getAllDuties();
+    const dutiesResp = await getAllPosition();
     const secretsLevelsResp = await getAllSecretLevels();
 
     this.props.dispatch({
@@ -86,8 +86,8 @@ class NormalLoginForm extends React.Component<Props> {
         allLevels: levelsResp.result,
         allFencingTypes: fencingTypesResp.result,
         allAreas: areasResp.result,
-        allDuties: dutiesResp.result.records,
-        allSecretLevel: secretsLevelsResp.result.records,
+        allDuties: dutiesResp.result,
+        allSecretLevel: secretsLevelsResp.result,
       },
     });
   }

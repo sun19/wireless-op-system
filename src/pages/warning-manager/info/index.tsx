@@ -50,7 +50,7 @@ const columns = [
   },
   {
     title: '告警方式',
-    dataIndex: 'alarmType',
+    dataIndex: 'alarmTypeName',
     editable: true,
   },
 ];

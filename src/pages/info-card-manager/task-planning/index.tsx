@@ -15,7 +15,7 @@ import { ICON_FONTS_URL } from '../../../config/constants';
 import styles from './index.less';
 import publicStyles from '../index.less';
 import { getTaskList, delTaskList, TaskListEdit } from '../services';
-// import { getAllDuties, getAllSecretLevels } from '@/pages/login/login.service';
+// import { getAllPosition, getAllSecretLevels } from '@/pages/login/login.service';
 import { DelTaskList } from '../services/index.interfaces';
 
 const { confirm } = Modal;

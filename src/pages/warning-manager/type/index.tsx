@@ -75,13 +75,13 @@ const columns = [
   },
   {
     title: '重复类型',
-    dataIndex: 'repeatType',
+    dataIndex: 'repeatTypeName',
     // className: 'select_text',
     editable: true,
   },
   {
     title: '告警方式',
-    dataIndex: 'warnMode',
+    dataIndex: 'warnModeName',
     // className: 'select_text',
     editable: true,
   },

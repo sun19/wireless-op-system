@@ -53,8 +53,8 @@ const columns = [
     // width: '5%',
     className: 'select_text',
     editable: true,
-    render(sex) {
-      return sex == '0' ? <span>男</span> : <span>女</span>;
+    render: onlineStatus => {
+      return ['男', '女'][onlineStatus]
     },
   },
   {

@@ -58,7 +58,12 @@ export const COMMON_GET_ALL_DUTIES =
 export const COMMON_GET_ALL_SECRET_LEVELS =
   `${BASE_API_URL}/jeecg-boot/intf/location/queryAllSecurityLevel`;
 /**
- * 获取所有部门
+ * 获取所有职务
  */
 export const COMMON_GET_ALL_POSITION =
   `${BASE_API_URL}/jeecg-boot/intf/location/queryAllPosition`
+/**
+ * 获取所有部门
+ */
+export const COMMON_GET_ALL_DEPARTMENT =
+  `${BASE_API_URL}/jeecg-boot/intf/location/queryAllDept`

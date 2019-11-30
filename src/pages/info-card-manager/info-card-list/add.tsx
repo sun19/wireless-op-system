@@ -15,7 +15,7 @@ import { UmiComponentProps } from '@/common/type';
 import SelectText from '../components/SelectText';
 import { OptionValue } from '../components/SelectText';
 import { getAllRoles } from '../../system-setting/services';
-import { getAllDuties, getAllSecretLevels } from '@/pages/login/login.service';
+import { getAllPosition, getAllSecretLevels, getAllDepartment } from '@/pages/login/login.service';
 import { addInfoList } from '../services';
 
 import styles from './index.less';
@@ -59,18 +59,19 @@ class AddUsers extends React.Component<Props, State> {
     const { getFieldDecorator } = this.props.form;
     return (
       <Form.Item label="职务">
-        {getFieldDecorator('positionName', {
+        {getFieldDecorator('positionId', {
           rules: [
             {
               // required: true,
               message: '请选择职务',
             },
           ],
-          initialValue: allDuties[0].name,
+            initialValue: allDuties && allDuties[0] && allDuties[0].id||'',
+
         })(
           <Select placeholder="请选择职务">
-            {allDuties.map((duty, index) => (
-              <Option value={duty.name} key={index}>
+            {allDuties&&allDuties.map((duty, index) => (
+              <Option value={duty.id} key={index}>
                 {duty.name}
               </Option>
             ))}
@@ -82,21 +83,20 @@ class AddUsers extends React.Component<Props, State> {
   setupAllSecretLevel = () => {
     const { allSecretLevel } = this.props;
     const { getFieldDecorator } = this.props.form;
-
     return (
       <Form.Item label="保密等级">
-        {getFieldDecorator('securityLevelName', {
+        {getFieldDecorator('securityLevelId', {
           rules: [
             {
               // required: true,
               message: '请选择保密等级',
             },
           ],
-          initialValue: allSecretLevel[1].name,
+          initialValue: allSecretLevel && allSecretLevel[1]&& allSecretLevel[1].id||'',
         })(
           <Select placeholder="请选择保密等级">
             {allSecretLevel.map((level, index) => (
-              <Option value={level.name} key={index}>
+              <Option value={level.id} key={index}>
                 {level.name}
               </Option>
             ))}
@@ -136,21 +136,26 @@ class AddUsers extends React.Component<Props, State> {
       roleId: item.id,
     }));
     this.setState({ userTypes });
-    const dutiesResp = await getAllDuties();
+    const dutiesResp = await getAllPosition();
     const secretsLevelsResp = await getAllSecretLevels();
+    const allPositions = await getAllDepartment()
+
     this.props.dispatch({
       type: 'commonState/update',
       payload: {
-        allDuties: dutiesResp.result.records,
+        allDuties: dutiesResp.result,
         allSecretLevel: secretsLevelsResp.result,
+        allPosition: allPositions,
+
       },
     });
   }
   render() {
     const props = this.props;
     const { getFieldDecorator, getFieldsError } = this.props.form;
-    if (this.state.userTypes.length === 0) return null;
-    if (_.isEmpty(props.allDuties) || _.isEmpty(props.allSecretLevel)) return null;
+    // if (this.state.userTypes.length === 0) return null;
+    // if (_.isEmpty(props.allDuties) || _.isEmpty(props.allSecretLevel)) return null;
+    const { allPosition } = this.props
 
     return (
       <ContentBorder className={styles.auth_root}>
@@ -199,7 +204,7 @@ class AddUsers extends React.Component<Props, State> {
                             message: '请选择性别',
                           },
                         ],
-                        initialValue: '男',
+                        initialValue: '0',
                       })(
                         <Select placeholder="请选择性别">
                           <Option value="0">男</Option>
@@ -239,11 +244,19 @@ class AddUsers extends React.Component<Props, State> {
                       {getFieldDecorator('departmentId', {
                         rules: [
                           {
-                            //required: true,
-                            message: '请选输入部门',
+                            message: '请选择部门',
                           },
                         ],
-                      })(<Input placeholder="请输入部门" />)}
+                        initialValue: allPosition && allPosition[0] && allPosition[0].id||'',
+                      })(
+                        <Select placeholder="请选择部门">
+                          {allPosition && allPosition.map(option => (
+                            <Option value={option.id} key={option.key}>
+                              {option.name}
+                            </Option>
+                          ))}
+                        </Select>
+                      )}
                     </Form.Item>
                   </Col>
                 </Row>
@@ -258,7 +271,7 @@ class AddUsers extends React.Component<Props, State> {
                             message: '请选择人员类型',
                           },
                         ],
-                        initialValue: this.state.userTypes[0].roleId || '管理员',
+                        initialValue: this.state.userTypes && this.state.userTypes[0]&& this.state.userTypes[0].roleId || '',
                       })(
                         <SelectText
                           options={this.state.userTypes as OptionValue[]}
@@ -278,7 +291,7 @@ class AddUsers extends React.Component<Props, State> {
                             message: '请选择在职状态',
                           },
                         ],
-                        initialValue: '在职',
+                        initialValue: '0',
                       })(
                         <Select placeholder="请选择在职状态">
                           <Option value="0">在职</Option>
@@ -302,23 +315,11 @@ class AddUsers extends React.Component<Props, State> {
                       })(<Input placeholder="请输入信息牌编号" />)}
                     </Form.Item>
                   </Col>
-                  <Col span={12}>
-                    <Form.Item label="信息牌ID">
-                      {getFieldDecorator('id', {
-                        rules: [
-                          {
-                            //required: true,
-                            message: '请选输入信息牌ID',
-                          },
-                        ],
-                      })(<Input placeholder="请输入信息牌ID" />)}
-                    </Form.Item>
-                  </Col>
                 </Row>
                 <Row type="flex" justify="space-between">
                   <Col span={24} className="textarea">
                     <Form.Item label="备注">
-                      {getFieldDecorator('note')(
+                      {getFieldDecorator('remark')(
                         <TextArea autoSize={{ minRows: 6, maxRows: 8 }} />,
                       )}
                     </Form.Item>
@@ -352,9 +353,11 @@ class AddUsers extends React.Component<Props, State> {
 }
 const AddUserForm = Form.create<Props>({ name: 'add_user' })(AddUsers);
 const mapState = ({ userManager, commonState }) => {
-  const { allDuties, allSecretLevel } = commonState;
+  const { allDuties, allSecretLevel, allPosition} = commonState;
   return {
     allDuties: allDuties,
+    allPosition: allPosition,
+
     allSecretLevel: allSecretLevel,
   };
 };

@@ -51,6 +51,9 @@ const columns = [
     dataIndex: 'sex',
     className: 'select_text',
     editable: true,
+    render: onlineStatus => {
+      return  ['男','女'][onlineStatus]
+    },
   },
   {
     title: '家庭住址',
@@ -76,7 +79,7 @@ const columns = [
   },
 
   {
-    title: '保密登记名称',
+    title: '保密等级',
     dataIndex: 'securityLevelName',
     editable: true,
     className: 'select_text',

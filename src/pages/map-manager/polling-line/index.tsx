@@ -77,7 +77,7 @@ const columns = [
 
   {
     title: '重复类型',
-    dataIndex: 'repeatType',
+    dataIndex: 'repeatTypeName',
     className: 'select_text',
     editable: true,
   },
