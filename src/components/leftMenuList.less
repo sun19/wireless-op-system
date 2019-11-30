@@ -19,25 +19,37 @@
   font-weight: 400;
   color: #b8d9ff;
   a {
-  font-size: 0.2rem;//系统字体设定
-
+  font-size: 20px;//系统字体设定
     color: #b8d9ff;
     display: inline-block;
     height: 32px;
+    font-family:Source Han Sans CN;
   }
 }
 :global(.ant-menu-inline .ant-menu-submenu-title ) {
-  font-size: 0.3rem;//系统字体设定
+  font-size: 26px;//系统字体设定
   font-weight: 600;
   color:#00D8FF;
+  font-family:Source Han Sans CN;
 }
 :global(.ant-menu-sub .ant-menu-submenu-inline div.ant-menu-submenu-title){
-  font-size: 0.25rem;//系统字体设定
+  font-size: 23px;//系统字体设定
   font-weight: 400;
   color:#71C9D9;
-
+  font-family:Source Han Sans CN;
+}
+ 
+:global(.ant-menu-sub .ant-menu-submenu-inline > .ant-menu-submenu-title i.ant-menu-submenu-arrow::before){
+  background:#71C9D9;
 
 }
+:global(.ant-menu-sub .ant-menu-submenu-inline > .ant-menu-submenu-title i.ant-menu-submenu-arrow::after){
+  background:#71C9D9;
+}
+
+
+
+
 :global(.ant-menu-submenu-title:hover) {
   color: white;
 }

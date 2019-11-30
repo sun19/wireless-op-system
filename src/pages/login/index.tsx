@@ -89,29 +89,22 @@ export default class Login extends Component {
           </div>
         </div>
         <Header className={[`${styles.no_bg}`].join(' ')}>
-          <Row
-            type="flex"
-            justify="center"
-            align="middle"
-            style={{ position: 'relative', top: '1rem' }}
-          >
-            <Col span={12}>
               <div className={styles.system_name} />
-            </Col>
-          </Row>
         </Header>
-        <Content className={[`${styles.no_bg}`].join(' ')}>
-          <Row type="flex" justify="center" style={{ height: '100%' }}>
-            <Col span={10}>
+        {/* <Content className={[`${styles.no_bg}`].join(' ')}> */}
+          {/* <Row type="flex" justify="center" style={{ height: '100%','minHeight':'700px' }}> */}
+            {/* <Col span={10}> */}
               <div className={styles.loginPanel}>
                 <WrappedNormalLoginForm />
               </div>
-            </Col>
-          </Row>
-        </Content>
-        <Footer className={[`${styles.no_bg}`].join(' ')}>
-          <div className={styles.foot_text}>{this.state.title}</div>
-        </Footer>
+            {/* </Col> */}
+          {/* // </Row> */}
+          
+        {/* </Content> */}
+        <div className={styles.foot_text}>{this.state.title}</div>
+
+        {/* <Footer className={[`${styles.no_bg}`].join(' ')}>
+        </Footer> */}
       </Layout>
     );
   }
