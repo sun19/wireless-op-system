@@ -108,8 +108,8 @@ class WraningInfo extends React.Component<Props, State> {
       const { alarmStartTime, alarmEndTime, ...props } = values
       const data = {
         ...props,
-        alarmStartTime: values.alarmStartTime ? values.alarmStartTime.format('MM-DD hh:mm:ss') : '',
-        alarmEndTime: values.alarmEndTime ? values.alarmEndTime.format('MM-DD hh:mm:ss') : ''
+        alarmStartTime: values.alarmStartTime ? values.alarmStartTime.format('YYYY-MM-DD HH:mm:ss').toString() : '',
+        alarmEndTime: values.alarmEndTime ? values.alarmEndTime.format('YYYY-MM-DD HH:mm:ss').toString() : ''
       }
       this.getTaskListData(data);
     });
@@ -137,11 +137,11 @@ class WraningInfo extends React.Component<Props, State> {
           <div className={styles.public_hight_40}>
             <Form layout="inline" onSubmit={this.search}>
               <Row justify="start" align="middle" style={{ paddingLeft: '39px' }} gutter={16}>
-                <FormItem label="警告标签">
+                <FormItem label="告警标签">
                   {getFieldDecorator(
                     'name',
                     {},
-                  )(<Input className={publicStyles.input_text} placeholder="请输入警告标签" />)}
+                  )(<Input className={publicStyles.input_text} placeholder="请输入告警标签" />)}
                 </FormItem>
                 <span className={publicStyles.authInner} style={{ paddingLeft: '39px' }}>
                   {/* <span className={publicStyles.timePicker}> */}

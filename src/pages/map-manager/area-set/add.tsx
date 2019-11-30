@@ -2,7 +2,7 @@
  * title: 添加
  */
 import React from 'react';
-import { Form, Row, Col, Button, Input, Select, DatePicker, Cascader } from 'antd';
+import { Form, Row, Col, Button, Input, Select, DatePicker, message, Cascader } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import { connect } from 'dva';
 import Konva from 'konva';
@@ -66,14 +66,15 @@ class FencingSetting extends React.Component<Props, State> {
     const maps = await getAllMap();
     const fencingTypes = await getAllFencingTypes();
     let usersResp = await getAllUserInfo();
-    let users = [];
-    for (let i = 0; i < usersResp.result.length; i++) {
-      const dept = usersResp.result[i];
-      for (let j = 0; j < dept.relatePeopleResponses.length; j++) {
-        const item = dept.relatePeopleResponses[j];
-        users.push(item);
-      }
+      let users = [];
+      for (let i = 0; i < usersResp.result.length; i++) {
+        const dept = usersResp.result[i];
+        for (let j = 0; j < dept.relatePeopleResponses.length; j++) {
+          const item = dept.relatePeopleResponses[j];
+          users.push(item);
+        }
     }
+  
     const levels = await getAllLevels();
     const areas = await getAllArea();
     this.props.dispatch({
@@ -107,8 +108,12 @@ class FencingSetting extends React.Component<Props, State> {
         ...props,
       };
 
-      await addMapArea(data);
-      router.push('/map-manager/area-set');
+      const isSuccessed =  await addMapArea(data);
+       if (isSuccessed) {
+        // message.success('添加成功!', 1000);
+         setTimeout(() => router.push('/map-manager/area-set'), 1000);
+      }
+     
     });
   };
 
@@ -189,10 +194,6 @@ class FencingSetting extends React.Component<Props, State> {
                           autoSize={{ minRows: 6, maxRows: 8 }}
                           style={{ width: '90%' }}
                         />,
-                        // <AreaText
-                        //   autoSize={{ minRows: 6, maxRows: 8 }}
-                        //   onChange={this.onTipsChange}
-                        // />,
                       )}
                     </Form.Item>
                   </Col>

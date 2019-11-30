@@ -158,11 +158,11 @@ class AddUser extends React.Component<Props, State> {
                             message: '请选择人员类型',
                           },
                         ],
-                        initialValue: this.state.userTypes[0].selectValue,
+                        initialValue: this.state.userTypes[0].key,
                       })(
                         <Select style={{ width: '2rem' }} className={styles.select_text}>
                           {this.state.userTypes.map(option => (
-                            <Option value={option['selectValue']} key={option.key}>
+                            <Option value={option.key} key={option.key}>
                               {option.value}
                             </Option>
                           ))}
