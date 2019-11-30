@@ -123,7 +123,8 @@ class AreaSet extends React.Component<Props, State> {
       return (
         <Select
           className={publicStyles.select_text}
-          defaultValue={areaLevels[0].name}
+          // defaultValue=''
+          placeholder="请选择级别"
           onSelect={this.onLevelSelectChange}
         >
           {areaLevels.map((level, index) => (

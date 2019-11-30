@@ -175,7 +175,7 @@ class FencingSetting extends React.Component<Props, State> {
                     </Form.Item>
                   </Col>
                 </Row>
-                <Row type="flex" justify="space-between">
+                <Row type="flex" justify="space-between" className={styles.remark_area}>
                   <Col span={23} className={styles.text_areas}>
                     <Form.Item label="备注">
                       {getFieldDecorator('remark', {
@@ -187,10 +187,6 @@ class FencingSetting extends React.Component<Props, State> {
                           autoSize={{ minRows: 6, maxRows: 8 }}
                           style={{ width: '90%' }}
                         />,
-                        // <AreaText
-                        //   autoSize={{ minRows: 6, maxRows: 8 }}
-                        //   onChange={this.onTipsChange}
-                        // />,
                       )}
                     </Form.Item>
                   </Col>

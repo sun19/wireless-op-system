@@ -13,9 +13,12 @@
 }
 
 .system_name {
+	height: 142px;
+	width: 1200px;
+	margin: 0px auto;
+    margin-top: 40px;
 	background: url(../../assets/login/02-title.png);
 	background-size: 100%;
-	height: 1.28rem;
 	background-repeat: no-repeat;
 	background-position: center;
 }
@@ -40,7 +43,7 @@
 	background: url(../../assets/login/02-title.png);
 	background-clip: text;
 	-webkit-text-fill-color: transparent;
-}
+} 
 
 .content {
 	position: relative;
@@ -49,27 +52,29 @@
 
 .loginPanel {
 	position: relative;
-	height: calc(100% - 180px);
-	margin: 1.6rem 0.5rem 0px 0.5rem;
+	width: 700px;
+	min-height: 450px;
+	margin:0px auto;
+	margin-top: 100px;
 }
 .login_form {
 	width: 100%;
-	// min-width: 700px;
-	height: 6.5rem;
+	min-width: 700px;
+	height: 550px;
 	background: url(../../assets/login/kuang-bg.png);
 	background-repeat: no-repeat;
 	background-position: center;
-	background-size: 100%;
+    background-size: 100%  550px;
 	.login_title {
 		font-size: 0.42rem;
 		font-family: Source Han Sans CN;
 		color: rgba(0, 216, 255, 1);
 		text-align: center;
-		padding: 55px 0 20px 0px;
+		padding: 40px 0 20px 0px;
 		position: relative;
 	}
 	.redio_style {
-		padding: 0px 0px 0.4rem 0px;
+		padding: 0px 0px 30px 0px;
 	}
 	:global(.ant-form-item-control-wrapper) {
 		width: 100%;
@@ -125,7 +130,10 @@ height:0.65rem;
 }
 
 .foot_text {
-	font-size:0.4rem;
+	// position: absolute;
+	margin-top: 100px;
+	bottom:20px;
+	font-size:25px;
 	color: rgba(158, 174, 209, 0.6);
 	text-align: center;
 }

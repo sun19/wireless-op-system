@@ -102,13 +102,14 @@ class AddUser extends React.Component<Props, State> {
     userTypes = userTypes.map(item => ({
       key: item.id,
       value: item.roleName,
-      selectValue: item.id,
+      selectValue: item.roleCode,
     }));
     this.setState({ userTypes });
   }
   render() {
     const { getFieldDecorator } = this.props.form;
-    // if (this.state.userTypes.length === 0) return null;
+    if (this.state.userTypes.length === 0) return null;
+    // console.log(this.state.userTypes[0].roleId, 'roleId');
     return (
       <ContentBorder className={styles.add_root}>
         <Form layout="inline" style={{ marginTop: '0.57rem' }} onSubmit={this.handleSubmit}>
@@ -157,12 +158,11 @@ class AddUser extends React.Component<Props, State> {
                             message: '请选择人员类型',
                           },
                         ],
-                        initialValue:
-                          (this.state.userTypes[0] && this.state.userTypes[0].selectValue) || '',
+                        initialValue: this.state.userTypes[0].key,
                       })(
                         <Select style={{ width: '2rem' }} className={styles.select_text}>
                           {this.state.userTypes.map(option => (
-                            <Option value={option['selectValue']} key={option.key}>
+                            <Option value={option.key} key={option.key}>
                               {option.value}
                             </Option>
                           ))}
@@ -173,14 +173,18 @@ class AddUser extends React.Component<Props, State> {
                   <Col span={12}>
                     <Form.Item label="性别">
                       {getFieldDecorator('sex', {
-                        initialValue: '男',
+                        initialValue: '0',
                         rules: [
                           {
                             message: '请选择性别',
                           },
                         ],
                       })(
-                        <Select style={{ width: '2rem' }} className={styles.select_text}>
+                        <Select
+                          // defaultValue={this.props.value}
+                          style={{ width: '2rem' }}
+                          className={styles.select_text}
+                        >
                           {defaultGenderType.map(option => (
                             <Option value={option.key} key={option.key}>
                               {option.value}

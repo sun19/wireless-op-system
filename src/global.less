@@ -14,7 +14,13 @@ body {
     .ant-menu-submenu-arrow::before) {
   background-image: linear-gradient(to right,#00D8FF,#00D8FF);
 }
+:global( .ant-menu-submenu-inline > .ant-menu-submenu-title i.ant-menu-submenu-arrow::before){
+  background:#00D8FF;
 
+}
+:global(.ant-menu-submenu-inline > .ant-menu-submenu-title i.ant-menu-submenu-arrow::after){
+  background:#00D8FF;
+}
 :global(.ant-menu-submenu-open.ant-menu-submenu-inline
     > .ant-menu-submenu-title
     .ant-menu-submenu-arrow::after) {
@@ -107,9 +113,7 @@ body {
   font-weight: 500;;
 
 }
-:global(.ant-table-column-title){
-  font-size: 20px;
-}
+ 
 :global(.ant-pagination-total-text){
   font-size: 15px;
 }

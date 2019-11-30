@@ -75,11 +75,8 @@ const columns = [
     title: '性别',
     dataIndex: 'sex',
     editable: true,
-
     render: onlineStatus => {
-      // let color = onlineStatus == 1 ? 'white' : '#EB6262';
-      let values = onlineStatus == 1 ? '女' : '男';
-      return <span> {values}</span>;
+      return ['男', '女'][onlineStatus]
     },
   },
   {
@@ -127,8 +124,8 @@ const columns = [
     dataIndex: 'incumbency',
     editable: true,
     render: onlineStatus => {
-      let values = onlineStatus == 1 ? '在职' : '离职';
-      return <span> {values}</span>;
+      // let values = onlineStatus == 1 ? '在职' : '离职';
+      return ['在职', '离职'][onlineStatus];
     },
   },
 ];

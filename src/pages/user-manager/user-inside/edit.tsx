@@ -10,7 +10,7 @@ import router from 'umi/router';
 
 import ContentBorder from '../../../components/ContentBorder';
 import { UmiComponentProps } from '@/common/type';
-import { getAllDuties, getAllSecretLevels } from '@/pages/login/login.service';
+import { getAllPosition, getAllSecretLevels, getAllDepartment } from '@/pages/login/login.service';
 import { updateUser } from '../services';
 
 import styles from './index.less';
@@ -35,7 +35,7 @@ class UserAuth extends React.Component<Props> {
   goBack = () => {
     this.props.form.resetFields();
     router.push('/user-manager/user-inside');
-  };
+  }; 
   setupDuties = () => {
     const { allDuties, userInside } = this.props;
     const { getFieldDecorator } = this.props.form;
@@ -47,12 +47,11 @@ class UserAuth extends React.Component<Props> {
               message: '请选择职务',
             },
           ],
-          // initialValue: userInside.positionId ? userInside.positionId : '',
-          initialValue: allDuties[0] && allDuties[0].name,
+          initialValue: userInside.positionId ? userInside.positionId:'',
         })(
           <Select placeholder="请选择职务">
-            {allDuties.map((duty, index) => (
-              <Option value={duty.name} key={index}>
+            {allDuties&&allDuties.map((duty, index) => (
+              <Option value={duty.id} key={index}>
                 {duty.name}
               </Option>
             ))}
@@ -74,12 +73,12 @@ class UserAuth extends React.Component<Props> {
               message: '请选择保密等级',
             },
           ],
-          // initialValue: userInside.securityLevelId ? userInside.securityLevelId : '',
-          initialValue: allSecretLevel[0] && allSecretLevel[0].name,
+          initialValue: userInside.securityLevelId ? userInside.securityLevelId:'',
+
         })(
           <Select placeholder="请选择保密等级">
-            {allSecretLevel.map((level, index) => (
-              <Option value={level.name} key={index}>
+            {allSecretLevel&&allSecretLevel.map((level, index) => (
+              <Option value={level.id} key={index}>
                 {level.name}
               </Option>
             ))}
@@ -90,28 +89,34 @@ class UserAuth extends React.Component<Props> {
   };
 
   async componentDidMount() {
-    const dutiesResp = await getAllDuties();
+    const dutiesResp = await getAllPosition();
     const secretsLevelsResp = await getAllSecretLevels();
+    const allPositions = await getAllDepartment()
 
     this.props.dispatch({
       type: 'commonState/update',
       payload: {
-        allDuties: dutiesResp.result.records || [],
-        allSecretLevel: secretsLevelsResp.result.records || [],
+        allDuties: dutiesResp.result,
+        allSecretLevel: secretsLevelsResp.result,
+        allPosition: allPositions,
+
       },
     });
   }
 
   handleSubmit(e) {
     e.preventDefault();
-    const { userInside } = this.props;
+    const { userInside}=this.props
     this.props.form.validateFields(async (err, values) => {
       if (err) {
-        // console.error(err, values, 'err');
         message.error('填写信息有误 ', values);
         return;
       }
-      const isSuccessed = await updateUser(Object.assign(userInside, values));
+      const data={
+        id: userInside.id,
+        ...values
+      }
+      const isSuccessed = await updateUser(data);
       if (isSuccessed) {
         setTimeout(() => router.push('/user-manager/user-inside'), 1000);
       }
@@ -121,9 +126,7 @@ class UserAuth extends React.Component<Props> {
   render() {
     const props = this.props;
     const { getFieldDecorator } = props.form;
-    const { userInside } = this.props;
-    // console.log(userInside)
-    // if (_.isEmpty(props.allDuties) || _.isEmpty(props.allSecretLevel)) return null;
+    const { userInside,allPosition}=this.props
     return (
       <ContentBorder className={styles.auth_root}>
         <Form
@@ -157,6 +160,7 @@ class UserAuth extends React.Component<Props> {
                           },
                         ],
                         initialValue: userInside.cardNo,
+
                       })(<Input placeholder="请输入身份证号" />)}
                     </Form.Item>
                   </Col>
@@ -171,6 +175,7 @@ class UserAuth extends React.Component<Props> {
                           },
                         ],
                         initialValue: userInside.sex,
+
                       })(
                         <Select placeholder="请选择性别">
                           <Option value="0">男</Option>
@@ -188,6 +193,7 @@ class UserAuth extends React.Component<Props> {
                           },
                         ],
                         initialValue: userInside.address,
+
                       })(<Input placeholder="请输入家庭住址" />)}
                     </Form.Item>
                   </Col>
@@ -202,6 +208,7 @@ class UserAuth extends React.Component<Props> {
                           },
                         ],
                         initialValue: userInside.phone,
+
                       })(<Input placeholder="请输入联系方式" />)}
                     </Form.Item>
                   </Col>
@@ -210,11 +217,19 @@ class UserAuth extends React.Component<Props> {
                       {getFieldDecorator('departmentId', {
                         rules: [
                           {
-                            message: '请选输入部门',
+                            message: '请选择部门',
                           },
                         ],
-                        initialValue: userInside.departmentId,
-                      })(<Input placeholder="请输入部门" />)}
+                        initialValue: userInside.departmentId ? userInside.departmentId : '',
+                      })(
+                        <Select placeholder="请选择部门">
+                          {allPosition && allPosition.map(option => (
+                            <Option value={option.id} key={option.key}>
+                              {option.name}
+                            </Option>
+                          ))}
+                        </Select>
+                      )}
                     </Form.Item>
                   </Col>
                 </Row>
@@ -222,13 +237,14 @@ class UserAuth extends React.Component<Props> {
                   <Col span={12}>{this.setupDuties()}</Col>
                   <Col span={12}>
                     <Form.Item label="在职状态">
-                      {getFieldDecorator('在职状态', {
+                      {getFieldDecorator('type', {
                         rules: [
                           {
                             message: '请选择在职状态',
                           },
                         ],
                         initialValue: userInside.address,
+
                       })(
                         <Select placeholder="请选择在职状态">
                           <Option value="0">在职</Option>
@@ -251,9 +267,7 @@ class UserAuth extends React.Component<Props> {
                   </Col>
                   <Col span={6} className={styles.select_padding_left}>
                     <Form.Item>
-                      <Button className={styles.form_btn} onClick={this.goBack}>
-                        返回
-                      </Button>
+                      <Button className={styles.form_btn} onClick={this.goBack}>返回</Button>
                     </Form.Item>
                   </Col>
                 </Row>
@@ -268,14 +282,16 @@ class UserAuth extends React.Component<Props> {
 
 const AddUserForm = Form.create<Props>({ name: 'auth_user' })(UserAuth);
 
-const mapState = ({ userManager, commonState }) => {
+const mapState = ({ userManager, commonState,  }) => {
   const resp = userManager.innerUserList;
-  const { allDuties, allSecretLevel } = commonState;
+  const { allDuties, allSecretLevel, allPosition } = commonState;
   return {
     innerUserList: resp,
     allDuties: allDuties,
     allSecretLevel: allSecretLevel,
     userInside: userManager.userInside,
+    allPosition: allPosition,
+
   };
 };
 

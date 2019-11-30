@@ -58,7 +58,10 @@ export async function getInfoDetial(data: GetInfoDetial) {
 }
 // 信息牌添加
 export async function addInfoList(data: AddInfoList) {
-  const resp = await request.post(ADD_INFO_LIST, { data: format(data) });
+  const resp = await request.post(ADD_INFO_LIST, { 
+    headers: { 'Content-Type': 'application/json;charset=utf-8' },
+
+    data  });
   return resp.success === true && resp.code === 200;
 }
 // 信息牌编辑
@@ -80,7 +83,7 @@ export async function exportOut() {
 
 /*************************************任务规划******************************** */
 
-// 信息牌列表
+// 列表
 export async function getTaskList(params: GetTaskList) {
   const resp = await request.get(GET_TASK_LIST, { params });
   // console.log(resp)
@@ -93,15 +96,17 @@ export async function getTaskDetail(data: GetTaskDetail) {
   });
   return resp.result;
 }
-// 信息牌删除
+//  删除
 export async function delTaskList(data: DelTaskList) {
   const resp = await request.delete(DEL_TASK_LIST, { data: format(data) });
   return resp.success === true && resp.code === 200;
 }
-// 信息牌添加
+//  添加
 export async function addTaskList(data: AddTaskList) {
   const resp = await request.post(ADD_TASK_LIST, {
-    data,
+    // data ,
+    // headers: { 'Content-Type': 'application/json;charset=utf-8' },
+    data: format(data)
   });
   return resp.success === true && resp.code === 200;
 }
@@ -116,7 +121,7 @@ export async function exportTaskOut() {
   const resp = await request.post(EXPORT_TASK_OUT);
   return resp.success === true && resp.code === 200;
 }
-// 信息牌列表编辑
+//  列表编辑
 export async function TaskListEdit(params: GetTaskList) {
   const resp = await request.post(TASK_LIST_EDIT, { data: format(params) });
   return resp.success === true && resp.code === 200;

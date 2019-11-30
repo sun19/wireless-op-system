@@ -44,6 +44,9 @@ const columns = [
     width: '5%',
     className: 'select_text',
     editable: true,
+    render: onlineStatus => {
+      return ['男', '女'][onlineStatus]
+    },
   },
   {
     title: '家庭住址',

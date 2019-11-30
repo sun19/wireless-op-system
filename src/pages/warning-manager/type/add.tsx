@@ -78,7 +78,7 @@ class UserAuth extends React.Component<Props, State> {
     return new Promise(resolve => {
       const mapImage = new Image();
       mapImage.src = require('../../big-screen/assets/map.png');
-      mapImage.onload = function() {
+      mapImage.onload = function () {
         resolve(mapImage);
       };
     });
@@ -88,7 +88,7 @@ class UserAuth extends React.Component<Props, State> {
     let { maps } = this.props;
     const { getFieldDecorator } = this.props.form;
     if (maps.length === 0) return;
-    return getFieldDecorator('mapName', {
+    return getFieldDecorator('mapId', {
       rules: [
         {
           message: '请选择所属地图',
@@ -97,7 +97,7 @@ class UserAuth extends React.Component<Props, State> {
     })(
       <Select placeholder="请选择所属地图">
         {maps.map(item => (
-          <Option value={item.name} key={item.name}>
+          <Option value={item.id} key={item.name}>
             {item.name}
           </Option>
         ))}
@@ -130,13 +130,9 @@ class UserAuth extends React.Component<Props, State> {
       const { startTime, endTime, overrunTime, ...props } = values;
       const data = {
         ...props,
-        startTime: values.startTime
-          ? values.startTime.format('YYYY-MM-DD HH:mm:ss').toString()
-          : '',
-        endTime: values.endTime ? values.endTime.format('YYYY-MM-DD HH:mm:ss').toString() : '',
-        overrunTime: values.overrunTime
-          ? values.overrunTime.format('YYYY-MM-DD HH:mm:ss').toString()
-          : '',
+        startTime: values.startTime&&values.startTime.format('YYYY-MM-DD HH:mm:ss').toString()||'',
+        endTime: values.endTime&&values.endTime.format('YYYY-MM-DD HH:mm:ss').toString()||'',
+        overrunTime: values.overrunTime&&values.overrunTime.format('YYYY-MM-DD HH:mm:ss').toString()||'',
       };
 
       await wraningTypeAdd(data);
@@ -262,7 +258,7 @@ class UserAuth extends React.Component<Props, State> {
                         },
                       ],
                     })(
-                      <Select placeholder="每天">
+                      <Select placeholder="请选择重复类型">
                         {repeatTypes.map(type => (
                           <Option value={type.dictValue} key={type.dictValue}>
                             {type.dictName}
@@ -279,7 +275,7 @@ class UserAuth extends React.Component<Props, State> {
                         },
                       ],
                     })(
-                      <Select placeholder="弹框">
+                      <Select placeholder="轻选择告警方式">
                         {warningTypes.map(type => (
                           <Option value={type.dictValue} key={type.dictValue}>
                             {type.dictName}

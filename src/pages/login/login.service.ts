@@ -12,6 +12,7 @@ import {
   COMMON_GET_ALL_DUTIES,
   COMMON_GET_ALL_SECRET_LEVELS,
   COMMON_GET_ALL_POSITION,
+  COMMON_GET_ALL_DEPARTMENT,
 } from '@/config/api';
 
 export async function getAllMap() {
@@ -55,5 +56,10 @@ export async function getAllSecretLevels() {
 }
 export async function getAllPosition() {
   const resp = await request.get(COMMON_GET_ALL_POSITION);
+  return resp;
+}
+// 部门
+export async function getAllDepartment() {
+  const resp = await request.get(COMMON_GET_ALL_DEPARTMENT);
   return resp;
 }

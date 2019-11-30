@@ -7,7 +7,8 @@ export default {
     superAdmin: {},
     peopleType: {},
     infoCardList:{},
-    allPosition:{}
+    allPosition:{},
+    editData:{},
   },
   reducers: {
     update(state, { payload }) {

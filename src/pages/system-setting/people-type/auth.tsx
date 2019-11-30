@@ -45,6 +45,16 @@ class UserAuth extends React.Component<Props, State> {
       checkedKeys: [],
     };
   }
+  // async componentWillMount() {
+    // let userTypes = await getAllRoles();
+    // // console.log(userTypes)
+    // userTypes = userTypes.map(item => ({
+    //   key: item.id,
+    //   value: item.roleName,
+    //   selectValue: item.roleCode,
+    // }));
+    // this.setState({ userTypes });
+  // }
   async componentDidMount() {
     let userTypes = await getAllRoles();
     // console.log(userTypes)
