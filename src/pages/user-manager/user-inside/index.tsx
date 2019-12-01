@@ -52,7 +52,7 @@ const columns = [
     className: 'select_text',
     editable: true,
     render: onlineStatus => {
-      return  ['男','女'][onlineStatus]
+      return ['男', '女'][onlineStatus];
     },
   },
   {
@@ -190,7 +190,7 @@ class UserInside extends React.Component<Props, State> {
 
   deleteColumn(item) {
     //TODO:修改人ID
-    let self = this
+    let self = this;
     confirm({
       title: '确定要删除这条信息吗？',
       content: '',
@@ -202,9 +202,8 @@ class UserInside extends React.Component<Props, State> {
         //重新请求数据重绘
         self.getUserList();
       },
-      onCancel() {
-      },
-    })
+      onCancel() {},
+    });
   }
 
   async getCardNoInfo() {
@@ -213,7 +212,6 @@ class UserInside extends React.Component<Props, State> {
 
   async exportUser() {
     const isSuccessed = await exportUser();
-    message.success('人员导出成功');
   }
 
   componentDidMount() {

@@ -56,8 +56,10 @@ const columns = [
         <div>
           {record.whether == '1' ? (
             <IconFont type="icon-correct" />
-          ) : (
+          ) : record.whether == '0' ? (
             <IconFont type="icon-error" />
+          ) : (
+            ''
           )}
         </div>
       );
@@ -98,9 +100,9 @@ class RouteInspectList extends React.Component<Props> {
       const { startTime, endTime, ...props } = values;
       const data = {
         ...props,
-        startTime: values.startTime&&values.startTime.format('YYYY-MM-DD HH:mm:ss')|| '',
+        startTime: (values.startTime && values.startTime.format('YYYY-MM-DD HH:mm:ss')) || '',
 
-        endTime: values.endTime &&values.endTime.format('YYYY-MM-DD HH:mm:ss') ||'',
+        endTime: (values.endTime && values.endTime.format('YYYY-MM-DD HH:mm:ss')) || '',
       };
 
       this.getRouteInspectList(data);
@@ -122,7 +124,7 @@ class RouteInspectList extends React.Component<Props> {
         historyRecord: data,
       },
     });
-   router.push('/route-inspect-manager/route-inspect-list/show');
+    router.push('/route-inspect-manager/route-inspect-list/show');
   }
 
   render() {

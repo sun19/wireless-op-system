@@ -17,6 +17,7 @@ export default {
     users: [],
     levels: [],
     areas: [],
+    lampsType: [],
   },
   reducers: {
     update(state, { payload }) {

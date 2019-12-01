@@ -8,10 +8,12 @@ import { connect } from 'dva';
 import Konva from 'konva';
 import { Stage, Layer, Image as ImageLayer, Line as LineLayer } from 'react-konva';
 import router from 'umi/router';
+import * as _ from 'lodash';
 
 import ContentBorder from '../../../components/ContentBorder';
 import { UmiComponentProps } from '@/common/type';
 import { getAllMaps, getAllAreas, wraningTypeAdd } from '../services';
+import { getAllLamps } from '@/pages/map-manager/services';
 import { getSuperAdminList } from '@/pages/system-setting/services';
 
 import styles from './index.less';
@@ -22,10 +24,17 @@ const { Option } = Select;
 type StateProps = ReturnType<typeof mapState>;
 type Props = StateProps & UmiComponentProps & FormComponentProps;
 
+interface Lamp {
+  x: number;
+  y: number;
+  id: string;
+}
 interface State {
   mapImage: any;
   width: number;
   height: number;
+  showLamps: Lamp[];
+  icon: any;
 }
 
 class Adduth extends React.Component<Props, State> {
@@ -37,15 +46,28 @@ class Adduth extends React.Component<Props, State> {
       mapImage: null,
       width: 0,
       height: 0,
+      showLamps: [],
+      icon: null,
     };
     this.onSearch = this.onSearch.bind(this);
   }
+  dynamicLoadIconImage() {
+    return new Promise(resolve => {
+      const mapImage = new Image();
+      mapImage.src = require('../../map-manager/assets/baoan.png');
+      mapImage.onload = function() {
+        resolve(mapImage);
+      };
+    });
+  }
   async componentDidMount() {
     const mapImage = await this.dynamicLoadMapImage();
+    const iconImage = await this.dynamicLoadIconImage();
     if (this.map.current) {
       const { clientWidth, clientHeight } = this.map.current;
 
       this.setState({
+        icon: iconImage,
         mapImage,
         width: clientWidth,
         height: clientHeight,
@@ -57,6 +79,7 @@ class Adduth extends React.Component<Props, State> {
   async initRequest() {
     const maps = await getAllMaps();
     const areas = await getAllAreas();
+    const lamps = await getAllLamps();
     const warningTypes = await getSuperAdminList({
       type: 'alarmType',
     });
@@ -70,6 +93,7 @@ class Adduth extends React.Component<Props, State> {
         areas: areas.result,
         warningTypes: warningTypes.records || [],
         repeatTypes: repeatTypes.records || [],
+        lampsType: lamps.result,
       },
     });
   }
@@ -78,7 +102,7 @@ class Adduth extends React.Component<Props, State> {
     return new Promise(resolve => {
       const mapImage = new Image();
       mapImage.src = require('../../big-screen/assets/map.png');
-      mapImage.onload = function () {
+      mapImage.onload = function() {
         resolve(mapImage);
       };
     });
@@ -124,15 +148,77 @@ class Adduth extends React.Component<Props, State> {
       </Select>,
     );
   };
+  onLampSelectChange = e => {
+    if (!this.map.current) return;
+    const { clientWidth, clientHeight } = this.map.current;
+    let _lamps = this.props.lampsType;
+    // const routes = inspectionRoute && inspectionRoute.split(',');
+    let showLamps = _.filter(_lamps, route => e.includes(route.id));
+
+    showLamps = showLamps.map(lamp => ({
+      x: _.isString(lamp.xcoordinate) && lamp.xcoordinate != '' ? +lamp.xcoordinate : 0,
+      y: _.isString(lamp.ycoordinate) && lamp.ycoordinate != '' ? +lamp.ycoordinate : 0,
+      id: lamp.id,
+    }));
+    const currentLamps = this.setupLampData(showLamps, clientWidth, clientHeight);
+    this.setState({
+      showLamps: currentLamps,
+    });
+  };
+  setupLampData = (data, currentWidth, currentHeight) => {
+    const defaultWidth = 1920;
+    const defaultHeight = 1080;
+    return data.map(item => ({
+      x: (item.x / defaultWidth) * currentWidth,
+      y: (item.y / defaultHeight) * currentHeight,
+    }));
+  };
+  createLamps() {
+    const lamps = this.state.showLamps;
+    if (lamps.length === 0) return;
+    return lamps.map((lamp, index) => (
+      <ImageLayer
+        image={this.state.icon}
+        x={lamp.x - 16}
+        y={lamp.y - 16}
+        width={32}
+        height={32}
+        key={index}
+      />
+    ));
+  }
+  setupShowLamps = () => {
+    const { lampsType } = this.props;
+    const { getFieldDecorator } = this.props.form;
+    return getFieldDecorator('lampIds', {
+      rules: [],
+    })(
+      <Select
+        mode="multiple"
+        placeholder="请选择灯具设置围栏"
+        style={{ width: '100%' }}
+        onChange={this.onLampSelectChange}
+      >
+        {lampsType.map(lamp => (
+          <Option key={lamp.id} value={lamp.id}>
+            {lamp.lampCode}
+          </Option>
+        ))}
+      </Select>,
+    );
+  };
+
   async onSearch(e) {
     e.preventDefault();
     this.props.form.validateFields(async (err, values) => {
       const { startTime, endTime, overrunTime, ...props } = values;
       const data = {
         ...props,
-        startTime: values.startTime&&values.startTime.format('YYYY-MM-DD HH:mm:ss').toString()||'',
-        endTime: values.endTime&&values.endTime.format('YYYY-MM-DD HH:mm:ss').toString()||'',
-        overrunTime: values.overrunTime&&values.overrunTime.format('YYYY-MM-DD HH:mm:ss').toString()||'',
+        startTime:
+          (values.startTime && values.startTime.format('YYYY-MM-DD HH:mm:ss').toString()) || '',
+        endTime: (values.endTime && values.endTime.format('YYYY-MM-DD HH:mm:ss').toString()) || '',
+        overrunTime:
+          (values.overrunTime && values.overrunTime.format('YYYY-MM-DD HH:mm:ss').toString()) || '',
       };
 
       await wraningTypeAdd(data);
@@ -154,6 +240,7 @@ class Adduth extends React.Component<Props, State> {
     const { getFieldDecorator } = this.props.form;
     const { mapImage, width, height } = this.state;
     const { warningTypes, repeatTypes } = this.props;
+    const createdLamps = this.createLamps();
     return (
       <ContentBorder className={styles.auth_root}>
         <Form
@@ -284,6 +371,7 @@ class Adduth extends React.Component<Props, State> {
                       </Select>,
                     )}
                   </Form.Item>
+                  <Form.Item label="关联灯具">{this.setupShowLamps()}</Form.Item>
                 </Col>
               </Row>
 
@@ -298,6 +386,7 @@ class Adduth extends React.Component<Props, State> {
                     <Stage width={width} height={height} draggable={false}>
                       <Layer>
                         <ImageLayer image={mapImage} x={0} y={0} width={width} height={height} />
+                        {createdLamps}
                       </Layer>
                     </Stage>
                   </div>
@@ -335,6 +424,7 @@ const mapState = ({ warningManager }) => {
     repeatTypes: warningManager.repeatTypes,
     maps: warningManager.maps,
     areas: warningManager.areas,
+    lampsType: warningManager.lampsType,
   };
 };
 

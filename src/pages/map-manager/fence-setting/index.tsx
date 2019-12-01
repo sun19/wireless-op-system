@@ -51,6 +51,9 @@ const columns = [
     title: '是否永久',
     dataIndex: 'isForever',
     editable: true,
+    render(value) {
+      return value == '0' ? '是' : '否';
+    },
   },
   {
     title: '生效时间',
@@ -168,7 +171,7 @@ class FencingSettings extends React.Component<Props> {
       }
       await this.getMapFencing(values);
     });
-  }; 
+  };
   onClear = () => {
     this.props.form.resetFields();
     this.getMapFencing();
