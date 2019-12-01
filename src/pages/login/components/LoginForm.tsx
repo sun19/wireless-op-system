@@ -23,7 +23,7 @@ const IconFont = Icon.createFromIconfontCN({
 });
 
 interface State {
-  value: number;
+  value: string;
 }
 
 type StateProps = ReturnType<typeof mapState>;
@@ -59,9 +59,9 @@ class NormalLoginForm extends React.Component<Props> {
           localStorage.setItem('token', token);
           await this.preFetchAllCommonState();
           setTimeout(() => router.push('/big-screen/homepage'),1000)
-          message.success(<span style={{ fontSize: '25px' }}  >登录成功！</span>, 1000);
+          message.success(<span style={{ fontSize: '25px' }}  >登录成功！</span>, 3);
         } else {
-          message.warning(<span style={{fontSize:'25px'}}  >登录失败!请重新登录！</span>,1000);
+          message.warning(<span style={{fontSize:'25px'}}  >登录失败!请重新登录！</span>,3);
         }
       }
     });

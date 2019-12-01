@@ -29,7 +29,7 @@ interface State {
   height: number;
 }
 
-class UserAuth extends React.Component<Props, State> {
+class EditType extends React.Component<Props, State> {
   map: React.RefObject<HTMLDivElement>;
   constructor(props) {
     super(props);
@@ -307,7 +307,7 @@ class UserAuth extends React.Component<Props, State> {
   }
 }
 
-const FormUserAuth = Form.create<Props>({ name: 'warn_manager_type_add' })(UserAuth);
+const FormUserAuth = Form.create<Props>({ name: 'warn_manager_type_add' })(EditType);
 
 const mapState = ({ warningManager }) => {
   return {

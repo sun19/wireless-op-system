@@ -37,7 +37,6 @@ interface FormProps extends FormComponentProps {}
 type StateProps = ReturnType<typeof mapState>;
 type Props = StateProps & UmiComponentProps & FormProps;
 
-// const UserAuth: React.FC<Props> = (props: Props) => {
 class halmpAdd extends React.Component<Props, State> {
   map: React.RefObject<HTMLDivElement>;
   constructor(props) {

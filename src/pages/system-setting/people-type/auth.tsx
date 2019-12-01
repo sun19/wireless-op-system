@@ -28,11 +28,11 @@ interface State {
   userTypes: UserType[];
   expandedKeys: any;
   selectedKeys: any;
-  checkedKeys: any;
+  checkedKeys: any; 
   // autoExpandParent:boolean;
 }
 
-class UserAuth extends React.Component<Props, State> {
+class AddUserAuth extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.onSubmit = this.onSubmit.bind(this);
@@ -102,15 +102,15 @@ class UserAuth extends React.Component<Props, State> {
   }
 
   renderTreeNodes = data =>
-    data.map(item => {
+    data.map((item,index) => {
       if (item.children) {
         return (
-          <TreeNode title={item.name} key={item.path} dataRef={item}>
+          <TreeNode title={item.name} key={item.key} dataRef={item}>
             {this.renderTreeNodes(item.children)}
           </TreeNode>
         );
       }
-      return <TreeNode title={item.name} key={item.path} />;
+      return <TreeNode title={item.name} key={item.key} />;
     });
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -193,4 +193,4 @@ class UserAuth extends React.Component<Props, State> {
   }
 }
 
-export default Form.create<Props>({ name: 'auth_user' })(UserAuth);
+export default Form.create<Props>({ name: 'auth_user' })(AddUserAuth);

@@ -4,6 +4,7 @@
 import React from 'react';
 import { Layout, Modal,Form, Input, Row, Col, TimePicker, Button, DatePicker,Icon } from 'antd';
 import * as _ from 'lodash';
+import router from 'umi/router';
 import { connect } from 'dva';
 import { UmiComponentProps } from '@/common/type';
 import { FormComponentProps } from 'antd/lib/form';
@@ -64,7 +65,7 @@ interface State {
 class WraningInfo extends React.Component<Props, State> {
   constructor(props: any) {
     super(props);
-    // this.updateData = this.updateData.bind(this);
+    this.manage = this.manage.bind(this);
     // this.deleteColumn = this.deleteColumn.bind(this);
     this.state = {
       name: '',
@@ -73,6 +74,7 @@ class WraningInfo extends React.Component<Props, State> {
       pageNo: 1,
     };
   }
+
   async componentDidMount() {
     this.getTaskListData();
     this.props.form.validateFields();
@@ -85,15 +87,15 @@ class WraningInfo extends React.Component<Props, State> {
       payload: { info: taskList },
     });
   }
-  // async updateData(data, item) {
-  //   const resp = await warningInfoSearch(item);
-  //   if (resp) {
-  //     this.props.dispatch({
-  //       type: 'warningManager/update',
-  //       payload: { info: { records: data } },
-  //     });
-  //   }
-  // }
+  manage(data, item) {
+      this.props.dispatch({
+        type: 'warningManager/update',
+       
+        payload: { dataSource: data },
+      });
+    router.push('/warning-manager/info/manage');
+
+  }
   // // 删除
   // async deleteColumn(item: DelTaskList) {
   //   //TODO:修改人ID
@@ -185,6 +187,9 @@ class WraningInfo extends React.Component<Props, State> {
             // updateData={this.updateData}
             // deleteColumn={this.deleteColumn}
             total={total}
+            showManage={true}
+            manage={this.manage}
+            
           />
         </Content>
       </div>

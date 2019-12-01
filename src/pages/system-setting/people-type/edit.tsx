@@ -199,4 +199,3 @@ const mapState = ({ systemSetting }) => {
 
 export default connect(mapState)(EditUserHOC);
 
-// export default Form.create<Props>({ name: 'auth_user' })(UserAuth);
