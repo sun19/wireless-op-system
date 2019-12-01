@@ -15,7 +15,7 @@ export const WARNING_TYPE_DEL = `${BASE_API_URL}/jeecg-boot/intf/location/delete
 //  查询
 export const WARNING_INFO_SEARCH = `${BASE_API_URL}/jeecg-boot/intf/location/listAlarm`;
 // 处理
-export const WARNING_INFO_DEAL = `${BASE_API_URL}/jeecg-boot/intf/location/deleteAlarm`;
+export const WARNING_INFO_DEAL = `${BASE_API_URL}/jeecg-boot/intf/location/auditAlarm`;
 
 /** -----------------***********----- 告警管理： 告警历史——————————————————————————————*******************************/
 

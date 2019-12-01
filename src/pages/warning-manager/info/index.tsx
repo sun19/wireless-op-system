@@ -90,7 +90,6 @@ class WraningInfo extends React.Component<Props, State> {
   manage(data, item) {
       this.props.dispatch({
         type: 'warningManager/update',
-       
         payload: { dataSource: data },
       });
     router.push('/warning-manager/info/manage');

@@ -38,6 +38,12 @@ export const LEFT_MENUS = [
         component: '',
         children: [
           {
+            name: '信息牌设置',
+            key: '040',
+            path: '/system-setting/message-card',
+            component: './pages/system-setting/message-card/index.tsx',
+          },
+          {
             name: '用户管理(值班员)',
             key: '007',
             path: '/system-setting/customer-manager',
@@ -92,9 +98,10 @@ export const LEFT_MENUS = [
           {
             name: '信息牌导入',//没有页面
             key: '016',
-            path: '/empty',
-            component: './pages/empty/index.tsx',
-          }, {
+            path: '/system-setting/message-card',
+            component: './pages/system-setting/message-card/index.tsx',
+          }, 
+          {
             name: '区域设置',
             key: '017',
             path: '/map-manager/area-set',
@@ -182,7 +189,7 @@ export const LEFT_MENUS = [
         component: './pages/empty/index.tsx',
       },
       {
-        name: '历史轨迹——历史轨迹',
+        name: '历史轨迹',
         key: '031',
         path: '/statistics-query/statistics-history',
         component: './pages/statistics-query/statistics-history/index.tsx',
@@ -239,29 +246,17 @@ export const LEFT_MENUS = [
         component: './pages/warning-manager/history/index.tsx',
       },
       /************** ************** ************** ************** ************** ************** ************** ************** ************** */
-      {
-        name: '信息牌设置',
-        key: '040',
-        path: '/system-setting/message-card',
-        component: './pages/system-setting/message-card/index.tsx',
-      },
-      {
-        name: '用户列表-内部',
-        key: '041',
-        path: '/user-manager/user-inside',
-        component: './pages/user-manager/user-inside/index.tsx',
-      },
+      // {
+      //   name: '用户列表-内部',
+      //   key: '041',
+      //   path: '/user-manager/user-inside',
+      //   component: './pages/user-manager/user-inside/index.tsx',
+      // },
       {
         name: '告警类型',
         key: '042',
         path: '/warning-manager/type',
         component: './pages/warning-manager/type/index.tsx',
-      },
-      {
-        name: '历史轨迹',
-        key: '043',
-        path: '/statistics-query/statistics-history',
-        component: './pages/statistics-query/statistics-history/index.tsx',
       },
     ],
   },

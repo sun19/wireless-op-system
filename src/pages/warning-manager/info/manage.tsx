@@ -13,7 +13,7 @@ import ContentBorder from '../../../components/ContentBorder';
 import { ICON_FONTS_URL } from '../../../config/constants';
 
 import { UmiComponentProps } from '@/common/type';
-import { getPollingLineByName } from '../../map-manager/services';
+import { warningInfoDeal } from '../../warning-manager/services';
 import styles from './index.less';
 
 const IconFont = Icon.createFromIconfontCN({
@@ -43,9 +43,8 @@ function hasErrors(fieldsError) {
 class TaskAdd extends React.Component<Props, State> {
     constructor(props) {
         super(props);
-
+        this.goMenage = this.goMenage.bind(this);
     }
-
     componentWillUnmount() {
         message.destroy();
     }
@@ -53,15 +52,17 @@ class TaskAdd extends React.Component<Props, State> {
         this.props.form.resetFields();
         router.push('/warning-manager/info');
     };
-
-    async componentWillMount() {
-        const route = await getPollingLineByName({})
-        this.props.dispatch({
-            type: 'commonState/update',
-            payload: {
-                route: route.result.records
-            },
-        });
+   async goMenage () {
+        const { dataSource } = this.props
+        const data ={ 
+        userId: localStorage.getItem('userMessage'),
+            id:dataSource.id,
+            auditeType: '0',
+        }
+       const isSuccessed = await warningInfoDeal(data)
+       if (isSuccessed) {
+           setTimeout(() => router.push('/warning-manager/info'), 1000);
+       }
     }
 
     async componentDidMount() {
@@ -130,8 +131,8 @@ class TaskAdd extends React.Component<Props, State> {
                                 </Row>
                                 <Row type="flex" justify="center" style={{ marginTop: '0.35rem' }}>
                                     <Col span={6} >
-                                          <Form.Item> 
-                                        <Button className={styles.form_btn} onClick={this.goBack}>处理</Button>
+                                        <Form.Item>
+                                            <Button className={styles.form_btn} onClick={this.goMenage}>处理</Button>
                                         </Form.Item>
                                     </Col>
                                     <Col span={6} className={styles.select_padding_left}>
