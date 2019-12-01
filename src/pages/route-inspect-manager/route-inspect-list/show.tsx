@@ -130,10 +130,8 @@ class TaskAdd extends React.Component<Props, State> {
                   <Col span={12}>
                     <Form.Item label="是否完成">
                       <IconFont type={['icon-error', 'icon-correct'][historyRecord.isFinish]} />
-
                     </Form.Item>
                   </Col>
-
                 </Row>
                 <Row type="flex" justify="space-between">
                   <Col span={24} className="textarea">

@@ -126,19 +126,9 @@ class AddUserAuth extends React.Component<Props, State> {
                   <Col span={12}>
                     <Form.Item label="角色名称">
                       {getFieldDecorator('roleName', {
-                        // roleName
                         rules: [],
-                        // initialValue: '',
-                        // this.state.userTypes.length === 0 ? '' : this.state.userTypes[0].key,
                       })(
                         <Input placeholder="请输入角色名称" />,
-                        // <Select style={{ width: '2rem' }} className={styles.select_text}>
-                        //   {this.state.userTypes.map((option, index) => (
-                        //     <Option value={option.key} key={index}>
-                        //       {option.value}
-                        //     </Option>
-                        //   ))}
-                        // </Select>,
                       )}
                     </Form.Item>
                   </Col>

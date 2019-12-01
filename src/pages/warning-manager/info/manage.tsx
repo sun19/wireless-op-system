@@ -70,6 +70,7 @@ class TaskAdd extends React.Component<Props, State> {
     }
     render() {
         const { getFieldDecorator, getFieldsError } = this.props.form;
+        const { dataSource } = this.props
         return (
             <ContentBorder className={styles.auth_root}>
                 <Form
@@ -129,7 +130,9 @@ class TaskAdd extends React.Component<Props, State> {
                                 </Row>
                                 <Row type="flex" justify="center" style={{ marginTop: '0.35rem' }}>
                                     <Col span={6} >
+                                          <Form.Item> 
                                         <Button className={styles.form_btn} onClick={this.goBack}>处理</Button>
+                                        </Form.Item>
                                     </Col>
                                     <Col span={6} className={styles.select_padding_left}>
                                         <Form.Item>
