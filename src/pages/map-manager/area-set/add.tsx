@@ -49,16 +49,6 @@ class FencingSetting extends React.Component<Props, State> {
     this.initRequest = this.initRequest.bind(this);
   }
   async componentDidMount() {
-    // const mapImage = await this.dynamicLoadMapImage();
-    // if (this.map.current) {
-    //   const { clientWidth, clientHeight } = this.map.current;
-
-    //   this.setState({
-    //     mapImage,
-    //     width: clientWidth,
-    //     height: clientHeight,
-    //   });
-    // }
     this.initRequest();
   }
 
@@ -66,15 +56,15 @@ class FencingSetting extends React.Component<Props, State> {
     const maps = await getAllMap();
     const fencingTypes = await getAllFencingTypes();
     let usersResp = await getAllUserInfo();
-      let users = [];
-      for (let i = 0; i < usersResp.result.length; i++) {
-        const dept = usersResp.result[i];
-        for (let j = 0; j < dept.relatePeopleResponses.length; j++) {
-          const item = dept.relatePeopleResponses[j];
-          users.push(item);
-        }
+    let users = [];
+    for (let i = 0; i < usersResp.result.length; i++) {
+      const dept = usersResp.result[i];
+      for (let j = 0; j < dept.relatePeopleResponses.length; j++) {
+        const item = dept.relatePeopleResponses[j];
+        users.push(item);
+      }
     }
-  
+
     const levels = await getAllLevels();
     const areas = await getAllArea();
     this.props.dispatch({
@@ -108,12 +98,11 @@ class FencingSetting extends React.Component<Props, State> {
         ...props,
       };
 
-      const isSuccessed =  await addMapArea(data);
-       if (isSuccessed) {
+      const isSuccessed = await addMapArea(data);
+      if (isSuccessed) {
         // message.success('添加成功!', 1000);
-         setTimeout(() => router.push('/map-manager/area-set'), 1000);
+        setTimeout(() => router.push('/map-manager/area-set'), 1000);
       }
-     
     });
   };
 

@@ -60,11 +60,14 @@ class AddPollingPoint extends React.Component<Props, State> {
     const mapImage = await this.dynamicLoadMapImage();
     if (this.map.current) {
       const { clientWidth, clientHeight } = this.map.current;
+      const { pollingPointsRecord } = this.props;
 
       this.setState({
         mapImage,
         width: clientWidth,
         height: clientHeight,
+        circleX: (pollingPointsRecord.xcoordinate * clientWidth) / 1920,
+        circleY: (pollingPointsRecord.ycoordinate * clientHeight) / 1080,
       });
     }
     this.initRequest();
@@ -206,7 +209,7 @@ class AddPollingPoint extends React.Component<Props, State> {
                   <Form.Item label="横坐标" className={styles.small_style}>
                     {getFieldDecorator('xCoordinate', {
                       rules: [],
-                      initialValue: pollingPointsRecord.xCoordinate,
+                      initialValue: pollingPointsRecord.xcoordinate,
                     })(
                       <Input
                         style={{ width: '1rem', backgroundSize: '1rem 0.4rem' }}
@@ -217,7 +220,7 @@ class AddPollingPoint extends React.Component<Props, State> {
                   <Form.Item label="纵坐标" className={styles.small_style}>
                     {getFieldDecorator('yCoordinate', {
                       rules: [],
-                      initialValue: pollingPointsRecord.yCoordinate,
+                      initialValue: pollingPointsRecord.ycoordinate,
                     })(
                       <Input
                         style={{ width: '1rem', backgroundSize: '1rem 0.4rem' }}

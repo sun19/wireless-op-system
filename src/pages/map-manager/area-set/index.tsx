@@ -123,9 +123,9 @@ class AreaSet extends React.Component<Props, State> {
       return (
         <Select
           className={publicStyles.select_text}
-          // defaultValue=''
           placeholder="请选择级别"
           onSelect={this.onLevelSelectChange}
+          value={this.state.level}
         >
           {areaLevels.map((level, index) => (
             <Option value={level.id} key={index}>
@@ -135,7 +135,13 @@ class AreaSet extends React.Component<Props, State> {
         </Select>
       );
     } else {
-      return <Select className={publicStyles.select_text} onSelect={this.onLevelSelectChange} />;
+      return (
+        <Select
+          className={publicStyles.select_text}
+          onSelect={this.onLevelSelectChange}
+          value={this.state.level}
+        />
+      );
     }
   };
   onAreaInputChange = e => {
@@ -160,7 +166,7 @@ class AreaSet extends React.Component<Props, State> {
 
   onClear = () => {
     this.setState({
-      level: '',
+      level: undefined,
       area: '',
     });
     this.getMapArea();
@@ -178,9 +184,9 @@ class AreaSet extends React.Component<Props, State> {
         allLevels: levels.result,
       },
     });
-    this.setState({
-      level: this.props.areaLevels[0].id,
-    });
+    // this.setState({
+    //   level: this.props.areaLevels[0].id,
+    // });
   }
   componentWillUnmount() {
     message.destroy();

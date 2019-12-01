@@ -127,9 +127,8 @@ class FencingSetting extends React.Component<Props, State> {
         userId: userId.join(','),
       };
 
-      await addMapFencingArea(data);
-      router.push('/map-manager/fence-setting');
-      // this.getRouteInspectList(data);
+      const isSuccessed = await addMapFencingArea(data);
+      isSuccessed && router.push('/map-manager/fence-setting');
     });
   };
 
@@ -254,7 +253,7 @@ class FencingSetting extends React.Component<Props, State> {
                       </Select>,
                     )}
                   </Form.Item>
-                  <Form.Item label="最大人员数量">
+                  <Form.Item label="人员数量">
                     {getFieldDecorator('maxUser', {
                       rules: [
                         {
@@ -268,6 +267,8 @@ class FencingSetting extends React.Component<Props, State> {
               <Row type="flex" justify="space-between">
                 <Col span={24}>
                   <Form.Item label="关联人员">{this.setupRelationPeople()}</Form.Item>
+
+                  <Form.Item label="围栏设置">休息休息</Form.Item>
 
                   <Form.Item className={styles.area_style} label="区域">
                     {getFieldDecorator('regionalId', {
