@@ -66,15 +66,15 @@ class AddUsers extends React.Component<Props, State> {
               message: '请选择职务',
             },
           ],
-            initialValue: allDuties && allDuties[0] && allDuties[0].id||'',
-
+          initialValue: (allDuties && allDuties[0] && allDuties[0].id) || '',
         })(
           <Select placeholder="请选择职务">
-            {allDuties&&allDuties.map((duty, index) => (
-              <Option value={duty.id} key={index}>
-                {duty.name}
-              </Option>
-            ))}
+            {allDuties &&
+              allDuties.map((duty, index) => (
+                <Option value={duty.id} key={index}>
+                  {duty.name}
+                </Option>
+              ))}
           </Select>,
         )}
       </Form.Item>
@@ -92,7 +92,7 @@ class AddUsers extends React.Component<Props, State> {
               message: '请选择保密等级',
             },
           ],
-          initialValue: allSecretLevel && allSecretLevel[1]&& allSecretLevel[1].id||'',
+          initialValue: (allSecretLevel && allSecretLevel[1] && allSecretLevel[1].id) || '',
         })(
           <Select placeholder="请选择保密等级">
             {allSecretLevel.map((level, index) => (
@@ -112,7 +112,7 @@ class AddUsers extends React.Component<Props, State> {
   goBack = () => {
     this.props.form.resetFields();
     router.push('/info-card-manager/info-card-list');
-  }; 
+  };
   handleSubmit(e) {
     e.preventDefault();
     this.props.form.validateFields(async (err, values) => {
@@ -138,7 +138,7 @@ class AddUsers extends React.Component<Props, State> {
     this.setState({ userTypes });
     const dutiesResp = await getAllPosition();
     const secretsLevelsResp = await getAllSecretLevels();
-    const allPositions = await getAllDepartment()
+    const allPositions = await getAllDepartment();
 
     this.props.dispatch({
       type: 'commonState/update',
@@ -146,7 +146,6 @@ class AddUsers extends React.Component<Props, State> {
         allDuties: dutiesResp.result,
         allSecretLevel: secretsLevelsResp.result,
         allPosition: allPositions,
-
       },
     });
   }
@@ -155,7 +154,7 @@ class AddUsers extends React.Component<Props, State> {
     const { getFieldDecorator, getFieldsError } = this.props.form;
     // if (this.state.userTypes.length === 0) return null;
     // if (_.isEmpty(props.allDuties) || _.isEmpty(props.allSecretLevel)) return null;
-    const { allPosition } = this.props
+    const { allPosition } = this.props;
 
     return (
       <ContentBorder className={styles.auth_root}>
@@ -247,15 +246,16 @@ class AddUsers extends React.Component<Props, State> {
                             message: '请选择部门',
                           },
                         ],
-                        initialValue: allPosition && allPosition[0] && allPosition[0].id||'',
+                        initialValue: (allPosition && allPosition[0] && allPosition[0].id) || '',
                       })(
                         <Select placeholder="请选择部门">
-                          {allPosition && allPosition.map(option => (
-                            <Option value={option.id} key={option.key}>
-                              {option.name}
-                            </Option>
-                          ))}
-                        </Select>
+                          {allPosition &&
+                            allPosition.map(option => (
+                              <Option value={option.id} key={option.key}>
+                                {option.name}
+                              </Option>
+                            ))}
+                        </Select>,
                       )}
                     </Form.Item>
                   </Col>
@@ -271,7 +271,11 @@ class AddUsers extends React.Component<Props, State> {
                             message: '请选择人员类型',
                           },
                         ],
-                        initialValue: this.state.userTypes && this.state.userTypes[0]&& this.state.userTypes[0].roleId || '',
+                        initialValue:
+                          (this.state.userTypes &&
+                            this.state.userTypes[0] &&
+                            this.state.userTypes[0].roleId) ||
+                          '',
                       })(
                         <SelectText
                           options={this.state.userTypes as OptionValue[]}
@@ -339,7 +343,9 @@ class AddUsers extends React.Component<Props, State> {
                   </Col>
                   <Col span={6} className={styles.select_padding_left}>
                     <Form.Item>
-                      <Button className={styles.form_btn} onClick={this.goBack}>返回</Button>
+                      <Button className={styles.form_btn} onClick={this.goBack}>
+                        返回
+                      </Button>
                     </Form.Item>
                   </Col>
                 </Row>
@@ -353,7 +359,7 @@ class AddUsers extends React.Component<Props, State> {
 }
 const AddUserForm = Form.create<Props>({ name: 'add_user' })(AddUsers);
 const mapState = ({ userManager, commonState }) => {
-  const { allDuties, allSecretLevel, allPosition} = commonState;
+  const { allDuties, allSecretLevel, allPosition } = commonState;
   return {
     allDuties: allDuties,
     allPosition: allPosition,

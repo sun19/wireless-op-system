@@ -58,10 +58,10 @@ export async function getInfoDetial(data: GetInfoDetial) {
 }
 // 信息牌添加
 export async function addInfoList(data: AddInfoList) {
-  const resp = await request.post(ADD_INFO_LIST, { 
-    headers: { 'Content-Type': 'application/json;charset=utf-8' },
-
-    data  });
+  const resp = await request.post(ADD_INFO_LIST, {
+    // headers: { 'Content-Type': 'application/json;charset=utf-8' },
+    data: format(data),
+  });
   return resp.success === true && resp.code === 200;
 }
 // 信息牌编辑
@@ -106,7 +106,7 @@ export async function addTaskList(data: AddTaskList) {
   const resp = await request.post(ADD_TASK_LIST, {
     // data ,
     // headers: { 'Content-Type': 'application/json;charset=utf-8' },
-    data: format(data)
+    data: format(data),
   });
   return resp.success === true && resp.code === 200;
 }

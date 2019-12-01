@@ -15,7 +15,6 @@ import { connect } from 'dva';
 import router from 'umi/router';
 import moment from 'moment';
 
-
 import ContentBorder from '../../../components/ContentBorder';
 import { updatePollingPoint } from '../services';
 import { getAllMap } from '@/pages/login/login.service';
@@ -99,7 +98,15 @@ class AddPollingPoint extends React.Component<Props, State> {
         message.error('填写信息有误 ', values);
         return;
       }
-      const isSuccessed = await updatePollingPoint(Object.assign(pollingPointsRecord, values));
+      const { startTime, endTime, userId = [], ...props } = values;
+      const data = {
+        ...props,
+        startTime: values.startTime
+          ? values.startTime.format('YYYY-MM-DD HH:mm:ss').toString()
+          : '',
+        endTime: values.endTime ? values.endTime.format('YYYY-MM-DD HH:mm:ss').toString() : '',
+      };
+      const isSuccessed = await updatePollingPoint(Object.assign(pollingPointsRecord, data));
       if (isSuccessed) {
         setTimeout(() => router.push('/map-manager/polling-point'), 1000);
       }
@@ -227,7 +234,6 @@ class AddPollingPoint extends React.Component<Props, State> {
                     {getFieldDecorator('startTime', {
                       rules: [],
                       initialValue: moment(pollingPointsRecord.startTime),
-
                     })(
                       <DatePicker
                         showTime={true}
@@ -240,8 +246,6 @@ class AddPollingPoint extends React.Component<Props, State> {
                     {getFieldDecorator('endTime', {
                       rules: [],
                       initialValue: moment(pollingPointsRecord.endTime),
-
-
                     })(
                       <DatePicker
                         showTime={true}

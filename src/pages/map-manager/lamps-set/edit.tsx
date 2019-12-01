@@ -80,11 +80,14 @@ class halmpAdd extends React.Component<Props, State> {
     const mapImage = await this.dynamicLoadMapImage();
     if (this.map.current) {
       const { clientWidth, clientHeight } = this.map.current;
+      const { lampRecord } = this.props;
 
       this.setState({
         mapImage,
         width: clientWidth,
         height: clientHeight,
+        circleX: (lampRecord.xcoordinate * clientWidth) / 1920,
+        circleY: (lampRecord.ycoordinate * clientHeight) / 1080,
       });
     }
     this.initRequest();
@@ -165,7 +168,7 @@ class halmpAdd extends React.Component<Props, State> {
                   <Form.Item label="横坐标" className={styles.small_style}>
                     {getFieldDecorator('xCoordinate', {
                       rules: [],
-                      initialValue: lampRecord.xCoordinate,
+                      initialValue: lampRecord.xcoordinate,
                     })(
                       <Input
                         style={{ width: '1rem', backgroundSize: '1rem 0.4rem' }}
@@ -177,7 +180,7 @@ class halmpAdd extends React.Component<Props, State> {
                   <Form.Item label="纵坐标" className={styles.small_style}>
                     {getFieldDecorator('yCoordinate', {
                       rules: [],
-                      initialValue: lampRecord.yCoordinate,
+                      initialValue: lampRecord.ycoordinate,
                     })(
                       <Input
                         style={{ width: '1rem', backgroundSize: '1rem 0.4rem' }}
