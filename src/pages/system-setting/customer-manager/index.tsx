@@ -54,7 +54,7 @@ const columns = [
     className: 'select_text',
     editable: true,
     render: onlineStatus => {
-      return ['男', '女'][onlineStatus]
+      return ['男', '女'][onlineStatus];
     },
   },
   {
@@ -62,6 +62,7 @@ const columns = [
     dataIndex: 'remark',
     // width: '10%',
     editable: true,
+    ellipsis: true,
   },
   {
     title: '最近一次登录时间',
