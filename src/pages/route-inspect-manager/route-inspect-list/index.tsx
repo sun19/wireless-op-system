@@ -32,29 +32,25 @@ const IconFont = Icon.createFromIconfontCN({
 const columns = [
   {
     title: '路线名称',
-    dataIndex: 'inspectionRoute',
-    editable: true,
+    dataIndex: 'routeName',
+    // editable: true,
   },
   {
     title: '巡检人员',
-    dataIndex: 'createId',
-    editable: true,
+    dataIndex: 'userName',
   },
   {
     title: '开始时间',
     dataIndex: 'startTime',
-    editable: true,
   },
   {
     title: '结束时间',
     dataIndex: 'endTime',
-    editable: true,
   },
   {
     title: '是否完成',
     className: 'select_text',
-    dataIndex: 'whether',
-    editable: true,
+    dataIndex: 'isFinish',
     render: (name, record) => {
       return (
         <div>
@@ -70,7 +66,6 @@ const columns = [
   {
     title: '描述',
     dataIndex: 'remark',
-    editable: true,
   },
 ];
 
@@ -121,13 +116,13 @@ class RouteInspectList extends React.Component<Props> {
     this.getRouteInspectList();
   }
   previewData(data, item) {
-    // this.props.dispatch({
-    //   type: 'statisticsQuery/update',
-    //   payload: {
-    //     historyRecord: data,
-    //   },
-    // });
-    // router.push('/statistics-query/statistics-history/preview');
+    this.props.dispatch({
+      type: 'routeInspect/update',
+      payload: {
+        historyRecord: data,
+      },
+    });
+   router.push('/route-inspect-manager/route-inspect-list/show');
   }
 
   render() {

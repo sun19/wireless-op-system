@@ -28,11 +28,11 @@ interface State {
   userTypes: UserType[];
   expandedKeys: any;
   selectedKeys: any;
-  checkedKeys: any;
+  checkedKeys: any; 
   // autoExpandParent:boolean;
 }
 
-class UserAuth extends React.Component<Props, State> {
+class AddUserAuth extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.onSubmit = this.onSubmit.bind(this);
@@ -102,15 +102,15 @@ class UserAuth extends React.Component<Props, State> {
   }
 
   renderTreeNodes = data =>
-    data.map(item => {
+    data.map((item,index) => {
       if (item.children) {
         return (
-          <TreeNode title={item.name} key={item.path} dataRef={item}>
+          <TreeNode title={item.name} key={item.key} dataRef={item}>
             {this.renderTreeNodes(item.children)}
           </TreeNode>
         );
       }
-      return <TreeNode title={item.name} key={item.path} />;
+      return <TreeNode title={item.name} key={item.key} />;
     });
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -126,19 +126,9 @@ class UserAuth extends React.Component<Props, State> {
                   <Col span={12}>
                     <Form.Item label="角色名称">
                       {getFieldDecorator('roleName', {
-                        // roleName
                         rules: [],
-                        // initialValue: '',
-                        // this.state.userTypes.length === 0 ? '' : this.state.userTypes[0].key,
                       })(
                         <Input placeholder="请输入角色名称" />,
-                        // <Select style={{ width: '2rem' }} className={styles.select_text}>
-                        //   {this.state.userTypes.map((option, index) => (
-                        //     <Option value={option.key} key={index}>
-                        //       {option.value}
-                        //     </Option>
-                        //   ))}
-                        // </Select>,
                       )}
                     </Form.Item>
                   </Col>
@@ -193,4 +183,4 @@ class UserAuth extends React.Component<Props, State> {
   }
 }
 
-export default Form.create<Props>({ name: 'auth_user' })(UserAuth);
+export default Form.create<Props>({ name: 'auth_user' })(AddUserAuth);

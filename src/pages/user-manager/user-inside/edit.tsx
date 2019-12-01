@@ -27,7 +27,7 @@ interface State {
   cardNo?: string;
 }
 
-class UserAuth extends React.Component<Props> {
+class EditAuth extends React.Component<Props> {
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -280,7 +280,7 @@ class UserAuth extends React.Component<Props> {
   }
 }
 
-const AddUserForm = Form.create<Props>({ name: 'auth_user' })(UserAuth);
+const AddUserForm = Form.create<Props>({ name: 'auth_user' })(EditAuth);
 
 const mapState = ({ userManager, commonState,  }) => {
   const resp = userManager.innerUserList;

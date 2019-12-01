@@ -3,6 +3,7 @@ export default {
   state: {
     routeInspectList: {},
     routeInspectReports: {},
+    historyRecord:{}
   },
   reducers: {
     update(state, { payload }) {

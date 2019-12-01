@@ -147,10 +147,24 @@ export default class EditableTable extends React.Component<Props, State> {
           render: (text, record) => (
             <span>
               <IconFont
-                type="icon-preview1"
+                type="icon-preview"
                 onClick={this.preview.bind(this, record)}
                 style={{ marginRight: 8 }}
               />
+            </span>
+          ),
+        },
+      ]);
+    }
+    if (this.props.showManage){
+      this.columns = this.columns.concat([
+        {
+          title: '操作',
+          key: 'action',
+          width: 100,
+          render: (text, record) => (
+            <span style={{color:'#FF41D9'}} onClick={this.manage.bind(this, record)}>
+              处理
             </span>
           ),
         },
@@ -208,7 +222,9 @@ export default class EditableTable extends React.Component<Props, State> {
   preview = record => {
     this.props.preview(record);
   };
-
+  manage = record => {
+    this.props.manage(record);
+  };
   onDelete = record => {
     this.props.deleteColumn(record);
   };

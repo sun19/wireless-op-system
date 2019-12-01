@@ -37,7 +37,7 @@ interface State {
   icon: any;
 }
 
-class UserAuth extends React.Component<Props, State> {
+class Adduth extends React.Component<Props, State> {
   map: React.RefObject<HTMLDivElement>;
   constructor(props) {
     super(props);
@@ -190,7 +190,7 @@ class UserAuth extends React.Component<Props, State> {
   setupShowLamps = () => {
     const { lampsType } = this.props;
     const { getFieldDecorator } = this.props.form;
-    return getFieldDecorator('lampId', {
+    return getFieldDecorator('lampIds', {
       rules: [],
     })(
       <Select
@@ -416,7 +416,7 @@ class UserAuth extends React.Component<Props, State> {
   }
 }
 
-const FormUserAuth = Form.create<Props>({ name: 'warn_manager_type_add' })(UserAuth);
+const FormUserAuth = Form.create<Props>({ name: 'warn_manager_type_add' })(Adduth);
 
 const mapState = ({ warningManager }) => {
   return {
