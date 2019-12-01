@@ -36,19 +36,17 @@ interface routes {
   id?: string;
   name?: string;
 }
-interface FormProps extends FormComponentProps { }
+interface FormProps extends FormComponentProps {}
 type StateProps = ReturnType<typeof mapState>;
 type Props = StateProps & UmiComponentProps & FormProps;
 
-interface State {
-}
+interface State {}
 function hasErrors(fieldsError) {
   return Object.keys(fieldsError).some(field => fieldsError[field]);
 }
 class TaskAdd extends React.Component<Props, State> {
   constructor(props) {
     super(props);
-
   }
 
   componentWillUnmount() {
@@ -60,30 +58,24 @@ class TaskAdd extends React.Component<Props, State> {
   };
 
   async componentWillMount() {
-    const route = await getPollingLineByName({})
+    const route = await getPollingLineByName({});
     this.props.dispatch({
       type: 'commonState/update',
       payload: {
-        route: route.result.records
+        route: route.result.records,
       },
     });
   }
 
   async componentDidMount() {
     this.props.form.validateFields();
-
   }
   render() {
     const { getFieldDecorator, getFieldsError } = this.props.form;
-    const { historyRecord } = this.props
-
+    const { historyRecord } = this.props;
     return (
       <ContentBorder className={styles.auth_root}>
-        <Form
-          layout="inline"
-          labelAlign="right"
-          style={{ marginTop: '0.57rem' }}
-        >
+        <Form layout="inline" labelAlign="right" style={{ marginTop: '0.57rem' }}>
           <Row type="flex" justify="center" align="middle" className={styles.add}>
             <Col span={12}>
               <div className="auth__inner--container">
@@ -91,15 +83,14 @@ class TaskAdd extends React.Component<Props, State> {
                   <Col span={12}>
                     <Form.Item label="线路名称">
                       {getFieldDecorator('routeName', {
-                        initialValue: historyRecord.routeName
-
+                        initialValue: historyRecord.routeName,
                       })(<Input disabled={true} />)}
                     </Form.Item>
                   </Col>
                   <Col span={12}>
                     <Form.Item label="巡检人员">
                       {getFieldDecorator('userName', {
-                        initialValue: historyRecord.userName
+                        initialValue: historyRecord.userName,
                       })(<Input disabled={true} />)}
                     </Form.Item>
                   </Col>
@@ -107,13 +98,9 @@ class TaskAdd extends React.Component<Props, State> {
                 <Row type="flex" justify="space-between">
                   <Col span={12}>
                     <Form.Item label="开始时间">
-                      {getFieldDecorator(
-                        'startTime',
-                        {
-                          initialValue: moment(historyRecord.startTime),
-
-                        },
-                      )(<DatePicker showTime={true} disabled={true} />)}
+                      {getFieldDecorator('startTime', {
+                        initialValue: moment(historyRecord.startTime),
+                      })(<DatePicker showTime={true} disabled={true} />)}
                     </Form.Item>
                   </Col>
                   <Col span={12}>
@@ -121,7 +108,7 @@ class TaskAdd extends React.Component<Props, State> {
                       {getFieldDecorator('endTime', {
                         initialValue: moment(historyRecord.endTime),
                       })(
-                        <DatePicker showTime={true} format="YYYY-MM-DD HH:mm:ss" disabled={true}/>,
+                        <DatePicker showTime={true} format="YYYY-MM-DD HH:mm:ss" disabled={true} />,
                       )}
                     </Form.Item>
                   </Col>
@@ -129,7 +116,13 @@ class TaskAdd extends React.Component<Props, State> {
                 <Row type="flex" justify="space-between">
                   <Col span={12}>
                     <Form.Item label="是否完成">
-                      <IconFont type={['icon-error', 'icon-correct'][historyRecord.isFinish]} />
+                      {historyRecord.isFinish == '1' ? (
+                        <IconFont type="icon-correct" />
+                      ) : historyRecord.isFinish == '0' ? (
+                        <IconFont type="icon-error" />
+                      ) : (
+                        <span className={styles.no_data}>暂无数据</span>
+                      )}
                     </Form.Item>
                   </Col>
                 </Row>
@@ -137,10 +130,8 @@ class TaskAdd extends React.Component<Props, State> {
                   <Col span={24} className="textarea">
                     <Form.Item label="备描述注">
                       {getFieldDecorator('remark', {
-                        initialValue: historyRecord.remark
-                      })(
-                        <TextArea autoSize={{ minRows: 6, maxRows: 8 }} disabled={true} />,
-                      )}
+                        initialValue: historyRecord.remark,
+                      })(<TextArea autoSize={{ minRows: 6, maxRows: 8 }} disabled={true} />)}
                     </Form.Item>
                   </Col>
                 </Row>
@@ -148,7 +139,9 @@ class TaskAdd extends React.Component<Props, State> {
                   <Col span={6} />>
                   <Col span={6} className={styles.select_padding_left}>
                     <Form.Item>
-                      <Button className={styles.form_btn} onClick={this.goBack}>返回</Button>
+                      <Button className={styles.form_btn} onClick={this.goBack}>
+                        返回
+                      </Button>
                     </Form.Item>
                   </Col>
                 </Row>
@@ -163,7 +156,7 @@ class TaskAdd extends React.Component<Props, State> {
 const AddUserForm = Form.create<Props>({ name: 'add_user' })(TaskAdd);
 const mapState = ({ userManager, commonState, routeInspect }) => {
   return {
-    historyRecord: routeInspect.historyRecord
+    historyRecord: routeInspect.historyRecord,
   };
 };
 export default connect(mapState)(AddUserForm);
