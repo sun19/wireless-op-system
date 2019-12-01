@@ -63,12 +63,13 @@ export async function addUser(params: AddUserParams) {
 }
 
 export async function exportUser() {
-  const resp = await request.get(USER_MANAGER_EXPORT_USER);
+  // const resp = await request.get(USER_MANAGER_EXPORT_USER);
+  window.open(USER_MANAGER_EXPORT_USER, '_self');
   //TODO:放到项目中即可正常显示，这里不必处理
   // resp.success === true && resp.code === 200
   //   ? message.success(`${resp.message}`)
   //   : message.error(`${resp.message}`);
-  return resp.success === true && resp.code === 200;
+  // return resp.success === true && resp.code === 200;
 }
 
 export async function importUser(params: ImportUserParams) {

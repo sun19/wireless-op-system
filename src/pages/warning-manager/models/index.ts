@@ -9,6 +9,7 @@ export default {
     areas: [],
     warningTypes: [],
     repeatTypes: [],
+    lampsType: [],
   },
   reducers: {
     update(state, { payload }) {

@@ -26,6 +26,7 @@ import {
   MAP_MANAGER_POLLING_LINE_UPDATE,
   MAP_MANAGER_POLLING_LINE_DETAIL,
   GET_SUPER_ADMIN_LIST,
+  COMMON_GET_ALL_LAMP_ID,
 } from '@/config/api';
 import {
   GetMapAreaParams,
@@ -52,7 +53,6 @@ import {
   DeletePollingLineParams,
   GetPollingLineDetailParams,
 } from './index.interface';
-import { async } from 'q';
 
 export async function getMapArea(params: GetMapAreaParams) {
   let resp = await request.get(MAP_MANAGER_AREA_SETTING_QUERY, { params });
@@ -221,5 +221,10 @@ export async function getPollingLineDetail(params: GetPollingLineDetailParams) {
  */
 export async function getAllWarningType() {
   const resp = await request.get(GET_SUPER_ADMIN_LIST, { params: { type: 'alarmType' } });
+  return resp;
+}
+
+export async function getAllLamps() {
+  const resp = await request.get(COMMON_GET_ALL_LAMP_ID);
   return resp;
 }
