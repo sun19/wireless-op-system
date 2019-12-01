@@ -37,12 +37,12 @@ export const LEFT_MENUS = [
         path: '',
         component: '',
         children: [
-          {
-            name: '信息牌设置',
-            key: '040',
-            path: '/system-setting/message-card',
-            component: './pages/system-setting/message-card/index.tsx',
-          },
+          // {
+          //   name: '信息牌设置',
+          //   key: '040',
+          //   path: '/system-setting/message-card',
+          //   component: './pages/system-setting/message-card/index.tsx',
+          // },
           {
             name: '用户管理(值班员)',
             key: '007',
