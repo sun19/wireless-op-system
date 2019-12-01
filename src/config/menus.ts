@@ -83,12 +83,12 @@ export const LEFT_MENUS = [
             path: '/empty',
             component: './pages/empty/index.tsx',
           },
-          {
-            name: '地图导入',
-            key: '014',
-            path: '/map-manager/map-import',
-            component: './pages/map-manager/map-import/index.tsx',
-          },
+          // {
+          //   name: '地图导入',
+          //   key: '014',
+          //   path: '/empty',
+          //   component: './pages/empty/index.tsx',
+          // },
           {
             name: '灯具设置',
             key: '015',
