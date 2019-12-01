@@ -177,7 +177,7 @@ class FencingSetting extends React.Component<Props, State> {
   setupShowLamps = () => {
     const { lampsType } = this.props;
     const { getFieldDecorator } = this.props.form;
-    return getFieldDecorator('lampId', {
+    return getFieldDecorator('lampIds', {
       rules: [],
     })(
       <Select
