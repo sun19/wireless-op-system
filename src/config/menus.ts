@@ -13,23 +13,24 @@ export const LEFT_MENUS = [
         component: '',
         children: [
           {
-            name: '系统设置',//没有页面
+            name: '系统设置', //没有页面
             key: '003',
             path: '/empty',
             component: './pages/empty/index.tsx',
-          }, {
+          },
+          {
             name: '系统管理员设置',
             key: '004',
             path: '/system-setting/super-admin',
             component: './pages/system-setting/super-admin/index.tsx',
           },
           {
-            name: '值班员设置',//没有页面
+            name: '值班员设置', //没有页面
             key: '005',
             path: '/empty',
             component: './pages/empty/index.tsx',
           },
-        ]
+        ],
       },
       {
         name: '系统管理员设置',
@@ -50,35 +51,37 @@ export const LEFT_MENUS = [
             component: './pages/system-setting/customer-manager/index.tsx',
           },
           {
-            name: '内部人员信息录入',//没有页面
+            name: '内部人员信息录入', //没有页面
             key: '008',
-            path: '/empty',
-            component: './pages/empty/index.tsx',
+            path: '/info-card-manager/info-card-list',
+            component: './pages/info-card-manager/info-card-list/index.tsx',
           },
           {
-            name: '值班员设置 ',//没有页面
+            name: '值班员设置 ', //没有页面
             key: '009',
             path: '/empty',
             component: './pages/empty/index.tsx',
           },
           {
-            name: '信息牌分配',//没有页面
+            name: '信息牌分配', //没有页面
             key: '010',
-            path: '/empty',
-            component: './pages/empty/index.tsx',
+            path: '/info-card-manager/info-card-list',
+            component: './pages/info-card-manager/info-card-list/index.tsx',
           },
           {
             name: '电子围栏设置',
             key: '011',
             path: '/map-manager/fence-setting',
             component: './pages/map-manager/fence-setting/index.tsx',
-          }, {
-            name: '系统维护',//没有页面
+          },
+          {
+            name: '系统维护', //没有页面
             key: '012',
             path: '/empty',
             component: './pages/empty/index.tsx',
-          }, {
-            name: '数据库管理备份',//没有页面
+          },
+          {
+            name: '数据库管理备份', //没有页面
             key: '013',
             path: '/empty',
             component: './pages/empty/index.tsx',
@@ -96,17 +99,18 @@ export const LEFT_MENUS = [
             component: './pages/map-manager/lamps-set/index.tsx',
           },
           {
-            name: '信息牌导入',//没有页面
+            name: '信息牌导入', //没有页面
             key: '016',
             path: '/system-setting/message-card',
             component: './pages/system-setting/message-card/index.tsx',
-          }, 
+          },
           {
             name: '区域设置',
             key: '017',
             path: '/map-manager/area-set',
             component: './pages/map-manager/area-set/index.tsx',
-          }, {
+          },
+          {
             name: '人员类型',
             key: '018',
             path: '/system-setting/people-type',
@@ -137,28 +141,31 @@ export const LEFT_MENUS = [
             key: '022',
             path: '/map-manager/polling-line',
             component: './pages/map-manager/polling-line/index.tsx',
-          }, {
-            name: '告警信息处理',//没有页面
+          },
+          {
+            name: '告警信息处理', //没有页面
             key: '023',
             path: '/empty',
             component: './pages/empty/index.tsx',
-          }, {
-            name: '告警类型设置',//没有页面
+          },
+          {
+            name: '告警类型设置', //没有页面
             key: '024',
             path: '/empty',
             component: './pages/empty/index.tsx',
-          }, {
-            name: '信息完善',//没有页面
+          },
+          {
+            name: '信息完善', //没有页面
             key: '025',
             path: '/empty',
             component: './pages/empty/index.tsx',
-          }, {
-            name: '外来人员信息录入',//没有页面
+          },
+          {
+            name: '外来人员信息录入', //没有页面
             key: '026',
             path: '/empty',
             component: './pages/empty/index.tsx',
           },
-
         ],
       },
     ],
@@ -178,12 +185,13 @@ export const LEFT_MENUS = [
         component: './pages/info-card-manager/info-card-list/index.tsx',
       },
       {
-        name: '人员定位',//没有页面
+        name: '人员定位', //没有页面
         key: '029',
         path: '/empty',
         component: './pages/empty/index.tsx',
-      }, {
-        name: '灯具展示',//没有页面
+      },
+      {
+        name: '灯具展示', //没有页面
         key: '030',
         path: '/empty',
         component: './pages/empty/index.tsx',
@@ -193,21 +201,25 @@ export const LEFT_MENUS = [
         key: '031',
         path: '/statistics-query/statistics-history',
         component: './pages/statistics-query/statistics-history/index.tsx',
-      }, {
-        name: '区域查询',//没有页面
+      },
+      {
+        name: '区域查询', //没有页面
         key: '032',
         path: '/empty',
         component: './pages/empty/index.tsx',
-      }, {
+      },
+      {
         name: '日志列表',
         key: '033',
         path: '/log-manager/log-list',
         component: './pages/log-manager/log-list/index.tsx',
-      }, {
+      },
+      {
         name: '电子围栏',
         path: '/big-screen/dataview',
         component: './pages/big-screen/dataview',
-      }, {
+      },
+      {
         name: '告警信息',
         key: '034',
         path: '/warning-manager/info',
@@ -228,7 +240,8 @@ export const LEFT_MENUS = [
         name: '实时位置',
         path: '/big-screen/homepage',
         component: './pages/big-screen/homepage',
-      }, {
+      },
+      {
         name: '巡检列表',
         key: '037',
         path: '/route-inspect-manager/route-inspect-list',
@@ -239,7 +252,8 @@ export const LEFT_MENUS = [
         key: '038',
         path: '/route-inspect-manager/route-inspect-report',
         component: './pages/route-inspect-manager/route-inspect-report/index.tsx',
-      }, {
+      },
+      {
         name: '历史告警',
         key: '039',
         path: '/warning-manager/history',
