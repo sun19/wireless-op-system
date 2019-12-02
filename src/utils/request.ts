@@ -6,7 +6,10 @@ const request = extend({
     pageSize: 999999,
     pageNo: 1,
   },
-  headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+  headers: {
+    'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+    'X-Access-Token': localStorage.getItem('token'),
+  },
 });
 
 export const format = details => {

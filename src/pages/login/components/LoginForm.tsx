@@ -3,6 +3,7 @@ import router from 'umi/router';
 import { Form, Icon, Input, Row, Col, Radio, Button, Alert, message } from 'antd';
 import request, { format } from '@/utils/request';
 import { connect } from 'dva';
+import { FormComponentProps } from 'antd/lib/form';
 
 import { ICON_FONTS_URL } from '../../../config/constants';
 import {
@@ -27,7 +28,7 @@ interface State {
 }
 
 type StateProps = ReturnType<typeof mapState>;
-type Props = StateProps & UmiComponentProps;
+type Props = StateProps & UmiComponentProps & FormComponentProps;
 
 class NormalLoginForm extends React.Component<Props> {
   state: State;
@@ -45,7 +46,7 @@ class NormalLoginForm extends React.Component<Props> {
         let data = {
           username: values.username,
           password: values.password,
-          roleId:this.state.value
+          roleId: this.state.value,
         };
 
         this.showLoadingMessage();
@@ -59,12 +60,12 @@ class NormalLoginForm extends React.Component<Props> {
           const token = resp.result.token;
           localStorage.setItem('token', token);
           await this.preFetchAllCommonState();
-          localStorage.setItem('usepass', JSON.stringify(data) )
+          localStorage.setItem('usepass', JSON.stringify(data));
           localStorage.setItem('userMessage', resp.result.userInfo.id);
-          setTimeout(() => router.push('/big-screen/homepage'),1000)
-          message.success(<span style={{ fontSize: '25px' }}  >登录成功！</span>, 3);
+          setTimeout(() => router.push('/big-screen/homepage'), 1000);
+          message.success(<span style={{ fontSize: '25px' }}>登录成功！</span>, 3);
         } else {
-          message.warning(<span style={{fontSize:'25px'}}  >登录失败!请重新登录！</span>,3);
+          message.warning(<span style={{ fontSize: '25px' }}>登录失败!请重新登录！</span>, 3);
         }
       }
     });
@@ -102,9 +103,9 @@ class NormalLoginForm extends React.Component<Props> {
   // showErrorMessage(msg: string) {
   //   message.error(msg, 1000);
   // }
-componentDidMount(){
- this.preFetchAllCommonState()
-}
+  componentDidMount() {
+    this.preFetchAllCommonState();
+  }
   componentWillUnmount() {
     message.destroy();
   }
@@ -117,7 +118,7 @@ componentDidMount(){
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { allRoles}=this.props
+    const { allRoles } = this.props;
 
     return (
       <div className={styles.login_form}>
@@ -125,15 +126,15 @@ componentDidMount(){
         <Form onSubmit={this.handleSubmit} className={styles.login_main}>
           <div className={styles.redio_style}>
             <Radio.Group>
-             {
-                allRoles.map((res,index)=>{
-                  return(
-                    <Radio value={res.id} key={index} >
-                      <span className={styles.rolename} key={index}>{res.roleName} </span>
-                    </Radio>
-                  )
-                })
-             }
+              {allRoles.map((res, index) => {
+                return (
+                  <Radio value={res.id} key={index}>
+                    <span className={styles.rolename} key={index}>
+                      {res.roleName}{' '}
+                    </span>
+                  </Radio>
+                );
+              })}
             </Radio.Group>
           </div>
           <Form.Item>
@@ -172,7 +173,7 @@ const mapState = ({ commonState }) => {
   const resp = commonState;
   return {
     commonState: resp,
-    allRoles: commonState.allRoles
+    allRoles: commonState.allRoles,
   };
 };
 

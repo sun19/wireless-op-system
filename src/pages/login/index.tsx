@@ -16,7 +16,7 @@ const IconFont = Icon.createFromIconfontCN({
 interface State {
   title: string;
   year: string;
-  time?: string[];
+  time?: any;
 }
 
 export default class Login extends Component<any, State> {
