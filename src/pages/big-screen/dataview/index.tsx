@@ -16,7 +16,7 @@ import {
   getSecretLevelPeopleCount,
   getInnerOrOuterPeopleCount,
   getWarnTypeByTime,
-  getInnerStayTime
+  getInnerStayTime,
 } from '../services';
 
 import styles from './index.less';
@@ -81,18 +81,18 @@ class DataView extends Component<any, State> {
     });
     const warningType = await getWarnTypeByTime({ dataStr: this.state.dataStr });
     this.props.dispatch({
-      type: 'bigScreen/update', 
+      type: 'bigScreen/update',
       payload: {
         warningTypeInfo: warningType.result,
       },
     });
     //获取大屏停留时长
-    const stayTime = await getInnerStayTime()
+    const stayTime = await getInnerStayTime();
     this.props.dispatch({
       type: 'bigScreen/update',
       payload: {
         stayTimeInfo: stayTime,
-      }
+      },
     });
   }
 
@@ -101,15 +101,14 @@ class DataView extends Component<any, State> {
     positionPeopleCount = positionPeopleCount;
     if (positionPeopleCount.length === 0) return null;
     var dataStyle = {
-    
-        normal: {
-          label: {
-            show: false,
-          },
-          labelLine: {
-            show: false,
-          },
+      normal: {
+        label: {
+          show: false,
         },
+        labelLine: {
+          show: false,
+        },
+      },
     };
     var placeHolderStyle = {
       normal: {
@@ -154,6 +153,7 @@ class DataView extends Component<any, State> {
         radius,
         itemStyle: dataStyle,
         hoverAnimation: false,
+        center: ['50%', '70%'],
         data: [
           {
             value: Number(item.num),
@@ -182,16 +182,17 @@ class DataView extends Component<any, State> {
         //  top: '15%',
         // x: 'right',
         // width: 12,
-        height: 13,
+        height: 24,
         lineHeight: 16,
         right: '0%',
-        itemHeight: 5, //图例标记的图形宽度。
-        itemWidth: 5, //图例标记的图形gao度。
-        orient: 'vertical', //图例列表的布局朝向。
+        itemHeight: 15, //图例标记的图形宽度。
+        itemWidth: 15, //图例标记的图形gao度。
+        // orient: 'vertical', //图例列表的布局朝向。
         data: legendData,
         itemGap: 38,
         textStyle: {
           color: '#A3E2F4',
+          fontSize: 20,
           align: 'right',
           x: 'right',
           textAlign: 'right',
@@ -207,12 +208,11 @@ class DataView extends Component<any, State> {
   createStayTimeAnalyzeGraph = () => {
     const { stayTimeInfo } = this.props;
     if (stayTimeInfo.length === 0) return null;
-    const dataFormat = stayTimeInfo.map((item) => (
-      {
-        value: item.num,
-        name: item.name,
-      }))
-    const dataEg = stayTimeInfo.map((item) => (item.name))
+    const dataFormat = stayTimeInfo.map(item => ({
+      value: item.num,
+      name: item.name,
+    }));
+    const dataEg = stayTimeInfo.map(item => item.name);
     const option = {
       color: ['#EAEA26', '#906BF9', '#FE5656', '#01E17E', '#3DD1F9', '#FFAD05'],
 
@@ -320,7 +320,7 @@ class DataView extends Component<any, State> {
               show: false,
             },
           },
-          data: dataFormat
+          data: dataFormat,
         },
       ],
     };
@@ -366,7 +366,7 @@ class DataView extends Component<any, State> {
     const option = {
       grid: {
         left: '8%',
-        top: '10%',
+        top: '5%',
         bottom: '12%',
         right: '5%',
       },
@@ -380,7 +380,7 @@ class DataView extends Component<any, State> {
         itemHeight: 12,
         textStyle: {
           color: 'rgba(122,178,226,1)',
-          fontSize: 12,
+          fontSize: 20,
         },
       },
       yAxis: [
@@ -424,7 +424,7 @@ class DataView extends Component<any, State> {
           axisLabel: {
             formatter: '{value}',
             color: '#fff',
-            fontSize: 14,
+            fontSize: 24,
           },
         },
       ],
@@ -445,7 +445,7 @@ class DataView extends Component<any, State> {
             textStyle: {
               color: '#fff', // x轴颜色
               fontWeight: 'normal',
-              fontSize: '14',
+              fontSize: '24',
               lineHeight: 22,
             },
           },
@@ -575,7 +575,7 @@ class DataView extends Component<any, State> {
     }, 0);
 
     const setupSecretLevels = secretLevelPeopleCount.map(item => {
-      return { ...item, percent: Math.ceil((+item.num / allSecretLevel).toFixed(1) * 100 )};
+      return { ...item, percent: Math.ceil((+item.num / allSecretLevel).toFixed(1) * 100) };
     });
     var valdata = secretLevelPeopleCount.map(item => +item.num);
     var titlename = secretLevelPeopleCount.map(item => item.securityLevel);
@@ -611,8 +611,9 @@ class DataView extends Component<any, State> {
           axisLabel: {
             textStyle: {
               color: 'rgba(255,255,255,1)',
+              fontSize: 20,
             },
-            formatter: function (value, index) {
+            formatter: function(value, index) {
               return ['{title|' + value + '} '].join('\n');
             },
             rich: {},
@@ -625,8 +626,9 @@ class DataView extends Component<any, State> {
           axisLabel: {
             textStyle: {
               color: 'rgba(255,255,255,1)',
+              fontSize: 20,
             },
-            formatter: function (value, index) {
+            formatter: function(value, index) {
               return value + '人';
             },
           },
@@ -647,11 +649,11 @@ class DataView extends Component<any, State> {
           type: 'bar',
           yAxisIndex: 0,
           data: data,
-          barWidth: 10,
+          barWidth: 30,
           itemStyle: {
             normal: {
-              barBorderRadius: 30,
-              color: function (params) {
+              barBorderRadius: 50,
+              color: function(params) {
                 var num = myColor.length;
                 return myColor[params.dataIndex % num];
               },
@@ -660,6 +662,7 @@ class DataView extends Component<any, State> {
           label: {
             normal: {
               show: true,
+              fontSize: 20,
               position: 'inside',
               formatter: '{c}%',
             },
@@ -676,18 +679,18 @@ class DataView extends Component<any, State> {
         dataIndex: 'inspectionTime',
         editable: true,
         ellipsis: true,
-        render:(item)=>{
-         return moment(item).format('MM-DD HH:mm')
-        }
+        render: item => {
+          return moment(item).format('MM-DD HH:mm');
+        },
       },
       {
         title: '结束时间',
         dataIndex: 'endTime',
         editable: true,
         ellipsis: true,
-        render: (item) => {
-          return moment(item).format('MM-DD HH:mm')
-        }
+        render: item => {
+          return moment(item).format('MM-DD HH:mm');
+        },
       },
       {
         title: '巡检人员',
