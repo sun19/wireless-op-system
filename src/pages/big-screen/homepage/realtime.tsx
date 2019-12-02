@@ -44,7 +44,7 @@ interface State {
   stageX: number;
   stageY: number;
   showPeopleInfo: boolean;
-  dataStr?:string;
+  dataStr?: string;
 }
 type StateProps = ReturnType<typeof mapState>;
 type Props = StateProps & UmiComponentProps;
@@ -89,7 +89,7 @@ class Realtime extends React.Component<Props, State> {
       stageY: 0,
       showPeopleInfo: false,
       ajaxLamps: [],
-      dataStr:'2019-11-15'
+      dataStr: '2019-11-15',
     };
   }
   //异步加载图片，保证渲染到canvas上时是已经OK的
@@ -148,30 +148,30 @@ class Realtime extends React.Component<Props, State> {
       type: 'bigScreen/update',
       payload: {
         warningTypeInfo: warningType.result,
-      }
+      },
     });
     // 电子围栏
-    const eleFence = await queryFencingArea({})
+    const eleFence = await queryFencingArea({});
     this.props.dispatch({
       type: 'bigScreen/update',
       payload: {
         eleFenceInfo: eleFence.result,
-      }
+      },
     });
-    const eleType = await getAllFencingTypes()
+    const eleType = await getAllFencingTypes();
     this.props.dispatch({
       type: 'bigScreen/update',
       payload: {
         eleTypeInfo: eleType.result,
-      }
+      },
     });
     //获取大屏停留时长
-    const stayTime = await getInnerStayTime()
+    const stayTime = await getInnerStayTime();
     this.props.dispatch({
       type: 'bigScreen/update',
       payload: {
         stayTimeInfo: stayTime,
-      }
+      },
     });
   }
 
@@ -302,33 +302,32 @@ class Realtime extends React.Component<Props, State> {
     const { eleFenceInfo } = this.props;
     const { eleTypeInfo } = this.props;
     if (eleFenceInfo.length === 0) return null;
-    const { records } = eleFenceInfo
+    const { records } = eleFenceInfo;
     // console.log(records)
-    const data = records.map((item,index) => {
-      const type = _.find(eleTypeInfo, { id: item.type })
+    const data = records.map((item, index) => {
+      const type = _.find(eleTypeInfo, { id: item.type });
       return (
-        < div className="flex_outer" key={index}>
-        <div className="ele_title_top">
-          <div className="ele_title">{item.name}</div>
-          <div className="ele_title"> {type && type.name ? type.name : '闯入电子围栏'}</div>
+        <div className="flex_outer" key={index}>
+          <div className="ele_title_top">
+            <div className="ele_title">{item.name}</div>
+            <div className="ele_title"> {type && type.name ? type.name : '闯入电子围栏'}</div>
+          </div>
+          <div className="ele_bag">
+            {!!item.lampCode
+              ? item.lampCode.split(',').map((num, index) => {
+                  return (
+                    <span key={index} className="ele_bag_round">
+                      {num}
+                    </span>
+                  );
+                })
+              : ''}
+          </div>
         </div>
-        <div className="ele_bag" >
-          { 
-           !!item.lampCode?
-         (   item.lampCode.split(',').map((num,index) => {
-            return (
-              <span key={index} className="ele_bag_round">{num}</span>
-            )
-          })):''
-          
-          }
-        </div>
-      </div >)
-
-    })
-    return data
-
-  }
+      );
+    });
+    return data;
+  };
   createPositionNumberGraph = () => {
     const { positionPeopleCount } = this.props;
     if (positionPeopleCount.length === 0) return null;
@@ -385,6 +384,7 @@ class Realtime extends React.Component<Props, State> {
         radius,
         itemStyle: dataStyle,
         hoverAnimation: false,
+        center: ['60%', '80%'],
         data: [
           {
             value: Number(item.num),
@@ -415,14 +415,15 @@ class Realtime extends React.Component<Props, State> {
         // width: 12,
         height: 13,
         lineHeight: 16,
-        right: '5%',
+        right: '0%',
         itemHeight: 5, //图例标记的图形宽度。
         itemWidth: 5, //图例标记的图形gao度。
-        orient: 'vertical', //图例列表的布局朝向。
+        // orient: 'vertical', //图例列表的布局朝向。
         data: legendData,
         itemGap: 38,
         textStyle: {
           color: '#A3E2F4',
+          fontSize: 20,
           align: 'right',
           x: 'right',
           textAlign: 'right',
@@ -434,16 +435,15 @@ class Realtime extends React.Component<Props, State> {
     return <ReactEcharts option={option} style={{ height: '100%', width: '100%' }} />;
   };
   // 停留时长分析
- 
+
   createStayTimeAnalyzeGraph = () => {
     const { stayTimeInfo } = this.props;
     if (stayTimeInfo.length === 0) return null;
-    const dataFormat = stayTimeInfo.map((item) => (
-      {
-        value: item.num,
-        name: item.name,
-      }))
-    const dataEg = stayTimeInfo.map((item) => (item.name))
+    const dataFormat = stayTimeInfo.map(item => ({
+      value: item.num,
+      name: item.name,
+    }));
+    const dataEg = stayTimeInfo.map(item => item.name);
     const option = {
       color: ['#EAEA26', '#906BF9', '#FE5656', '#01E17E', '#3DD1F9', '#FFAD05'],
 
@@ -467,7 +467,7 @@ class Realtime extends React.Component<Props, State> {
         itemGap: 16,
         textStyle: {
           color: '#A3E2F4',
-          fontSize: 12,
+          fontSize: 18,
           fontWeight: 0,
         },
         data: dataEg,
@@ -551,7 +551,7 @@ class Realtime extends React.Component<Props, State> {
               show: false,
             },
           },
-          data: dataFormat
+          data: dataFormat,
         },
       ],
     };
@@ -562,7 +562,9 @@ class Realtime extends React.Component<Props, State> {
     if (warningTypeInfo.length === 0) return null;
     const legendData = warningTypeInfo.map(item => item.warnTypeName);
     const series = warningTypeInfo.map((warnType, index) => {
-      const data = warnType.warnTypeNumList.map((item, index) => { item.num })
+      const data = warnType.warnTypeNumList.map((item, index) => {
+        item.num;
+      });
       return {
         name: warnType.warnTypeName,
         type: 'bar',
@@ -570,7 +572,13 @@ class Realtime extends React.Component<Props, State> {
         barWidth: 6,
         itemStyle: {
           normal: {
-            color: ['rgba(9,120,242,1)', 'rgba(77,253,184,1)', 'rgba(255,180,0,1)', 'rgba(241,126,60,1)', 'rgba(73,86,227,1)'][index],
+            color: [
+              'rgba(9,120,242,1)',
+              'rgba(77,253,184,1)',
+              'rgba(255,180,0,1)',
+              'rgba(241,126,60,1)',
+              'rgba(73,86,227,1)',
+            ][index],
             barBorderRadius: [20, 20, 20, 20],
           },
         },
@@ -582,9 +590,8 @@ class Realtime extends React.Component<Props, State> {
         },
         z: 10,
         data: data,
-      }
-    }
-    )
+      };
+    });
     const option = {
       tooltip: {
         trigger: 'axis',
@@ -650,8 +657,6 @@ class Realtime extends React.Component<Props, State> {
         },
       },
       series: series,
-
-
     };
     return <ReactEcharts option={option} style={{ width: '100%', height: '100%' }} />;
   };
@@ -722,29 +727,29 @@ class Realtime extends React.Component<Props, State> {
 
     onlinePeople = _.padStart(onlinePeople, 5, '0');
     return (
-      <div className="top"> 
-        <div className='statics'>
+      <div className="top">
+        <div className="statics">
           <div className="people_type_title">
             <span className="icon" />
             <span className="titlename">流量统计</span>
           </div>
-        <div className="title">当前在线人数</div>
-        <div className="number">
-          {_.map(_.split(`${onlinePeople}`, ''), item => (
-            <span>{item}</span>
-          ))}
-        </div>
-        <div className="today-data">
-          <span className="icon" />
+          <div className="title">当前在线人数</div>
+          <div className="number">
+            {_.map(_.split(`${onlinePeople}`, ''), item => (
+              <span>{item}</span>
+            ))}
+          </div>
+          <div className="today-data">
+            <span className="icon" />
 
-          <span className="data-title">今日最高值</span>
-          <span className="data-number">{toHigh}</span>
-        </div>
-        <div className="yesterday-data">
-          <span className="icon" />
-          <span className="data-title">昨日最高值</span>
-          <span className="data-number">{yesHigh}</span>
-        </div>
+            <span className="data-title">今日最高值</span>
+            <span className="data-number">{toHigh}</span>
+          </div>
+          <div className="yesterday-data">
+            <span className="icon" />
+            <span className="data-title">昨日最高值</span>
+            <span className="data-number">{yesHigh}</span>
+          </div>
         </div>
         <div className="people_type">
           <div className="people_type_title">
@@ -824,7 +829,7 @@ class Realtime extends React.Component<Props, State> {
                     {lamps}
                   </Layer>
                 </Stage> */}
-                        <RealTime />
+                <RealTime />
               </div>
             </Col>
             <Col span={4} className="right_panel">
@@ -874,7 +879,7 @@ class Realtime extends React.Component<Props, State> {
                       <div className="ele_text">
                         <Title title="电子围栏" />
                       </div>
-                        <div className="ele_from"> {this.getEleFrom()} </div>
+                      <div className="ele_from"> {this.getEleFrom()} </div>
                     </div>
                   </div>
 

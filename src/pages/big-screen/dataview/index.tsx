@@ -236,7 +236,7 @@ class DataView extends Component<any, State> {
         itemGap: 16,
         textStyle: {
           color: '#A3E2F4',
-          fontSize: 12,
+          fontSize: 18,
           fontWeight: 0,
         },
         data: dataEg,
@@ -649,7 +649,7 @@ class DataView extends Component<any, State> {
           type: 'bar',
           yAxisIndex: 0,
           data: data,
-          barWidth: 30,
+          barWidth: 20,
           itemStyle: {
             normal: {
               barBorderRadius: 50,
