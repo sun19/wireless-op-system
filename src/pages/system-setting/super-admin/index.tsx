@@ -1,5 +1,5 @@
 /**
- * title: 设置 > 超级管理员设置
+ * title: 设置 > 高级管理员设置 > 超级管理员设置
  */
 import React from 'react';
 import { Layout, Modal, Form, Input, Row, Col, Select, Button, Icon, Divider, message } from 'antd';

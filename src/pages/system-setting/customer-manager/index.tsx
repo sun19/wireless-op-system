@@ -1,5 +1,5 @@
 /**
- * title: 显示 > 用户管理
+ * title: 设置 > 系统管理员设置 > 用户管理（值班员）
  */
 import React from 'react';
 import { UmiComponentProps } from '@/common/type';

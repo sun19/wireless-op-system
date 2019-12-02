@@ -1,5 +1,5 @@
 /**
- * title: 设置 > 管理员设置 > 区域设置
+ * title: 设置 > 系统管理员设置 > 区域设置
  */
 import React from 'react';
 import { Layout, Modal, Form, Input, Row, Col, Select, Button, Icon, message } from 'antd';

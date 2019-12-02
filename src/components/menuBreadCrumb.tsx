@@ -9,18 +9,21 @@ import styles from './menuBreadCrumb.less';
 class MenuBreadCrumb extends React.Component<any, any> {
   render() {
     const { breadcrumbs } = this.props;
-  let titles = breadcrumbs.map(({ title, match }) => (title))
-    let childrens=[];
+    let titles = breadcrumbs.map(({ title, match }) => (title))
+    let childrens = [];
     if (!!_.compact(titles)[1]) {
-       childrens =   _.compact(titles)[1].split('>')
+      childrens = _.compact(titles)[1].split('>')
     }
+    titles = _.compact(titles)
     return (
       <Breadcrumb separator=">" className={styles.bread_box}>
-        {childrens.map((title, index ) => (
-          <Breadcrumb.Item className={styles.current_item} key={index}>
-       {index === childrens.length-1 ? < span className={styles.last_child}> {title}</span> : <span> {title}</span>}
-          </Breadcrumb.Item>
-        ))}
+        {titles.map((title, index) => {
+          return (
+            <Breadcrumb.Item className={styles.current_item} key={index}>
+              <span className={styles.last_child}>{title}</span>
+            </Breadcrumb.Item>
+          )
+        })}
       </Breadcrumb>
     );
   }

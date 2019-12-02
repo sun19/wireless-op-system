@@ -1,5 +1,5 @@
 /**
- * title: 编辑
+ * title: 设置 > 高级管理员设置 > 超级管理员设置 > 编辑
  */
 import React from 'react';
 import { Form, Row, Col, Button, Input, message, Select, Tree } from 'antd';
@@ -81,7 +81,7 @@ class EditSuperAdmin extends React.Component<Props, State> {
   };
 
   onSubmit(e) {
-    
+
     e.preventDefault();
     const { superAdminRecord } = this.props;
     this.props.form.validateFields(async (err, values) => {
@@ -143,7 +143,7 @@ class EditSuperAdmin extends React.Component<Props, State> {
                       {getFieldDecorator('type', {
                         rules: [],
                         initialValue: superAdminRecord.type,
-                      })(<Input placeholder="请输入类型" disabled={true}  />)}
+                      })(<Input placeholder="请输入类型" disabled={true} />)}
                     </Form.Item>
                   </Col>
                   <Col span={12}>
@@ -155,15 +155,15 @@ class EditSuperAdmin extends React.Component<Props, State> {
                     </Form.Item>
                   </Col>
                 </Row>
-                  <Row type="flex" justify="space-between">
-                    <Col span={24} className="textarea">
-                      <Form.Item label="备描">
-                        {getFieldDecorator('remark', {
-                          initialValue: superAdminRecord.remark,
-                        })(<TextArea autoSize={{ minRows: 6, maxRows: 8 }}   />)}
-                      </Form.Item>
-                    </Col>
-                  </Row>
+                <Row type="flex" justify="space-between">
+                  <Col span={24} className="textarea">
+                    <Form.Item label="备描">
+                      {getFieldDecorator('remark', {
+                        initialValue: superAdminRecord.remark,
+                      })(<TextArea autoSize={{ minRows: 6, maxRows: 8 }} />)}
+                    </Form.Item>
+                  </Col>
+                </Row>
                 <Row type="flex" justify="center" style={{ marginTop: '0.35rem' }}>
                   <Col span={6}>
                     <Form.Item className={styles.button_type}>

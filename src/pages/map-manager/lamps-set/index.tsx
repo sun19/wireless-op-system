@@ -1,5 +1,5 @@
 /**
- * title: 设置 > 管理员设置 > 灯具设置
+ * title: 设置 > 系统管理员设置 > 灯具设置
  */
 import React from 'react';
 import { Layout, Form, Input, Row, Col, Select, Button, Icon, message, Modal } from 'antd';
