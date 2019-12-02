@@ -1,4 +1,4 @@
-export const log_manager = '';
+
 import { BASE_API_URL } from '../constants';
 
 /**

@@ -47,6 +47,7 @@ class NormalLoginForm extends React.Component<Props> {
           password: values.password,
           roleId:this.state.value
         };
+
         this.showLoadingMessage();
         const resp = await request(
           `http://47.96.112.31:8086/jeecg-boot/intf/location/login?username=${data.username}&password=${data.password}&roleId=${this.state.value}`,
@@ -58,6 +59,7 @@ class NormalLoginForm extends React.Component<Props> {
           const token = resp.result.token;
           localStorage.setItem('token', token);
           await this.preFetchAllCommonState();
+          localStorage.setItem('usepass', JSON.stringify(data) )
           localStorage.setItem('userMessage', resp.result.userInfo.id);
           setTimeout(() => router.push('/big-screen/homepage'),1000)
           message.success(<span style={{ fontSize: '25px' }}  >登录成功！</span>, 3);
@@ -83,7 +85,7 @@ class NormalLoginForm extends React.Component<Props> {
       payload: {
         allUserInfo: userInfoResp.result,
         allMap: mapResp.result,
-        allRoles: rolesResp.result,
+        allRoles: rolesResp,
         allLevels: levelsResp.result,
         allFencingTypes: fencingTypesResp.result,
         allAreas: areasResp.result,
@@ -100,7 +102,9 @@ class NormalLoginForm extends React.Component<Props> {
   // showErrorMessage(msg: string) {
   //   message.error(msg, 1000);
   // }
-
+componentDidMount(){
+ this.preFetchAllCommonState()
+}
   componentWillUnmount() {
     message.destroy();
   }
@@ -113,18 +117,23 @@ class NormalLoginForm extends React.Component<Props> {
 
   render() {
     const { getFieldDecorator } = this.props.form;
+    const { allRoles}=this.props
+
     return (
       <div className={styles.login_form}>
         <div className={styles.login_title}>欢迎登录</div>
         <Form onSubmit={this.handleSubmit} className={styles.login_main}>
           <div className={styles.redio_style}>
             <Radio.Group>
-              <Radio value={1}>
-                <span className={styles.rolename}>系统管理员 </span>
-              </Radio>
-              <Radio value={2}>
-                <span className={styles.rolename}>值班员</span>
-              </Radio>
+             {
+                allRoles.map((res,index)=>{
+                  return(
+                    <Radio value={res.id} key={index} >
+                      <span className={styles.rolename} key={index}>{res.roleName} </span>
+                    </Radio>
+                  )
+                })
+             }
             </Radio.Group>
           </div>
           <Form.Item>
@@ -163,6 +172,7 @@ const mapState = ({ commonState }) => {
   const resp = commonState;
   return {
     commonState: resp,
+    allRoles: commonState.allRoles
   };
 };
 

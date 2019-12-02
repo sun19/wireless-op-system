@@ -1,20 +1,40 @@
 import React from 'react';
-import { Icon, Menu, Dropdown } from 'antd';
+import { Icon, Menu, Dropdown, Form } from 'antd';
 import request, { format } from '@/utils/request';
 import router from 'umi/router';
+import { UmiComponentProps } from '@/common/type';
+import { connect } from 'dva';
+
+
 
 
 
 import styles from './rolePanel.less';
+// type StateProps = ReturnType<typeof mapState>;
+type Props = UmiComponentProps;
+class RolePanel extends React.Component<Props> {
+  constructor(props: any) {
+    super(props);
+    this.state = {
 
+    };
+    this.loginOut = this.loginOut.bind(this);
+  }
 
-export default class RolePanel extends React.Component {
 
   async loginOut() {
+    let userData = JSON.parse(localStorage.getItem('usepass'))
+    let token = localStorage.getItem('token')
+
+    let data = {
+      ...userData
+    }
+    // ?username=${data.username}&password=${data.password}&roleId=${data.roleId}
     const resp = await request(
-      'http://47.96.112.31:8086/jeecg-boot//intf/location/logout',
+      `http://47.96.112.31:8086/jeecg-boot//intf/location/logout`,
       {
         method: 'GET',
+        headers: { 'X-Access-Token': token }
       },
     );
     if (resp.code === 200) {
@@ -24,8 +44,7 @@ export default class RolePanel extends React.Component {
   render() {
     let menu = (
       <Menu>
-        <Menu.Divider />
-        <Menu.Item key="3"><span onClick={this.loginOut.bind()}>退出</span></Menu.Item>
+        <Menu.Item key="3"> <a target="_blank" rel="noopener" onClick={this.loginOut}>退出</a></Menu.Item>
       </Menu>
     );
     return (
@@ -40,3 +59,14 @@ export default class RolePanel extends React.Component {
     );
   }
 }
+
+const WrappedNormalLoginForm = Form.create({ name: 'normal_login' })(RolePanel);
+
+const mapState = ({ commonState }) => {
+  const resp = commonState;
+  return {
+    commonState: resp,
+  };
+};
+
+export default connect(mapState)(WrappedNormalLoginForm);
