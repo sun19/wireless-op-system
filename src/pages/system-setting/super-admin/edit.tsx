@@ -9,7 +9,7 @@ import router from 'umi/router';
 
 import ContentBorder from '../../../components/ContentBorder';
 import { InputText, TreeNodeMenu } from '../components';
-import { updateUserType, getAllRoles } from '../services';
+import { updateUserType, updateSuperAdmin } from '../services';
 
 import styles from './index.less';
 
@@ -81,6 +81,7 @@ class EditSuperAdmin extends React.Component<Props, State> {
   };
 
   onSubmit(e) {
+    
     e.preventDefault();
     const { superAdminRecord } = this.props;
     this.props.form.validateFields(async (err, values) => {
@@ -88,7 +89,7 @@ class EditSuperAdmin extends React.Component<Props, State> {
         message.error('填写信息有误', values);
         return;
       }
-      const isSuccessed = await updateUserType(Object.assign(superAdminRecord, values));
+      const isSuccessed = await updateSuperAdmin(Object.assign(superAdminRecord, values));
       if (isSuccessed) {
         setTimeout(() => router.push('/system-setting/super-admin'), 1000);
       }
@@ -111,10 +112,7 @@ class EditSuperAdmin extends React.Component<Props, State> {
     });
   render() {
     const { superAdminRecord } = this.props;
-    // console.log(peopleTypeRecord)
     const { getFieldDecorator } = this.props.form;
-    // if (this.state.userTypes.length === 0) return null;
-
     return (
       <ContentBorder className={styles.auth_root}>
         <Form layout="inline" style={{ marginTop: '0.57rem' }} onSubmit={this.onSubmit}>
@@ -131,30 +129,41 @@ class EditSuperAdmin extends React.Component<Props, State> {
                     </Form.Item>
                   </Col>
                   <Col span={12}>
-                    <Form.Item label="类型">
-                      {getFieldDecorator('type', {
+                    <Form.Item label="标签">
+                      {getFieldDecorator('dictName', {
                         rules: [],
-                        initialValue: superAdminRecord.type,
-                      })(<Input placeholder="请输入类型" />)}
+                        initialValue: superAdminRecord.dictName,
+                      })(<Input placeholder="请输入标签" />)}
                     </Form.Item>
                   </Col>
                 </Row>
                 <Row type="flex" justify="space-between">
-                  <Col span={23} className={styles.text_areas}>
-                    <Form.Item label="描述">
-                      {getFieldDecorator('remark', {
+                  <Col span={12}>
+                    <Form.Item label="类型">
+                      {getFieldDecorator('type', {
                         rules: [],
-                        initialValue: superAdminRecord.remark,
-                      })(
-                        <TextArea
-                          className={styles.text_area}
-                          autoSize={{ minRows: 6, maxRows: 8 }}
-                          style={{ width: '90%' }}
-                        />,
-                      )}
+                        initialValue: superAdminRecord.type,
+                      })(<Input placeholder="请输入类型" disabled={true}  />)}
+                    </Form.Item>
+                  </Col>
+                  <Col span={12}>
+                    <Form.Item label="排序">
+                      {getFieldDecorator('sort', {
+                        rules: [],
+                        initialValue: superAdminRecord.sort,
+                      })(<Input placeholder="请输入排序" />)}
                     </Form.Item>
                   </Col>
                 </Row>
+                  <Row type="flex" justify="space-between">
+                    <Col span={24} className="textarea">
+                      <Form.Item label="备描">
+                        {getFieldDecorator('remark', {
+                          initialValue: superAdminRecord.remark,
+                        })(<TextArea autoSize={{ minRows: 6, maxRows: 8 }}   />)}
+                      </Form.Item>
+                    </Col>
+                  </Row>
                 <Row type="flex" justify="center" style={{ marginTop: '0.35rem' }}>
                   <Col span={6}>
                     <Form.Item className={styles.button_type}>
