@@ -46,12 +46,12 @@ class NormalLoginForm extends React.Component<Props> {
         let data = {
           username: values.username,
           password: values.password,
-          roleId: this.state.value,
+          roleId: values.roleId,
         };
 
         this.showLoadingMessage();
         const resp = await request(
-          `http://47.96.112.31:8086/jeecg-boot/intf/location/login?username=${data.username}&password=${data.password}&roleId=${this.state.value}`,
+          `http://47.96.112.31:8086/jeecg-boot/intf/location/login?username=${data.username}&password=${data.password}&roleId=${data.roleId}`,
           {
             method: 'GET',
           },
@@ -124,19 +124,23 @@ class NormalLoginForm extends React.Component<Props> {
       <div className={styles.login_form}>
         <div className={styles.login_title}>欢迎登录</div>
         <Form onSubmit={this.handleSubmit} className={styles.login_main}>
-          <div className={styles.redio_style}>
-            <Radio.Group>
-              {allRoles.map((res, index) => {
-                return (
-                  <Radio value={res.id} key={index}>
-                    <span className={styles.rolename} key={index}>
-                      {res.roleName}{' '}
-                    </span>
-                  </Radio>
-                );
-              })}
-            </Radio.Group>
-          </div>
+          <Form.Item>
+            {getFieldDecorator('roleId', { rules: [] })(
+              <div className={styles.redio_style}>
+                <Radio.Group>
+                  {allRoles.map((res, index) => {
+                    return (
+                      <Radio value={res.id} key={index}>
+                        <span className={styles.rolename} key={index}>
+                          {res.roleName}{' '}
+                        </span>
+                      </Radio>
+                    );
+                  })}
+                </Radio.Group>
+              </div>,
+            )}
+          </Form.Item>
           <Form.Item>
             {getFieldDecorator('username', {
               rules: [{ required: true, message: 'Please input your username!' }],
