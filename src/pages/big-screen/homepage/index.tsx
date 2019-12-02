@@ -411,21 +411,21 @@ class DataView extends React.Component<Props, State> {
         show: true,
         formatter: '{b} : {c}',
       },
-
       legend: {
         //  top: '15%',
         // x: 'right',
         // width: 12,
-        height: 13,
+        height: 24,
         lineHeight: 16,
-        right: '5%',
-        itemHeight: 5, //图例标记的图形宽度。
-        itemWidth: 5, //图例标记的图形gao度。
-        orient: 'vertical', //图例列表的布局朝向。
+        right: '0%',
+        itemHeight: 15, //图例标记的图形宽度。
+        itemWidth: 15, //图例标记的图形gao度。
+        // orient: 'vertical', //图例列表的布局朝向。
         data: legendData,
         itemGap: 38,
         textStyle: {
           color: '#A3E2F4',
+          fontSize: 20,
           align: 'right',
           x: 'right',
           textAlign: 'right',
@@ -434,7 +434,7 @@ class DataView extends React.Component<Props, State> {
       },
       series: series,
     };
-    return <ReactEcharts option={option} style={{ height: '100%', width: '100%' }} />;
+    return <ReactEcharts option={option} style={{ height: '100%', width: '95%' }} />;
   };
   // 停留时长分析
   createStayTimeAnalyzeGraph = () => {
