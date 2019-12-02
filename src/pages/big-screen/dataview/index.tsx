@@ -785,7 +785,7 @@ class DataView extends Component<any, State> {
                 <Row>
                   <Col span={17} offset={4}>
                     <div className="ver-middle">
-                      <span className="icon icon-nei" />
+                      {/* <span className="icon icon-nei" /> */}
                       <span className="icon-name">内部人员</span>
                       <span className="icon-number"> {outPeople} </span>
                     </div>
@@ -794,7 +794,7 @@ class DataView extends Component<any, State> {
                 <Row>
                   <Col span={17} offset={4}>
                     <div className="ver-middle">
-                      <span className="icon icon-wai " />
+                      {/* <span className="icon icon-wai " /> */}
                       <span className="icon-name">外部人员</span>
                       <span className="icon-number">{inPeople}</span>
                     </div>
