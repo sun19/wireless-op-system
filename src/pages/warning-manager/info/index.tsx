@@ -1,5 +1,5 @@
 /**
- * title: 显示 > 告警信息
+ * title: 应用 > 告警信息
  */
 import React from 'react';
 import { Layout, Modal,Form, Input, Row, Col, TimePicker, Button, DatePicker,Icon } from 'antd';

@@ -1,5 +1,5 @@
 /**
- * title: 设置 > 管理员设置 > 巡检线设置
+ * title: 设置 > 值班员设置 > 巡检线设置
  */
 import React from 'react';
 import { Layout, Modal, Form, Input, Row, Col, Select, Button, Icon } from 'antd';
