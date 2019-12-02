@@ -55,12 +55,7 @@ const columns = [
     editable: true,
     // render: (name, record) => {
     //   return (
-    //     <div>
-    //       <Select defaultValue={record.type} style={{ width: 120 }} disabled >
-    //         <Option value="1"> 男</Option>
-    //         <Option value="2"> 女</Option>
-    //       </Select >
-    //     </div >
+    //   <span>{ record. }</span>
     //   );
     // }
   },
@@ -119,14 +114,13 @@ class SuperAdmin extends React.Component<Props, State> {
   }
 
   async updateData(data, item) {
-    //TODO:修改接口有问题
-    const resp = await updateSuperAdmin(item);
-    if (resp) {
-      this.props.dispatch({
-        type: 'systemSetting/update',
-        payload: { superAdmin: { records: data } },
-      });
-    }
+    this.props.dispatch({
+      type: 'systemSetting/update',
+      payload: {
+        superAdminRecord: data,
+      },
+    });
+    router.push('/system-setting/super-admin/edit');
   }
 
   deleteColumn(item) {

@@ -151,35 +151,33 @@ class DataView extends React.Component<Props, State> {
       type: 'bigScreen/update',
       payload: {
         warningTypeInfo: warningType.result,
-      }
+      },
     });
     // 电子围栏
-    const eleFence = await queryFencingArea({})
+    const eleFence = await queryFencingArea({});
     this.props.dispatch({
       type: 'bigScreen/update',
       payload: {
         eleFenceInfo: eleFence.result,
-      }
+      },
     });
-    const eleType = await getAllFencingTypes()
+    const eleType = await getAllFencingTypes();
     this.props.dispatch({
       type: 'bigScreen/update',
       payload: {
         eleTypeInfo: eleType.result,
-      }
+      },
     });
     //获取大屏停留时长
-    const stayTime = await getInnerStayTime()
+    const stayTime = await getInnerStayTime();
     // console.log(stayTime)
     this.props.dispatch({
       type: 'bigScreen/update',
       payload: {
         stayTimeInfo: stayTime,
-      }
+      },
     });
-  };
-
-
+  }
 
   selectShow = () => {
     this.setState({ showPeopleInfo: !this.state.showPeopleInfo });
@@ -259,7 +257,7 @@ class DataView extends React.Component<Props, State> {
     return new Promise(resolve => {
       const mapImage = new Image();
       mapImage.src = require('../assets/map.png');
-      mapImage.onload = function () {
+      mapImage.onload = function() {
         resolve(mapImage);
       };
     });
@@ -268,7 +266,7 @@ class DataView extends React.Component<Props, State> {
     return new Promise(resolve => {
       const mapImage = new Image();
       mapImage.src = require('../assets/baoan.png');
-      mapImage.onload = function () {
+      mapImage.onload = function() {
         resolve(mapImage);
       };
     });
@@ -277,7 +275,7 @@ class DataView extends React.Component<Props, State> {
     return new Promise(resolve => {
       const mapImage = new Image();
       mapImage.src = require('../assets/baoan.red.png');
-      mapImage.onload = function () {
+      mapImage.onload = function() {
         resolve(mapImage);
       };
     });
@@ -308,32 +306,31 @@ class DataView extends React.Component<Props, State> {
     const { eleFenceInfo } = this.props;
     const { eleTypeInfo } = this.props;
     if (eleFenceInfo.length === 0) return null;
-    const { records } = eleFenceInfo
-    // console.log(records)
+    const { records } = eleFenceInfo;
     const data = records.map((item, index) => {
-      const type = _.find(eleTypeInfo, { id: item.type })
+      const type = _.find(eleTypeInfo, { id: item.type });
       return (
-        < div className="flex_outer" key={index}>
+        <div className="flex_outer" key={index}>
           <div className="ele_title_top">
             <div className="ele_title">{item.name}</div>
-            <div className="ele_title"> {type && type.name ? type.name : '闯入电子围栏'}</div>
+            {/* <div className="ele_title"> {type && type.name ? type.name : ''}</div> */}
           </div>
-          <div className="ele_bag" >
-            {
-              !!item.lampCode ?
-                (item.lampCode.split(',').map((num, index) => {
+          <div className="ele_bag">
+            {!!item.lampCode
+              ? item.lampCode.split(',').map((num, index) => {
                   return (
-                    <span key={index} className="ele_bag_round">{num}</span>
-                  )
-                })) : ''
-            }
+                    <span key={index} className="ele_bag_round">
+                      {num}
+                    </span>
+                  );
+                })
+              : ''}
           </div>
-        </div >)
-
-    })
-    return data
-
-  }
+        </div>
+      );
+    });
+    return data;
+  };
   // 职位占比人数
   createPositionNumberGraph = () => {
     const { positionPeopleCount } = this.props;
@@ -443,12 +440,11 @@ class DataView extends React.Component<Props, State> {
   createStayTimeAnalyzeGraph = () => {
     const { stayTimeInfo } = this.props;
     if (stayTimeInfo.length === 0) return null;
-    const dataFormat = stayTimeInfo.map((item) => (
-      {
-        value: item.num,
-        name: item.name,
-      }))
-    const dataEg = stayTimeInfo.map((item) => (item.name))
+    const dataFormat = stayTimeInfo.map(item => ({
+      value: item.num,
+      name: item.name,
+    }));
+    const dataEg = stayTimeInfo.map(item => item.name);
     const option = {
       color: ['#EAEA26', '#906BF9', '#FE5656', '#01E17E', '#3DD1F9', '#FFAD05'],
 
@@ -556,7 +552,7 @@ class DataView extends React.Component<Props, State> {
               show: false,
             },
           },
-          data: dataFormat
+          data: dataFormat,
         },
       ],
     };
@@ -682,15 +678,14 @@ class DataView extends React.Component<Props, State> {
         className: 'select_text',
 
         render: (name, record) => {
-          // console.log(record)
           return (
             <div>
               <span>{name}</span>
               {record.processResult == '1' ? (
                 <span className={styles.notResolved}>未处理</span>
               ) : (
-                  <span className={styles.resolveed}>已处理</span>
-                )}
+                <span className={styles.resolveed}>已处理</span>
+              )}
             </div>
           );
         },
@@ -700,9 +695,9 @@ class DataView extends React.Component<Props, State> {
         dataIndex: 'processTime',
         editable: true,
         ellipsis: true,
-        render: (item) => {
-          return item? moment(item).format('MM-DD HH:mm'):'/'
-        }
+        render: item => {
+          return item ? moment(item).format('MM-DD HH:mm') : '';
+        },
       },
     ];
     let historyWarns = this.props.historyWarns;
@@ -740,7 +735,7 @@ class DataView extends React.Component<Props, State> {
     onlinePeople = _.padStart(onlinePeople, 5, '0');
     return (
       <div className="top">
-        <div className='statics'>
+        <div className="statics">
           <div className="people_type_title">
             <span className="icon" />
             <span className="titlename">流量统计</span>
@@ -885,24 +880,24 @@ class DataView extends React.Component<Props, State> {
                   </div>
                 </div>
               ) : (
-                  <div>
-                    <div className="right_ele_panel">
-                      <div>
-                        <div className="ele_text">
-                          <Title title="电子围栏" />
-                        </div>
-                        <div className="ele_from"> {this.getEleFrom()} </div>
-                      </div>
-                    </div>
-
-                    <div className="right_wraning_panel">
+                <div>
+                  <div className="right_ele_panel">
+                    <div>
                       <div className="ele_text">
-                        <Title title="告警信息" />
+                        <Title title="电子围栏" />
                       </div>
-                      <div className="ele_from">{this.createRouteCheckData()}</div>
+                      <div className="ele_from"> {this.getEleFrom()} </div>
                     </div>
                   </div>
-                )}
+
+                  <div className="right_wraning_panel">
+                    <div className="ele_text">
+                      <Title title="告警信息" />
+                    </div>
+                    <div className="ele_from">{this.createRouteCheckData()}</div>
+                  </div>
+                </div>
+              )}
             </Col>
             }
           </Row>

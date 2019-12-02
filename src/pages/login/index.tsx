@@ -3,8 +3,6 @@ import { Row, Col, Radio, Input, Icon, Layout, Form } from 'antd';
 import moment from 'moment';
 import request, { format } from '@/utils/request';
 
-
-
 import WrappedNormalLoginForm from './components/LoginForm';
 import styles from './index.less';
 // import { Icon } from 'antd';
@@ -16,21 +14,21 @@ const IconFont = Icon.createFromIconfontCN({
 });
 
 interface State {
-  title:string;
+  title: string;
   year: string;
   time?: string[];
 }
 
-export default class Login extends Component {
+export default class Login extends Component<any, State> {
   private timer;
   constructor(props: any) {
     super(props);
     const time = new Date();
     this.state = {
-      title:'',
+      title: '',
       year: this.getYear(time),
       time: '',
-    } as State;
+    };
   }
 
   getYear = time => {
@@ -47,7 +45,7 @@ export default class Login extends Component {
       .split('')
       .filter(str => str !== ':');
   };
-  async gettitle(){
+  async gettitle() {
     const resp = await request(
       ' http://47.96.112.31:8086/jeecg-boot/intf/location/getSystemLogoTitle',
       {
@@ -55,12 +53,12 @@ export default class Login extends Component {
       },
     );
     // console.log(resp)
-    if (resp.isShow==='0'){
-      this.setState({ title:resp.content})
+    if (resp.isShow === '0') {
+      this.setState({ title: resp.content });
     }
-    }
+  }
   componentDidMount() {
-    this.gettitle()
+    this.gettitle();
     this.timer = setInterval(() => {
       const time = new Date();
       this.setState({
@@ -83,23 +81,22 @@ export default class Login extends Component {
           <div className={styles.date_string}>{(this.state as State).year}</div>
           <div className={styles.time_string}>
             <span>{state.time[0]}</span>
-            <span>{state.time[1]}</span>: 
-            <span>{state.time[3]}</span>
+            <span>{state.time[1]}</span>:<span>{state.time[3]}</span>
             <span>{state.time[4]}</span>
           </div>
         </div>
         <Header className={[`${styles.no_bg}`].join(' ')}>
-              <div className={styles.system_name} />
+          <div className={styles.system_name} />
         </Header>
         {/* <Content className={[`${styles.no_bg}`].join(' ')}> */}
-          {/* <Row type="flex" justify="center" style={{ height: '100%','minHeight':'700px' }}> */}
-            {/* <Col span={10}> */}
-              <div className={styles.loginPanel}>
-                <WrappedNormalLoginForm />
-              </div>
-            {/* </Col> */}
-          {/* // </Row> */}
-          
+        {/* <Row type="flex" justify="center" style={{ height: '100%','minHeight':'700px' }}> */}
+        {/* <Col span={10}> */}
+        <div className={styles.loginPanel}>
+          <WrappedNormalLoginForm />
+        </div>
+        {/* </Col> */}
+        {/* // </Row> */}
+
         {/* </Content> */}
         <div className={styles.foot_text}>{this.state.title}</div>
 
