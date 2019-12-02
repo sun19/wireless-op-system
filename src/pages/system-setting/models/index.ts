@@ -3,11 +3,12 @@ export default {
   state: {
     customManager: {},
     customManagerRecord: {},
-    peopleTypeRecord:{},
+    peopleTypeRecord: {},
     peopleType: {},
     infoCard: {},
-    messageCard:{},
+    messageCard: {},
     superAdmin: {},
+    superAdminRecord: {},
   },
   reducers: {
     update(state, { payload }) {
