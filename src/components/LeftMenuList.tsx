@@ -52,12 +52,12 @@ class LeftMenuList extends Component<any> {
     });
   }
   matchCurrentRouter = (menus, pathname) => {
+    // console.log(menus)
     let { current = '', openKeys = [] } = this.props;
-
     for (let i = 0, len = menus.length; i < len; i++) {
       const menu = menus[i];
       if (menu.path === pathname) {
-        current = menu.name;
+        current = menu.id;
         break;
       }
       if (menu.children && menu.children.length > 0) {
@@ -65,8 +65,8 @@ class LeftMenuList extends Component<any> {
         for (let j = 0; j < children.length; j++) {
           const child = children[j];
           if (child.path === pathname) {
-            current = child.name;
-            openKeys = [menu.name];
+            current = child.id;
+            openKeys = [menu.id];
             break;
           }
         }
@@ -84,13 +84,13 @@ class LeftMenuList extends Component<any> {
       // console.log(leftMenuItem.name)
       return (
         <SubMenu
-          key={leftMenuItem.name}
+          key={leftMenuItem.id}
           className={[`${styles.no_background}`, `${styles.sub_menu_list}`].join(' ')}
           title={
             <span>
               <IconFont type={leftMenuItem.icon} />
               <span className={`${styles.icon_title}`}>
-                {leftMenuItem.name} {rootKeys[index] == leftMenuItem.name}
+                {leftMenuItem.name} {rootKeys[index] == leftMenuItem.id}
               </span>
               {/* <IconFont
                 className={`${styles.icon_down}`}
@@ -105,23 +105,31 @@ class LeftMenuList extends Component<any> {
                 // console.log(item.children, 'item.children');
                 if (item.children && item.children.length > 0) {
                   return (
-             
-                    <SubMenu key={item.name} title={`${item.name}  `} className='sub_menus_second'>
+                    <SubMenu key={item.id} title={`${item.name}  `} className='sub_menus_second'>
                       {item.children.map(child => {
+                      // if(child.path){
                         return (
-                          <Menu.Item key={child.name}>
-                            <Link className={`${styles.menu_item}`} to={child.path}>
-                              {child.name}
-                            </Link>
+                          <Menu.Item key={child.id}>
+                              <Link className={`${styles.menu_item}`} to={child.path}>
+                                {child.name}
+                              </Link>
                           </Menu.Item>
                         );
+                      // }else{
+                      //   return (
+                      //     <Menu.Item key={child.id}>
+                      //       <Link className={`${styles.menu_item}`} to=''>
+                      //         {child.name}
+                      //       </Link>
+                      //     </Menu.Item>
+                      //   );
+                      // }
                       })}
                     </SubMenu>
-       
                   );
                 } else {
                   return (
-                    <Menu.Item key={item.name}>
+                    <Menu.Item key={item.id}>
                       <Link className={`${styles.menu_item}`} to={item.path}>
                         {item.name}
                       </Link>
@@ -156,7 +164,7 @@ class LeftMenuList extends Component<any> {
   }
 }
 
-const mapState = ({ menu, router }) => ({
+const mapState = ({ menu, router, }) => ({
   ...menu,
   router,
 });
