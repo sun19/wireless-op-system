@@ -16,3 +16,6 @@ export const INSPECT_MANAGER_LIST_SEARCH =
 // 导出
 export const INSPECT_MANAGER_LIST_EXPORT =
   `${BASE_API_URL}/jeecg-boot/intf/location/exportXlsInspectionReport`;
+// 根据操作时间查询、、更改后接口
+export const NEW_INSPECT_MANAGER_LIST_SEARCH =
+  `${BASE_API_URL}/jeecg-boot/intf/location/queryInspectionReportByTime`;

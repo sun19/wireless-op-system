@@ -5,6 +5,7 @@ import {
   INSPECT_MANAGER_SEARCH,
   INSPECT_MANAGER_DETAIL,
   INSPECT_MANAGER_LIST_SEARCH,
+  NEW_INSPECT_MANAGER_LIST_SEARCH
 } from '@/config/api';
 import {
   GetInspectListParams,
@@ -27,5 +28,9 @@ export async function getInspectDetail(params: GetInspectDetailParams) {
 
 export async function getInspectReports(params: GetInspectReportsParams) {
   const resp = await request.get(INSPECT_MANAGER_LIST_SEARCH, { params });
+  return resp;
+}
+export async function queryInspectionReportByTime(params: GetInspectReportsParams) {
+  const resp = await request.get(NEW_INSPECT_MANAGER_LIST_SEARCH, { params });
   return resp;
 }

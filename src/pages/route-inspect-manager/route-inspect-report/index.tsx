@@ -10,7 +10,7 @@ import { connect } from 'dva';
 import MainContent from '../components/MainContent';
 import { ICON_FONTS_URL } from '../../../config/constants';
 import { UmiComponentProps } from '@/common/type';
-import { getInspectReports } from '../services';
+import { getInspectReports, queryInspectionReportByTime } from '../services';
 import { GetInspectReportsParams } from '../services/index.interfaces';
 import styles from './index.less';
 import publicStyles from '../index.less';
@@ -22,83 +22,55 @@ const FormItem = Form.Item;
 const IconFont = Icon.createFromIconfontCN({
   scriptUrl: ICON_FONTS_URL,
 });
-
-const columns = [
-  // {
-  //   title: '序号',
-  //   dataIndex: 'id',
-  //   editable: true,
-  // },
-  {
-    title: '路线1',
-    dataIndex: 'inspectionId',
-    editable: true,
-    render: (name, record) => {
-      return (
-        <div>
-          {record.inspectionId == '1' ? (
-            <IconFont type="icon-correct" />
-
-          ) : (
-              <IconFont type="icon-error" />
-
-            )}
-        </div>
-      );
-    },
-  }, {
-    title: '路线2',
-    dataIndex: 'routeId',
-    editable: true,
-    render: (name, record) => {
-      return (
-        <div>
-          {record.routeId == '1' ? (
-            <IconFont type="icon-correct" />
-
-          ) : (
-              <IconFont type="icon-error" />
-
-            )}
-        </div>
-      );
-    },
-  }, {
-    title: '路线3',
-    dataIndex: 'updateId',
-    editable: true,
-    render: (name, record) => {
-      return (
-        <div>
-          {record.updateId == '1' ? (
-            <IconFont type="icon-correct" />
-
-          ) : (
-              <IconFont type="icon-error" />
-
-            )}
-        </div>
-      );
-    },
-  },
-];
+interface State {
+  colum: any[];
+  record: any[];
+}
 
 type StateProps = ReturnType<typeof mapState>;
 type Props = StateProps & UmiComponentProps & FormComponentProps;
 
-class RouteInspectReport extends React.Component<Props> {
+
+class RouteInspectReport extends React.Component<Props, State> {
   constructor(props: any) {
     super(props);
+    this.state = {
+      colum: [],
+      record: []
+    }
   }
-  async getRouteInspectReports(params: GetInspectReportsParams = {}) {
-    const resp = await getInspectReports(params);
-    if (resp) {
-      this.props.dispatch({
-        type: 'routeInspect/update',
-        payload: {
-          routeInspectReports: resp.result,
+ 
+
+  async getNewReports(params: GetInspectReportsParams = {}) {
+    const resp = await queryInspectionReportByTime(params);
+    // console.log(resp)
+    if (!!resp.success) {
+      let colum:any = [
+        {
+          title: '日期',
+          dataIndex: 'date',
+          editable: false,
         },
-      });
+      ]
+      let record = resp.result.records
+      resp.result.showName.map((res) => {
+        colum.push(
+          {
+            title: res.name,
+            dataIndex: res.id,
+            editable: true,
+            render: (name, record) => {
+              // console.log(record)
+              return (
+                <IconFont type={['icon-correct', 'icon-error'][record[res.id]]} />
+              );
+            },
+          },
+        )
+      })
+
+      resp.result.showName
+      this.setState({ colum, record })
     }
   }
   onSearch = e => {
@@ -107,21 +79,28 @@ class RouteInspectReport extends React.Component<Props> {
       const { createtime, endTime, ...props } = values
       const data = {
         ...props,
-        createtime: values.createtime ?values.createtime.format('YYYY-MM-DD HH:mm:ss'):'',
+        createtime: values.createtime ? values.createtime.format('YYYY-MM-DD HH:mm:ss') : '',
 
         endTime: values.endTime ? values.endTime.format('YYYY-MM-DD HH:mm:ss') : ''
       }
-      this.getRouteInspectReports(data);
+      this.getNewReports(data);
     });
   };
 
   onClear = () => {
     this.props.form.resetFields();
-    this.getRouteInspectReports();
+    this.getNewReports();
   };
 
-  componentDidMount() {
-    this.getRouteInspectReports();
+  componentWillMount() {
+    let data = {
+      // startTime: moment().format('YYYY-MM-DD 00:00:00'),
+      // endTime: moment().format('YYYY-MM-DD 23:59:59'),
+      startTime: '2019-11-01 00:00:00',
+      endTime: '2019-11-30 23:59:59',
+    }
+    // console.log(data)
+    this.getNewReports(data)
   }
 
   render() {
@@ -133,7 +112,7 @@ class RouteInspectReport extends React.Component<Props> {
       };
     }
     let { records, total } = routeInspectReports;
-    records = records.map((item,index)=> {
+    records = records.map((item, index) => {
       return _.assign(item, { key: item.id });
     });
 
@@ -152,13 +131,15 @@ class RouteInspectReport extends React.Component<Props> {
               >
                 <FormItem label="开始时间">
                   {getFieldDecorator('createtime', {
+                    initialValue: moment('2019-11-01 00:00:00'),
+
                   })(
                     <DatePicker showTime={true} placeholder="请选择开始时间" />,
                   )}
                 </FormItem>
                 <FormItem label="结束时间">
                   {getFieldDecorator('endTime', {
-                    // initialValue: moment('12:08:23', 'HH:mm:ss'),
+                    initialValue: moment('2019-11-30 23:59:59'),
                   })(
                     <DatePicker showTime={true} format="YYYY-MM-DD HH:mm:ss" placeholder="请选择结束时间" />,
                   )}
@@ -182,7 +163,7 @@ class RouteInspectReport extends React.Component<Props> {
               </Row>
             </Form>
           </div>
-          <MainContent columns={columns} data={records} total={total} showEdit={false} />
+          <MainContent columns={this.state.colum} data={this.state.record} total={total} showEdit={false} />
         </Content>
       </div>
     );
