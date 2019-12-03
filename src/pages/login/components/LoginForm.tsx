@@ -43,7 +43,7 @@ class NormalLoginForm extends React.Component<Props> {
   async handleSubmit(e) {
     e.preventDefault();
     this.props.form.validateFields(async (err, values) => {
-      if (!err) {
+      if(!err) {
         let data = {
           username: values.username,
           password: values.password,
@@ -57,7 +57,7 @@ class NormalLoginForm extends React.Component<Props> {
             method: 'GET',
           },
         );
-        if (resp.code === 200 && resp.success) {
+        if(resp.code === 200 && resp.success) {
           const token = resp.result.token;
           localStorage.setItem('token', token);
           await this.preFetchAllCommonState();
@@ -74,15 +74,15 @@ class NormalLoginForm extends React.Component<Props> {
       }
     });
   }
-async getMenus(){
-  let data = await getAllMenues()
-  this.props.dispatch({
-    type: 'menu/changeOpen',
-    payload: {
-      menus: data.result,
-    },
-  });
-}
+  async getMenus() {
+    let data = await getAllMenues()
+    this.props.dispatch({
+      type: 'menu/changeOpen',
+      payload: {
+        menus: data.result,
+      },
+    });
+  }
   async preFetchAllCommonState() {
     const mapResp = await getAllMap();
     const areasResp = await getAllArea();

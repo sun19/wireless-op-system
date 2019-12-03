@@ -15,8 +15,8 @@ import styles from './index.less';
 
 const { TreeNode } = Tree;
 const { Option } = Select;
-import { LEFT_MENUS } from '../../../config/menus';
-const defaultMenuNodes = LEFT_MENUS;
+// import { LEFT_MENUS } from '../../../config/menus';
+// const defaultMenuNodes = LEFT_MENUS;
 
 // interface Props extends FormComponentProps {}
 type Props = FormComponentProps & ReturnType<typeof mapState>;
@@ -87,12 +87,12 @@ class EditUserAuth extends React.Component<Props, State> {
         ...props,
         rolePath: this.state.checkedKeys,
       };
-      if (err) {
+      if(err) {
         message.error('填写信息有误', data);
         return;
       }
       const isSuccessed = await updateUserType(Object.assign(peopleTypeRecord, data));
-      if (isSuccessed) {
+      if(isSuccessed) {
         setTimeout(() => router.push('/system-setting/people-type'), 1000);
       }
     });
@@ -103,10 +103,10 @@ class EditUserAuth extends React.Component<Props, State> {
   }
   renderTreeNodes = data =>
     data.map(item => {
-      if (item.children) {
+      if(item.child) {
         return (
           <TreeNode title={item.name} key={item.path} dataRef={item}>
-            {this.renderTreeNodes(item.children)}
+            {this.renderTreeNodes(item.child)}
           </TreeNode>
         );
       }
@@ -116,7 +116,7 @@ class EditUserAuth extends React.Component<Props, State> {
     const { peopleTypeRecord } = this.props;
     // console.log(peopleTypeRecord)
     const { getFieldDecorator } = this.props.form;
-    if (this.state.userTypes.length === 0) return null;
+    if(this.state.userTypes.length === 0) return null;
 
     return (
       <ContentBorder className={styles.auth_root}>
@@ -159,7 +159,7 @@ class EditUserAuth extends React.Component<Props, State> {
                           onSelect={this.onSelect}
                           onCheck={this.onCheck}
                         >
-                          {this.renderTreeNodes(defaultMenuNodes)}
+                          {this.renderTreeNodes(this.props.menu)}
                         </Tree>,
                       )}
                     </Form.Item>
@@ -192,9 +192,9 @@ class EditUserAuth extends React.Component<Props, State> {
 
 const EditUserHOC = Form.create<Props>({ name: 'edit_user' })(EditUserAuth);
 
-const mapState = ({ systemSetting }) => {
+const mapState = ({ systemSetting, menu }) => {
   const resp = systemSetting.peopleTypeRecord;
-  return { peopleTypeRecord: resp };
+  return { peopleTypeRecord: resp, menu: menu.menus || [] };
 };
 
 export default connect(mapState)(EditUserHOC);

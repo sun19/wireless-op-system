@@ -55,17 +55,17 @@ class LeftMenuList extends Component<any> {
   matchCurrentRouter = (menus, pathname) => {
     // console.log(menus)
     let { current = '', openKeys = [] } = this.props;
-    for (let i = 0, len = menus.length; i < len; i++) {
+    for(let i = 0, len = menus.length; i < len; i++) {
       const menu = menus[i];
-      if (menu.path === pathname) {
+      if(menu.path === pathname) {
         current = menu.id;
         break;
       }
-      if (menu.children && menu.children.length > 0) {
-        const children = menu.children;
-        for (let j = 0; j < children.length; j++) {
+      if(menu.child && menu.child.length > 0) {
+        const children = menu.child;
+        for(let j = 0; j < children.length; j++) {
           const child = children[j];
-          if (child.path === pathname) {
+          if(child.path === pathname) {
             current = child.id;
             openKeys = [menu.id];
             break;
@@ -98,35 +98,34 @@ class LeftMenuList extends Component<any> {
             </span>
           }
         >
-          {leftMenuItem.children && leftMenuItem.children.length > 0
-            ? leftMenuItem.children.map(item => {
-                item.children && leftMenuItem.children.length > 0;
-                // console.log(item.children, 'item.children');
-                if (item.children && item.children.length > 0) {
-                  return (
-                    <SubMenu key={item.id} title={`${item.name}  `} className='sub_menus_second'>
-                      {item.children.map(child => {
-                      // if(child.path){
-                        return (
-                          <Menu.Item key={child.id}>
-                              <Link className={`${styles.menu_item}`} to={child.path}>
-                                {child.name}
-                              </Link>
-                          </Menu.Item>
-                        );
-                      })}
-                    </SubMenu>
-                  );
-                } else {
-                  return (
-                    <Menu.Item key={item.id}>
-                      <Link className={`${styles.menu_item}`} to={item.path}>
-                        {item.name}
-                      </Link>
-                    </Menu.Item>
-                  );
-                }
-              })
+          {leftMenuItem.child && leftMenuItem.child.length > 0
+            ? leftMenuItem.child.map(item => {
+              item.child && leftMenuItem.child.length > 0;
+
+              if(item.child && item.child.length > 0) {
+                return (
+                  <SubMenu key={item.id} title={`${item.name}  `} className='sub_menus_second'>
+                    {item.child.map(child => {
+                      return (
+                        <Menu.Item key={child.id}>
+                          <Link className={`${styles.menu_item}`} to={child.path}>
+                            {child.name}
+                          </Link>
+                        </Menu.Item>
+                      );
+                    })}
+                  </SubMenu>
+                );
+              } else {
+                return (
+                  <Menu.Item key={item.id}>
+                    <Link className={`${styles.menu_item}`} to={item.path}>
+                      {item.name}
+                    </Link>
+                  </Menu.Item>
+                );
+              }
+            })
             : ''}
         </SubMenu>
       );
