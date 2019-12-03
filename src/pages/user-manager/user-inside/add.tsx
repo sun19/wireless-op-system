@@ -12,6 +12,7 @@ import ContentBorder from '../../../components/ContentBorder';
 import { UmiComponentProps } from '@/common/type';
 import { getAllPosition, getAllSecretLevels, getAllDepartment } from '@/pages/login/login.service';
 import { addUser } from '../services';
+import request from '@/utils/request';
 
 import styles from './index.less';
 
@@ -108,7 +109,9 @@ class UserAuths extends React.Component<Props, State> {
 
   connectWs() {
     this.ws = new WebSocket('ws://47.96.112.31:8086/jeecg-boot/intf/location/getIdentityCardTest');
-    this.ws.onopen = () => { };
+    this.ws.onopen = () => {
+      request.get('http://47.96.112.31:8086/jeecg-boot/intf/location/executeUserCard?status=false');
+    };
     this.ws.onmessage = (evt) => {
       alert(evt);
       let msgText = JSON.parse(evt.data);
