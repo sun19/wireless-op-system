@@ -99,7 +99,7 @@ class DataView extends React.Component<Props, State> {
     const mapImage = await this.dynamicLoadMapImage();
     const iconImage = await this.dynamicLoadIconImage();
     const iconRedImage = await this.dynamicLoadIconRedImage();
-    if (this.map.current) {
+    if(this.map.current) {
       const { clientWidth, clientHeight } = this.map.current;
       this.showLine();
       this.setState({
@@ -189,8 +189,8 @@ class DataView extends React.Component<Props, State> {
     const timer = setInterval(() => {
       const ajaxLamps = this.state.ajaxLamps;
 
-      if (i === 0) message.success('轨迹开始');
-      if (i > ajaxLamps.length - 1) {
+      if(i === 0) message.success('轨迹开始');
+      if(i > ajaxLamps.length - 1) {
         message.success('轨迹结束');
         clearInterval(timer);
         return;
@@ -202,7 +202,7 @@ class DataView extends React.Component<Props, State> {
         id: lnglat.id,
         code: lnglat.abnormal,
       };
-      if (lamp.code === 1) {
+      if(lamp.code === 1) {
         message.warn('您已进入非法区域');
       }
       temp.push(lamp);
@@ -256,7 +256,7 @@ class DataView extends React.Component<Props, State> {
   dynamicLoadMapImage() {
     return new Promise(resolve => {
       const mapImage = new Image();
-      mapImage.src = require('../assets/map.png');
+      mapImage.src = require('../assets/地图2.png');
       mapImage.onload = function () {
         resolve(mapImage);
       };
@@ -305,7 +305,7 @@ class DataView extends React.Component<Props, State> {
   getEleFrom = () => {
     const { eleFenceInfo } = this.props;
     const { eleTypeInfo } = this.props;
-    if (eleFenceInfo.length === 0) return null;
+    if(eleFenceInfo.length === 0) return null;
     const { records } = eleFenceInfo;
     const data = records.map((item, index) => {
       const type = _.find(eleTypeInfo, { id: item.type });
@@ -334,7 +334,7 @@ class DataView extends React.Component<Props, State> {
   // 职位占比人数
   createPositionNumberGraph = () => {
     const { positionPeopleCount } = this.props;
-    if (positionPeopleCount.length === 0) return null;
+    if(positionPeopleCount.length === 0) return null;
     var dataStyle = {
       normal: {
         label: {
@@ -365,7 +365,7 @@ class DataView extends React.Component<Props, State> {
     }, 0);
     const series = positionPeopleCount.map((item, index) => {
       let radius = [];
-      switch (index) {
+      switch(index) {
         case 0:
           radius = ['20%', '30%'];
           break;
@@ -444,7 +444,7 @@ class DataView extends React.Component<Props, State> {
 
   createStayTimeAnalyzeGraph = () => {
     const { stayTimeInfo } = this.props;
-    if (stayTimeInfo.length === 0) return null;
+    if(stayTimeInfo.length === 0) return null;
     const dataFormat = stayTimeInfo.map(item => ({
       value: item.num,
       name: item.name,
@@ -566,7 +566,7 @@ class DataView extends React.Component<Props, State> {
   // 告警类型统计
   createPoliceType = () => {
     const { warningTypeInfo } = this.props;
-    if (warningTypeInfo.length === 0) return null;
+    if(warningTypeInfo.length === 0) return null;
     const legendData = warningTypeInfo && warningTypeInfo[0].warnTypeName;
     const seriesData = warningTypeInfo && warningTypeInfo[0].warnTypeNumList.map((warnType, index) => (
       warnType.num
@@ -641,7 +641,7 @@ class DataView extends React.Component<Props, State> {
         itemStyle: {
           normal: {
             color: function (params) {
-            return  ['rgba(9,120,242,1)','rgba(77,253,184,1)','rgba(255,180,0,1)', 'rgba(241,126,60,1)','rgba(73,86,227,1)',][params.dataIndex]
+              return ['rgba(9,120,242,1)', 'rgba(77,253,184,1)', 'rgba(255,180,0,1)', 'rgba(241,126,60,1)', 'rgba(73,86,227,1)',][params.dataIndex]
             },
             barBorderRadius: [20, 20, 20, 20],
           },
@@ -697,7 +697,7 @@ class DataView extends React.Component<Props, State> {
       },
     ];
     let historyWarns = this.props.historyWarns;
-    if (_.isEmpty(historyWarns)) {
+    if(_.isEmpty(historyWarns)) {
       historyWarns = {
         records: [],
         total: 0,
@@ -705,7 +705,7 @@ class DataView extends React.Component<Props, State> {
     }
     let { records } = historyWarns;
 
-    if (records.length === 0) {
+    if(records.length === 0) {
       return <Table columns={columns} dataSource={[]} />;
     }
     return (

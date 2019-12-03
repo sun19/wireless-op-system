@@ -32,7 +32,7 @@ interface State {
   circleX: number;
   circleY: number;
 }
-interface FormProps extends FormComponentProps {}
+interface FormProps extends FormComponentProps { }
 
 type StateProps = ReturnType<typeof mapState>;
 type Props = StateProps & UmiComponentProps & FormProps;
@@ -69,7 +69,7 @@ class halmpAdd extends React.Component<Props, State> {
     return new Promise(resolve => {
       const mapImage = new Image();
       mapImage.src = require('../../big-screen/assets/map.png');
-      mapImage.onload = function() {
+      mapImage.onload = function () {
         resolve(mapImage);
       };
     });
@@ -77,7 +77,7 @@ class halmpAdd extends React.Component<Props, State> {
 
   async componentDidMount() {
     const mapImage = await this.dynamicLoadMapImage();
-    if (this.map.current) {
+    if(this.map.current) {
       const { clientWidth, clientHeight } = this.map.current;
       const { lampRecord } = this.props;
 

@@ -55,7 +55,7 @@ class Adduth extends React.Component<Props, State> {
     return new Promise(resolve => {
       const mapImage = new Image();
       mapImage.src = require('../../map-manager/assets/baoan.png');
-      mapImage.onload = function() {
+      mapImage.onload = function () {
         resolve(mapImage);
       };
     });
@@ -63,7 +63,7 @@ class Adduth extends React.Component<Props, State> {
   async componentDidMount() {
     const mapImage = await this.dynamicLoadMapImage();
     const iconImage = await this.dynamicLoadIconImage();
-    if (this.map.current) {
+    if(this.map.current) {
       const { clientWidth, clientHeight } = this.map.current;
 
       this.setState({
@@ -102,7 +102,7 @@ class Adduth extends React.Component<Props, State> {
     return new Promise(resolve => {
       const mapImage = new Image();
       mapImage.src = require('../../big-screen/assets/map.png');
-      mapImage.onload = function() {
+      mapImage.onload = function () {
         resolve(mapImage);
       };
     });
@@ -111,7 +111,7 @@ class Adduth extends React.Component<Props, State> {
   setupMapSelect = () => {
     let { maps } = this.props;
     const { getFieldDecorator } = this.props.form;
-    if (maps.length === 0) return;
+    if(maps.length === 0) return;
     return getFieldDecorator('mapId', {
       rules: [
         {
@@ -131,7 +131,7 @@ class Adduth extends React.Component<Props, State> {
   setupAreaSelect = () => {
     let { areas } = this.props;
     const { getFieldDecorator } = this.props.form;
-    if (areas.length === 0) return;
+    if(areas.length === 0) return;
     return getFieldDecorator('regionalName', {
       rules: [
         {
@@ -149,7 +149,7 @@ class Adduth extends React.Component<Props, State> {
     );
   };
   onLampSelectChange = e => {
-    if (!this.map.current) return;
+    if(!this.map.current) return;
     const { clientWidth, clientHeight } = this.map.current;
     let _lamps = this.props.lampsType;
     // const routes = inspectionRoute && inspectionRoute.split(',');
@@ -175,7 +175,7 @@ class Adduth extends React.Component<Props, State> {
   };
   createLamps() {
     const lamps = this.state.showLamps;
-    if (lamps.length === 0) return;
+    if(lamps.length === 0) return;
     return lamps.map((lamp, index) => (
       <ImageLayer
         image={this.state.icon}

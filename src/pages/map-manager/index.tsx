@@ -134,7 +134,7 @@ export default class MapManager extends React.Component<Props, State> {
   dynamicLoadMapImage() {
     return new Promise(resolve => {
       const mapImage = new Image();
-      mapImage.src = require('./assets/map.png');
+      mapImage.src = require('./assets/地图2.png');
       mapImage.onload = function () {
         resolve(mapImage);
       };
