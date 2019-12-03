@@ -18,15 +18,12 @@ import {
   getWarnTypeByTime,
   getInnerStayTime,
 } from '../services';
-
 import styles from './index.less';
-
 interface State {
   routeData: any[];
   realInfo: any[];
   dataStr?: string;
 }
-
 class DataView extends Component<any, State> {
   constructor(props) {
     super(props);
@@ -95,7 +92,7 @@ class DataView extends Component<any, State> {
       },
     });
   }
-// 职位占比人数
+  // 职位占比人数
   createPositionNumberGraph = () => {
     let { positionPeopleCount } = this.props;
     positionPeopleCount = positionPeopleCount;
@@ -178,13 +175,13 @@ class DataView extends Component<any, State> {
         formatter: '{b} : {c} ({d}%)',
       },
       legend: {
-         top:0,
-        height:12,
+        top: 0,
+        height: 12,
         lineHeight: 16,
-        left:10,
-        padding:0,
+        left: 10,
+        padding: 0,
         align: 'left',
-        itemGap:2,
+        itemGap: 2,
         itemHeight: 15, //图例标记的图形宽度。
         itemWidth: 15, //图例标记的图形gao度。
         // orient: 'vertical', //图例列表的布局朝向。
@@ -237,7 +234,7 @@ class DataView extends Component<any, State> {
         textStyle: {
           color: '#A3E2F4',
           fontSize: 18,
-          width:12,
+          width: 12,
           fontWeight: 0,
         },
         data: dataEg,
@@ -478,7 +475,7 @@ class DataView extends Component<any, State> {
     };
     return <ReactEcharts option={option} style={{ width: '100%', height: '100%' }} />;
   };
-   createPoliceType = () => {
+  createPoliceType = () => {
     const { warningTypeInfo } = this.props;
     if (warningTypeInfo.length === 0) return null;
     const legendData = warningTypeInfo && warningTypeInfo[0].warnTypeName;
@@ -555,7 +552,7 @@ class DataView extends Component<any, State> {
         itemStyle: {
           normal: {
             color: function (params) {
-            return  ['rgba(9,120,242,1)','rgba(77,253,184,1)','rgba(255,180,0,1)', 'rgba(241,126,60,1)','rgba(73,86,227,1)',][params.dataIndex]
+              return ['rgba(9,120,242,1)', 'rgba(77,253,184,1)', 'rgba(255,180,0,1)', 'rgba(241,126,60,1)', 'rgba(73,86,227,1)',][params.dataIndex]
             },
             barBorderRadius: [20, 20, 20, 20],
           },
@@ -618,7 +615,7 @@ class DataView extends Component<any, State> {
               color: 'rgba(255,255,255,1)',
               fontSize: 20,
             },
-            formatter: function(value, index) {
+            formatter: function (value, index) {
               return ['{title|' + value + '} '].join('\n');
             },
             rich: {},
@@ -633,7 +630,7 @@ class DataView extends Component<any, State> {
               color: 'rgba(255,255,255,1)',
               fontSize: 20,
             },
-            formatter: function(value, index) {
+            formatter: function (value, index) {
               return value + '人';
             },
           },
@@ -658,7 +655,7 @@ class DataView extends Component<any, State> {
           itemStyle: {
             normal: {
               barBorderRadius: 50,
-              color: function(params) {
+              color: function (params) {
                 var num = myColor.length;
                 return myColor[params.dataIndex % num];
               },

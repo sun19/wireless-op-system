@@ -1,277 +1,273 @@
 export const LEFT_MENUS = [
   {
     name: '设置',
-    key: '001',
+    id: '001',
     icon: 'icon-system1',
-    path: 'setting',
-    component: 'setting',
+    path: '',
     children: [
       {
         name: '高级管理员设置',
-        key: '002',
+        id: '002',
         path: '',
-        component: '',
         children: [
           {
-            name: '系统设置', //没有页面
-            key: '003',
-            path: '/empty',
-            component: './pages/empty/index.tsx',
+            name: '系统设置',
+            id: '003',
+            path: '',
+            children: [
+              {
+                name: '字典设置', //没有页面
+                id: '004',
+                path: '/empty',
+              },
+              {
+                name: '菜单设置', //没有页面
+                id: '005',
+                path: '/empty',
+              },
+            ]
           },
           {
             name: '系统管理员设置',
-            key: '004',
-            path: '/system-setting/super-admin',
-            component: './pages/system-setting/super-admin/index.tsx',
+            id: '006',
+            path: '',
+            children: [
+              {
+                name: '菜单权限', //没有页面
+                id: '007',
+                path: '/system-setting/people-type',
+              },
+              {
+                name: '用户信息', //没有页面
+                id: '008',
+                path: '/system-setting/customer-manager',
+              },
+            ]
           },
           {
             name: '值班员设置', //没有页面
-            key: '005',
-            path: '/empty',
-            component: './pages/empty/index.tsx',
+            id: '009',
+            path: '',
+            children: [
+              {
+                name: '菜单权限', //没有页面
+                id: '003',
+                path: '/system-setting/people-type',
+              },
+              {
+                name: '用户信息', //没有页面
+                id: '010',
+                path: '/system-setting/customer-manager',
+              },
+            ]
           },
         ],
       },
       {
         name: '系统管理员设置',
-        key: '006',
+        id: '011',
         path: '',
-        component: '',
         children: [
-          // {
-          //   name: '信息牌设置',
-          //   key: '040',
-          //   path: '/system-setting/message-card',
-          //   component: './pages/system-setting/message-card/index.tsx',
-          // },
           {
-            name: '用户管理(值班员)',
-            key: '007',
-            path: '/system-setting/customer-manager',
-            component: './pages/system-setting/customer-manager/index.tsx',
+            name: '完善信息', //没有页面
+            id: '012',
+            path: '/empty',
           },
           {
-            name: '内部人员信息录入', //没有页面
-            key: '008',
+            name: '内部人员信息录入',
+            id: '013',
             path: '/user-manager/user-inside/add',
             component: './pages/user-manager/user-inside/add.tsx',
           },
           {
-            name: '值班员设置 ', //没有页面
-            key: '009',
+            name: '内部人员录入', //没有页面
+            id: '014',
             path: '/empty',
-            component: './pages/empty/index.tsx',
           },
           {
             name: '信息牌分配', //没有页面
-            key: '010',
+            id: '015',
             path: '/info-card-manager/info-card-list',
-            component: './pages/info-card-manager/info-card-list/index.tsx',
           },
           {
             name: '电子围栏设置',
-            key: '011',
+            id: '016',
             path: '/map-manager/fence-setting',
-            component: './pages/map-manager/fence-setting/index.tsx',
           },
-          {
-            name: '系统维护', //没有页面
-            key: '012',
-            path: '/empty',
-            component: './pages/empty/index.tsx',
-          },
-          {
-            name: '数据库管理备份', //没有页面
-            key: '013',
-            path: '/empty',
-            component: './pages/empty/index.tsx',
-          },
-          // {
-          //   name: '地图导入',
-          //   key: '014',
-          //   path: '/empty',
-          //   component: './pages/empty/index.tsx',
-          // },
           {
             name: '灯具设置',
-            key: '015',
+            id: '017',
             path: '/map-manager/lamps-set',
-            component: './pages/map-manager/lamps-set/index.tsx',
           },
-          {
-            name: '信息牌导入', //没有页面
-            key: '016',
-            path: '/system-setting/message-card',
-            component: './pages/system-setting/message-card/index.tsx',
-          },
-          {
-            name: '区域设置',
-            key: '017',
-            path: '/map-manager/area-set',
-            component: './pages/map-manager/area-set/index.tsx',
-          },
-          {
-            name: '人员类型',
-            key: '018',
-            path: '/system-setting/people-type',
-            component: './pages/system-setting/people-type/index.tsx',
-          },
-        ],
-      },
-      {
-        name: '值班员设置',
-        key: '019',
-        path: '/system-setting/super-admin',
-        component: './pages/system-setting/super-admin/index.tsx',
-        children: [
           {
             name: '任务规划',
-            key: '020',
+            id: '018',
             path: '/info-card-manager/task-planning',
-            component: './pages/info-card-manager/task-planning/index.tsx',
           },
           {
             name: '巡检点设置',
-            key: '021',
+            id: '019',
             path: '/map-manager/polling-point',
-            component: './pages/map-manager/polling-point/index.tsx',
           },
           {
-            name: '巡检路线设置',
-            key: '022',
-            path: '/map-manager/polling-line',
-            component: './pages/map-manager/polling-line/index.tsx',
+            name: '外来人员录入', //没有页面
+            id: '020',
+            path: '/empty',
           },
           {
             name: '告警信息处理', //没有页面
-            key: '023',
+            id: '021',
             path: '/empty',
-            component: './pages/empty/index.tsx',
           },
           {
             name: '告警类型设置', //没有页面
-            key: '024',
+            id: '022',
             path: '/empty',
-            component: './pages/empty/index.tsx',
+          },
+          {
+            name: '巡检路线设置',
+            id: '023',
+            path: '/map-manager/polling-line',
+          },
+          {
+            name: '区域设置',
+            id: '024',
+            path: '/map-manager/area-set',
+          },]
+      },
+      {
+        name: '值班员设置',
+        id: '025',
+        path: '/system-setting/super-admin',
+        children: [
+          {
+            name: '任务规划',
+            id: '026',
+            path: '/info-card-manager/task-planning',
+          },
+          {
+            name: '巡检点设置',
+            id: '027',
+            path: '/map-manager/polling-point',
+          }, {
+            name: '巡检路线设置',
+            id: '028',
+            path: '/map-manager/polling-line',
+          },
+          {
+            name: '告警信息处理', //没有页面
+            id: '029',
+            path: '/empty',
+          },
+          {
+            name: '告警类型设置', //没有页面
+            id: '030',
+            path: '/empty',
           },
           {
             name: '信息完善', //没有页面
-            key: '025',
+            id: '031',
             path: '/empty',
-            component: './pages/empty/index.tsx',
           },
           {
             name: '外来人员信息录入', //没有页面
-            key: '026',
+            id: '032',
             path: '/empty',
-            component: './pages/empty/index.tsx',
           },
         ],
       },
     ],
   },
-
   {
     name: '应用',
-    key: '027',
+    id: '033',
     icon: 'icon-polling1',
-    path: 'use',
-    component: 'use',
+    path: '',
     children: [
       {
         name: '信息牌列表',
-        key: '028',
+        id: '034',
         path: '/info-card-manager/info-card-list',
-        component: './pages/info-card-manager/info-card-list/index.tsx',
       },
       {
         name: '人员定位', //没有页面
-        key: '029',
+        id: '035',
         path: '/empty',
-        component: './pages/empty/index.tsx',
       },
       {
         name: '灯具展示', //没有页面
-        key: '030',
+        id: '036',
         path: '/empty',
-        component: './pages/empty/index.tsx',
       },
       {
         name: '历史轨迹',
-        key: '031',
+        id: '037',
         path: '/statistics-query/statistics-history',
-        component: './pages/statistics-query/statistics-history/index.tsx',
       },
       {
         name: '区域查询', //没有页面
-        key: '032',
+        id: '038',
         path: '/empty',
-        component: './pages/empty/index.tsx',
       },
       {
         name: '日志列表',
-        key: '033',
+        id: '039',
         path: '/log-manager/log-list',
-        component: './pages/log-manager/log-list/index.tsx',
       },
       {
         name: '电子围栏',
+        id: '040',
         path: '/big-screen/dataview',
-        component: './pages/big-screen/dataview',
       },
       {
         name: '告警信息',
-        key: '034',
+        id: '041',
         path: '/warning-manager/info',
-        component: './pages/warning-manager/info/index.tsx',
       },
     ],
   },
   {
     name: '显示',
-    key: '035',
-    path: 'show',
-    component: 'show',
+    id: '042',
     icon: 'icon-show1',
+    path: '',
     children: [
       {
-        key: '036',
-
+        id: '043',
         name: '实时位置',
         path: '/big-screen/homepage',
-        component: './pages/big-screen/homepage',
       },
       {
         name: '巡检列表',
-        key: '037',
+        id: '044',
         path: '/route-inspect-manager/route-inspect-list',
-        component: './pages/route-inspect-manager/route-inspect-list/index.tsx',
       },
       {
         name: '巡检报表',
-        key: '038',
+        id: '045',
         path: '/route-inspect-manager/route-inspect-report',
-        component: './pages/route-inspect-manager/route-inspect-report/index.tsx',
       },
       {
         name: '历史告警',
-        key: '039',
+        id: '046',
         path: '/warning-manager/history',
-        component: './pages/warning-manager/history/index.tsx',
       },
-      /************** ************** ************** ************** ************** ************** ************** ************** ************** */
-      // {
-      //   name: '用户列表-内部',
-      //   key: '041',
-      //   path: '/user-manager/user-inside',
-      //   component: './pages/user-manager/user-inside/index.tsx',
-      // },
       {
         name: '告警类型',
-        key: '042',
+        id: '047',
         path: '/warning-manager/type',
-        component: './pages/warning-manager/type/index.tsx',
       },
     ],
   },
-];
+]
+
+  // {
+  //   name: '用户列表-内部',
+  //   id: '041',
+  //   path: '/user-manager/user-inside',
+  // },
+  // {
+  //   name: '信息牌导入',
+  //   id: '016',
+  //   path: '/system-setting/message-card'
+  // }

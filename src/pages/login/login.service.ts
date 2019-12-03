@@ -1,7 +1,6 @@
 
 import request, { format } from '@/utils/request';
 
-
 import {
   COMMON_GET_ALL_MAP,
   COMMON_GET_ALL_AREAS,
@@ -13,13 +12,12 @@ import {
   COMMON_GET_ALL_SECRET_LEVELS,
   COMMON_GET_ALL_POSITION,
   COMMON_GET_ALL_DEPARTMENT,
+  MENU_LIST
 } from '@/config/api';
-
 export async function getAllMap() {
   const resp = await request.get(COMMON_GET_ALL_MAP);
   return resp;
 }
-
 export async function getAllArea() {
   const resp = await request.get(COMMON_GET_ALL_AREAS);
   return resp;
@@ -61,5 +59,10 @@ export async function getAllPosition() {
 // 部门
 export async function getAllDepartment() {
   const resp = await request.get(COMMON_GET_ALL_DEPARTMENT);
+  return resp;
+}
+// 菜单
+export async function getAllMenues() {
+  const resp = await request.get(MENU_LIST);
   return resp;
 }
