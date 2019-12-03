@@ -108,7 +108,7 @@ class UserAuths extends React.Component<Props, State> {
   }
 
   connectWs() {
-    this.ws = new WebSocket('ws://47.96.112.31:8086/jeecg-boot/intf/location/getIdentityCardTest');
+    this.ws = new WebSocket('ws://47.96.112.31:8086/jeecg-boot/websocket/1');
     this.ws.onopen = () => {
       alert('建立连接');
       request.get('http://47.96.112.31:8086/jeecg-boot/intf/location/executeUserCard?status=true');
