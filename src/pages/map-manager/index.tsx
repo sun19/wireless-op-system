@@ -60,7 +60,7 @@ export default class MapManager extends React.Component<Props, State> {
   async componentDidMount() {
     const mapImage = await this.dynamicLoadMapImage();
     const iconImage = await this.dynamicLoadIconImage();
-    if (!this.map.current) return;
+    if(!this.map.current) return;
     const { clientWidth, clientHeight } = this.map.current;
     this.connectWs();
     this.setState({
@@ -75,14 +75,14 @@ export default class MapManager extends React.Component<Props, State> {
     // this.ws = new WebSocket('ws://47.96.112.31:8084/jeecg-boot/websocket/1');
     this.ws = new WebSocket('ws://47.96.112.31:8086/jeecg-boot/websocket/1');
 
-    this.ws.onopen = () => {};
+    this.ws.onopen = () => { };
     let lastTime = new Date();
     //5s不来新数据，则消失
     const maxDuraction = 5000;
     this.checkUpdateTimer = setInterval(() => {
       const currentTime = new Date().getTime();
       const duration = currentTime - lastTime.getTime();
-      if (duration > maxDuraction) {
+      if(duration > maxDuraction) {
         this.setState({
           lamps: [],
         });
@@ -104,7 +104,7 @@ export default class MapManager extends React.Component<Props, State> {
         lamps: currentLamps,
       });
     };
-    this.ws.onclose = () => {};
+    this.ws.onclose = () => { };
   }
   setupLampData = (data, currentWidth, currentHeight) => {
     const defaultWidth = 1920;
@@ -134,8 +134,8 @@ export default class MapManager extends React.Component<Props, State> {
   dynamicLoadMapImage() {
     return new Promise(resolve => {
       const mapImage = new Image();
-      mapImage.src = require('./assets/map.png');
-      mapImage.onload = function() {
+      mapImage.src = require('./assets/地图2.png');
+      mapImage.onload = function () {
         resolve(mapImage);
       };
     });
@@ -144,7 +144,7 @@ export default class MapManager extends React.Component<Props, State> {
     return new Promise(resolve => {
       const mapImage = new Image();
       mapImage.src = require('./assets/baoan.png');
-      mapImage.onload = function() {
+      mapImage.onload = function () {
         resolve(mapImage);
       };
     });

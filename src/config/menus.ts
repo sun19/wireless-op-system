@@ -74,9 +74,10 @@ export const LEFT_MENUS = [
             path: '/empty',
           },
           {
-            name: '内部人员录入', //没有页面
+            name: '内部人员信息录入',
             id: '013',
-            path: '/empty',
+            path: '/user-manager/user-inside/add',
+            component: './pages/user-manager/user-inside/add.tsx',
           },
           {
             name: '内部人员录入', //没有页面

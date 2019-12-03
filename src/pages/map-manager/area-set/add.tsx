@@ -57,9 +57,9 @@ class FencingSetting extends React.Component<Props, State> {
     const fencingTypes = await getAllFencingTypes();
     let usersResp = await getAllUserInfo();
     let users = [];
-    for (let i = 0; i < usersResp.result.length; i++) {
+    for(let i = 0; i < usersResp.result.length; i++) {
       const dept = usersResp.result[i];
-      for (let j = 0; j < dept.relatePeopleResponses.length; j++) {
+      for(let j = 0; j < dept.relatePeopleResponses.length; j++) {
         const item = dept.relatePeopleResponses[j];
         users.push(item);
       }
@@ -99,7 +99,7 @@ class FencingSetting extends React.Component<Props, State> {
       };
 
       const isSuccessed = await addMapArea(data);
-      if (isSuccessed) {
+      if(isSuccessed) {
         // message.success('添加成功!', 1000);
         setTimeout(() => router.push('/map-manager/area-set'), 1000);
       }

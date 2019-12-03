@@ -32,7 +32,7 @@ interface State {
 
 const scaleBy = 1.01;
 
-interface FormProps extends FormComponentProps {}
+interface FormProps extends FormComponentProps { }
 
 type StateProps = ReturnType<typeof mapState>;
 type Props = StateProps & UmiComponentProps & FormProps;
@@ -58,7 +58,7 @@ class historyAdd extends React.Component<Props, State> {
     router.push('/statistics-query/statistics-history');
   };
   async componentDidMount() {
-    if (!this.map.current) return;
+    if(!this.map.current) return;
     const { clientWidth, clientHeight } = this.map.current;
     const { historyRecord } = this.props;
     const { informationBoardName } = historyRecord;
@@ -96,7 +96,7 @@ class historyAdd extends React.Component<Props, State> {
     return new Promise(resolve => {
       const mapImage = new Image();
       mapImage.src = require('../../map-manager/assets/map.png');
-      mapImage.onload = function() {
+      mapImage.onload = function () {
         resolve(mapImage);
       };
     });
@@ -105,7 +105,7 @@ class historyAdd extends React.Component<Props, State> {
     return new Promise(resolve => {
       const mapImage = new Image();
       mapImage.src = require('../../map-manager/assets/baoan.png');
-      mapImage.onload = function() {
+      mapImage.onload = function () {
         resolve(mapImage);
       };
     });

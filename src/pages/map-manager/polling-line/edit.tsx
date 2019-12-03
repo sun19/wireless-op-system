@@ -97,7 +97,7 @@ class AddPollingLine extends React.Component<Props, State> {
     return new Promise(resolve => {
       const mapImage = new Image();
       mapImage.src = require('../../big-screen/assets/map.png');
-      mapImage.onload = function() {
+      mapImage.onload = function () {
         resolve(mapImage);
       };
     });
@@ -107,13 +107,13 @@ class AddPollingLine extends React.Component<Props, State> {
     return new Promise(resolve => {
       const mapImage = new Image();
       mapImage.src = require('../../map-manager/assets/baoan.png');
-      mapImage.onload = function() {
+      mapImage.onload = function () {
         resolve(mapImage);
       };
     });
   }
   async componentDidMount() {
-    if (this.map.current) {
+    if(this.map.current) {
       const { clientWidth, clientHeight } = this.map.current;
       const mapImage = await this.dynamicLoadMapImage();
       const iconImage = await this.dynamicLoadIconImage();
@@ -131,7 +131,7 @@ class AddPollingLine extends React.Component<Props, State> {
     this.initRequest();
   }
   async initRequest() {
-    if (!this.map.current) return;
+    if(!this.map.current) return;
     const { clientWidth, clientHeight } = this.map.current;
     const maps = await getAllMap();
     //获取到所有的灯具信息
@@ -144,7 +144,7 @@ class AddPollingLine extends React.Component<Props, State> {
       },
     });
     let _lamps = lamps.result || {};
-    if (_.isEmpty(_lamps)) _lamps = { records: [] };
+    if(_.isEmpty(_lamps)) _lamps = { records: [] };
     //根据已选择的巡检路线，匹配灯具
     const { pollingLinesRecord } = this.props;
     const { inspectionRoute = '' } = pollingLinesRecord;
@@ -171,7 +171,7 @@ class AddPollingLine extends React.Component<Props, State> {
   };
   createLamps() {
     const lamps = this.state.showLamps;
-    if (lamps.length === 0) return;
+    if(lamps.length === 0) return;
     return lamps.map((lamp, index) => (
       <ImageLayer
         image={this.state.icon}
@@ -213,7 +213,7 @@ class AddPollingLine extends React.Component<Props, State> {
   };
 
   onLampSelectChange = e => {
-    if (!this.map.current) return;
+    if(!this.map.current) return;
     const { clientWidth, clientHeight } = this.map.current;
     let _lamps = this.props.lamps;
     let showLamps = _.filter(_lamps.records, route => e.includes(route.id));
@@ -231,7 +231,7 @@ class AddPollingLine extends React.Component<Props, State> {
   render() {
     const { getFieldDecorator } = this.props.form;
     let { maps, pollingLinesRecord, lamps } = this.props;
-    if (_.isEmpty(lamps)) lamps = { records: [] };
+    if(_.isEmpty(lamps)) lamps = { records: [] };
     const createdLamps = this.createLamps();
     const createdLine = this.createLampLines();
     const { mapImage, width, height } = this.state;
@@ -376,7 +376,7 @@ class AddPollingLine extends React.Component<Props, State> {
                       width={this.state.width}
                       height={this.state.height}
                       draggable={false}
-                      // onClick={this.onCircleClick}
+                    // onClick={this.onCircleClick}
                     >
                       <Layer>
                         <ImageLayer

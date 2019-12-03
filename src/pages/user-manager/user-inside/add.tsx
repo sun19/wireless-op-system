@@ -10,14 +10,14 @@ import router from 'umi/router';
 
 import ContentBorder from '../../../components/ContentBorder';
 import { UmiComponentProps } from '@/common/type';
-import { getAllPosition, getAllSecretLevels,getAllDepartment } from '@/pages/login/login.service';
+import { getAllPosition, getAllSecretLevels, getAllDepartment } from '@/pages/login/login.service';
 import { addUser } from '../services';
 
 import styles from './index.less';
 
 const { Option } = Select;
 
-interface FormProps extends FormComponentProps {}
+interface FormProps extends FormComponentProps { }
 
 type StateProps = ReturnType<typeof mapState>;
 type Props = StateProps & UmiComponentProps & FormProps;
@@ -25,17 +25,22 @@ type Props = StateProps & UmiComponentProps & FormProps;
 interface State {
   name?: string;
   cardNo?: string;
+  realTimeData?: any
 }
 
-class UserAuths extends React.Component<Props> {
+class UserAuths extends React.Component<Props, State> {
+  ws: WebSocket;
   constructor(props) {
     super(props);
+    this.state = {
+      realTimeData: {}
+    }
     this.handleSubmit = this.handleSubmit.bind(this);
   }
   goBack = () => {
     this.props.form.resetFields();
     router.push('/user-manager/user-inside');
-  }; 
+  };
   setupDuties = () => {
     const { allDuties } = this.props;
     const { getFieldDecorator } = this.props.form;
@@ -47,10 +52,10 @@ class UserAuths extends React.Component<Props> {
               message: '请选择职务',
             },
           ],
-          initialValue: allDuties && allDuties[0]&& allDuties[0].id||'',
+          initialValue: allDuties && allDuties[0] && allDuties[0].id || '',
         })(
           <Select placeholder="请选择职务">
-            {allDuties&&allDuties.map((duty, index) => (
+            {allDuties && allDuties.map((duty, index) => (
               <Option value={duty.id} key={index}>
                 {duty.name}
               </Option>
@@ -73,10 +78,10 @@ class UserAuths extends React.Component<Props> {
               message: '请选择保密等级',
             },
           ],
-          initialValue: allSecretLevel && allSecretLevel[0]&& allSecretLevel[0].id||'',
+          initialValue: allSecretLevel && allSecretLevel[0] && allSecretLevel[0].id || '',
         })(
           <Select placeholder="请选择保密等级">
-            {allSecretLevel&&allSecretLevel.map((level, index) => (
+            {allSecretLevel && allSecretLevel.map((level, index) => (
               <Option value={level.id} key={index}>
                 {level.name}
               </Option>
@@ -101,16 +106,38 @@ class UserAuths extends React.Component<Props> {
     });
   }
 
+  connectWs() {
+    this.ws = new WebSocket('ws://47.96.112.31:8086/jeecg-boot/intf/location/getIdentityCardTest');
+    this.ws.onopen = () => { };
+    this.ws.onmessage = (evt) => {
+      alert(evt);
+      let msgText = JSON.parse(evt.data);
+      msgText = msgText.map(item => ({
+        name: item.name,
+        sex: item.sex,
+        address: item.address,
+        cardNo: item.idnum
+      }));
+      this.setState({
+        realTimeData: msgText
+      })
+    };
+  }
+
+  componentWillUnmount() {
+    this.ws && this.ws.close();
+  }
+
   handleSubmit(e) {
     e.preventDefault();
     this.props.form.validateFields(async (err, values) => {
-      if (err) {
+      if(err) {
         // console.error(err, values, 'err');
         message.error('填写信息有误 ', values);
         return;
       }
       const isSuccessed = await addUser(values);
-      if (isSuccessed) {
+      if(isSuccessed) {
         setTimeout(() => router.push('/user-manager/user-inside'), 1000);
       }
     });
@@ -142,6 +169,7 @@ class UserAuths extends React.Component<Props> {
                             message: '请输入姓名',
                           },
                         ],
+                        initialValue: this.state.realTimeData.name
                       })(<Input placeholder="请输入姓名" />)}
                     </Form.Item>
                   </Col>
@@ -153,6 +181,7 @@ class UserAuths extends React.Component<Props> {
                             message: '请输入身份证号',
                           },
                         ],
+                        initialValue: this.state.realTimeData.cardNo
                       })(<Input placeholder="请输入身份证号" />)}
                     </Form.Item>
                   </Col>
@@ -166,7 +195,7 @@ class UserAuths extends React.Component<Props> {
                             message: '请选择性别',
                           },
                         ],
-                        initialValue: '0',
+                        initialValue: this.state.realTimeData.sex,
                       })(
                         <Select placeholder="请选择性别">
                           <Option value="0">男</Option>
@@ -183,6 +212,7 @@ class UserAuths extends React.Component<Props> {
                             message: '请输入家庭住址',
                           },
                         ],
+                        initialValue: this.state.realTimeData.address
                       })(<Input placeholder="请输入家庭住址" />)}
                     </Form.Item>
                   </Col>

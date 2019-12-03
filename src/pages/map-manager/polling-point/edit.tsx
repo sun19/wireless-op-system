@@ -39,7 +39,7 @@ interface State {
 type StateProps = ReturnType<typeof mapState>;
 type Props = StateProps & UmiComponentProps & FormComponentProps;
 // interface Props extends FormComponentProps {}
-interface State {}
+interface State { }
 class AddPollingPoint extends React.Component<Props, State> {
   map: React.RefObject<HTMLDivElement>;
   constructor(props) {
@@ -58,7 +58,7 @@ class AddPollingPoint extends React.Component<Props, State> {
   }
   async componentDidMount() {
     const mapImage = await this.dynamicLoadMapImage();
-    if (this.map.current) {
+    if(this.map.current) {
       const { clientWidth, clientHeight } = this.map.current;
       const { pollingPointsRecord } = this.props;
 
@@ -76,7 +76,7 @@ class AddPollingPoint extends React.Component<Props, State> {
     return new Promise(resolve => {
       const mapImage = new Image();
       mapImage.src = require('../../big-screen/assets/map.png');
-      mapImage.onload = function() {
+      mapImage.onload = function () {
         resolve(mapImage);
       };
     });
@@ -96,7 +96,7 @@ class AddPollingPoint extends React.Component<Props, State> {
     e.preventDefault();
     const { pollingPointsRecord } = this.props;
     this.props.form.validateFields(async (err, values) => {
-      if (err) {
+      if(err) {
         // console.error(err, values, 'err');
         message.error('填写信息有误 ', values);
         return;
@@ -110,7 +110,7 @@ class AddPollingPoint extends React.Component<Props, State> {
         endTime: values.endTime ? values.endTime.format('YYYY-MM-DD HH:mm:ss').toString() : '',
       };
       const isSuccessed = await updatePollingPoint(Object.assign(pollingPointsRecord, data));
-      if (isSuccessed) {
+      if(isSuccessed) {
         setTimeout(() => router.push('/map-manager/polling-point'), 1000);
       }
     });
@@ -123,7 +123,7 @@ class AddPollingPoint extends React.Component<Props, State> {
     const x = this.state.circleX;
     const y = this.state.circleY;
     const circleShow = this.state.circleShow;
-    if (!circleShow) return;
+    if(!circleShow) return;
     return (
       <CircleLayer
         x={x}
