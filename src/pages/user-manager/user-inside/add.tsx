@@ -110,7 +110,7 @@ class UserAuths extends React.Component<Props, State> {
   connectWs() {
     this.ws = new WebSocket('ws://47.96.112.31:8086/jeecg-boot/intf/location/getIdentityCardTest');
     this.ws.onopen = () => {
-      request.get('http://47.96.112.31:8086/jeecg-boot/intf/location/executeUserCard?status=false');
+      request.get('http://47.96.112.31:8086/jeecg-boot/intf/location/executeUserCard?status=true');
     };
     this.ws.onmessage = (evt) => {
       alert(evt);
@@ -125,6 +125,9 @@ class UserAuths extends React.Component<Props, State> {
         realTimeData: msgText
       })
     };
+    this.ws.onclose = () => {
+      request.get('http://47.96.112.31:8086/jeecg-boot/intf/location/executeUserCard?status=false');
+    }
   }
 
   componentWillUnmount() {
