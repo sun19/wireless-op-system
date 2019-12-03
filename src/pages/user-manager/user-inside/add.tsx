@@ -110,6 +110,7 @@ class UserAuths extends React.Component<Props, State> {
     this.ws = new WebSocket('ws://47.96.112.31:8086/jeecg-boot/intf/location/getIdentityCardTest');
     this.ws.onopen = () => { };
     this.ws.onmessage = (evt) => {
+      alert(evt);
       let msgText = JSON.parse(evt.data);
       msgText = msgText.map(item => ({
         name: item.name,
@@ -121,6 +122,10 @@ class UserAuths extends React.Component<Props, State> {
         realTimeData: msgText
       })
     };
+  }
+
+  componentWillUnmount() {
+    this.ws && this.ws.close();
   }
 
   handleSubmit(e) {
