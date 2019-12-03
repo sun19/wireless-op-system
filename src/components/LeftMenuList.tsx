@@ -44,6 +44,7 @@ class LeftMenuList extends Component<any> {
     const pathname = router.location.pathname;
 
     const result = this.matchCurrentRouter(menus, pathname);
+    // console.log(result)
     this.props.dispatch({
       type: 'menu/changeOpen',
       payload: {
@@ -80,6 +81,8 @@ class LeftMenuList extends Component<any> {
 
   renderLeftMenu = () => {
     const { menus, rootKeys, openKeys } = this.props;
+    // console.log(rootKeys, openKeys)
+
     return menus.map((leftMenuItem, index) => {
       // console.log(leftMenuItem.name)
       return (
@@ -92,10 +95,6 @@ class LeftMenuList extends Component<any> {
               <span className={`${styles.icon_title}`}>
                 {leftMenuItem.name} {rootKeys[index] == leftMenuItem.id}
               </span>
-              {/* <IconFont
-                className={`${styles.icon_down}`}
-                type={openKeys == leftMenuItem.name ? 'icon-down1' : 'icon-up1'}
-              /> */}
             </span>
           }
         >
@@ -115,15 +114,6 @@ class LeftMenuList extends Component<any> {
                               </Link>
                           </Menu.Item>
                         );
-                      // }else{
-                      //   return (
-                      //     <Menu.Item key={child.id}>
-                      //       <Link className={`${styles.menu_item}`} to=''>
-                      //         {child.name}
-                      //       </Link>
-                      //     </Menu.Item>
-                      //   );
-                      // }
                       })}
                     </SubMenu>
                   );
@@ -145,6 +135,7 @@ class LeftMenuList extends Component<any> {
 
   render() {
     const { rootKeys, current, openKeys } = this.props;
+    // console.log(rootKeys)
     const LeftMenu = this.renderLeftMenu();
     return (
       <Menu
