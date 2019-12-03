@@ -53,8 +53,8 @@ export const LEFT_MENUS = [
           {
             name: '内部人员信息录入', //没有页面
             key: '008',
-            path: '/info-card-manager/info-card-list',
-            component: './pages/info-card-manager/info-card-list/index.tsx',
+            path: '/user-manager/user-inside/add',
+            component: './pages/user-manager/user-inside/add.tsx',
           },
           {
             name: '值班员设置 ', //没有页面
