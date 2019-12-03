@@ -95,7 +95,7 @@ class DataView extends Component<any, State> {
       },
     });
   }
-
+// 职位占比人数
   createPositionNumberGraph = () => {
     let { positionPeopleCount } = this.props;
     positionPeopleCount = positionPeopleCount;
@@ -153,7 +153,7 @@ class DataView extends Component<any, State> {
         radius,
         itemStyle: dataStyle,
         hoverAnimation: false,
-        center: ['50%', '70%'],
+        center: ['50%', '55%'],
         data: [
           {
             value: Number(item.num),
@@ -175,24 +175,24 @@ class DataView extends Component<any, State> {
       color: ['#3DD1F9', '#01E17E', '#FFAD05', '#ADFF4D'],
       tooltip: {
         show: true,
-        formatter: '{b} : {c}',
+        formatter: '{b} : {c} ({d}%)',
       },
-
       legend: {
-        //  top: '15%',
-        // x: 'right',
-        // width: 12,
-        height: 24,
+         top:0,
+        height:12,
         lineHeight: 16,
-        right: '0%',
+        left:10,
+        padding:0,
+        align: 'left',
+        itemGap:2,
         itemHeight: 15, //图例标记的图形宽度。
         itemWidth: 15, //图例标记的图形gao度。
         // orient: 'vertical', //图例列表的布局朝向。
         data: legendData,
-        itemGap: 38,
+        // itemGap: 38,
         textStyle: {
           color: '#A3E2F4',
-          fontSize: 20,
+          fontSize: 17,
           align: 'right',
           x: 'right',
           textAlign: 'right',
@@ -219,7 +219,7 @@ class DataView extends Component<any, State> {
       grid: {
         left: 0,
         top: 20,
-        bottom: 10,
+        bottom: 0,
         right: 10,
         containLabel: true,
       },
@@ -231,12 +231,13 @@ class DataView extends Component<any, State> {
         orient: 'horizontal',
         bottom: '0',
         left: '0',
-        itemWidth: 16,
+        itemWidth: 8,
         itemHeight: 8,
         itemGap: 16,
         textStyle: {
           color: '#A3E2F4',
           fontSize: 18,
+          width:12,
           fontWeight: 0,
         },
         data: dataEg,
@@ -276,9 +277,9 @@ class DataView extends Component<any, State> {
           },
         },
         axisLabel: {
-          formatter: '{value} %',
+          formatter: '{c}',
           show: false,
-          padding: [0, 0, 20, 0],
+          padding: [0, 0, 10, 0],
           color: '#0B3E5E',
           fontSize: 16,
         },
@@ -295,7 +296,8 @@ class DataView extends Component<any, State> {
         {
           stack: 'a',
           type: 'pie',
-          radius: ['20%', '80%'],
+          radius: ['20%', '65%'],
+          // center: ['50%', '40%'],
           roseType: 'area',
           zlevel: 5,
           label: {
@@ -476,41 +478,13 @@ class DataView extends Component<any, State> {
     };
     return <ReactEcharts option={option} style={{ width: '100%', height: '100%' }} />;
   };
-  createPoliceType = () => {
+   createPoliceType = () => {
     const { warningTypeInfo } = this.props;
     if (warningTypeInfo.length === 0) return null;
-    const legendData = warningTypeInfo.map(item => item.warnTypeName);
-    const series = warningTypeInfo.map((warnType, index) => {
-      const data = warnType.warnTypeNumList.map((item, index) => {
-        item.num;
-      });
-      return {
-        name: warnType.warnTypeName,
-        type: 'bar',
-        stack: '总量',
-        barWidth: 6,
-        itemStyle: {
-          normal: {
-            color: [
-              'rgba(9,120,242,1)',
-              'rgba(77,253,184,1)',
-              'rgba(255,180,0,1)',
-              'rgba(241,126,60,1)',
-              'rgba(73,86,227,1)',
-            ][index],
-            barBorderRadius: [20, 20, 20, 20],
-          },
-        },
-        label: {
-          normal: {
-            show: true,
-            position: 'insideRight',
-          },
-        },
-        z: 10,
-        data: data,
-      };
-    });
+    const legendData = warningTypeInfo && warningTypeInfo[0].warnTypeName;
+    const seriesData = warningTypeInfo && warningTypeInfo[0].warnTypeNumList.map((warnType, index) => (
+      warnType.num
+    ));
     const option = {
       tooltip: {
         trigger: 'axis',
@@ -521,10 +495,8 @@ class DataView extends Component<any, State> {
       },
       legend: {
         data: legendData,
-        textStyle: {
-          color: '#7AB2E2',
-        },
       },
+
       grid: {
         left: '3%',
         right: '4%',
@@ -533,10 +505,17 @@ class DataView extends Component<any, State> {
       },
       xAxis: {
         type: 'value',
-        max: 120,
         axisLine: {
           lineStyle: {
             color: '#7AB2E2',
+          },
+        },
+        axisLabel: {
+          inside: false,
+          textStyle: {
+            fontWeight: 'normal',
+            fontSize: '10',
+            lineHeight: 15,
           },
         },
         splitLine: {
@@ -559,11 +538,37 @@ class DataView extends Component<any, State> {
             show: false,
           },
         },
+        axisLabel: {
+          formatter: '{value}',
+          // color: '#fff',
+          fontSize: 10,
+        },
         axisTick: {
           show: false,
         },
       },
-      series: series,
+      series: {
+        name: ' warnType.warnTypeName',
+        type: 'bar',
+        stack: '总量',
+        barWidth: 6,
+        itemStyle: {
+          normal: {
+            color: function (params) {
+            return  ['rgba(9,120,242,1)','rgba(77,253,184,1)','rgba(255,180,0,1)', 'rgba(241,126,60,1)','rgba(73,86,227,1)',][params.dataIndex]
+            },
+            barBorderRadius: [20, 20, 20, 20],
+          },
+        },
+        label: {
+          normal: {
+            show: true,
+            position: 'insideRight',
+          },
+        },
+        z: 10,
+        data: seriesData,
+      },
     };
     return <ReactEcharts option={option} style={{ width: '100%', height: '100%' }} />;
   };
@@ -575,7 +580,7 @@ class DataView extends Component<any, State> {
     }, 0);
 
     const setupSecretLevels = secretLevelPeopleCount.map(item => {
-      return { ...item, percent: Math.ceil((+item.num / allSecretLevel).toFixed(1) * 100) };
+      return { ...item, percent: ((+item.num / allSecretLevel) * 100).toFixed(2) };
     });
     var valdata = secretLevelPeopleCount.map(item => +item.num);
     var titlename = secretLevelPeopleCount.map(item => item.securityLevel);

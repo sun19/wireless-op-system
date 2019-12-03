@@ -328,6 +328,7 @@ class Realtime extends React.Component<Props, State> {
     });
     return data;
   };
+  // 职位占比人数
   createPositionNumberGraph = () => {
     const { positionPeopleCount } = this.props;
     if (positionPeopleCount.length === 0) return null;
@@ -384,7 +385,7 @@ class Realtime extends React.Component<Props, State> {
         radius,
         itemStyle: dataStyle,
         hoverAnimation: false,
-        center: ['60%', '80%'],
+        center: ['50%', '55%'],
         data: [
           {
             value: Number(item.num),
@@ -406,24 +407,25 @@ class Realtime extends React.Component<Props, State> {
       color: ['#3DD1F9', '#01E17E', '#FFAD05', '#ADFF4D'],
       tooltip: {
         show: true,
-        formatter: '{b} : {c}',
+        formatter: '{b} : {c} ({d}%)',
       },
 
       legend: {
-        //  top: '15%',
-        // x: 'right',
-        // width: 12,
-        height: 13,
+        top: 0,
+        height: 12,
         lineHeight: 16,
-        right: '0%',
-        itemHeight: 5, //图例标记的图形宽度。
-        itemWidth: 5, //图例标记的图形gao度。
+        left: 10,
+        padding: 0,
+        align: 'left',
+        itemGap: 2,
+        itemHeight: 15, //图例标记的图形宽度。
+        itemWidth: 15, //图例标记的图形gao度。
         // orient: 'vertical', //图例列表的布局朝向。
         data: legendData,
-        itemGap: 38,
+        // itemGap: 38,
         textStyle: {
           color: '#A3E2F4',
-          fontSize: 20,
+          fontSize: 17,
           align: 'right',
           x: 'right',
           textAlign: 'right',
@@ -464,7 +466,7 @@ class Realtime extends React.Component<Props, State> {
         left: '0',
         itemWidth: 16,
         itemHeight: 8,
-        itemGap: 16,
+        itemGap: 0,
         textStyle: {
           color: '#A3E2F4',
           fontSize: 18,
@@ -526,7 +528,7 @@ class Realtime extends React.Component<Props, State> {
         {
           stack: 'a',
           type: 'pie',
-          radius: ['20%', '80%'],
+          radius: ['20%', '65%'],
           roseType: 'area',
           zlevel: 5,
           label: {
@@ -560,38 +562,10 @@ class Realtime extends React.Component<Props, State> {
   createPoliceType = () => {
     const { warningTypeInfo } = this.props;
     if (warningTypeInfo.length === 0) return null;
-    const legendData = warningTypeInfo.map(item => item.warnTypeName);
-    const series = warningTypeInfo.map((warnType, index) => {
-      const data = warnType.warnTypeNumList.map((item, index) => {
-        item.num;
-      });
-      return {
-        name: warnType.warnTypeName,
-        type: 'bar',
-        stack: '总量',
-        barWidth: 6,
-        itemStyle: {
-          normal: {
-            color: [
-              'rgba(9,120,242,1)',
-              'rgba(77,253,184,1)',
-              'rgba(255,180,0,1)',
-              'rgba(241,126,60,1)',
-              'rgba(73,86,227,1)',
-            ][index],
-            barBorderRadius: [20, 20, 20, 20],
-          },
-        },
-        label: {
-          normal: {
-            show: true,
-            position: 'insideRight',
-          },
-        },
-        z: 10,
-        data: data,
-      };
-    });
+    const legendData = warningTypeInfo && warningTypeInfo[0].warnTypeName;
+    const seriesData = warningTypeInfo && warningTypeInfo[0].warnTypeNumList.map((warnType, index) => (
+      warnType.num
+    ));
     const option = {
       tooltip: {
         trigger: 'axis',
@@ -612,7 +586,6 @@ class Realtime extends React.Component<Props, State> {
       },
       xAxis: {
         type: 'value',
-        // max: 4000,
         axisLine: {
           lineStyle: {
             color: '#7AB2E2',
@@ -621,7 +594,6 @@ class Realtime extends React.Component<Props, State> {
         axisLabel: {
           inside: false,
           textStyle: {
-            // color: '#fff', // x轴颜色
             fontWeight: 'normal',
             fontSize: '10',
             lineHeight: 15,
@@ -656,7 +628,28 @@ class Realtime extends React.Component<Props, State> {
           show: false,
         },
       },
-      series: series,
+      series: {
+        name: ' warnType.warnTypeName',
+        type: 'bar',
+        stack: '总量',
+        barWidth: 6,
+        itemStyle: {
+          normal: {
+            color: function (params) {
+              return ['rgba(9,120,242,1)', 'rgba(77,253,184,1)', 'rgba(255,180,0,1)', 'rgba(241,126,60,1)', 'rgba(73,86,227,1)',][params.dataIndex]
+            },
+            barBorderRadius: [20, 20, 20, 20],
+          },
+        },
+        label: {
+          normal: {
+            show: true,
+            position: 'insideRight',
+          },
+        },
+        z: 10,
+        data: seriesData,
+      },
     };
     return <ReactEcharts option={option} style={{ width: '100%', height: '100%' }} />;
   };
@@ -721,7 +714,7 @@ class Realtime extends React.Component<Props, State> {
       return prev + Number(next.num);
     }, 0);
     const setupSecretLevels = secretLevelPeopleCount.map(item => {
-      return { ...item, percent: (+item.num / allSecretLevel) * 100 };
+      return { ...item, percent: ((+item.num / allSecretLevel) * 100).toFixed(2) };
     });
     let { outPeople, onlinePeople, inPeople, yesHigh, toHigh } = bigScreenPeopleCount;
 
@@ -841,7 +834,7 @@ class Realtime extends React.Component<Props, State> {
                         <Title title="职位占比人数" />
                       </div>
                       <div className="echarts">
-                        <div className="graph" style={{ height: '180px', width: '100%' }}>
+                        <div className="graph" style={{ height: '200px', width: '100%' }}>
                           {this.createPositionNumberGraph()}
                         </div>
                       </div>
@@ -853,7 +846,7 @@ class Realtime extends React.Component<Props, State> {
                         <Title title="停留时长分析" />
                       </div>
                       <div className="echarts">
-                        <div className="graph" style={{ height: '180px', width: '100%' }}>
+                        <div className="graph" style={{ height: '200px', width: '100%' }}>
                           {this.createStayTimeAnalyzeGraph()}
                         </div>
                       </div>
