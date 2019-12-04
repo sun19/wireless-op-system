@@ -14,8 +14,11 @@ import styles from './index.less';
 
 const { Option } = Select;
 const { TreeNode } = Tree;
-import { LEFT_MENUS } from '../../../config/menus';
-const defaultMenuNodes = LEFT_MENUS;
+import {
+  getAllMenues
+} from '../../login/login.service';
+// import { LEFT_MENUS } from '../../../config/menus';
+// const defaultMenuNodes = LEFT_MENUS;
 
 interface Props extends FormComponentProps {}
 interface UserType {
@@ -101,17 +104,22 @@ class AddUserAuth extends React.Component<Props, State> {
     router.push('/system-setting/people-type');
   }
 
-  renderTreeNodes = data =>
-    data.map((item,index) => {
-      if (item.children) {
+  async renderTreeNodes  (){
+    const data = await getAllMenues()
+    // console.log(data.result)
+    data.result.map((item,index) => {
+      if (item.child && item.child.length>0) {
         return (
-          <TreeNode title={item.name} key={item.key} dataRef={item}>
-            {this.renderTreeNodes(item.children)}
+          <TreeNode title={item.name} key={item.id} dataRef={item}>
+            {/* {this.renderTreeNodes(item.child)} */}
           </TreeNode>
         );
+      }else{
+      return <TreeNode title={item.name} key={item.id} />;
+
       }
-      return <TreeNode title={item.name} key={item.key} />;
     });
+  }
   render() {
     const { getFieldDecorator } = this.props.form;
     // console.log(this.state.userTypes)
@@ -152,7 +160,7 @@ class AddUserAuth extends React.Component<Props, State> {
                           onSelect={this.onSelect}
                           onCheck={this.onCheck}
                         >
-                          {this.renderTreeNodes(defaultMenuNodes)}
+                          {this.renderTreeNodes()}
                         </Tree>,
                       )}
                     </Form.Item>

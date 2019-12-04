@@ -65,7 +65,7 @@ class NormalLoginForm extends React.Component<Props> {
           localStorage.setItem('userMessage', resp.result.userInfo.id);
           setTimeout(() => router.push('/big-screen/homepage'), 1000);
           message.success(<span style={{ fontSize: '25px' }}>登录成功！</span>, 3);
-          this.getMenus()
+          // this.getMenus()
         } else {
           message.warning(<span style={{ fontSize: '25px' }}>登录失败!请重新登录！</span>, 3);
           // this.getMenus()
@@ -74,15 +74,7 @@ class NormalLoginForm extends React.Component<Props> {
       }
     });
   }
-  async getMenus() {
-    let data = await getAllMenues()
-    this.props.dispatch({
-      type: 'menu/changeOpen',
-      payload: {
-        menus: data.result,
-      },
-    });
-  }
+
   async preFetchAllCommonState() {
     const mapResp = await getAllMap();
     const areasResp = await getAllArea();

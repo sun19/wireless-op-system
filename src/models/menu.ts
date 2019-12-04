@@ -1,4 +1,4 @@
-import { LEFT_MENUS } from '../config/menus';
+
 
 
 // export default {
