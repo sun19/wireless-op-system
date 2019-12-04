@@ -73,10 +73,12 @@ class EditUserAuth extends React.Component<Props, State> {
     // console.log('onSelect', info);
     this.setState({ selectedKeys });
   };
-  onCheck = checkedKeys => {
-    // console.log('onCheck', checkedKeys);
-    this.setState({ checkedKeys });
+  onCheck = (checkedKeys, info) => {
+    let data =
+      _.concat(checkedKeys, info.halfCheckedKeys)
+    this.setState({ checkedKeys: data });
   };
+
 
   onSubmit(e) {
     e.preventDefault();
@@ -105,12 +107,12 @@ class EditUserAuth extends React.Component<Props, State> {
     data.map(item => {
       if(item.child) {
         return (
-          <TreeNode title={item.name} key={item.path} dataRef={item}>
+          <TreeNode title={item.name} key={item.id} dataRef={item}>
             {this.renderTreeNodes(item.child)}
           </TreeNode>
         );
       }
-      return <TreeNode title={item.name} key={item.path} />;
+      return <TreeNode title={item.name} key={item.id} />;
     });
   render() {
     const { peopleTypeRecord } = this.props;

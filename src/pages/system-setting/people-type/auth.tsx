@@ -5,6 +5,9 @@ import React from 'react';
 import { Form, Row, Col, Button, Input, message, Select, Tree } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import router from 'umi/router';
+import _ from 'lodash'
+import { connect } from 'dva';
+
 
 import ContentBorder from '../../../components/ContentBorder';
 import { InputText, TreeNodeMenu } from '../components';
@@ -20,7 +23,7 @@ import {
 // import { LEFT_MENUS } from '../../../config/menus';
 // const defaultMenuNodes = LEFT_MENUS;
 
-interface Props extends FormComponentProps {}
+interface Props extends FormComponentProps { }
 interface UserType {
   key?: string;
   value?: string;
@@ -31,7 +34,9 @@ interface State {
   userTypes: UserType[];
   expandedKeys: any;
   selectedKeys: any;
-  checkedKeys: any; 
+  checkedKeys: any;
+  dataTree: any;
+
   // autoExpandParent:boolean;
 }
 
@@ -46,21 +51,13 @@ class AddUserAuth extends React.Component<Props, State> {
       selectedKeys: [],
       // autoExpandParent: true,
       checkedKeys: [],
+      dataTree: []
     };
   }
-  // async componentWillMount() {
-    // let userTypes = await getAllRoles();
-    // // console.log(userTypes)
-    // userTypes = userTypes.map(item => ({
-    //   key: item.id,
-    //   value: item.roleName,
-    //   selectValue: item.roleCode,
-    // }));
-    // this.setState({ userTypes });
-  // }
   async componentDidMount() {
+    const data = await getAllMenues()
+    this.setState({ dataTree: data.result })
     let userTypes = await getAllRoles();
-    // console.log(userTypes)
     userTypes = userTypes.map(item => ({
       key: item.id,
       value: item.roleName,
@@ -73,12 +70,12 @@ class AddUserAuth extends React.Component<Props, State> {
     router.push('/system-setting/people-type');
   };
   onSelect = (selectedKeys, info) => {
-    // console.log('onSelect', info);
     this.setState({ selectedKeys });
   };
-  onCheck = checkedKeys => {
-    // console.log('onCheck', checkedKeys);
-    this.setState({ checkedKeys });
+  onCheck = (checkedKeys, info) => {
+    let data=
+    _.concat(checkedKeys, info.halfCheckedKeys)
+    this.setState({ checkedKeys: data });
   };
 
   onSubmit(e) {
@@ -99,31 +96,26 @@ class AddUserAuth extends React.Component<Props, State> {
       }
     });
   }
-
   onCancel() {
     router.push('/system-setting/people-type');
   }
-
-  async renderTreeNodes  (){
-    const data = await getAllMenues()
-    // console.log(data.result)
-    data.result.map((item,index) => {
-      if (item.child && item.child.length>0) {
+  renderTreeNodes = (data) => {
+   return data.map((item, index) => {
+      if (item.child && item.child.length > 0) {
+        let menuesType = item.child 
         return (
-          <TreeNode title={item.name} key={item.id} dataRef={item}>
-            {/* {this.renderTreeNodes(item.child)} */}
+          <TreeNode title={item.name} key={item.id} >
+            {this.renderTreeNodes(menuesType)}
           </TreeNode>
         );
-      }else{
-      return <TreeNode title={item.name} key={item.id} />;
-
+      } else {
+        return <TreeNode title={item.name} key={item.id} />;
       }
     });
   }
   render() {
     const { getFieldDecorator } = this.props.form;
-    // console.log(this.state.userTypes)
-    // if (this.state.userTypes.length === 0) return null;
+    const { menus } = this.props
     return (
       <ContentBorder className={styles.auth_root}>
         <Form layout="inline" style={{ marginTop: '0.57rem' }} onSubmit={this.onSubmit}>
@@ -157,10 +149,11 @@ class AddUserAuth extends React.Component<Props, State> {
                           defaultExpandedKeys={this.state.expandedKeys}
                           defaultSelectedKeys={this.state.expandedKeys}
                           defaultCheckedKeys={this.state.expandedKeys}
+                          // checkedKeys={this.state.expandedKeys}
                           onSelect={this.onSelect}
                           onCheck={this.onCheck}
                         >
-                          {this.renderTreeNodes()}
+                          {this.renderTreeNodes(menus)}
                         </Tree>,
                       )}
                     </Form.Item>
@@ -190,5 +183,12 @@ class AddUserAuth extends React.Component<Props, State> {
     );
   }
 }
+const AddUserForm = Form.create<Props>({ name: 'auth_user' })(AddUserAuth);
 
-export default Form.create<Props>({ name: 'auth_user' })(AddUserAuth);
+const mapState = ({ menu, router, }) => ({
+  ...menu,
+  router,
+});
+export default connect(mapState)(AddUserForm);
+// export default Form.create<Props>
+// ({ name: 'auth_user' })(AddUserAuth);
