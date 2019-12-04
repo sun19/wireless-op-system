@@ -113,24 +113,25 @@ class UserAuths extends React.Component<Props, State> {
   connectWs() {
     this.ws = new WebSocket('ws://47.96.112.31:8086/jeecg-boot/websocket/1');
     this.ws.onopen = () => {
-      alert('建立连接');
+      // alert('建立连接');
       request.get('http://47.96.112.31:8086/jeecg-boot/intf/location/executeUserCard?status=true');
     };
     this.ws.onmessage = evt => {
-      alert(evt);
+      // alert(evt);
       let msgText = JSON.parse(evt.data);
-      msgText = msgText.map(item => ({
-        name: item.name,
-        sex: item.sex,
-        address: item.address,
-        cardNo: item.idnum,
-      }));
+      msgText = msgText.msgTxt;
+      msgText = {
+        name: msgText.name,
+        sex: msgText.sex,
+        address: msgText.address,
+        cardNo: msgText.idnum,
+      };
       this.setState({
         realTimeData: msgText,
       });
     };
     this.ws.onclose = () => {
-      alert('关闭连接');
+      // alert('关闭连接');
       request.get('http://47.96.112.31:8086/jeecg-boot/intf/location/executeUserCard?status=false');
     };
   }
