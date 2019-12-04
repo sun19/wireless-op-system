@@ -113,12 +113,12 @@ class UserAuths extends React.Component<Props, State> {
   connectWs() {
     this.ws = new WebSocket('ws://47.96.112.31:8086/jeecg-boot/websocket/1');
     this.ws.onopen = () => {
-      // alert('建立连接');
       request.get('http://47.96.112.31:8086/jeecg-boot/intf/location/executeUserCard?status=true');
     };
     this.ws.onmessage = evt => {
-      // alert(evt);
       let msgText = JSON.parse(evt.data);
+      //身份证只接受`msgType`为1的数据
+      if (msgText.msgType != '1') return;
       msgText = msgText.msgTxt;
       msgText = {
         name: msgText.name,
@@ -131,7 +131,6 @@ class UserAuths extends React.Component<Props, State> {
       });
     };
     this.ws.onclose = () => {
-      // alert('关闭连接');
       request.get('http://47.96.112.31:8086/jeecg-boot/intf/location/executeUserCard?status=false');
     };
   }
