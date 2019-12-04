@@ -18,7 +18,7 @@ import styles from './index.less';
 
 const { Option } = Select;
 
-interface FormProps extends FormComponentProps { }
+interface FormProps extends FormComponentProps {}
 
 type StateProps = ReturnType<typeof mapState>;
 type Props = StateProps & UmiComponentProps & FormProps;
@@ -26,7 +26,7 @@ type Props = StateProps & UmiComponentProps & FormProps;
 interface State {
   name?: string;
   cardNo?: string;
-  realTimeData?: any
+  realTimeData?: any;
 }
 
 class UserAuths extends React.Component<Props, State> {
@@ -34,8 +34,8 @@ class UserAuths extends React.Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      realTimeData: {}
-    }
+      realTimeData: {},
+    };
     this.handleSubmit = this.handleSubmit.bind(this);
   }
   goBack = () => {
@@ -53,14 +53,15 @@ class UserAuths extends React.Component<Props, State> {
               message: '请选择职务',
             },
           ],
-          initialValue: allDuties && allDuties[0] && allDuties[0].id || '',
+          initialValue: (allDuties && allDuties[0] && allDuties[0].id) || '',
         })(
           <Select placeholder="请选择职务">
-            {allDuties && allDuties.map((duty, index) => (
-              <Option value={duty.id} key={index}>
-                {duty.name}
-              </Option>
-            ))}
+            {allDuties &&
+              allDuties.map((duty, index) => (
+                <Option value={duty.id} key={index}>
+                  {duty.name}
+                </Option>
+              ))}
           </Select>,
         )}
       </Form.Item>
@@ -79,14 +80,15 @@ class UserAuths extends React.Component<Props, State> {
               message: '请选择保密等级',
             },
           ],
-          initialValue: allSecretLevel && allSecretLevel[0] && allSecretLevel[0].id || '',
+          initialValue: (allSecretLevel && allSecretLevel[0] && allSecretLevel[0].id) || '',
         })(
           <Select placeholder="请选择保密等级">
-            {allSecretLevel && allSecretLevel.map((level, index) => (
-              <Option value={level.id} key={index}>
-                {level.name}
-              </Option>
-            ))}
+            {allSecretLevel &&
+              allSecretLevel.map((level, index) => (
+                <Option value={level.id} key={index}>
+                  {level.name}
+                </Option>
+              ))}
           </Select>,
         )}
       </Form.Item>
@@ -96,7 +98,7 @@ class UserAuths extends React.Component<Props, State> {
   async componentDidMount() {
     const dutiesResp = await getAllPosition();
     const secretsLevelsResp = await getAllSecretLevels();
-    const allPositions = await getAllDepartment()
+    const allPositions = await getAllDepartment();
     this.props.dispatch({
       type: 'commonState/update',
       payload: {
@@ -105,6 +107,7 @@ class UserAuths extends React.Component<Props, State> {
         allSecretLevel: secretsLevelsResp.result,
       },
     });
+    this.connectWs();
   }
 
   connectWs() {
@@ -113,23 +116,23 @@ class UserAuths extends React.Component<Props, State> {
       alert('建立连接');
       request.get('http://47.96.112.31:8086/jeecg-boot/intf/location/executeUserCard?status=true');
     };
-    this.ws.onmessage = (evt) => {
+    this.ws.onmessage = evt => {
       alert(evt);
       let msgText = JSON.parse(evt.data);
       msgText = msgText.map(item => ({
         name: item.name,
         sex: item.sex,
         address: item.address,
-        cardNo: item.idnum
+        cardNo: item.idnum,
       }));
       this.setState({
-        realTimeData: msgText
-      })
+        realTimeData: msgText,
+      });
     };
     this.ws.onclose = () => {
       alert('关闭连接');
       request.get('http://47.96.112.31:8086/jeecg-boot/intf/location/executeUserCard?status=false');
-    }
+    };
   }
 
   componentWillUnmount() {
@@ -139,13 +142,13 @@ class UserAuths extends React.Component<Props, State> {
   handleSubmit(e) {
     e.preventDefault();
     this.props.form.validateFields(async (err, values) => {
-      if(err) {
+      if (err) {
         // console.error(err, values, 'err');
         message.error('填写信息有误 ', values);
         return;
       }
       const isSuccessed = await addUser(values);
-      if(isSuccessed) {
+      if (isSuccessed) {
         setTimeout(() => router.push('/user-manager/user-inside'), 1000);
       }
     });
@@ -154,7 +157,7 @@ class UserAuths extends React.Component<Props, State> {
   render() {
     const props = this.props;
     const { getFieldDecorator } = props.form;
-    const { allPosition } = this.props
+    const { allPosition } = this.props;
 
     // if (_.isEmpty(props.allDuties) || _.isEmpty(props.allSecretLevel)) return null;
     return (
@@ -177,7 +180,7 @@ class UserAuths extends React.Component<Props, State> {
                             message: '请输入姓名',
                           },
                         ],
-                        initialValue: this.state.realTimeData.name
+                        initialValue: this.state.realTimeData.name,
                       })(<Input placeholder="请输入姓名" />)}
                     </Form.Item>
                   </Col>
@@ -189,7 +192,7 @@ class UserAuths extends React.Component<Props, State> {
                             message: '请输入身份证号',
                           },
                         ],
-                        initialValue: this.state.realTimeData.cardNo
+                        initialValue: this.state.realTimeData.cardNo,
                       })(<Input placeholder="请输入身份证号" />)}
                     </Form.Item>
                   </Col>
@@ -220,7 +223,7 @@ class UserAuths extends React.Component<Props, State> {
                             message: '请输入家庭住址',
                           },
                         ],
-                        initialValue: this.state.realTimeData.address
+                        initialValue: this.state.realTimeData.address,
                       })(<Input placeholder="请输入家庭住址" />)}
                     </Form.Item>
                   </Col>
@@ -248,12 +251,13 @@ class UserAuths extends React.Component<Props, State> {
                         initialValue: allPosition && allPosition[0] && allPosition[0].id,
                       })(
                         <Select placeholder="请选择部门">
-                          {allPosition && allPosition.map(option => (
-                            <Option value={option.id} key={option.key}>
-                              {option.name}
-                            </Option>
-                          ))}
-                        </Select>
+                          {allPosition &&
+                            allPosition.map(option => (
+                              <Option value={option.id} key={option.key}>
+                                {option.name}
+                              </Option>
+                            ))}
+                        </Select>,
                       )}
                     </Form.Item>
                   </Col>
@@ -291,7 +295,9 @@ class UserAuths extends React.Component<Props, State> {
                   </Col>
                   <Col span={6} className={styles.select_padding_left}>
                     <Form.Item>
-                      <Button className={styles.form_btn} onClick={this.goBack}>返回</Button>
+                      <Button className={styles.form_btn} onClick={this.goBack}>
+                        返回
+                      </Button>
                     </Form.Item>
                   </Col>
                 </Row>
@@ -313,7 +319,7 @@ const mapState = ({ userManager, commonState }) => {
     innerUserList: resp,
     allDuties: allDuties,
     allSecretLevel: allSecretLevel,
-    allPosition: allPosition
+    allPosition: allPosition,
   };
 };
 
