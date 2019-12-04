@@ -149,7 +149,7 @@ class EditUserAuth extends React.Component<Props, State> {
                     </Form.Item>
                   </Col>
                 </Row>
-                <Row type="flex" justify="space-between">
+                <Row type="flex" justify="space-between" className={styles.treeStyle}>
                   <Col span={23}>
                     <Form.Item label="人员权限">
                       {getFieldDecorator('rolePath')(
