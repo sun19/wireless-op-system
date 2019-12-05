@@ -41,10 +41,12 @@ const columns = [
   },
   {
     title: '开始时间',
+    width: '20%',
     dataIndex: 'startTime',
   },
   {
     title: '结束时间',
+    width: '20%',
     dataIndex: 'endTime',
   },
   {
