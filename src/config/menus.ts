@@ -52,12 +52,12 @@ export const LEFT_MENUS = [
                             {
                                 name: '菜单权限', //没有页面
                                 key: '003',
-                                path: '/system-setting/people-type',
+                                path: '/system-setting/people-type-sub',
                             },
                             {
                                 name: '用户信息', //没有页面
                                 key: '010',
-                                path: '/system-setting/customer-manager',
+                                path: '/system-setting/customer-manager-sub',
                             },
                         ]
                     },
