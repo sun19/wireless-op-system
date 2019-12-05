@@ -15,7 +15,6 @@ import {
   getAllFencingTypes,
   getAllPosition,
   getAllSecretLevels,
-  getAllMenues
 } from '../login.service';
 import { UmiComponentProps } from '@/common/type';
 import styles from '../index.less';

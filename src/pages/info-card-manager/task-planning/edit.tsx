@@ -88,7 +88,7 @@ class TaskEdit extends React.Component<Props, State> {
 
       const isSuccessed = await TaskListEdit(data);
       if (isSuccessed) {
-        message.success('修改成功！!', 1000);
+        message.success('修改成功！!');
         setTimeout(() => router.push('/info-card-manager/task-planning'), 1000);
       }
     });

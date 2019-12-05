@@ -10,6 +10,8 @@ import router from 'umi/router';
 import ContentBorder from '../../../components/ContentBorder';
 import { InputText, TreeNodeMenu } from '../components';
 import { updateUserType, getAllRoles } from '../services';
+import { getPeopleMenues } from '../../login/login.service';
+
 
 import styles from './index.less';
 
@@ -32,6 +34,8 @@ interface State {
   expandedKeys: any;
   selectedKeys: any;
   checkedKeys: any;
+  dataTree:any;
+
   // autoExpandParent:boolean;
 }
 
@@ -46,9 +50,12 @@ class EditUserAuth extends React.Component<Props, State> {
       selectedKeys: [],
       // autoExpandParent: true,
       checkedKeys: [],
+      dataTree:[]
     };
   }
   async componentDidMount() {
+    const data = await getPeopleMenues();
+    this.setState({ dataTree: data.result });
     let userTypes = await getAllRoles();
     userTypes = userTypes.map(item => ({
       key: item.id,
@@ -94,8 +101,10 @@ class EditUserAuth extends React.Component<Props, State> {
         return;
       }
       const isSuccessed = await updateUserType(Object.assign(peopleTypeRecord, data));
+      // console.log(isSuccessed)
       if(isSuccessed) {
-        setTimeout(() => router.push('/system-setting/people-type'), 1000);
+        message.success('编辑成功!');
+        setTimeout(() => router.push('/system-setting/people-type-sub'), 1000);
       }
     });
   }
@@ -116,7 +125,7 @@ class EditUserAuth extends React.Component<Props, State> {
     });
   render() {
     const { peopleTypeRecord } = this.props;
-    // console.log(peopleTypeRecord)
+    // console.log(this.state.dataTree)
     const { getFieldDecorator } = this.props.form;
     if(this.state.userTypes.length === 0) return null;
 
@@ -152,7 +161,7 @@ class EditUserAuth extends React.Component<Props, State> {
                 <Row type="flex" justify="space-between" className={styles.treeStyle}>
                   <Col span={23}>
                     <Form.Item label="人员权限">
-                      {getFieldDecorator('rolePath')(
+                      {getFieldDecorator('roleId')(
                         <Tree
                           checkable={true}
                           defaultExpandedKeys={this.state.expandedKeys}
@@ -161,7 +170,7 @@ class EditUserAuth extends React.Component<Props, State> {
                           onSelect={this.onSelect}
                           onCheck={this.onCheck}
                         >
-                          {this.renderTreeNodes(this.props.menu)}
+                          {this.renderTreeNodes(this.state.dataTree)}
                         </Tree>,
                       )}
                     </Form.Item>

@@ -12,7 +12,10 @@ import {
   COMMON_GET_ALL_SECRET_LEVELS,
   COMMON_GET_ALL_POSITION,
   COMMON_GET_ALL_DEPARTMENT,
-  MENU_LIST
+  MENU_LIST,
+  PEOPLE_MENUS,
+  EDIT_MENUS,
+
 } from '@/config/api';
 export async function getAllMap() {
   const resp = await request.get(COMMON_GET_ALL_MAP);
@@ -61,8 +64,20 @@ export async function getAllDepartment() {
   const resp = await request.get(COMMON_GET_ALL_DEPARTMENT);
   return resp;
 }
-// 菜单
-export async function getAllMenues() {
-  const resp = await request.get(MENU_LIST);
+// 根据当前登录用户查询拥有的菜单key
+ 
+import { Menues } from './index.interface';
+export async function getAllMenues(params: Menues) {
+  const resp = await request.get(MENU_LIST, { params: params });
+  return resp;
+}
+// 查询所有菜单
+export async function getPeopleMenues() {
+  const resp = await request.get(PEOPLE_MENUS);
+  return resp;
+}
+// 编辑菜单
+export async function editMenues(params) {
+  const resp = await request.post(EDIT_MENUS, { data: format(params) });
   return resp;
 }

@@ -100,7 +100,7 @@ class FencingSetting extends React.Component<Props, State> {
 
       const isSuccessed = await addMapArea(data);
       if(isSuccessed) {
-        // message.success('添加成功!', 1000);
+        // message.success('添加成功!');
         setTimeout(() => router.push('/map-manager/area-set'), 1000);
       }
     });

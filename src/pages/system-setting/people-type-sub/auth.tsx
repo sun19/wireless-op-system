@@ -18,7 +18,7 @@ import styles from './index.less';
 const { Option } = Select;
 const { TreeNode } = Tree;
 import {
-  getAllMenues
+  getPeopleMenues
 } from '../../login/login.service';
 // import { LEFT_MENUS } from '../../../config/menus';
 // const defaultMenuNodes = LEFT_MENUS;
@@ -55,7 +55,7 @@ class AddUserAuth extends React.Component<Props, State> {
     };
   }
   async componentDidMount() {
-    const data = await getAllMenues()
+    const data = await getPeopleMenues()
     this.setState({ dataTree: data.result })
     let userTypes = await getAllRoles();
     userTypes = userTypes.map(item => ({

@@ -18,7 +18,12 @@ class LeftMenuList extends Component<any> {
     super(props);
   }
   async getMenus() {
-    let data = await getAllMenues();
+    let user={
+      userId: 'f73846cfd1f007f9e8c06935d570fe3c'
+      //  localStorage.getItem('userMessage')
+    }
+    let data = await getAllMenues(user);
+    // console.log(data)
     const current = localStorage.getItem('current');
     const openKeys = JSON.parse(localStorage.getItem('openKeys') || '[]');
     this.props.dispatch({
