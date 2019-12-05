@@ -99,7 +99,7 @@ class EditUserAuth extends React.Component<Props, State> {
       let data = {
         ...props,
         roleId: peopleTypeRecord.id,
-        resourceIds: this.state.checkedKeys.concat(this.state.halfCheckedKeys),
+        resourceIds: this.state.checkedKeys.concat(this.state.halfCheckedKeys).map(item => +item),
       };
       if (err) {
         message.error('填写信息有误', data);

@@ -70,7 +70,7 @@ class PeopelType extends React.Component<Props> {
         peopleTypeRecord: data,
       },
     });
-    router.push('/system-setting/people-type/edit');
+    router.push('/system-setting/people-type-sub/edit');
   }
   deleteColumn(item) {
     //TODO:修改人ID
