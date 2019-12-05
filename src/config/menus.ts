@@ -16,9 +16,9 @@ export const LEFT_MENUS = [
                         path: '',
                         children: [
                             {
-                                name: '字典设置', //没有页面
+                                name: '字典设置',
                                 key: '004',
-                                path: '/empty',
+                                path: '/system-setting/super-admin',
                             },
                             {
                                 name: '菜单设置', //没有页面
@@ -138,7 +138,7 @@ export const LEFT_MENUS = [
             {
                 name: '值班员设置',
                 key: '025',
-                path: '/system-setting/super-admin',
+                path: '',
                 children: [
                     {
                         name: '任务规划',

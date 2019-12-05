@@ -65,14 +65,14 @@ export async function getAllDepartment() {
   return resp;
 }
 // 根据当前登录用户查询拥有的菜单key
- 
+
 import { Menues } from './index.interface';
-export async function getAllMenues(params: Menues) {
+export async function getPeopleMenues(params: Menues) {
   const resp = await request.get(MENU_LIST, { params: params });
   return resp;
 }
 // 查询所有菜单
-export async function getPeopleMenues() {
+export async function getAllMenues() {
   const resp = await request.get(PEOPLE_MENUS);
   return resp;
 }

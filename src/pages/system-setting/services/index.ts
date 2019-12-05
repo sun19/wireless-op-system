@@ -127,7 +127,7 @@ export async function getSuperAdminList(params: GetSuperAdminListParams) {
 }
 
 export async function updateSuperAdmin(params: UpdateSuperAdminParams) {
-  const resp = await request.post(EDIT_SUPER_ADMIN, { data: format(params)  });
+  const resp = await request.post(EDIT_SUPER_ADMIN, { data: format(params) });
   resp.success === true && resp.code === 200
     ? message.success(`${resp.message}`)
     : message.error(`${resp.message}`);
