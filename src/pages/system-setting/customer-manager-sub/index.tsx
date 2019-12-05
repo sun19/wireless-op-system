@@ -67,7 +67,7 @@ const columns = [
   {
     title: '最近一次登录时间',
     dataIndex: 'landingTime',
-    // width: '20%',
+    width: '20%',
     editable: false,
   },
 ];

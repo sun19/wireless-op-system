@@ -67,11 +67,13 @@ const columns = [
   },
   {
     title: '进入时间',
+    width: '20%',
     dataIndex: 'entryTime',
     editable: true,
   },
   {
     title: '离开时间',
+    width: '20%',
     dataIndex: 'leaveTime',
     editable: true,
   },

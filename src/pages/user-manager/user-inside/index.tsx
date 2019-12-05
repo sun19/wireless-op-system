@@ -92,11 +92,13 @@ const columns = [
   {
     title: '录入时间',
     dataIndex: 'entryTime',
+    width: '20%',
     editable: true,
   },
   {
     title: '注销时间',
     dataIndex: 'logoutTime',
+    width: '20%',
     editable: true,
   },
 ];
