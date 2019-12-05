@@ -562,9 +562,30 @@ class Realtime extends React.Component<Props, State> {
   createPoliceType = () => {
     const { warningTypeInfo } = this.props;
     if(warningTypeInfo.length === 0) return null;
-    const legendData = warningTypeInfo && warningTypeInfo[0].warnTypeName;
-    const seriesData = warningTypeInfo && warningTypeInfo[0].warnTypeNumList.map((warnType, index) => (
-      warnType.num
+    const data = warningTypeInfo && warningTypeInfo.map((warnType, dataIndex) =>
+  {
+      let info = warnType.warnTypeNumList.map(res => 
+        res.num
+   )
+    return ({  name: warnType.warnTypeName,
+        type: 'bar',
+        stack: '总量',
+        label: {
+          normal: {
+            show: true,
+            position: 'insideRight'
+          },
+        },
+      itemStyle: {
+        normal: {
+          color: ['rgba(9,120,242,1)', 'rgba(77,253,184,1)', 'rgba(255,180,0,1)', 'rgba(241,126,60,1)', 'rgba(73,86,227,1)',][dataIndex],
+        },
+      },
+      data: info})
+  }
+    );
+    const legendData = warningTypeInfo && warningTypeInfo.map((warnType, index) => (
+      warnType.warnTypeName
     ));
     const option = {
       tooltip: {
@@ -575,6 +596,16 @@ class Realtime extends React.Component<Props, State> {
         },
       },
       legend: {
+        textStyle: {
+          color: '#A3E2F4',
+          fontSize: 17,
+          align: 'right',
+          x: 'right',
+          textAlign: 'right',
+        },
+        orient: 'horizontal',
+        itemHeight: 15, //图例标记的图形宽度。
+        itemWidth: 15, //图例标记的图形gao度。
         data: legendData,
       },
 
@@ -628,28 +659,7 @@ class Realtime extends React.Component<Props, State> {
           show: false,
         },
       },
-      series: {
-        name: ' warnType.warnTypeName',
-        type: 'bar',
-        stack: '总量',
-        barWidth: 6,
-        itemStyle: {
-          normal: {
-            color: function (params) {
-              return ['rgba(9,120,242,1)', 'rgba(77,253,184,1)', 'rgba(255,180,0,1)', 'rgba(241,126,60,1)', 'rgba(73,86,227,1)',][params.dataIndex]
-            },
-            barBorderRadius: [20, 20, 20, 20],
-          },
-        },
-        label: {
-          normal: {
-            show: true,
-            position: 'insideRight',
-          },
-        },
-        z: 10,
-        data: seriesData,
-      },
+      series: data
     };
     return <ReactEcharts option={option} style={{ width: '100%', height: '100%' }} />;
   };
