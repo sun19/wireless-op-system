@@ -99,7 +99,7 @@ class DataView extends React.Component<Props, State> {
     const mapImage = await this.dynamicLoadMapImage();
     const iconImage = await this.dynamicLoadIconImage();
     const iconRedImage = await this.dynamicLoadIconRedImage();
-    if(this.map.current) {
+    if (this.map.current) {
       const { clientWidth, clientHeight } = this.map.current;
       this.showLine();
       this.setState({
@@ -189,8 +189,8 @@ class DataView extends React.Component<Props, State> {
     const timer = setInterval(() => {
       const ajaxLamps = this.state.ajaxLamps;
 
-      if(i === 0) message.success('轨迹开始');
-      if(i > ajaxLamps.length - 1) {
+      if (i === 0) message.success('轨迹开始');
+      if (i > ajaxLamps.length - 1) {
         message.success('轨迹结束');
         clearInterval(timer);
         return;
@@ -202,7 +202,7 @@ class DataView extends React.Component<Props, State> {
         id: lnglat.id,
         code: lnglat.abnormal,
       };
-      if(lamp.code === 1) {
+      if (lamp.code === 1) {
         message.warn('您已进入非法区域');
       }
       temp.push(lamp);
@@ -257,7 +257,7 @@ class DataView extends React.Component<Props, State> {
     return new Promise(resolve => {
       const mapImage = new Image();
       mapImage.src = require('../assets/地图2.png');
-      mapImage.onload = function () {
+      mapImage.onload = function() {
         resolve(mapImage);
       };
     });
@@ -266,7 +266,7 @@ class DataView extends React.Component<Props, State> {
     return new Promise(resolve => {
       const mapImage = new Image();
       mapImage.src = require('../assets/baoan.png');
-      mapImage.onload = function () {
+      mapImage.onload = function() {
         resolve(mapImage);
       };
     });
@@ -275,7 +275,7 @@ class DataView extends React.Component<Props, State> {
     return new Promise(resolve => {
       const mapImage = new Image();
       mapImage.src = require('../assets/baoan.red.png');
-      mapImage.onload = function () {
+      mapImage.onload = function() {
         resolve(mapImage);
       };
     });
@@ -305,7 +305,7 @@ class DataView extends React.Component<Props, State> {
   getEleFrom = () => {
     const { eleFenceInfo } = this.props;
     const { eleTypeInfo } = this.props;
-    if(eleFenceInfo.length === 0) return null;
+    if (eleFenceInfo.length === 0) return null;
     const { records } = eleFenceInfo;
     const data = records.map((item, index) => {
       const type = _.find(eleTypeInfo, { id: item.type });
@@ -318,12 +318,12 @@ class DataView extends React.Component<Props, State> {
           <div className="ele_bag">
             {!!item.lampCode
               ? item.lampCode.split(',').map((num, index) => {
-                return (
-                  <span key={index} className="ele_bag_round">
-                    {num}
-                  </span>
-                );
-              })
+                  return (
+                    <span key={index} className="ele_bag_round">
+                      {num}
+                    </span>
+                  );
+                })
               : ''}
           </div>
         </div>
@@ -334,7 +334,7 @@ class DataView extends React.Component<Props, State> {
   // 职位占比人数
   createPositionNumberGraph = () => {
     const { positionPeopleCount } = this.props;
-    if(positionPeopleCount.length === 0) return null;
+    if (positionPeopleCount.length === 0) return null;
     var dataStyle = {
       normal: {
         label: {
@@ -365,7 +365,7 @@ class DataView extends React.Component<Props, State> {
     }, 0);
     const series = positionPeopleCount.map((item, index) => {
       let radius = [];
-      switch(index) {
+      switch (index) {
         case 0:
           radius = ['20%', '30%'];
           break;
@@ -413,7 +413,6 @@ class DataView extends React.Component<Props, State> {
         formatter: '{b} : {c} ({d}%)',
       },
 
-
       legend: {
         top: 0,
         height: 12,
@@ -444,7 +443,7 @@ class DataView extends React.Component<Props, State> {
 
   createStayTimeAnalyzeGraph = () => {
     const { stayTimeInfo } = this.props;
-    if(stayTimeInfo.length === 0) return null;
+    if (stayTimeInfo.length === 0) return null;
     const dataFormat = stayTimeInfo.map(item => ({
       value: item.num,
       name: item.name,
@@ -567,32 +566,36 @@ class DataView extends React.Component<Props, State> {
   createPoliceType = () => {
     const { warningTypeInfo } = this.props;
     if (warningTypeInfo.length === 0) return null;
-    const data = warningTypeInfo && warningTypeInfo.map((warnType, dataIndex) => {
-      let info = warnType.warnTypeNumList.map(res =>
-        res.num
-      )
-      return ({
-        name: warnType.warnTypeName,
-        type: 'bar',
-        stack: '总量',
-        label: {
-          normal: {
-            show: true,
-            position: 'insideRight'
+    const data =
+      warningTypeInfo &&
+      warningTypeInfo.map((warnType, dataIndex) => {
+        let info = warnType.warnTypeNumList.map(res => res.num);
+        return {
+          name: warnType.warnTypeName,
+          type: 'bar',
+          stack: '总量',
+          label: {
+            normal: {
+              show: true,
+              position: 'insideRight',
+            },
           },
-        },
-        itemStyle: {
-          normal: {
-            color: ['rgba(9,120,242,1)', 'rgba(77,253,184,1)', 'rgba(255,180,0,1)', 'rgba(241,126,60,1)', 'rgba(73,86,227,1)',][dataIndex],
+          itemStyle: {
+            normal: {
+              color: [
+                'rgba(9,120,242,1)',
+                'rgba(77,253,184,1)',
+                'rgba(255,180,0,1)',
+                'rgba(241,126,60,1)',
+                'rgba(73,86,227,1)',
+              ][dataIndex],
+            },
           },
-        },
-        data: info
-      })
-    }
-    );
-    const legendData = warningTypeInfo && warningTypeInfo.map((warnType, index) => (
-      warnType.warnTypeName
-    ));
+          data: info,
+        };
+      });
+    const legendData =
+      warningTypeInfo && warningTypeInfo.map((warnType, index) => warnType.warnTypeName);
     const option = {
       tooltip: {
         trigger: 'axis',
@@ -665,7 +668,7 @@ class DataView extends React.Component<Props, State> {
           show: false,
         },
       },
-      series: data
+      series: data,
     };
     return <ReactEcharts option={option} style={{ width: '100%', height: '100%' }} />;
   };
@@ -691,8 +694,8 @@ class DataView extends React.Component<Props, State> {
               {record.processResult == '1' ? (
                 <span className={styles.notResolved}>未处理</span>
               ) : (
-                  <span className={styles.resolveed}>已处理</span>
-                )}
+                <span className={styles.resolveed}>已处理</span>
+              )}
             </div>
           );
         },
@@ -708,7 +711,7 @@ class DataView extends React.Component<Props, State> {
       },
     ];
     let historyWarns = this.props.historyWarns;
-    if(_.isEmpty(historyWarns)) {
+    if (_.isEmpty(historyWarns)) {
       historyWarns = {
         records: [],
         total: 0,
@@ -716,7 +719,7 @@ class DataView extends React.Component<Props, State> {
     }
     let { records } = historyWarns;
 
-    if(records.length === 0) {
+    if (records.length === 0) {
       return <Table columns={columns} dataSource={[]} />;
     }
     return (
@@ -736,9 +739,6 @@ class DataView extends React.Component<Props, State> {
     }, 0);
     const setupSecretLevels = secretLevelPeopleCount.map(item => {
       return { ...item, percent: ((+item.num / allSecretLevel) * 100).toFixed(2) };
-
-
-
     });
     let { outPeople, onlinePeople, inPeople, yesHigh, toHigh } = bigScreenPeopleCount;
 
@@ -776,12 +776,12 @@ class DataView extends React.Component<Props, State> {
           </div>
           <div className="inner_or_outer">
             <span className="left">
-              <span className="icon">内</span>
+              {/* <span className="icon">内</span> */}
               <span className="text_span"> 内部</span>
               <span className="number_span"> {inPeople}</span>
             </span>
             <span className="right">
-              <span className="icon">外</span>
+              {/* <span className="icon">外</span> */}
               <span className="text_span">外部</span>
               <span className="number_span">{outPeople}</span>
             </span>
@@ -890,24 +890,24 @@ class DataView extends React.Component<Props, State> {
                   </div>
                 </div>
               ) : (
-                  <div>
-                    <div className="right_ele_panel">
-                      <div>
-                        <div className="ele_text">
-                          <Title title="电子围栏" />
-                        </div>
-                        <div className="ele_from"> {this.getEleFrom()} </div>
-                      </div>
-                    </div>
-
-                    <div className="right_wraning_panel">
+                <div>
+                  <div className="right_ele_panel">
+                    <div>
                       <div className="ele_text">
-                        <Title title="告警信息" />
+                        <Title title="电子围栏" />
                       </div>
-                      <div className="ele_from">{this.createRouteCheckData()}</div>
+                      <div className="ele_from"> {this.getEleFrom()} </div>
                     </div>
                   </div>
-                )}
+
+                  <div className="right_wraning_panel">
+                    <div className="ele_text">
+                      <Title title="告警信息" />
+                    </div>
+                    <div className="ele_from">{this.createRouteCheckData()}</div>
+                  </div>
+                </div>
+              )}
             </Col>
             }
           </Row>
