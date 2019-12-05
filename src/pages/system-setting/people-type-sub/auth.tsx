@@ -5,8 +5,9 @@ import React from 'react';
 import { Form, Row, Col, Button, Input, message, Select, Tree } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import router from 'umi/router';
-import _ from 'lodash';
+import _ from 'lodash'
 import { connect } from 'dva';
+
 
 import ContentBorder from '../../../components/ContentBorder';
 import { InputText, TreeNodeMenu } from '../components';
@@ -16,11 +17,13 @@ import styles from './index.less';
 
 const { Option } = Select;
 const { TreeNode } = Tree;
-import { getAllMenues } from '../../login/login.service';
+import {
+  getAllMenues
+} from '../../login/login.service';
 // import { LEFT_MENUS } from '../../../config/menus';
 // const defaultMenuNodes = LEFT_MENUS;
 
-interface Props extends FormComponentProps {}
+interface Props extends FormComponentProps { }
 interface UserType {
   key?: string;
   value?: string;
@@ -48,12 +51,12 @@ class AddUserAuth extends React.Component<Props, State> {
       selectedKeys: [],
       // autoExpandParent: true,
       checkedKeys: [],
-      dataTree: [],
+      dataTree: []
     };
   }
   async componentDidMount() {
-    const data = await getAllMenues();
-    this.setState({ dataTree: data.result });
+    const data = await getAllMenues()
+    this.setState({ dataTree: data.result })
     let userTypes = await getAllRoles();
     userTypes = userTypes.map(item => ({
       key: item.id,
@@ -70,7 +73,8 @@ class AddUserAuth extends React.Component<Props, State> {
     this.setState({ selectedKeys });
   };
   onCheck = (checkedKeys, info) => {
-    let data = _.concat(checkedKeys, info.halfCheckedKeys);
+    let data=
+    _.concat(checkedKeys, info.halfCheckedKeys)
     this.setState({ checkedKeys: data });
   };
 
@@ -95,12 +99,12 @@ class AddUserAuth extends React.Component<Props, State> {
   onCancel() {
     router.push('/system-setting/people-type');
   }
-  renderTreeNodes = data => {
-    return data.map((item, index) => {
+  renderTreeNodes = (data) => {
+   return data.map((item, index) => {
       if (item.child && item.child.length > 0) {
-        let menuesType = item.child;
+        let menuesType = item.child 
         return (
-          <TreeNode title={item.name} key={item.id}>
+          <TreeNode title={item.name} key={item.id} >
             {this.renderTreeNodes(menuesType)}
           </TreeNode>
         );
@@ -108,10 +112,10 @@ class AddUserAuth extends React.Component<Props, State> {
         return <TreeNode title={item.name} key={item.id} />;
       }
     });
-  };
+  }
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { menus } = this.props;
+    const { menus } = this.props
     return (
       <ContentBorder className={styles.auth_root}>
         <Form layout="inline" style={{ marginTop: '0.57rem' }} onSubmit={this.onSubmit}>
@@ -123,7 +127,9 @@ class AddUserAuth extends React.Component<Props, State> {
                     <Form.Item label="角色名称">
                       {getFieldDecorator('roleName', {
                         rules: [],
-                      })(<Input placeholder="请输入角色名称" />)}
+                      })(
+                        <Input placeholder="请输入角色名称" />,
+                      )}
                     </Form.Item>
                   </Col>
                   <Col span={12}>
@@ -179,7 +185,7 @@ class AddUserAuth extends React.Component<Props, State> {
 }
 const AddUserForm = Form.create<Props>({ name: 'auth_user' })(AddUserAuth);
 
-const mapState = ({ menu, router }) => ({
+const mapState = ({ menu, router, }) => ({
   ...menu,
   router,
 });
