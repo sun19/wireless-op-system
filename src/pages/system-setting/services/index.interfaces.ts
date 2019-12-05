@@ -1,6 +1,7 @@
 export interface GetUserListParams {
   loginName: string;
   name: string;
+  userType: string;
   pageNo?: number;
   pageSize?: number;
 }
@@ -31,7 +32,7 @@ export interface AddUserTypeParams {
 export interface GetUserTypesParams {
   pageSize?: number;
   pageNo?: number;
-  userType:string;
+  userType: string;
 }
 
 export interface UpdateUserTypeParams {

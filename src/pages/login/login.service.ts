@@ -1,5 +1,6 @@
 
 import request, { format } from '@/utils/request';
+import { Menues } from './index.interface';
 
 import {
   COMMON_GET_ALL_MAP,
@@ -65,8 +66,6 @@ export async function getAllDepartment() {
   return resp;
 }
 // 根据当前登录用户查询拥有的菜单key
-
-import { Menues } from './index.interface';
 export async function getPeopleMenues(params: Menues) {
   const resp = await request.get(MENU_LIST, { params: params });
   return resp;
