@@ -12,7 +12,6 @@ import { InputText, TreeNodeMenu } from '../components';
 import { updateUserType, getAllRoles } from '../services';
 import { getPeopleMenues, getAllMenues, editMenues } from '../../login/login.service';
 
-
 import styles from './index.less';
 
 const { TreeNode } = Tree;
@@ -34,6 +33,7 @@ interface State {
   selectedKeys: any;
   checkedKeys: any;
   dataTree: any;
+  halfCheckedKeys: any;
   // autoExpandParent:boolean;
 }
 
@@ -46,55 +46,49 @@ class EditUserAuth extends React.Component<Props, State> {
       expandedKeys: [],
       selectedKeys: [],
       checkedKeys: [],
-      dataTree: []
+      dataTree: [],
+      halfCheckedKeys: [],
     };
   }
   async componentDidMount() {
     // 获取所有菜单
-    const data = await getPeopleMenues();
+    const data = await getAllMenues();
     this.setState({ dataTree: data.result });
-
 
     // 获取权限菜单id
     const { peopleTypeRecord } = this.props;
     const userData = {
-      userId: peopleTypeRecord.id
-    }
-    let userMenue = await getAllMenues(userData);
-    const userMenueList = userMenue.result
-    const ids =[];
-    getId(data.result);
+      userId: peopleTypeRecord.id,
+    };
+    let userMenues = await getPeopleMenues(userData);
+    const userMenueList = userMenues.result;
+    const ids = [];
+    getId(userMenueList);
     function getId(list) {
-      for(let i =0;i<list.length;i++){
+      for (let i = 0; i < list.length; i++) {
         const item = list[i];
-        if(item.child && item.child.length > 0){
+        if (item.child && item.child.length > 0) {
           getId(item.child);
-        }else {
-          ids.push(item.id)
+        } else {
+          ids.push(item.id);
         }
       }
     }
-
     this.setState({
       expandedKeys: ids,
       selectedKeys: ids,
       checkedKeys: ids,
     });
-
-
   }
   goBack = () => {
     this.props.form.resetFields();
     router.push('/system-setting/people-type');
   };
-  onSelect = (selectedKeys, info) => {
-    // console.log(selectedKeys,'sss')
-    this.setState({ selectedKeys });
-  };
+  // onSelect = (selectedKeys, info) => {
+  //   this.setState({ selectedKeys });
+  // };
   onCheck = (checkedKeys, info) => {
-    let data =
-      _.concat(checkedKeys, info.halfCheckedKeys)
-    this.setState({ checkedKeys: data });
+    this.setState({ checkedKeys: checkedKeys, halfCheckedKeys: info.halfCheckedKeys });
   };
 
   onSubmit(e) {
@@ -105,7 +99,7 @@ class EditUserAuth extends React.Component<Props, State> {
       let data = {
         ...props,
         roleId: peopleTypeRecord.id,
-        resourceIds: this.state.checkedKeys,
+        resourceIds: this.state.checkedKeys.concat(this.state.halfCheckedKeys),
       };
       if (err) {
         message.error('填写信息有误', data);
@@ -135,7 +129,6 @@ class EditUserAuth extends React.Component<Props, State> {
     });
   render() {
     const { peopleTypeRecord } = this.props;
-    // console.log(this.state.dataTree)
     const { getFieldDecorator } = this.props.form;
     return (
       <ContentBorder className={styles.auth_root}>
@@ -155,12 +148,7 @@ class EditUserAuth extends React.Component<Props, State> {
                   <Col span={12}>
                     <Form.Item label="英文名称">
                       {getFieldDecorator('roleCode', {
-                        rules: [
-                          {
-                            // required: true,
-                            message: '请输入英文名称',
-                          },
-                        ],
+                        rules: [],
                         initialValue: peopleTypeRecord.roleCode,
                       })(<Input placeholder="请输入英文名称" />)}
                     </Form.Item>
@@ -169,16 +157,20 @@ class EditUserAuth extends React.Component<Props, State> {
                 <Row type="flex" justify="space-between" className={styles.treeStyle}>
                   <Col span={23}>
                     <Form.Item label="人员权限">
-                      {getFieldDecorator('resourceIds')(
+                      {getFieldDecorator(
+                        'resourceIds',
+                        {},
+                      )(
                         <Tree
                           checkable={true}
-                          // defaultExpandedKeys={[ '12','37']}
-                          // defaultSelectedKeys={[ '12','37'] }
-                          // defaultCheckedKeys={[ '12','37']}
-                          expandedKeys={this.state.expandedKeys}
-                          selectedKeys={this.state.expandedKeys}
-                          checkedKeys={this.state.expandedKeys}
-                          onSelect={this.onSelect}
+                          // defaultExpandedKeys={this.state.expandedKeys}
+                          // defaultSelectedKeys={this.state.selectedKeys}
+                          // defaultCheckedKeys={this.state.checkedKeys}
+                          // expandedKeys={this.state.expandedKeys}
+                          // selectedKeys={this.state.expandedKeys}
+                          checkedKeys={this.state.checkedKeys}
+                          // onSelect={this.onSelect}
+
                           onCheck={this.onCheck}
                         >
                           {this.renderTreeNodes(this.state.dataTree)}
@@ -220,4 +212,3 @@ const mapState = ({ systemSetting, menu }) => {
 };
 
 export default connect(mapState)(EditUserHOC);
-
