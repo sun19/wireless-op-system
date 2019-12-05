@@ -1,10 +1,12 @@
 .homepage_root_container {
   position: absolute;
   width: 100%;
+  min-height: 1000px;
+  min-width: 1200px;
   // height: calc(100% - 1.17rem);
   height: 100%;
-  background: url(../../../assets/bigScreen/01_bg.png);
-  background-repeat: no-repeat;
+  background: center / contain no-repeat url(../../../assets/bigScreen/01_bg.png);
+  // background-repeat: no-repeat;
   background-size: 100% 100%;
   :global {
     .header {
@@ -273,21 +275,27 @@
       }
       .middle_panel {
         height: 100%;
-        .middle_text {
+      }
+      .right_panel {
+          .middle_text {
+            min-width: 250px;
           color: #7ab2e2;
           font-size: 0.25rem;
-          position: relative;
+          // position: relative;
           // position:absolute;
           float: right;
           right: 20px;
           z-index: 999;
           .text_panel {
-            width: 1.5rem;
-            height: 0.46rem;
+            display: inline;
+           
             margin: 5px 10px;
+            padding:3px 10px;
             line-height: 0.46rem;
+            font-size: 25px;
             text-align: center;
-            border: 2px solid rgba(15, 38, 74, 1);
+             color: #7ab2e2;
+            border: 2px solid #7ab2e2;
           }
           .text_panel.active {
             color: #01cff5;
@@ -300,10 +308,8 @@
             border: 1px solid #01cff5;
           }
         }
-      }
-
-      .right_panel {
         color: white;
+        // min-width: 260px;
         // background: pink;
         .right_middle_panel {
           margin: 10px 0px;

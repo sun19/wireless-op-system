@@ -28,9 +28,11 @@ const BasicLayout: React.FC = (props: any) => {
     return <div>{props.children}</div>;
   }
   return (
+    <>
+    <AppTitle />
     <Layout className={[`${styles.layout}`, `${styles.no_background}`].join(' ')}>
       <Sider className={[`${styles.left_bar_bg}`].join(' ')} width="280">
-        <AppTitle />
+       
         <LeftMenuList />
       </Sider>
       <Layout className={[`${styles.no_background}`].join(' ')}>
@@ -38,6 +40,7 @@ const BasicLayout: React.FC = (props: any) => {
         {props.children}
       </Layout>
     </Layout>
+    </>
   );
 };
 

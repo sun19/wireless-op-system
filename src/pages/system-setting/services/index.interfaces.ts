@@ -31,6 +31,7 @@ export interface AddUserTypeParams {
 export interface GetUserTypesParams {
   pageSize?: number;
   pageNo?: number;
+  userType:string;
 }
 
 export interface UpdateUserTypeParams {

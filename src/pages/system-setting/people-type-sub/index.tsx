@@ -54,7 +54,7 @@ class PeopelType extends React.Component<Props> {
   }
 
   async getUserTypes() {
-    const userTypes = await getUserTypes({});
+    const userTypes = await getUserTypes({ userType: '1' });
     this.props.dispatch({
       type: 'systemSetting/update',
       payload: {
