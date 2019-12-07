@@ -58,11 +58,11 @@ class EditUserAuth extends React.Component<Props, State> {
     // 获取权限菜单id
     const { peopleTypeRecord } = this.props;
     const userData = {
-      userId:localStorage.getItem('userMessage'),
+      userId: localStorage.getItem('userMessage'),
     };
     let userMenues = await getPeopleMenues(userData);
     const userMenueList = userMenues.result;
-    const ids = userMenueList.map(item =>(item.id))
+    const ids = userMenueList.map(item => item.id);
     // const ids = [];
     // getId(userMenueList);
     // function getId(list) {
@@ -101,7 +101,7 @@ class EditUserAuth extends React.Component<Props, State> {
         ...props,
         // roleId: peopleTypeRecord.id,
         roleId: localStorage.getItem('userMessage'),
-        resourceIds: this.state.checkedKeys.concat(this.state.halfCheckedKeys).map(item => +item),
+        resourceIds: this.state.checkedKeys.concat(this.state.halfCheckedKeys).join(','),
       };
       if (err) {
         message.error('填写信息有误', data);
