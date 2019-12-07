@@ -20,6 +20,8 @@ const ignoreLayout = [
   '/big-screen/homepage/realtime',
   '/wireless-op-system/big-screen/dataview',
   '/big-screen/dataview',
+  '/wireless-op-system/big-screen/homepage/lampshow',
+  '/big-screen/homepage/lampshow',
 ];
 
 const BasicLayout: React.FC = (props: any) => {
@@ -29,16 +31,16 @@ const BasicLayout: React.FC = (props: any) => {
   }
   return (
     <>
-    <AppTitle />
-    <Layout className={[`${styles.layout}`, `${styles.no_background}`].join(' ')}>
-      <Sider className={[`${styles.left_bar_bg}`].join(' ')} width="280">
-        <LeftMenuList />
-      </Sider>
-      <Layout className={[`${styles.no_background}`].join(' ')}>
-        <TopHeader />
-        {props.children}
+      <AppTitle />
+      <Layout className={[`${styles.layout}`, `${styles.no_background}`].join(' ')}>
+        <Sider className={[`${styles.left_bar_bg}`].join(' ')} width="280">
+          <LeftMenuList />
+        </Sider>
+        <Layout className={[`${styles.no_background}`].join(' ')}>
+          <TopHeader />
+          {props.children}
+        </Layout>
       </Layout>
-    </Layout>
     </>
   );
 };

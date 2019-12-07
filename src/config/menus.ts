@@ -80,12 +80,12 @@ export const LEFT_MENUS = [
                         component: './pages/user-manager/user-inside/add.tsx',
                     },
                     {
-                        name: '内部人员录入', //没有页面
+                        name: '内部人员录入',
                         key: '014',
-                        path: '/empty',
+                        path: '/user-manager/user-inside',
                     },
                     {
-                        name: '信息牌分配', //没有页面
+                        name: '信息牌分配',
                         key: '015',
                         path: '/info-card-manager/info-card-list',
                     },
@@ -110,19 +110,19 @@ export const LEFT_MENUS = [
                         path: '/map-manager/polling-point',
                     },
                     {
-                        name: '外来人员录入', //没有页面
+                        name: '外来人员录入',
                         key: '020',
-                        path: '/empty',
+                        path: '/user-manager/user-outside',
                     },
                     {
-                        name: '告警信息处理', //没有页面
+                        name: '告警信息处理',
                         key: '021',
-                        path: '/empty',
+                        path: '/warning-manager/info',
                     },
                     {
-                        name: '告警类型设置', //没有页面
+                        name: '告警类型设置',
                         key: '022',
-                        path: '/empty',
+                        path: '/warning-manager/type',
                     },
                     {
                         name: '巡检路线设置',
@@ -155,14 +155,14 @@ export const LEFT_MENUS = [
                         path: '/map-manager/polling-line',
                     },
                     {
-                        name: '告警信息处理', //没有页面
+                        name: '告警信息处理',
                         key: '029',
-                        path: '/empty',
+                        path: '/warning-manager/info',
                     },
                     {
-                        name: '告警类型设置', //没有页面
+                        name: '告警类型设置',
                         key: '030',
-                        path: '/empty',
+                        path: '/warning-manager/type',
                     },
                     {
                         name: '信息完善', //没有页面
@@ -172,7 +172,7 @@ export const LEFT_MENUS = [
                     {
                         name: '外来人员信息录入', //没有页面
                         key: '032',
-                        path: '/empty',
+                        path: '/user-manager/user-outside',
                     },
                 ],
             },
@@ -190,14 +190,14 @@ export const LEFT_MENUS = [
                 path: '/info-card-manager/info-card-list',
             },
             {
-                name: '人员定位', //没有页面
+                name: '人员定位',
                 key: '035',
-                path: '/empty',
+                path: '/big-screen/homepage/realtime',
             },
             {
-                name: '灯具展示', //没有页面
+                name: '灯具展示',
                 key: '036',
-                path: '/empty',
+                path: '/big-screen/homepage/lampshow',
             },
             {
                 name: '历史轨迹',

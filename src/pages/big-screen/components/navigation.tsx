@@ -34,6 +34,9 @@ class Navigation extends React.Component<Props, State> {
       case 'realtime':
         this.gotoRealTime();
         break;
+      case 'lampshow':
+        this.gotoLamp();
+        break;
       case 'dataview':
         this.gotoDataview();
         break;
@@ -46,6 +49,9 @@ class Navigation extends React.Component<Props, State> {
     this.setState({
       current: e.key,
     });
+  };
+  gotoLamp = () => {
+    router.push('/big-screen/homepage/lampshow');
   };
   gotoHomepage = () => {
     router.push('/big-screen/homepage');
@@ -99,6 +105,7 @@ class Navigation extends React.Component<Props, State> {
             <Menu onClick={this.handleClick} selectedKeys={[this.state.current]} mode="horizontal">
               <Menu.Item key="homepage">首页</Menu.Item>
               <Menu.Item key="realtime">实时</Menu.Item>
+              <Menu.Item key="lampshow">灯具</Menu.Item>
               <Menu.Item key="dataview">数据</Menu.Item>
               <Menu.Item key="system">系统</Menu.Item>
               {/* <SubMenu title={<span className="submenu-title-wrapper">系统</span>}> */}

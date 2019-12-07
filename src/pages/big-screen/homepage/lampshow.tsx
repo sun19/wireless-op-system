@@ -8,8 +8,8 @@ import ReactEcharts from 'echarts-for-react';
 import { Stage, Layer, Image as ImageLayer, Line as LineLayer } from 'react-konva';
 import { connect } from 'dva';
 import * as _ from 'lodash';
+import moment from 'moment';
 
-import RealTime from '../../map-manager';
 import Title from '../components/Title';
 import Navigation from '../components/navigation';
 import { UmiComponentProps } from '@/common/type';
@@ -27,6 +27,8 @@ import {
 import { warningHistorySearch } from '../../warning-manager/services';
 import { queryFencingArea } from '../../map-manager/services';
 import { getAllFencingTypes } from '../../login/login.service';
+import { QueryFencingAreaParams } from '../../map-manager/services/index.interface';
+
 import request from 'umi-request';
 
 import styles from './index.less';
@@ -45,7 +47,6 @@ interface State {
   stageY: number;
   showPeopleInfo: boolean;
   currentIndex: boolean;
-
   dataStr?: string;
 }
 type StateProps = ReturnType<typeof mapState>;
@@ -73,9 +74,8 @@ const defaultLamps = [
 
 const scaleBy = 1.01;
 
-class Realtime extends React.Component<Props, State> {
+class DataView extends React.Component<Props, State> {
   map: React.RefObject<HTMLDivElement>;
-  ws: WebSocket;
   constructor(props) {
     super(props);
     this.map = React.createRef<HTMLDivElement>();
@@ -90,7 +90,7 @@ class Realtime extends React.Component<Props, State> {
       stageX: 0,
       stageY: 0,
       showPeopleInfo: false,
-      currentIndex: true,
+      currentIndex: false,
       ajaxLamps: [],
       dataStr: '2019-11-15',
     };
@@ -102,6 +102,7 @@ class Realtime extends React.Component<Props, State> {
     const iconRedImage = await this.dynamicLoadIconRedImage();
     if (this.map.current) {
       const { clientWidth, clientHeight } = this.map.current;
+      // 只显示灯具
       // this.showLine();
       this.setState({
         mapImage,
@@ -146,6 +147,7 @@ class Realtime extends React.Component<Props, State> {
         positionPeopleCount: positionPeople.result,
       },
     });
+    // 警告类型统计
     const warningType = await getWarnTypeByTime({ dataStr: this.state.dataStr });
     this.props.dispatch({
       type: 'bigScreen/update',
@@ -170,6 +172,7 @@ class Realtime extends React.Component<Props, State> {
     });
     //获取大屏停留时长
     const stayTime = await getInnerStayTime();
+    // console.log(stayTime)
     this.props.dispatch({
       type: 'bigScreen/update',
       payload: {
@@ -184,7 +187,6 @@ class Realtime extends React.Component<Props, State> {
   selectShow = () => {
     this.setState({ showPeopleInfo: false, currentIndex: true });
   };
-
   showLine() {
     const { clientWidth, clientHeight } = this.map.current;
     let i = 0;
@@ -254,7 +256,6 @@ class Realtime extends React.Component<Props, State> {
 
   componentWillUnmount() {
     message.destroy();
-    this.ws && this.ws.close();
   }
   dynamicLoadMapImage() {
     return new Promise(resolve => {
@@ -310,14 +311,13 @@ class Realtime extends React.Component<Props, State> {
     const { eleTypeInfo } = this.props;
     if (eleFenceInfo.length === 0) return null;
     const { records } = eleFenceInfo;
-    // console.log(records)
     const data = records.map((item, index) => {
       const type = _.find(eleTypeInfo, { id: item.type });
       return (
         <div className="flex_outer" key={index}>
           <div className="ele_title_top">
             <div className="ele_title">{item.name}</div>
-            {/* <div className="ele_title"> {type && type.name ? type.name : '闯入电子围栏'}</div> */}
+            {/* <div className="ele_title"> {type && type.name ? type.name : ''}</div> */}
           </div>
           <div className="ele_bag">
             {!!item.lampCode
@@ -441,7 +441,7 @@ class Realtime extends React.Component<Props, State> {
       },
       series: series,
     };
-    return <ReactEcharts option={option} style={{ height: '100%', width: '100%' }} />;
+    return <ReactEcharts option={option} style={{ height: '170px', width: '100%' }} />;
   };
   // 停留时长分析
 
@@ -458,7 +458,7 @@ class Realtime extends React.Component<Props, State> {
 
       grid: {
         left: 0,
-        top: 20,
+        top: 0,
         bottom: 10,
         right: 10,
         containLabel: true,
@@ -473,7 +473,7 @@ class Realtime extends React.Component<Props, State> {
         left: '0',
         itemWidth: 16,
         itemHeight: 8,
-        itemGap: 0,
+        itemGap: 2,
         textStyle: {
           color: '#A3E2F4',
           fontSize: 18,
@@ -516,7 +516,7 @@ class Realtime extends React.Component<Props, State> {
           },
         },
         axisLabel: {
-          formatter: '{value} %',
+          formatter: '{c}',
           show: false,
           padding: [0, 0, 20, 0],
           color: '#0B3E5E',
@@ -566,6 +566,7 @@ class Realtime extends React.Component<Props, State> {
     };
     return <ReactEcharts option={option} style={{ height: '100%', width: '100%' }} />;
   };
+  // 告警类型统计
   createPoliceType = () => {
     const { warningTypeInfo } = this.props;
     if (warningTypeInfo.length === 0) return null;
@@ -659,6 +660,7 @@ class Realtime extends React.Component<Props, State> {
         },
       },
       yAxis: {
+        nameGap: 20,
         type: 'category',
         data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
         axisLine: {
@@ -673,6 +675,8 @@ class Realtime extends React.Component<Props, State> {
           formatter: '{value}',
           // color: '#fff',
           fontSize: 10,
+          margin: 10,
+          // align:'left',
         },
         axisTick: {
           show: false,
@@ -695,6 +699,8 @@ class Realtime extends React.Component<Props, State> {
         dataIndex: 'warnName',
         editable: true,
         ellipsis: true,
+        className: 'select_text',
+
         render: (name, record) => {
           return (
             <div>
@@ -713,6 +719,9 @@ class Realtime extends React.Component<Props, State> {
         dataIndex: 'processTime',
         editable: true,
         ellipsis: true,
+        render: item => {
+          return item ? moment(item).format('MM-DD HH:mm') : '';
+        },
       },
     ];
     let historyWarns = this.props.historyWarns;
@@ -769,6 +778,7 @@ class Realtime extends React.Component<Props, State> {
           </div>
           <div className="yesterday-data">
             <span className="icon" />
+
             <span className="data-title">昨日最高值</span>
             <span className="data-number">{yesHigh}</span>
           </div>
@@ -812,8 +822,8 @@ class Realtime extends React.Component<Props, State> {
   };
   render() {
     const { mapImage, width, height } = this.state;
-    const lamps = this.createLamps();
-    const line = this.createLampLines();
+    // const lamps = this.createLamps();
+    // const line = this.createLampLines();
 
     return (
       <div className={styles.homepage_root_container}>
@@ -827,7 +837,7 @@ class Realtime extends React.Component<Props, State> {
             </Col>
             <Col span={16} className="middle_panel">
               <div className={styles.map_manager} ref={this.map}>
-                {/* <Stage
+                <Stage
                   width={width}
                   height={height}
                   onWheel={this.onWheel}
@@ -839,11 +849,10 @@ class Realtime extends React.Component<Props, State> {
                 >
                   <Layer>
                     <ImageLayer image={mapImage} x={0} y={0} width={width} height={height} />
-                    {line}
-                    {lamps}
+                    {/* {line} */}
+                    {/* {lamps} */}
                   </Layer>
-                </Stage> */}
-                <RealTime />
+                </Stage>
               </div>
             </Col>
             <Col span={4} className="right_panel">
@@ -933,7 +942,6 @@ class Realtime extends React.Component<Props, State> {
                 </Breadcrumb>
               </div>
             </Col>
-            }
           </Row>
         </div>
       </div>
@@ -948,4 +956,4 @@ const mapState = state => {
   };
 };
 
-export default connect(mapState)(Realtime);
+export default connect(mapState)(DataView);
