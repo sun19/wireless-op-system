@@ -317,7 +317,7 @@ class Realtime extends React.Component<Props, State> {
         <div className="flex_outer" key={index}>
           <div className="ele_title_top">
             <div className="ele_title">{item.name}</div>
-            <div className="ele_title"> {type && type.name ? type.name : '闯入电子围栏'}</div>
+            {/* <div className="ele_title"> {type && type.name ? type.name : '闯入电子围栏'}</div> */}
           </div>
           <div className="ele_bag">
             {!!item.lampCode
