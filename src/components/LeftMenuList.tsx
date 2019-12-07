@@ -24,6 +24,7 @@ class LeftMenuList extends Component<any> {
       //  localStorage.getItem('userMessage')
     };
     let data = await getLeftMenues(user);
+    // let data = await getAllMenues(user);
     // console.log(data)
     const current = localStorage.getItem('current');
     const openKeys = JSON.parse(localStorage.getItem('openKeys') || '[]');

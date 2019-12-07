@@ -137,7 +137,7 @@ class EditUserAuth extends React.Component<Props, State> {
         <Form layout="inline" style={{ marginTop: '0.57rem' }} onSubmit={this.onSubmit}>
           <Row type="flex" justify="center" align="middle" className={styles.add}>
             <Col span={12}>
-              <div className="auth__inner--container">
+              <div className="auth__inner--container auth_people">
                 <Row type="flex" justify="space-between">
                   <Col span={12}>
                     <Form.Item label="角色名称">
@@ -158,7 +158,7 @@ class EditUserAuth extends React.Component<Props, State> {
                 </Row>
                 <Row type="flex" justify="space-between" className={styles.treeStyle}>
                   <Col span={23}>
-                    <Form.Item label="人员权限">
+                    <Form.Item label="人员权限" className={styles.treeStyle}>
                       {getFieldDecorator(
                         'resourceIds',
                         {},
@@ -176,7 +176,7 @@ class EditUserAuth extends React.Component<Props, State> {
                           onCheck={this.onCheck}
                         >
                           {this.renderTreeNodes(this.state.dataTree)}
-                        </Tree>,
+                        </Tree>
                       )}
                     </Form.Item>
                   </Col>
