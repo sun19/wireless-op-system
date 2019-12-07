@@ -75,8 +75,7 @@ class EditUserAuth extends React.Component<Props, State> {
         this.setState({ data: lastData })
     };
     titles = (item) => {
-        return ''
-        // <Input onChange={(e) => {this.onChange(e, item)}} defaultValue={item.name} />
+        return <Input defaultValue={item.name} />
          }
     renderTreeNodes = data => {
         // const self =this;
