@@ -58,7 +58,8 @@ class EditUserAuth extends React.Component<Props, State> {
     // 获取权限菜单id
     const { peopleTypeRecord } = this.props;
     const userData = {
-      roleId: localStorage.getItem('userMessage'),
+      roleId: peopleTypeRecord.id,
+      // localStorage.getItem('userMessage'),
     };
     let userMenues = await getPeopleMenues(userData);
     const userMenueList = userMenues.result;
@@ -99,8 +100,8 @@ class EditUserAuth extends React.Component<Props, State> {
       const { resourceIds, id, ...props } = values;
       let data = {
         ...props,
-        // roleId: peopleTypeRecord.id,
-        roleId: localStorage.getItem('userMessage'),
+        roleId: peopleTypeRecord.id,
+        // roleId: localStorage.getItem('userMessage'),
         resourceIds: this.state.checkedKeys.concat(this.state.halfCheckedKeys).join(','),
       };
       if (err) {

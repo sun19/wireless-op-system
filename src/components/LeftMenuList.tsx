@@ -23,8 +23,8 @@ class LeftMenuList extends Component<any> {
       // 'f73846cfd1f007f9e8c06935d570fe3c',
       //  localStorage.getItem('userMessage')
     };
-    // let data = await getLeftMenues(user);
-    let data = await getAllMenues(user);
+    let data = await getLeftMenues(user);
+    // let data = await getAllMenues(user);
     // console.log(data)
     const current = localStorage.getItem('current');
     const openKeys = JSON.parse(localStorage.getItem('openKeys') || '[]');
