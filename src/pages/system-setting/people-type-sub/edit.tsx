@@ -58,22 +58,23 @@ class EditUserAuth extends React.Component<Props, State> {
     // 获取权限菜单id
     const { peopleTypeRecord } = this.props;
     const userData = {
-      userId: peopleTypeRecord.id,
+      userId:localStorage.getItem('userMessage'),
     };
     let userMenues = await getPeopleMenues(userData);
     const userMenueList = userMenues.result;
-    const ids = [];
-    getId(userMenueList);
-    function getId(list) {
-      for (let i = 0; i < list.length; i++) {
-        const item = list[i];
-        if (item.child && item.child.length > 0) {
-          getId(item.child);
-        } else {
-          ids.push(item.id);
-        }
-      }
-    }
+    const ids = userMenueList.map(item =>(item.id))
+    // const ids = [];
+    // getId(userMenueList);
+    // function getId(list) {
+    //   for (let i = 0; i < list.length; i++) {
+    //     const item = list[i];
+    //     if (item.child && item.child.length > 0) {
+    //       getId(item.child);
+    //     } else {
+    //       ids.push(item.id);
+    //     }
+    //   }
+    // }
     this.setState({
       expandedKeys: ids,
       selectedKeys: ids,
@@ -98,7 +99,8 @@ class EditUserAuth extends React.Component<Props, State> {
       const { resourceIds, id, ...props } = values;
       let data = {
         ...props,
-        roleId: peopleTypeRecord.id,
+        // roleId: peopleTypeRecord.id,
+        roleId: localStorage.getItem('userMessage'),
         resourceIds: this.state.checkedKeys.concat(this.state.halfCheckedKeys).map(item => +item),
       };
       if (err) {

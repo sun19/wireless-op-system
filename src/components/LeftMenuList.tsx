@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Menu, Icon } from 'antd';
 import { connect } from 'dva';
 import router from 'umi/router';
-import { getAllMenues } from '../pages/login/login.service';
+import { getAllMenues, getLeftMenues} from '../pages/login/login.service';
 
 import { ICON_FONTS_URL } from '../config/constants';
 import Link from 'umi/link';
@@ -23,7 +23,7 @@ class LeftMenuList extends Component<any> {
       // 'f73846cfd1f007f9e8c06935d570fe3c',
       //  localStorage.getItem('userMessage')
     };
-    let data = await getAllMenues(user);
+    let data = await getLeftMenues(user);
     // console.log(data)
     const current = localStorage.getItem('current');
     const openKeys = JSON.parse(localStorage.getItem('openKeys') || '[]');
