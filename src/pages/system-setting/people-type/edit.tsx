@@ -58,7 +58,7 @@ class EditUserAuth extends React.Component<Props, State> {
     // 获取权限菜单id
     const { peopleTypeRecord } = this.props;
     const userData = {
-      userId: localStorage.getItem('userMessage'),
+      roleId: localStorage.getItem('userMessage'),
     };
     let userMenues = await getPeopleMenues(userData);
     const userMenueList = userMenues.result;

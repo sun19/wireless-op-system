@@ -88,7 +88,7 @@ export const LEFT_MENUS = [
                     {
                         name: '完善信息', //没有页面
                         key: '012',
-                        path: '/empty',
+                        path: '/user-manager/user-complete',
                     },
                     {
                         name: '内部人员信息录入',
@@ -184,7 +184,7 @@ export const LEFT_MENUS = [
                     {
                         name: '信息完善', //没有页面
                         key: '031',
-                        path: '/empty',
+                        path: '/user-manager/user-complete',
                     },
                     {
                         name: '外来人员信息录入', //没有页面
