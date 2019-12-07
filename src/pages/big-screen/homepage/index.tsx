@@ -578,6 +578,13 @@ class DataView extends React.Component<Props, State> {
             normal: {
               show: true,
               position: 'insideRight',
+              formatter: function (params) {
+                if (params.value > 0) {
+                  return params.value;
+                } else {
+                  return '';
+                }
+              }
             },
           },
           itemStyle: {
@@ -649,10 +656,13 @@ class DataView extends React.Component<Props, State> {
         },
       },
       yAxis: {
+
+        nameGap:20,
         type: 'category',
         data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
         axisLine: {
           lineStyle: {
+
             color: '#7AB2E2',
           },
           splitLine: {
@@ -663,6 +673,8 @@ class DataView extends React.Component<Props, State> {
           formatter: '{value}',
           // color: '#fff',
           fontSize: 10,
+          margin: 10,
+          // align:'left',
         },
         axisTick: {
           show: false,

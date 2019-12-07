@@ -2,7 +2,7 @@
  * title: 电子围栏
  */
 import React, { Component } from 'react';
-import { message, Row, Col, Icon, Progress, Table } from 'antd';
+import { message, Row, Col, Icon, Progress, Breadcrumb,Table } from 'antd';
 import Konva from 'konva';
 import ReactEcharts from 'echarts-for-react';
 import { Stage, Layer, Image as ImageLayer, Line as LineLayer } from 'react-konva';
@@ -574,7 +574,14 @@ class Realtime extends React.Component<Props, State> {
             normal: {
               show: true,
               position: 'insideRight',
-            },
+              formatter: function (params) {
+                if (params.value > 0) {
+                  return params.value;
+                } else {
+                  return '';
+                }
+              }
+            }
           },
           itemStyle: {
             normal: {
@@ -812,14 +819,6 @@ class Realtime extends React.Component<Props, State> {
               {this.setupLeftPanel()}
             </Col>
             <Col span={16} className="middle_panel">
-              <div className="middle_text">
-                <div className="text_panel" onClick={this.selectShow}>
-                  人员信息
-                </div>
-                <div className="text_panel" onClick={this.selectShow}>
-                  灯具显示
-                </div>
-              </div>
               <div className={styles.map_manager} ref={this.map}>
                 {/* <Stage
                   width={width}
@@ -899,6 +898,16 @@ class Realtime extends React.Component<Props, State> {
                   </div>
                 </div>
               )}
+              <div className="middle_text">
+                <Breadcrumb>
+                  <Breadcrumb.Item>  <div className="text_panel" onClick={this.selectShow}>
+                    人员信息
+                </div></Breadcrumb.Item>
+                  <Breadcrumb.Item> <div className="text_panel" onClick={this.selectShow}>
+                    灯具显示
+                </div></Breadcrumb.Item>
+                </Breadcrumb>
+              </div>
             </Col>
             }
           </Row>
