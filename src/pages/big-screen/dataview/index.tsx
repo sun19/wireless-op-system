@@ -2,7 +2,7 @@
  * title: 实时轨迹
  */
 import React, { Component } from 'react';
-import { Row, Col, Icon, Table } from 'antd';
+import { Row, Col, Icon, Table ,Progress} from 'antd';
 import ReactEcharts from 'echarts-for-react';
 import request, { format } from '@/utils/request';
 import { connect } from 'dva';
@@ -580,109 +580,129 @@ class DataView extends Component<any, State> {
     return <ReactEcharts option={option} style={{ width: '100%', height: '100%' }} />;
   };
   createSecretLevel = () => {
-    let { secretLevelPeopleCount = [] } = this.props;
+    // let { secretLevelPeopleCount = [] } = this.props;
 
+    // const allSecretLevel = secretLevelPeopleCount.reduce((prev, next) => {
+    //   return prev + Number(next.num);
+    // }, 0);
+
+    // const setupSecretLevels = secretLevelPeopleCount.map(item => {
+    //   return { ...item, percent: ((+item.num / allSecretLevel) * 100).toFixed(2) };
+    // });
+    // var valdata = secretLevelPeopleCount.map(item => +item.num);
+    // var titlename = secretLevelPeopleCount.map(item => item.securityLevel);
+    // var data = setupSecretLevels.map(item => item.percent);
+
+    // var myColor = ['#3434DB', '#FF9C00', '#006CFF'];
+    // const option = {
+    //   xAxis: {
+    //     show: false,
+    //     max: 100,
+    //     type: 'value',
+    //   },
+    //   grid: {
+    //     left: '5%',
+    //     right: '3%',
+    //     bottom: '3%',
+    //     containLabel: true,
+    //   },
+    //   yAxis: [
+    //     {
+    //       show: true,
+    //       data: titlename,
+    //       inverse: true,
+    //       axisLine: {
+    //         show: false,
+    //       },
+    //       splitLine: {
+    //         show: false,
+    //       },
+    //       axisTick: {
+    //         show: false,
+    //       },
+    //       axisLabel: {
+    //         textStyle: {
+    //           color: 'rgba(255,255,255,1)',
+    //           fontSize: 20,
+
+    //         },
+    //         formatter: function (value, index) {
+    //           return ['{title|' + value + '} '].join('\n');
+    //         },
+    //         rich: {},
+    //       },
+    //     },
+    //     {
+    //       show: true,
+    //       inverse: true,
+    //       data: valdata,
+    //       axisLabel: {
+    //         textStyle: {
+    //           color: 'rgba(255,255,255,1)',
+    //           fontSize: 20,
+    //         },
+    //         formatter: function (value, index) {
+    //           return value + '人';
+    //         },
+    //       },
+    //       axisLine: {
+    //         show: false,
+    //       },
+    //       splitLine: {
+    //         show: false,
+    //       },
+    //       axisTick: {
+    //         show: false,
+    //       },
+    //     },
+    //   ],
+    //   series: [
+    //     {
+    //       // name: '条',
+    //       type: 'bar',
+    //       yAxisIndex: 0,
+    //       data: data,
+    //       barWidth: 20,
+    //       itemStyle: {
+    //         normal: {
+    //           barBorderRadius: 2,
+    //           color: function (params) {
+    //             var num = myColor.length;
+    //             return myColor[params.dataIndex % num];
+    //           },
+    //         },
+    //       },
+    //       label: {
+    //         normal: {
+    //           show: true,
+    //           fontSize: 20,
+    //           position: 'bottom',
+    //           formatter: '{c}%',
+    //         },
+    //       },
+    //     },
+    //   ],
+    // }; 
+    // return <ReactEcharts option={option} style={{ width: '100%', height: '100%' }} />;
+    let { secretLevelPeopleCount = [] } = this.props;
     const allSecretLevel = secretLevelPeopleCount.reduce((prev, next) => {
       return prev + Number(next.num);
     }, 0);
-
     const setupSecretLevels = secretLevelPeopleCount.map(item => {
       return { ...item, percent: ((+item.num / allSecretLevel) * 100).toFixed(2) };
     });
-    var valdata = secretLevelPeopleCount.map(item => +item.num);
-    var titlename = secretLevelPeopleCount.map(item => item.securityLevel);
-    var data = setupSecretLevels.map(item => item.percent);
-
-    var myColor = ['#3434DB', '#FF9C00', '#006CFF'];
-    const option = {
-      xAxis: {
-        show: false,
-        max: 100,
-        type: 'value',
-      },
-      grid: {
-        left: '5%',
-        right: '3%',
-        bottom: '3%',
-        containLabel: true,
-      },
-      yAxis: [
-        {
-          show: true,
-          data: titlename,
-          inverse: true,
-          axisLine: {
-            show: false,
-          },
-          splitLine: {
-            show: false,
-          },
-          axisTick: {
-            show: false,
-          },
-          axisLabel: {
-            textStyle: {
-              color: 'rgba(255,255,255,1)',
-              fontSize: 20,
-            },
-            formatter: function (value, index) {
-              return ['{title|' + value + '} '].join('\n');
-            },
-            rich: {},
-          },
-        },
-        {
-          show: true,
-          inverse: true,
-          data: valdata,
-          axisLabel: {
-            textStyle: {
-              color: 'rgba(255,255,255,1)',
-              fontSize: 20,
-            },
-            formatter: function (value, index) {
-              return value + '人';
-            },
-          },
-          axisLine: {
-            show: false,
-          },
-          splitLine: {
-            show: false,
-          },
-          axisTick: {
-            show: false,
-          },
-        },
-      ],
-      series: [
-        {
-          name: '条',
-          type: 'bar',
-          yAxisIndex: 0,
-          data: data,
-          barWidth: 20,
-          itemStyle: {
-            normal: {
-              barBorderRadius: 50,
-              color: function (params) {
-                var num = myColor.length;
-                return myColor[params.dataIndex % num];
-              },
-            },
-          },
-          label: {
-            normal: {
-              show: true,
-              fontSize: 20,
-              position: 'inside',
-              formatter: '{c}%',
-            },
-          },
-        },
-      ],
-    };
-    return <ReactEcharts option={option} style={{ width: '100%', height: '100%' }} />;
+    return (  
+      setupSecretLevels.map((item, index) => (
+        <div className={`people_progress people_progress_${index}`}>
+          <div>
+            <span>{item.securityLevel}</span>
+            <span className="people-number"> {item.num}人</span>
+          </div>
+          <Progress percent={item.percent} />
+          <div className="people_progress_num">{item.percent}%</div>
+        </div>
+      ))
+    )
   };
   createRouteCheckData = () => {
     const columns = [
