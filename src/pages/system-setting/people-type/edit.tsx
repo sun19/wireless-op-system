@@ -99,7 +99,7 @@ class EditUserAuth extends React.Component<Props, State> {
       const { resourceIds, id, ...props } = values;
       let data = {
         ...props,
-        roleId: peopleTypeRecord.id,
+        roleId: localStorage.getItem('userMessage'),
         resourceIds: this.state.checkedKeys.concat(this.state.halfCheckedKeys).join(','),
       };
       if (err) {
@@ -136,7 +136,7 @@ class EditUserAuth extends React.Component<Props, State> {
         <Form layout="inline" style={{ marginTop: '0.57rem' }} onSubmit={this.onSubmit}>
           <Row type="flex" justify="center" align="middle" className={styles.add}>
             <Col span={12}>
-              <div className="auth__inner--container">
+              <div className="auth__inner--container  auth_people">
                 <Row type="flex" justify="space-between">
                   <Col span={12}>
                     <Form.Item label="角色名称">
@@ -156,29 +156,29 @@ class EditUserAuth extends React.Component<Props, State> {
                   </Col>
                 </Row>
                 <Row type="flex" justify="space-between" className={styles.treeStyle}>
-                  <Col span={23}>
-                    <Form.Item label="人员权限">
-                      {getFieldDecorator(
-                        'resourceIds',
-                        {},
-                      )(
-                        <Tree
-                          checkable={true}
-                          // defaultExpandedKeys={this.state.expandedKeys}
-                          // defaultSelectedKeys={this.state.selectedKeys}
-                          // defaultCheckedKeys={this.state.checkedKeys}
-                          // expandedKeys={this.state.expandedKeys}
-                          // selectedKeys={this.state.expandedKeys}
-                          checkedKeys={this.state.checkedKeys}
-                          // onSelect={this.onSelect}
+                    <Col span={23} >
+                      <Form.Item label="人员权限">
+                        {getFieldDecorator(
+                          'resourceIds',
+                          {},
+                        )(
+                          <Tree
+                            checkable={true}
+                            // defaultExpandedKeys={this.state.expandedKeys}
+                            // defaultSelectedKeys={this.state.selectedKeys}
+                            // defaultCheckedKeys={this.state.checkedKeys}
+                            // expandedKeys={this.state.expandedKeys}
+                            // selectedKeys={this.state.expandedKeys}
+                            checkedKeys={this.state.checkedKeys}
+                            // onSelect={this.onSelect}
 
-                          onCheck={this.onCheck}
-                        >
-                          {this.renderTreeNodes(this.state.dataTree)}
-                        </Tree>,
-                      )}
-                    </Form.Item>
-                  </Col>
+                            onCheck={this.onCheck}
+                          >
+                            {this.renderTreeNodes(this.state.dataTree)}
+                          </Tree>,
+                        )}
+                      </Form.Item>
+                    </Col>
                 </Row>
                 <Row type="flex" justify="center" style={{ marginTop: '0.35rem' }}>
                   <Col span={6}>
