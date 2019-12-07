@@ -4,5 +4,5 @@ interface Params {
     pageNo?: number;
 }
 export interface Menues extends Params {
-    userId: string;
+    roleId: string;
 }

@@ -61,7 +61,7 @@ class NormalLoginForm extends React.Component<Props> {
           localStorage.setItem('token', token);
           await this.preFetchAllCommonState();
           localStorage.setItem('usepass', JSON.stringify(data));
-          localStorage.setItem('userMessage', resp.result.userInfo.id);
+          localStorage.setItem('userMessage', resp.result.userInfo.roleId);
           setTimeout(() => router.push('/big-screen/homepage'), 1000);
           message.success(<span style={{ fontSize: '25px' }}>登录成功！</span>, 3);
           // this.getMenus()

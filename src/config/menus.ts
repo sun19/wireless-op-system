@@ -69,6 +69,23 @@ export const LEFT_MENUS = [
                 path: '',
                 children: [
                     {
+                        name: '值班员设置',
+                        key: '009',
+                        path: '',
+                        children: [
+                            {
+                                name: '菜单权限',
+                                key: '003',
+                                path: '/system-setting/people-type-sub',
+                            },
+                            {
+                                name: '用户信息',
+                                key: '010',
+                                path: '/system-setting/customer-manager-sub',
+                            },
+                        ]
+                    },
+                    {
                         name: '完善信息', //没有页面
                         key: '012',
                         path: '/empty',
@@ -205,9 +222,9 @@ export const LEFT_MENUS = [
                 path: '/statistics-query/statistics-history',
             },
             {
-                name: '区域查询', //没有页面
+                name: '区域查询',
                 key: '038',
-                path: '/empty',
+                path: '/map-manager/area-set',
             },
             {
                 name: '日志列表',
