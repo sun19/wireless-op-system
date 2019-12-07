@@ -2,7 +2,7 @@
  * title: 实时轨迹
  */
 import React, { Component } from 'react';
-import { Row, Col, Icon, Table ,Progress} from 'antd';
+import { Row, Col, Icon, Table, Progress } from 'antd';
 import ReactEcharts from 'echarts-for-react';
 import request, { format } from '@/utils/request';
 import { connect } from 'dva';
@@ -478,32 +478,43 @@ class DataView extends Component<any, State> {
   createPoliceType = () => {
     const { warningTypeInfo } = this.props;
     if (warningTypeInfo.length === 0) return null;
-    const data = warningTypeInfo && warningTypeInfo.map((warnType, dataIndex) => {
-      let info = warnType.warnTypeNumList.map(res =>
-        res.num
-      )
-      return ({
-        name: warnType.warnTypeName,
-        type: 'bar',
-        stack: '总量',
-        label: {
-          normal: {
-            show: true,
-            position: 'insideRight'
+    const data =
+      warningTypeInfo &&
+      warningTypeInfo.map((warnType, dataIndex) => {
+        let info = warnType.warnTypeNumList.map(res => res.num);
+        return {
+          name: warnType.warnTypeName,
+          type: 'bar',
+          stack: '总量',
+          label: {
+            normal: {
+              show: true,
+              position: 'insideRight',
+              formatter: function(params) {
+                if (params.value > 0) {
+                  return params.value;
+                } else {
+                  return '';
+                }
+              },
+            },
           },
-        },
-        itemStyle: {
-          normal: {
-            color: ['rgba(9,120,242,1)', 'rgba(77,253,184,1)', 'rgba(255,180,0,1)', 'rgba(241,126,60,1)', 'rgba(73,86,227,1)',][dataIndex],
+          itemStyle: {
+            normal: {
+              color: [
+                'rgba(9,120,242,1)',
+                'rgba(77,253,184,1)',
+                'rgba(255,180,0,1)',
+                'rgba(241,126,60,1)',
+                'rgba(73,86,227,1)',
+              ][dataIndex],
+            },
           },
-        },
-        data: info
-      })
-    }
-    );
-    const legendData = warningTypeInfo && warningTypeInfo.map((warnType, index) => (
-      warnType.warnTypeName
-    ));
+          data: info,
+        };
+      });
+    const legendData =
+      warningTypeInfo && warningTypeInfo.map((warnType, index) => warnType.warnTypeName);
     const option = {
       tooltip: {
         trigger: 'axis',
@@ -575,7 +586,7 @@ class DataView extends Component<any, State> {
           show: false,
         },
       },
-      series: data
+      series: data,
     };
     return <ReactEcharts option={option} style={{ width: '100%', height: '100%' }} />;
   };
@@ -682,7 +693,7 @@ class DataView extends Component<any, State> {
     //       },
     //     },
     //   ],
-    // }; 
+    // };
     // return <ReactEcharts option={option} style={{ width: '100%', height: '100%' }} />;
     let { secretLevelPeopleCount = [] } = this.props;
     const allSecretLevel = secretLevelPeopleCount.reduce((prev, next) => {
@@ -691,18 +702,16 @@ class DataView extends Component<any, State> {
     const setupSecretLevels = secretLevelPeopleCount.map(item => {
       return { ...item, percent: ((+item.num / allSecretLevel) * 100).toFixed(2) };
     });
-    return (
-      setupSecretLevels.map((item, index) => (
-        <div className={`people_progress people_progress_${index}`}>
-          <div>
-            <span>{item.securityLevel}</span>
-            <span className="people-number"> {item.num}人</span>
-          </div>
-          <Progress percent={item.percent} />
-          <div className="people_progress_num">{item.percent}%</div>
+    return setupSecretLevels.map((item, index) => (
+      <div className={`people_progress people_progress_${index}`}>
+        <div>
+          <span>{item.securityLevel}</span>
+          <span className="people-number"> {item.num}人</span>
         </div>
-      ))
-    )
+        <Progress percent={item.percent} />
+        <div className="people_progress_num">{item.percent}%</div>
+      </div>
+    ));
   };
   createRouteCheckData = () => {
     const columns = [
