@@ -691,7 +691,7 @@ class DataView extends Component<any, State> {
     const setupSecretLevels = secretLevelPeopleCount.map(item => {
       return { ...item, percent: ((+item.num / allSecretLevel) * 100).toFixed(2) };
     });
-    return (  
+    return (
       setupSecretLevels.map((item, index) => (
         <div className={`people_progress people_progress_${index}`}>
           <div>

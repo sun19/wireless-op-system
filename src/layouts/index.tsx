@@ -32,7 +32,6 @@ const BasicLayout: React.FC = (props: any) => {
     <AppTitle />
     <Layout className={[`${styles.layout}`, `${styles.no_background}`].join(' ')}>
       <Sider className={[`${styles.left_bar_bg}`].join(' ')} width="280">
-       
         <LeftMenuList />
       </Sider>
       <Layout className={[`${styles.no_background}`].join(' ')}>
@@ -44,10 +43,13 @@ const BasicLayout: React.FC = (props: any) => {
   );
 };
 
-export default withRouter(props => (
-  <TransitionGroup>
-    <CSSTransition key={props.location.pathname} classNames="fade" timeout={300}>
-      <BasicLayout {...props} />
-    </CSSTransition>
-  </TransitionGroup>
-));
+export default BasicLayout;
+
+//去除`router`切换动画
+// export default withRouter(props => (
+//   <TransitionGroup>
+//     <CSSTransition key={props.location.pathname} classNames="fade" timeout={0}>
+//       <BasicLayout {...props} />
+//     </CSSTransition>
+//   </TransitionGroup>
+// ));
