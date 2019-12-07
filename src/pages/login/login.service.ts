@@ -14,6 +14,7 @@ import {
   COMMON_GET_ALL_POSITION,
   COMMON_GET_ALL_DEPARTMENT,
   MENU_LIST,
+  LEFT_MENU_LIST,
   PEOPLE_MENUS,
   EDIT_MENUS,
 
@@ -63,6 +64,11 @@ export async function getAllPosition() {
 // 部门
 export async function getAllDepartment() {
   const resp = await request.get(COMMON_GET_ALL_DEPARTMENT);
+  return resp;
+}
+// 左侧菜单
+export async function getLeftMenues(params: Menues) {
+  const resp = await request.get(LEFT_MENU_LIST, { params: params });
   return resp;
 }
 // 根据当前登录用户查询拥有的菜单key
