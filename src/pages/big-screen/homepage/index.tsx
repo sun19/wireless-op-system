@@ -46,6 +46,7 @@ interface State {
   stageX: number;
   stageY: number;
   showPeopleInfo: boolean;
+  currentIndex: boolean;
   dataStr?: string;
 }
 type StateProps = ReturnType<typeof mapState>;
@@ -90,6 +91,7 @@ class DataView extends React.Component<Props, State> {
       stageX: 0,
       stageY: 0,
       showPeopleInfo: false,
+      currentIndex: true,
       ajaxLamps: [],
       dataStr: '2019-11-15',
     };
@@ -179,8 +181,12 @@ class DataView extends React.Component<Props, State> {
     });
   }
 
+
+  selectShowA = () => {
+    this.setState({ showPeopleInfo: true, currentIndex: false });
+  };
   selectShow = () => {
-    this.setState({ showPeopleInfo: !this.state.showPeopleInfo });
+    this.setState({ showPeopleInfo: false, currentIndex: true });
   };
   showLine() {
     const { clientWidth, clientHeight } = this.map.current;
@@ -913,14 +919,15 @@ class DataView extends React.Component<Props, State> {
                 </div>
               )}
               <div className="middle_text">
-              <Breadcrumb>
-                <Breadcrumb.Item>  <div className="text_panel" onClick={this.selectShow}>
-                  人员信息
+                <Breadcrumb>
+                  <Breadcrumb.Item>  <div className={["text_panel", this.state.currentIndex ? "active" : null].join(' ')} onClick={this.selectShow}>
+                    人员信息
                 </div></Breadcrumb.Item>
-                <Breadcrumb.Item> <div className="text_panel" onClick={this.selectShow}>
-                  灯具显示
+
+                  <Breadcrumb.Item> <div className={["text_panel", !this.state.currentIndex ? "active" : null].join(' ')} onClick={this.selectShowA}>
+                    灯具显示
                 </div></Breadcrumb.Item>
-               </Breadcrumb>
+                </Breadcrumb>
               </div>
             </Col>
             
