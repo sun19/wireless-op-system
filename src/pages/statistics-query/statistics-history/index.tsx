@@ -42,11 +42,11 @@ type Props = StateProps & UmiComponentProps & FormProps;
 const columns = [
   {
     title: '信息牌编号',
-    dataIndex: 'informationBoardId',
+    dataIndex: 'informationBoardName',
     editable: true,
     // ellipsis: true,
     // width: 100,
-    key: 'informationBoardId',
+    // key: 'informationBoardId',
     // fixed: 'left',
   },
   {
@@ -54,10 +54,13 @@ const columns = [
     dataIndex: 'onlineStatus',
     className: 'select_text',
     editable: true,
+    render: (item) => {
+      return ['在线', '离线'][item]
+    }
   },
   {
     title: '定位',
-    dataIndex: 'positionName',
+    dataIndex: 'lampNumber',
     editable: true,
   },
   {
@@ -67,13 +70,13 @@ const columns = [
   },
   {
     title: '进入时间',
-    width: '20%',
+    // width: '20%',
     dataIndex: 'entryTime',
     editable: true,
   },
   {
     title: '离开时间',
-    width: '20%',
+    // width: '20%',
     dataIndex: 'leaveTime',
     editable: true,
   },
@@ -84,8 +87,7 @@ const columns = [
   },
   {
     title: '职务',
-    dataIndex: 'alarmType4',
-    className: 'select_text',
+    dataIndex: 'positionName',
     editable: true,
   },
   // {
@@ -94,10 +96,12 @@ const columns = [
   //   editable: true,
   // },
   {
-    title: '人员类型',
+    title: '类型',
     dataIndex: 'type',
-    className: 'select_text',
     editable: true,
+    render: (item) => {
+return ['内部', '外部'][item]
+    }
   },
 ];
 
@@ -200,19 +204,19 @@ class StatisticsHistory extends React.Component<Props, State> {
           <div className={styles.public_hight_40}>
             <Form layout="inline" onSubmit={this.search}>
               <Row justify="start" align="middle" style={{ paddingLeft: '39px' }} gutter={16}>
-                <FormItem label="信息牌">
+                <FormItem label="信息牌"> 
                   {getFieldDecorator(
                     'informationBoardName',
                     {},
                   )(<Input className={publicStyles.input_text} placeholder="请输入信息牌" />)}
                 </FormItem>
-                <FormItem label="身份证号">
+                {/* <FormItem label="身份证号">
                   {getFieldDecorator(
                     'cardNo',
                     {},
                   )(<Input className={publicStyles.input_text} placeholder="请输入身份证号" />)}
-                </FormItem>
-                <Form.Item label="人员类型">
+                </FormItem> */}
+                <Form.Item label="类型">
                   {getFieldDecorator('type', {
                     rules: [
                       {
@@ -225,11 +229,17 @@ class StatisticsHistory extends React.Component<Props, State> {
                       placeholder="请选择人员类型"
                       style={{ width: '2rem' }}
                     >
-                      {this.state.userTypes.map(item => (
+                      <Option value='0'>
+                       内部
+                      </Option>
+                      <Option value='1'>
+                    外部
+                      </Option>
+                      {/* {this.state.userTypes.map(item => (
                         <Option value={item.key} key={item.value}>
                           {item.value}
                         </Option>
-                      ))}
+                      ))} */}
                     </Select>,
                   )}
                 </Form.Item>

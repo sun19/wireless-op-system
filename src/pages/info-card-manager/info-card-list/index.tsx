@@ -58,15 +58,13 @@ const columns = [
     dataIndex: 'onlineStatus',
     className: 'select_text',
     editable: true,
-    render: onlineStatus => {
-      let color = onlineStatus == 1 ? 'white' : '#EB6262';
-      let values = onlineStatus == 1 ? '在线' : '离线';
-      return <span style={{ color: color }}> {values}</span>;
-    },
+    render: (item) => {
+      return ['在线', '离线'][item]
+    }
   },
   {
     title: '定位',
-    dataIndex: 'lampId',
+    dataIndex: 'lampNumber',
     editable: true,
     ellipsis: true,
     onCell: () => {
@@ -165,8 +163,7 @@ const columns = [
     dataIndex: 'incumbency',
     editable: true,
     render: onlineStatus => {
-      let values = onlineStatus == 1 ? '在职' : '离职';
-      return <span> {values}</span>;
+      return ['离职', '在职'][onlineStatus];
     },
   },
 ];
