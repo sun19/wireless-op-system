@@ -263,31 +263,19 @@ class AddUsers extends React.Component<Props, State> {
                 <Row type="flex" justify="space-between">
                   <Col span={12}>{this.setupDuties()}</Col>
                   <Col span={12}>
-                    <Form.Item label="人员类型">
+                    <Form.Item label="类型">
                       {getFieldDecorator('type', {
                         rules: [
                           {
                             //required: true,
-                            message: '请选择人员类型',
+                            message: '请选择类型',
                           },
                         ],
-                        // initialValue:
-                        //   (this.state.userTypes &&
-                        //     this.state.userTypes[0] &&
-                        //     this.state.userTypes[0].roleId) ||
-                        //   '',
+                        initialValue: '0',
                       })(
-                        // <SelectText
-                        //   placeholder="请选择人员类型"
-                        //   options={this.state.userTypes as OptionValue[]}
-                        //   style={{ width: '2rem' }}
-                        // />,
                         <Select placeholder="请选择在职状态">
-                          {this.state.userTypes.map(item => (
-                            <Option value={item.key} key={item.key}>
-                              {item.value}
-                            </Option>
-                          ))}
+                          <Option value="0">内部</Option>
+                          <Option value="1">外部</Option>
                         </Select>,
                       )}
                     </Form.Item>

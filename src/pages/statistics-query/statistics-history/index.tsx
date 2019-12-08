@@ -44,10 +44,6 @@ const columns = [
     title: '信息牌编号',
     dataIndex: 'informationBoardName',
     editable: true,
-    // ellipsis: true,
-    // width: 100,
-    // key: 'informationBoardId',
-    // fixed: 'left',
   },
   {
     title: '状态',
@@ -70,13 +66,11 @@ const columns = [
   },
   {
     title: '进入时间',
-    // width: '20%',
     dataIndex: 'entryTime',
     editable: true,
   },
   {
     title: '离开时间',
-    // width: '20%',
     dataIndex: 'leaveTime',
     editable: true,
   },
@@ -220,13 +214,13 @@ class StatisticsHistory extends React.Component<Props, State> {
                   {getFieldDecorator('type', {
                     rules: [
                       {
-                        message: '请选择人员类型',
+                        message: '请选择类型',
                       },
                     ],
                   })(
                     <Select
                       // options={this.state.userTypes as OptionValue[]}
-                      placeholder="请选择人员类型"
+                      placeholder="请选择类型"
                       style={{ width: '2rem' }}
                     >
                       <Option value='0'>

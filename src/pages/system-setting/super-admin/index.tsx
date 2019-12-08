@@ -130,15 +130,16 @@ class SuperAdmin extends React.Component<Props, State> {
     confirm({
       title: '确定要删除这条信息吗？',
       content: '',
-      okText: '确定',
+      okText: '取消',
       okType: 'danger',
-      cancelText: '取消',
-      async onOk() {
+      cancelText: '确定',
+      onOk() { },
+      async onCancel() {
         await deleteSuperAdmin({ id: item.id });
         //重新请求数据重绘
         self.getSuperAdminList();
       },
-      onCancel() {},
+     
     });
   }
 

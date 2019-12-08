@@ -271,21 +271,18 @@ class EditUser extends React.Component<Props, State> {
                 <Row type="flex" justify="space-between">
                   <Col span={12}>{this.setupDuties()}</Col>
                   <Col span={12}>
-                    <Form.Item label="人员类型">
+                    <Form.Item label="类型">
                       {getFieldDecorator('type', {
                         rules: [
                           {
-                            message: '请选择人员类型',
+                            message: '请选择类型',
                           },
                         ],
                         initialValue: infoCardList.type,
                       })(
-                        <Select placeholder="请选择人员类型">
-                          {this.state.userTypes.map(option => (
-                            <Option value={option.roleId} key={option.key}>
-                              {option.value}
-                            </Option>
-                          ))}
+                        <Select placeholder="请选择类型">
+                          <Option value="0">内部</Option>
+                          <Option value="1">外部</Option>
                         </Select>
                       )}
                     </Form.Item>
