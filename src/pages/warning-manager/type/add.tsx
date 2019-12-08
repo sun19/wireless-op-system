@@ -86,6 +86,7 @@ class Adduth extends React.Component<Props, State> {
     });
     const repeatTypes = await getSuperAdminList({
       type: 'repeatType',
+      isShow: '1',
     });
     this.props.dispatch({
       type: 'warningManager/update',
