@@ -145,7 +145,7 @@ class UserManager extends React.Component<Props, State> {
 
   async getUserListData() {
     const { loginName, name } = this.state;
-    const userList = await getUserList({ loginName, name, userType: '1' });
+    const userList = await getUserList({ loginName, name, userType: '2' });
     this.props.dispatch({
       type: 'systemSetting/update',
       payload: { customManager: userList },

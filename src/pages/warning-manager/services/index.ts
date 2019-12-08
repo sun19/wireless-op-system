@@ -55,7 +55,7 @@ export async function wraningTypeDel(data: WraningTypeDel) {
   const resp = await request.post(WARNING_TYPE_DEL, {
     data: format(data),
   });
-  if (resp.code == 500) {
+  if(resp.code == 500) {
     message.error(`${resp.message}`);
   }
   return resp.success === true && resp.code === 200;
@@ -69,7 +69,10 @@ export async function warningInfoSearch(params: WarningInfoSearch) {
 }
 // 处理
 export async function warningInfoDeal(data: WarningInfoDeal) {
-  const resp = await request.delete(WARNING_INFO_DEAL, { data: format(data) });
+  const resp = await request.post(WARNING_INFO_DEAL, { data: format(data) });
+  resp.success === true && resp.code === 200
+    ? message.success(`${resp.message}`)
+    : message.error(`${resp.message}`);
   return resp.success === true && resp.code === 200;
 }
 
@@ -78,7 +81,7 @@ export async function warningInfoDeal(data: WarningInfoDeal) {
 // 查询
 export async function warningHistorySearch(params: WarningHistorySearch) {
   const resp = await request.get(WARNING_HISTORY_SEARCH, { params });
-  if (resp.code == 500 || !resp) {
+  if(resp.code == 500 || !resp) {
     message.error(`${resp.message}`);
   }
   return resp.result;
