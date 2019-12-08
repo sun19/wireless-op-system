@@ -23,7 +23,7 @@ export const LEFT_MENUS = [
                             {
                                 name: '菜单设置', //没有页面
                                 key: '005',
-                                path: '/empty',
+                                path: '/menu-edit/',
                             },
                         ]
                     },

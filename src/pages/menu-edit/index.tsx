@@ -53,7 +53,7 @@ export default class MenuEdit extends React.Component<any, State> {
       },
     );
     if (isSuccessed) {
-      alert('修改成功');
+      //alert('修改成功');
       const menus = await getAllMenues();
       this.setState({
         allMenus: menus.result,
