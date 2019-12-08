@@ -30,59 +30,59 @@ interface State {
 type StateProps = ReturnType<typeof mapState>;
 type Props = StateProps & UmiComponentProps & FormComponentProps;
 
-
 class RouteInspectReport extends React.Component<Props, State> {
   constructor(props: any) {
     super(props);
     this.state = {
       colum: [],
-      record: []
-    }
+      record: [],
+    };
   }
- 
 
   async getNewReports(params: GetInspectReportsParams = {}) {
     const resp = await queryInspectionReportByTime(params);
     // console.log(resp)
     if (!!resp.success) {
-      let colum:any = [
+      let colum: any = [
         {
           title: '日期',
           dataIndex: 'date',
           editable: false,
         },
-      ]
-      let record = resp.result.records
-      resp.result.showName.map((res) => {
-        colum.push(
-          {
-            title: res.name,
-            dataIndex: res.id,
-            editable: true,
-            render: (name, record) => {
-              // console.log(record)
-              return (
-                <IconFont type={['icon-correct', 'icon-error'][record[res.id]]} />
-              );
-            },
+      ];
+      let record = resp.result.records;
+      resp.result.showName.map(res => {
+        colum.push({
+          title: res.name,
+          dataIndex: res.id,
+          editable: true,
+          render: (name, record) => {
+            // console.log(record)
+            return record[res.id] == 0 ? (
+              <IconFont type="icon-correct" />
+            ) : record[res.id] == 1 ? (
+              <IconFont type="icon-error" />
+            ) : (
+              record[res.id]
+            );
           },
-        )
-      })
+        });
+      });
 
-      resp.result.showName
-      this.setState({ colum, record })
+      resp.result.showName;
+      this.setState({ colum, record });
     }
   }
   onSearch = e => {
     e.preventDefault();
     this.props.form.validateFields(async (err, values) => {
-      const { createtime, endTime, ...props } = values
+      const { createtime, endTime, ...props } = values;
       const data = {
         ...props,
         createtime: values.createtime ? values.createtime.format('YYYY-MM-DD HH:mm:ss') : '',
 
-        endTime: values.endTime ? values.endTime.format('YYYY-MM-DD HH:mm:ss') : ''
-      }
+        endTime: values.endTime ? values.endTime.format('YYYY-MM-DD HH:mm:ss') : '',
+      };
       this.getNewReports(data);
     });
   };
@@ -98,9 +98,9 @@ class RouteInspectReport extends React.Component<Props, State> {
       // endTime: moment().format('YYYY-MM-DD 23:59:59'),
       startTime: '2019-11-01 00:00:00',
       endTime: '2019-11-30 23:59:59',
-    }
+    };
     // console.log(data)
-    this.getNewReports(data)
+    this.getNewReports(data);
   }
 
   render() {
@@ -132,16 +132,17 @@ class RouteInspectReport extends React.Component<Props, State> {
                 <FormItem label="开始时间">
                   {getFieldDecorator('createtime', {
                     initialValue: moment('2019-11-01 00:00:00'),
-
-                  })(
-                    <DatePicker showTime={true} placeholder="请选择开始时间" />,
-                  )}
+                  })(<DatePicker showTime={true} placeholder="请选择开始时间" />)}
                 </FormItem>
                 <FormItem label="结束时间">
                   {getFieldDecorator('endTime', {
                     initialValue: moment('2019-11-30 23:59:59'),
                   })(
-                    <DatePicker showTime={true} format="YYYY-MM-DD HH:mm:ss" placeholder="请选择结束时间" />,
+                    <DatePicker
+                      showTime={true}
+                      format="YYYY-MM-DD HH:mm:ss"
+                      placeholder="请选择结束时间"
+                    />,
                   )}
                 </FormItem>
                 <span className={publicStyles.button_type}>
@@ -163,7 +164,12 @@ class RouteInspectReport extends React.Component<Props, State> {
               </Row>
             </Form>
           </div>
-          <MainContent columns={this.state.colum} data={this.state.record} total={total} showEdit={false} />
+          <MainContent
+            columns={this.state.colum}
+            data={this.state.record}
+            total={total}
+            showEdit={false}
+          />
         </Content>
       </div>
     );
