@@ -61,7 +61,7 @@ class FencingSetting extends React.Component<Props, State> {
     return new Promise(resolve => {
       const mapImage = new Image();
       mapImage.src = require('../../map-manager/assets/baoan.png');
-      mapImage.onload = function () {
+      mapImage.onload = function() {
         resolve(mapImage);
       };
     });
@@ -69,7 +69,7 @@ class FencingSetting extends React.Component<Props, State> {
   async componentDidMount() {
     const mapImage = await this.dynamicLoadMapImage();
     const iconImage = await this.dynamicLoadIconImage();
-    if(this.map.current) {
+    if (this.map.current) {
       const { clientWidth, clientHeight } = this.map.current;
       this.setState({
         icon: iconImage,
@@ -86,9 +86,9 @@ class FencingSetting extends React.Component<Props, State> {
     const fencingTypes = await getAllFencingTypes();
     let usersResp = await getAllUserInfo();
     let users = [];
-    for(let i = 0; i < usersResp.result.length; i++) {
+    for (let i = 0; i < usersResp.result.length; i++) {
       const dept = usersResp.result[i];
-      for(let j = 0; j < dept.relatePeopleResponses.length; j++) {
+      for (let j = 0; j < dept.relatePeopleResponses.length; j++) {
         const item = dept.relatePeopleResponses[j];
         users.push(item);
       }
@@ -113,7 +113,7 @@ class FencingSetting extends React.Component<Props, State> {
     return new Promise(resolve => {
       const mapImage = new Image();
       mapImage.src = require('../../big-screen/assets/map.png');
-      mapImage.onload = function () {
+      mapImage.onload = function() {
         resolve(mapImage);
       };
     });
@@ -136,7 +136,7 @@ class FencingSetting extends React.Component<Props, State> {
     );
   };
   onLampSelectChange = e => {
-    if(!this.map.current) return;
+    if (!this.map.current) return;
     const { clientWidth, clientHeight } = this.map.current;
     let _lamps = this.props.lampsType;
     // const routes = inspectionRoute && inspectionRoute.split(',');
@@ -162,7 +162,7 @@ class FencingSetting extends React.Component<Props, State> {
   };
   createLamps() {
     const lamps = this.state.showLamps;
-    if(lamps.length === 0) return;
+    if (lamps.length === 0) return;
     return lamps.map((lamp, index) => (
       <ImageLayer
         image={this.state.icon}
@@ -198,7 +198,7 @@ class FencingSetting extends React.Component<Props, State> {
   onSubmit = e => {
     e.preventDefault();
     this.props.form.validateFields(async (err, values) => {
-      const { effectiveTime, failureTime, userId = [], ...props } = values;
+      const { effectiveTime, failureTime, userId = [], lampIds = [], ...props } = values;
       const data = {
         ...props,
         effectiveTime: values.effectiveTime
@@ -208,6 +208,7 @@ class FencingSetting extends React.Component<Props, State> {
           ? values.failureTime.format('YYYY-MM-DD HH:mm:ss').toString()
           : '',
         userId: userId.join(','),
+        lampIds: lampIds.join(','),
       };
 
       const isSuccessed = await addMapFencingArea(data);

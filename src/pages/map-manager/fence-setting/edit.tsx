@@ -181,7 +181,7 @@ class FencingSetting extends React.Component<Props, State> {
     return getFieldDecorator('lampIds', {
       rules: [],
       initialValue:
-        (fencingTypesRecord.lampCode && fencingTypesRecord.lampCode.split(',')) || undefined,
+        (fencingTypesRecord.lampId && fencingTypesRecord.lampId.split(',')) || undefined,
     })(
       <Select
         mode="multiple"
@@ -202,7 +202,7 @@ class FencingSetting extends React.Component<Props, State> {
     e.preventDefault();
     const { fencingTypesRecord } = this.props;
     this.props.form.validateFields(async (err, values) => {
-      const { effectiveTime, failureTime, userId = [], ...props } = values;
+      const { effectiveTime, failureTime, userId = [], lampIds = [], ...props } = values;
       const data = {
         ...props,
         effectiveTime: values.effectiveTime
@@ -212,6 +212,7 @@ class FencingSetting extends React.Component<Props, State> {
           ? values.failureTime.format('YYYY-MM-DD HH:mm:ss').toString()
           : '',
         userId: userId.join(','),
+        lampIds: lampIds.join(','),
       };
       const { userInfo = [], ...rest } = fencingTypesRecord;
       const user_id = userInfo.map(item => item.id).join(',');
