@@ -66,7 +66,7 @@ class AddUsers extends React.Component<Props, State> {
               message: '请选择职务',
             },
           ],
-          initialValue: (allDuties && allDuties[0] && allDuties[0].id) || '',
+          // initialValue: (allDuties && allDuties[0] && allDuties[0].id) || '',
         })(
           <Select placeholder="请选择职务">
             {allDuties &&
@@ -92,7 +92,7 @@ class AddUsers extends React.Component<Props, State> {
               message: '请选择保密等级',
             },
           ],
-          initialValue: (allSecretLevel && allSecretLevel[1] && allSecretLevel[1].id) || '',
+          // initialValue: (allSecretLevel && allSecretLevel[1] && allSecretLevel[1].id) || '',
         })(
           <Select placeholder="请选择保密等级">
             {allSecretLevel.map((level, index) => (
@@ -203,7 +203,7 @@ class AddUsers extends React.Component<Props, State> {
                             message: '请选择性别',
                           },
                         ],
-                        initialValue: '0',
+                        // initialValue: '0',
                       })(
                         <Select placeholder="请选择性别">
                           <Option value="0">男</Option>
@@ -246,7 +246,7 @@ class AddUsers extends React.Component<Props, State> {
                             message: '请选择部门',
                           },
                         ],
-                        initialValue: (allPosition && allPosition[0] && allPosition[0].id) || '',
+                        // initialValue: (allPosition && allPosition[0] && allPosition[0].id) || '',
                       })(
                         <Select placeholder="请选择部门">
                           {allPosition &&
@@ -271,16 +271,24 @@ class AddUsers extends React.Component<Props, State> {
                             message: '请选择人员类型',
                           },
                         ],
-                        initialValue:
-                          (this.state.userTypes &&
-                            this.state.userTypes[0] &&
-                            this.state.userTypes[0].roleId) ||
-                          '',
+                        // initialValue:
+                        //   (this.state.userTypes &&
+                        //     this.state.userTypes[0] &&
+                        //     this.state.userTypes[0].roleId) ||
+                        //   '',
                       })(
-                        <SelectText
-                          options={this.state.userTypes as OptionValue[]}
-                          style={{ width: '2rem' }}
-                        />,
+                        // <SelectText
+                        //   placeholder="请选择人员类型"
+                        //   options={this.state.userTypes as OptionValue[]}
+                        //   style={{ width: '2rem' }}
+                        // />,
+                        <Select placeholder="请选择在职状态">
+                          {this.state.userTypes.map(item => (
+                            <Option value={item.key} key={item.key}>
+                              {item.value}
+                            </Option>
+                          ))}
+                        </Select>,
                       )}
                     </Form.Item>
                   </Col>
@@ -295,7 +303,7 @@ class AddUsers extends React.Component<Props, State> {
                             message: '请选择在职状态',
                           },
                         ],
-                        initialValue: '0',
+                        // initialValue: '0',
                       })(
                         <Select placeholder="请选择在职状态">
                           <Option value="0">在职</Option>

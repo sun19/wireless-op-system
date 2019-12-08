@@ -60,7 +60,7 @@ class FencingSetting extends React.Component<Props, State> {
   async componentDidMount() {
     const mapImage = await this.dynamicLoadMapImage();
     const iconImage = await this.dynamicLoadIconImage();
-    if(this.map.current) {
+    if (this.map.current) {
       const { clientWidth, clientHeight } = this.map.current;
       this.setState({
         icon: iconImage,
@@ -77,9 +77,9 @@ class FencingSetting extends React.Component<Props, State> {
     const fencingTypes = await getAllFencingTypes();
     let usersResp = await getAllUserInfo();
     let users = [];
-    for(let i = 0; i < usersResp.result.length; i++) {
+    for (let i = 0; i < usersResp.result.length; i++) {
       const dept = usersResp.result[i];
-      for(let j = 0; j < dept.relatePeopleResponses.length; j++) {
+      for (let j = 0; j < dept.relatePeopleResponses.length; j++) {
         const item = dept.relatePeopleResponses[j];
         users.push(item);
       }
@@ -104,7 +104,7 @@ class FencingSetting extends React.Component<Props, State> {
     return new Promise(resolve => {
       const mapImage = new Image();
       mapImage.src = require('../../map-manager/assets/baoan.png');
-      mapImage.onload = function () {
+      mapImage.onload = function() {
         resolve(mapImage);
       };
     });
@@ -113,18 +113,19 @@ class FencingSetting extends React.Component<Props, State> {
     return new Promise(resolve => {
       const mapImage = new Image();
       mapImage.src = require('../../big-screen/assets/map.png');
-      mapImage.onload = function () {
+      mapImage.onload = function() {
         resolve(mapImage);
       };
     });
   }
 
   setupRelationPeople = () => {
-    const { users } = this.props;
+    const { users, fencingTypesRecord } = this.props;
     const { getFieldDecorator } = this.props.form;
-
+    const { userInfo } = fencingTypesRecord;
     return getFieldDecorator('userId', {
       rules: [],
+      initialValue: userInfo.map(item => item.id),
     })(
       <Select mode="multiple" placeholder="请选择关联人员" style={{ width: '100%' }}>
         {users.map(user => (
@@ -136,7 +137,7 @@ class FencingSetting extends React.Component<Props, State> {
     );
   };
   onLampSelectChange = e => {
-    if(!this.map.current) return;
+    if (!this.map.current) return;
     const { clientWidth, clientHeight } = this.map.current;
     let _lamps = this.props.lampsType;
     // const routes = inspectionRoute && inspectionRoute.split(',');
@@ -162,7 +163,7 @@ class FencingSetting extends React.Component<Props, State> {
   };
   createLamps() {
     const lamps = this.state.showLamps;
-    if(lamps.length === 0) return;
+    if (lamps.length === 0) return;
     return lamps.map((lamp, index) => (
       <ImageLayer
         image={this.state.icon}
@@ -175,7 +176,7 @@ class FencingSetting extends React.Component<Props, State> {
     ));
   }
   setupShowLamps = () => {
-    const { lampsType } = this.props;
+    const { lampsType, fencingTypesRecord } = this.props;
     const { getFieldDecorator } = this.props.form;
     return getFieldDecorator('lampIds', {
       rules: [],

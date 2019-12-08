@@ -53,7 +53,7 @@ class UserAuths extends React.Component<Props, State> {
               message: '请选择职务',
             },
           ],
-          initialValue: (allDuties && allDuties[0] && allDuties[0].id) || '',
+          // initialValue: (allDuties && allDuties[0] && allDuties[0].id) || '',
         })(
           <Select placeholder="请选择职务">
             {allDuties &&
@@ -80,7 +80,7 @@ class UserAuths extends React.Component<Props, State> {
               message: '请选择保密等级',
             },
           ],
-          initialValue: (allSecretLevel && allSecretLevel[0] && allSecretLevel[0].id) || '',
+          // initialValue: (allSecretLevel && allSecretLevel[0] && allSecretLevel[0].id) || '',
         })(
           <Select placeholder="请选择保密等级">
             {allSecretLevel &&
@@ -248,7 +248,7 @@ class UserAuths extends React.Component<Props, State> {
                             message: '请选择部门',
                           },
                         ],
-                        initialValue: allPosition && allPosition[0] && allPosition[0].id,
+                        // initialValue: allPosition && allPosition[0] && allPosition[0].id,
                       })(
                         <Select placeholder="请选择部门">
                           {allPosition &&
@@ -272,7 +272,7 @@ class UserAuths extends React.Component<Props, State> {
                             message: '请选择在职状态',
                           },
                         ],
-                        initialValue: '0',
+                        // initialValue: '0',
                       })(
                         <Select placeholder="请选择在职状态">
                           <Option value="0">在职</Option>

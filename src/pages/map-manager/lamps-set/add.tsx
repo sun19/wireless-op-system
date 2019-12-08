@@ -33,7 +33,7 @@ interface State {
   circleY: number;
   circleShow: boolean;
 }
-interface FormProps extends FormComponentProps { }
+interface FormProps extends FormComponentProps {}
 
 type StateProps = ReturnType<typeof mapState>;
 type Props = StateProps & UmiComponentProps & FormProps;
@@ -70,7 +70,7 @@ class halmpAdd extends React.Component<Props, State> {
     return new Promise(resolve => {
       const mapImage = new Image();
       mapImage.src = require('../../big-screen/assets/map.png');
-      mapImage.onload = function () {
+      mapImage.onload = function() {
         resolve(mapImage);
       };
     });
@@ -78,7 +78,7 @@ class halmpAdd extends React.Component<Props, State> {
 
   async componentDidMount() {
     const mapImage = await this.dynamicLoadMapImage();
-    if(this.map.current) {
+    if (this.map.current) {
       const { clientWidth, clientHeight } = this.map.current;
 
       this.setState({
@@ -138,7 +138,7 @@ class halmpAdd extends React.Component<Props, State> {
     const x = this.state.circleX;
     const y = this.state.circleY;
     const circleShow = this.state.circleShow;
-    if(!circleShow) return;
+    if (!circleShow) return;
     return (
       <CircleLayer
         x={x}
@@ -204,7 +204,7 @@ class halmpAdd extends React.Component<Props, State> {
                     )}
                   </Form.Item>
                   <Form.Item label="区域">
-                    {getFieldDecorator('regionalName', {
+                    {getFieldDecorator('regionalId', {
                       rules: [],
                     })(
                       <Select placeholder="请选择区域">
@@ -281,7 +281,7 @@ class halmpAdd extends React.Component<Props, State> {
                       width={this.state.width}
                       height={this.state.height}
                       draggable={false}
-                    // onClick={this.onCircleClick}
+                      // onClick={this.onCircleClick}
                     >
                       <Layer>
                         <ImageLayer

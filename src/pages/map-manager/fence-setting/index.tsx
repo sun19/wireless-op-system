@@ -99,10 +99,10 @@ const columns = [
 
   {
     title: '关联人员',
-    dataIndex: 'userName',
+    dataIndex: 'userInfo',
     editable: true,
     render(values = []) {
-      return <span>{values.join('，')}</span>;
+      return <span>{values.map(item => item.name).join('，')}</span>;
     },
   },
   {

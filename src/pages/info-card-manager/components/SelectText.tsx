@@ -28,6 +28,7 @@ export default class SelectText extends React.Component<Props> {
     const options = this.setupOptions();
     return (
       <Select
+        placeholder={this.props.placeholder}
         defaultValue={this.props.value}
         style={Object.assign({ width: 169 }, this.props.style)}
         className={styles.select_text}
