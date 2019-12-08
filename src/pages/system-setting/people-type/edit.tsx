@@ -109,8 +109,9 @@ class EditUserAuth extends React.Component<Props, State> {
         return;
       }
       const isSuccessed = await editMenues(data);
+      await updateUserType(Object.assign({}, peopleTypeRecord, data));
       if (isSuccessed.success) {
-        message.success('编辑成功!');
+        // message.success('编辑成功!');
         setTimeout(() => router.push('/system-setting/people-type'), 1000);
       }
     });
