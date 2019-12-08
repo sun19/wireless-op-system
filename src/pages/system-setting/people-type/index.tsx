@@ -54,7 +54,7 @@ class PeopelType extends React.Component<Props> {
   }
 
   async getUserTypes() {
-    const userTypes = await getUserTypes({ userType: '0' });
+    const userTypes = await getUserTypes({ userType: '1' });
     this.props.dispatch({
       type: 'systemSetting/update',
       payload: {
@@ -81,13 +81,12 @@ class PeopelType extends React.Component<Props> {
       okText: '取消',
       okType: 'danger',
       cancelText: '确定',
-      onOk() { },
+      onOk() {},
       async onCancel() {
         await deleteUserType({ id: item.id });
         //重新请求数据重绘
         self.getUserTypes();
       },
-    
     });
   }
 
