@@ -2,7 +2,7 @@
  * title: 实时轨迹
  */
 import React, { Component } from 'react';
-import { Row, Col, Icon, Table, Progress } from 'antd';
+import { Row, Col, Icon, Table, Progress,Tooltip } from 'antd';
 import ReactEcharts from 'echarts-for-react';
 import request, { format } from '@/utils/request';
 import { connect } from 'dva';
@@ -720,18 +720,36 @@ class DataView extends Component<any, State> {
         dataIndex: 'inspectionTime',
         editable: true,
         ellipsis: true,
-        render: item => {
-          return moment(item).format('MM-DD HH:mm');
-        },
-      },
+    onCell: () => {
+      return {
+        style: {
+          // maxWidth: 150,
+          overflow: 'hidden',
+          whiteSpace: 'nowrap',
+          textOverflow: 'ellipsis',
+          cursor: 'pointer'
+        }
+      }
+    },
+        render: (text) => <Tooltip className='tooltips' placement="topLeft" title={moment(text).format('MM-DD HH:mm')}>{moment(text).format('MM-DD HH:mm')}</Tooltip>,
+  },
       {
         title: '结束时间',
         dataIndex: 'endTime',
         editable: true,
         ellipsis: true,
-        render: item => {
-          return moment(item).format('MM-DD HH:mm');
+        onCell: () => {
+          return {
+            style: {
+              // maxWidth: 150,
+              overflow: 'hidden',
+              whiteSpace: 'nowrap',
+              textOverflow: 'ellipsis',
+              cursor: 'pointer'
+            }
+          }
         },
+        render: (text) => <Tooltip className='tooltips' placement="topLeft" title={moment(text).format('MM-DD HH:mm')}>{moment(text).format('MM-DD HH:mm')}</Tooltip>,
       },
       {
         title: '巡检人员',
