@@ -122,7 +122,7 @@ export async function deleteMessageCard(params: DeleteMessageCardParams) {
 }
 //字典表`isShow`传0
 export async function getSuperAdminList(params: GetSuperAdminListParams) {
-  const resp = await request.get(GET_SUPER_ADMIN_LIST, { params: Object.assign({ isShow: '0' }, params) });
+  const resp = await request.get(GET_SUPER_ADMIN_LIST, { params: params });
   return resp.result;
 }
 

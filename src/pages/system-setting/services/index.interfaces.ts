@@ -69,6 +69,7 @@ export interface DeleteMessageCardParams {
 export interface GetSuperAdminListParams {
   type?: string;
   remark?: string;
+  isShow?: string;
   pageNo?: number;
   pageSize?: number;
 }

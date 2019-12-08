@@ -82,6 +82,7 @@ class Adduth extends React.Component<Props, State> {
     const lamps = await getAllLamps();
     const warningTypes = await getSuperAdminList({
       type: 'alarmType',
+      isShow: '0',
     });
     const repeatTypes = await getSuperAdminList({
       type: 'repeatType',
