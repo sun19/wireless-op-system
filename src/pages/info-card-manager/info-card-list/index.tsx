@@ -136,14 +136,13 @@ const columns = [
     editable: true,
   },
   {
-    title: '人员类型',
+    title: '类型',
     dataIndex: 'type',
     className: 'select_text',
     editable: true,
-
-    render: (value, current) => {
-      return <span> {current.userTypeName || '-'}</span>;
-    },
+    render: (item) => {
+      return ['内部', '外部'][item]
+    }
   },
   {
     title: '保密等级',
@@ -219,22 +218,21 @@ class SuperAdmin extends React.Component<Props, State> {
   addUser = () => {
     router.push('/info-card-manager/info-card-list/add');
   };
-
   deleteColumn(item: DeleteInfo) {
     //TODO:修改人ID
     let self = this;
     confirm({
       title: '确定要删除这条信息吗？',
       content: '',
-      okText: '确定',
+      okText: '取消',
       okType: 'danger',
-      cancelText: '取消',
-      async onOk() {
+      cancelText: '确定',
+      onOk() { },
+      async onCancel() {
         await deleteInfo({ id: item.id });
         //重新请求数据重绘
         self.getInfoListData();
       },
-      onCancel() {},
     });
   }
 
@@ -255,25 +253,7 @@ class SuperAdmin extends React.Component<Props, State> {
 
   async getInfoListData() {
     const { userName, name, type } = this.state;
-    const { userTypes } = this.props;
     const infoList = await getInfoListParams({ userName, name, type });
-    if (!_.isEmpty(userTypes)) {
-      let types = userTypes.records || [];
-      types = types.reduce((prev, item) => {
-        return _.assign(prev, {
-          [item.roleCode]: item.roleName,
-        });
-      }, {});
-      infoList.records = infoList.records.map(item => {
-        if (!_.isString(item.type) || +item.type <= 0) {
-          return item;
-        }
-        return {
-          ...item,
-          userTypeName: types[item.type],
-        };
-      });
-    }
     this.props.dispatch({
       type: 'infoCardManager/update',
       payload: { customManager: infoList },
@@ -291,28 +271,22 @@ class SuperAdmin extends React.Component<Props, State> {
   }
 
   setupUserType = () => {
-    const { userTypes } = this.props;
-    if (_.isEmpty(userTypes)) return null;
-    let { records, total } = userTypes;
-    records = records.map(item => {
-      return _.assign(item, { key: item.id });
-    });
     return (
       <div
         style={{ marginTop: '-3px' }}
-        // className={publicStyles.selection}
       >
         <Select
-          placeholder="请选择人员类型"
+          placeholder="请选择类型"
           className={publicStyles.select_text}
           onChange={this.selectChange}
           value={this.state.type}
         >
-          {records.map((item, index) => (
-            <Option value={item.roleCode} key={item.id}>
-              {item.roleName}
-            </Option>
-          ))}
+          <Option value='0'>
+            内部
+                      </Option>
+          <Option value='1'>
+            外部
+                      </Option>
         </Select>
       </div>
     );
@@ -360,7 +334,7 @@ class SuperAdmin extends React.Component<Props, State> {
                     placeholder="请输入信息牌"
                   />
                 </FormItem>
-                <FormItem label="人员类型">{this.setupUserType()}</FormItem>
+                <FormItem label="类型">{this.setupUserType()}</FormItem>
                 <span className={publicStyles.button_type}>
                   <Button className={publicStyles.form_btn} onClick={this.onSearch}>
                     查询
@@ -405,7 +379,7 @@ class SuperAdmin extends React.Component<Props, State> {
 }
 const mapState = ({ infoCardManager }) => {
   const resp = infoCardManager.customManager;
-  return { userList: resp, userTypes: infoCardManager.peopleType };
+  return { userList: resp, };
 };
 
 export default connect(mapState)(SuperAdmin);
