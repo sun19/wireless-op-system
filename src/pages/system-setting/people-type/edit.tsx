@@ -102,7 +102,9 @@ class EditUserAuth extends React.Component<Props, State> {
         ...props,
         roleId: peopleTypeRecord.id,
         // localStorage.getItem('userMessage'),
-        resourceIds: this.state.checkedKeys.concat(this.state.halfCheckedKeys).join(','),
+        //带上父级ID的
+        // resourceIds: this.state.checkedKeys.concat(this.state.halfCheckedKeys).join(','),
+        resourceIds: this.state.checkedKeys.join(','),
       };
       if (err) {
         message.error('填写信息有误', data);
