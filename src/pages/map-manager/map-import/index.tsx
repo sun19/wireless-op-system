@@ -32,12 +32,12 @@ const columns = [
     width: '10%',
     editable: true,
   },
-  {
-    title: '身份证号',
-    dataIndex: 'cardNo',
-    width: '10%',
-    editable: true,
-  },
+  // {
+  //   title: '身份证号',
+  //   dataIndex: 'cardNo',
+  //   width: '10%',
+  //   editable: true,
+  // },
   {
     title: '性别',
     dataIndex: 'sex',
@@ -48,18 +48,18 @@ const columns = [
       return ['男', '女'][onlineStatus]
     },
   },
-  {
-    title: '家庭住址',
-    dataIndex: 'address',
-    width: '10%',
-    editable: true,
-  },
-  {
-    title: '联系方式',
-    dataIndex: 'phone',
-    width: '10%',
-    editable: true,
-  },
+  // {
+  //   title: '家庭住址',
+  //   dataIndex: 'address',
+  //   width: '10%',
+  //   editable: true,
+  // },
+  // {
+  //   title: '联系方式',
+  //   dataIndex: 'phone',
+  //   width: '10%',
+  //   editable: true,
+  // },
   {
     title: '部门名称',
     dataIndex: 'departmentName',

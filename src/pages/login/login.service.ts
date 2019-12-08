@@ -86,3 +86,9 @@ export async function editMenues(params) {
   const resp = await request.post(EDIT_MENUS, { data: format(params) });
   return resp;
 }
+// // 编辑菜单名称
+// export async function editMenuesName(params) {
+//   const resp = await request.post(EDIT_MENUS_NAME, { data: format(params) });
+//   return resp;
+// }
+

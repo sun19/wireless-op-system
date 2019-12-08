@@ -2,7 +2,7 @@
  * title: 设置 > 系统管理员设置 > 电子围栏设置
  */
 import React from 'react';
-import { Layout, Form, Input, Row, Col, Select, Button, Icon, message, Modal } from 'antd';
+import { Layout, Form, Input, Row, Col, Select, Tooltip, Button, Icon, message, Modal } from 'antd';
 import router from 'umi/router';
 import { FormComponentProps } from 'antd/lib/form';
 import { connect } from 'dva';
@@ -59,11 +59,37 @@ const columns = [
     title: '生效时间',
     dataIndex: 'effectiveTime',
     editable: true,
+    // ellipsis: true,
+    // onCell: () => {
+    //   return {
+    //     style: {
+    //       // maxWidth: 150,
+    //       overflow: 'hidden',
+    //       whiteSpace: 'nowrap',
+    //       textOverflow: 'ellipsis',
+    //       cursor: 'pointer'
+    //     }
+    //   }
+    // },
+    // render: (text) => <Tooltip className='tooltips' placement="topLeft" title={text}>{text}</Tooltip>,
   },
   {
     title: '失效时间',
     dataIndex: 'failureTime',
     editable: true,
+    // ellipsis: true,
+    // onCell: () => {
+    //   return {
+    //     style: {
+    //       // maxWidth: 150,
+    //       overflow: 'hidden',
+    //       whiteSpace: 'nowrap',
+    //       textOverflow: 'ellipsis',
+    //       cursor: 'pointer'
+    //     }
+    //   }
+    // },
+    // render: (text) => <Tooltip className='tooltips' placement="topLeft" title={text}>{text}</Tooltip>,
   },
   {
     title: '级别',

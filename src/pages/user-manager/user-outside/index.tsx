@@ -1,5 +1,5 @@
 /**
- * title: 显示 > 用户列表—内部
+ * title: 设置 > 外来人员录入
  */
 import React from 'react';
 import { Layout, Modal, Form, Input, Row, Col, Select, Button, Icon, message } from 'antd';
@@ -41,11 +41,11 @@ const columns = [
     dataIndex: 'name',
     editable: true,
   },
-  {
-    title: '身份证号',
-    dataIndex: 'cardNo',
-    editable: true,
-  },
+  // {
+  //   title: '身份证号',
+  //   dataIndex: 'cardNo',
+  //   editable: true,
+  // },
   {
     title: '性别',
     dataIndex: 'sex',
@@ -55,16 +55,16 @@ const columns = [
       return ['男', '女'][onlineStatus];
     },
   },
-  {
-    title: '家庭住址',
-    dataIndex: 'address',
-    editable: true,
-  },
-  {
-    title: '联系方式',
-    dataIndex: 'phone',
-    editable: true,
-  },
+  // {
+  //   title: '家庭住址',
+  //   dataIndex: 'address',
+  //   editable: true,
+  // },
+  // {
+  //   title: '联系方式',
+  //   dataIndex: 'phone',
+  //   editable: true,
+  // },
   {
     title: '部门名称',
     dataIndex: 'departmentName',

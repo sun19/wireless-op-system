@@ -2,7 +2,7 @@
  * title: 应用 > 信息牌列表
  */
 import React from 'react';
-import { Layout, Modal, Form, Input, Row, message, Tag, Select, Button, Icon } from 'antd';
+import { Layout, Modal, Form, Input, Row, message, Tag, Select, Tooltip, Button, Icon } from 'antd';
 import router from 'umi/router';
 import * as _ from 'lodash';
 import { connect } from 'dva';
@@ -39,6 +39,19 @@ const columns = [
     title: '信息牌编号',
     dataIndex: 'name',
     editable: true,
+    ellipsis: true,
+    onCell: () => {
+      return {
+        style: {
+          // maxWidth: 150,
+          overflow: 'hidden',
+          whiteSpace: 'nowrap',
+          textOverflow: 'ellipsis',
+          cursor: 'pointer'
+        }
+      }
+    },
+    render: (text) => <Tooltip className='tooltips' placement="topLeft" title={text}>{text}</Tooltip>,
   },
   {
     title: '状态',
@@ -55,6 +68,19 @@ const columns = [
     title: '定位',
     dataIndex: 'lampId',
     editable: true,
+    ellipsis: true,
+    onCell: () => {
+      return {
+        style: {
+          // maxWidth: 150,
+          overflow: 'hidden',
+          whiteSpace: 'nowrap',
+          textOverflow: 'ellipsis',
+          cursor: 'pointer'
+        }
+      }
+    },
+    render: (text) => <Tooltip className='tooltips' placement="topLeft" title={text}>{text}</Tooltip>,
   },
   {
     title: '姓名',
@@ -66,32 +92,45 @@ const columns = [
     dataIndex: 'positionName',
     editable: true,
   },
-  {
-    title: '身份证号',
-    dataIndex: 'cardNo',
-    editable: true,
-  },
-  {
-    title: '性别',
-    dataIndex: 'sex',
-    editable: true,
+  // {
+  //   title: '身份证号',
+  //   dataIndex: 'cardNo',
+  //   editable: true,
+  // },
+  // {
+  //   title: '性别',
+  //   dataIndex: 'sex',
+  //   editable: true,
 
-    render: onlineStatus => {
-      // let color = onlineStatus == 1 ? 'white' : '#EB6262';
-      let values = onlineStatus == 1 ? '女' : '男';
-      return <span> {values}</span>;
-    },
-  },
-  {
-    title: '家庭住址',
-    dataIndex: 'address',
-    editable: true,
-  },
-  {
-    title: '联系方式',
-    dataIndex: 'phone',
-    editable: true,
-  },
+  //   render: onlineStatus => {
+  //     // let color = onlineStatus == 1 ? 'white' : '#EB6262';
+  //     let values = onlineStatus == 1 ? '女' : '男';
+  //     return <span> {values}</span>;
+  //   },
+  // },
+  // {
+  //   title: '家庭住址',
+  //   dataIndex: 'address',
+  //   editable: true,
+  // },
+  // {
+  //   title: '联系方式',
+  //   dataIndex: 'phone',
+  //   editable: true,
+  // ellipsis: true,
+  //   onCell: () => {
+  //     return {
+  //       style: {
+  //         // maxWidth: 150,
+  //         overflow: 'hidden',
+  //         whiteSpace: 'nowrap',
+  //         textOverflow: 'ellipsis',
+  //         cursor: 'pointer'
+  //       }
+  //     }
+  //   },
+  //   render: (text) => <Tooltip className='tooltips' placement="topLeft" title={text}>{text}</Tooltip>,
+  // },
   {
     title: '部门',
     dataIndex: 'departmentName',
@@ -116,8 +155,7 @@ const columns = [
     editable: true,
 
     render: (securityLevelName, current) => {
-      let color = ['#f50', '#2db7f5', '#87d068'][+current.securityLevelId];
-
+      let color = ['#f50', '#2db7f5', '#87d068', '#87d8'][+current.securityLevelId];
       return <Tag color={color}> {securityLevelName}</Tag>;
     },
   },

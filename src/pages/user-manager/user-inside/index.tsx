@@ -2,7 +2,7 @@
  * title: 显示 > 用户列表—内部
  */
 import React from 'react';
-import { Layout, Modal, Form, Input, Row, Col, Select, Button, Icon, message } from 'antd';
+import { Layout, Modal, Form, Input, Row, Col, Select, Button, Icon, Tooltip, message } from 'antd';
 import router from 'umi/router';
 import { connect } from 'dva';
 import * as _ from 'lodash';
@@ -45,26 +45,39 @@ const columns = [
     title: '身份证号',
     dataIndex: 'cardNo',
     editable: true,
-  },
-  {
-    title: '性别',
-    dataIndex: 'sex',
-    className: 'select_text',
-    editable: true,
-    render: onlineStatus => {
-      return ['男', '女'][onlineStatus];
+    ellipsis: true,
+    onCell: () => {
+      return {
+        style: {
+          // maxWidth: 150,
+          overflow: 'hidden',
+          whiteSpace: 'nowrap',
+          textOverflow: 'ellipsis',
+          cursor: 'pointer'
+        }
+      }
     },
+    render: (text) => <Tooltip className='tooltips' placement="topLeft" title={text}>{text}</Tooltip>,
   },
-  {
-    title: '家庭住址',
-    dataIndex: 'address',
-    editable: true,
-  },
-  {
-    title: '联系方式',
-    dataIndex: 'phone',
-    editable: true,
-  },
+  // {
+  //   title: '性别',
+  //   dataIndex: 'sex',
+  //   className: 'select_text',
+  //   editable: true,
+  //   render: onlineStatus => {
+  //     return ['男', '女'][onlineStatus];
+  //   },
+  // },
+  // {
+  //   title: '家庭住址',
+  //   dataIndex: 'address',
+  //   editable: true,
+  // },
+  // {
+  //   title: '联系方式',
+  //   dataIndex: 'phone',
+  //   editable: true,
+  // },
   {
     title: '部门名称',
     dataIndex: 'departmentName',
@@ -92,15 +105,27 @@ const columns = [
   {
     title: '录入时间',
     dataIndex: 'entryTime',
-    width: '20%',
     editable: true,
+    ellipsis:true,
+    onCell: () => {
+      return {
+        style: {
+          // maxWidth: 150,
+          overflow: 'hidden',
+          whiteSpace: 'nowrap',
+          textOverflow: 'ellipsis',
+          cursor: 'pointer'
+        }
+      }
+    },
+    render: (text) => <Tooltip placement="topLeft" title={text}>{text}</Tooltip>,
   },
-  {
-    title: '注销时间',
-    dataIndex: 'logoutTime',
-    width: '20%',
-    editable: true,
-  },
+  // {
+  //   title: '注销时间',
+  //   dataIndex: 'logoutTime',
+  //   width: '20%',
+  //   editable: true,
+  // },
 ];
 
 type StateProps = ReturnType<typeof mapState>;
