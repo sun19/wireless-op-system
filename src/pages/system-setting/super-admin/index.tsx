@@ -133,13 +133,12 @@ class SuperAdmin extends React.Component<Props, State> {
       okText: '取消',
       okType: 'danger',
       cancelText: '确定',
-      onOk() { },
+      onOk() {},
       async onCancel() {
         await deleteSuperAdmin({ id: item.id });
         //重新请求数据重绘
         self.getSuperAdminList();
       },
-     
     });
   }
 

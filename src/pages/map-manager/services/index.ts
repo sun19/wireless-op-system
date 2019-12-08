@@ -218,9 +218,10 @@ export async function getPollingLineDetail(params: GetPollingLineDetailParams) {
 }
 /**
  * 获取所有告警类型
+ * 巡检路线这里`isShow`传'1'
  */
 export async function getAllWarningType() {
-  const resp = await request.get(GET_SUPER_ADMIN_LIST, { params: { type: 'alarmType' } });
+  const resp = await request.get(GET_SUPER_ADMIN_LIST, { params: { type: 'alarmType', isShow: '1' } });
   return resp;
 }
 

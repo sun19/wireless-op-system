@@ -120,9 +120,9 @@ export async function deleteMessageCard(params: DeleteMessageCardParams) {
     : message.error(`${resp.message}`);
   return resp.success === true && resp.code === 200;
 }
-
+//字典表`isShow`传0
 export async function getSuperAdminList(params: GetSuperAdminListParams) {
-  const resp = await request.get(GET_SUPER_ADMIN_LIST, { params });
+  const resp = await request.get(GET_SUPER_ADMIN_LIST, { params: Object.assign({ isShow: '0' }, params) });
   return resp.result;
 }
 
