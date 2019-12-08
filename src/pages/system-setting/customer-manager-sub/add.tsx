@@ -58,7 +58,7 @@ class AddUser extends React.Component<Props, State> {
   }
   goBack = () => {
     this.props.form.resetFields();
-    router.push('/system-setting/customer-manager');
+    router.push('/system-setting/customer-manager-sub');
   };
   onLoginNameChange = value => {
     this.props.form.setFieldsValue({
@@ -92,7 +92,7 @@ class AddUser extends React.Component<Props, State> {
       }
       const isSuccessed = await updateUserInfo(values);
       if (isSuccessed) {
-        setTimeout(() => router.push('/system-setting/customer-manager'), 1000);
+        setTimeout(() => router.push('/system-setting/customer-manager-sub'), 1000);
       }
     });
   }
