@@ -59,7 +59,7 @@ class EditUser extends React.Component<Props, State> {
   }
   goBack = () => {
     this.props.form.resetFields();
-    router.push('/system-setting/customer-manager');
+    router.push('/system-setting/customer-manager-sub');
   };
   onLoginNameChange = value => {
     this.props.form.setFieldsValue({
