@@ -232,7 +232,7 @@ class halmpAdd extends React.Component<Props, State> {
                     )}
                   </Form.Item>
                   {/* 暂不清楚是否需要，勿删 */}
-                  {/* <Form.Item label="地图名称">
+                  <Form.Item label="地图名称">
                     {getFieldDecorator('mapId', {
                       rules: [
                         {
@@ -248,7 +248,7 @@ class halmpAdd extends React.Component<Props, State> {
                         ))}
                       </Select>,
                     )}
-                  </Form.Item> */}
+                  </Form.Item>
                   <Form.Item className={styles.area_style} label="备注">
                     {getFieldDecorator('remark', {
                       rules: [

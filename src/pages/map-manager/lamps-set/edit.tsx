@@ -32,7 +32,7 @@ interface State {
   circleX: number;
   circleY: number;
 }
-interface FormProps extends FormComponentProps { }
+interface FormProps extends FormComponentProps {}
 
 type StateProps = ReturnType<typeof mapState>;
 type Props = StateProps & UmiComponentProps & FormProps;
@@ -69,7 +69,7 @@ class halmpAdd extends React.Component<Props, State> {
     return new Promise(resolve => {
       const mapImage = new Image();
       mapImage.src = require('../../big-screen/assets/map.png');
-      mapImage.onload = function () {
+      mapImage.onload = function() {
         resolve(mapImage);
       };
     });
@@ -77,7 +77,7 @@ class halmpAdd extends React.Component<Props, State> {
 
   async componentDidMount() {
     const mapImage = await this.dynamicLoadMapImage();
-    if(this.map.current) {
+    if (this.map.current) {
       const { clientWidth, clientHeight } = this.map.current;
       const { lampRecord } = this.props;
 
@@ -135,7 +135,7 @@ class halmpAdd extends React.Component<Props, State> {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { areas, lampRecord } = this.props;
+    const { areas, lampRecord, maps } = this.props;
     return (
       <ContentBorder className={styles.auth_root}>
         <Form
@@ -219,7 +219,7 @@ class halmpAdd extends React.Component<Props, State> {
                     )}
                   </Form.Item>
                   {/* 暂不清楚是否需要，勿删 */}
-                  {/* <Form.Item label="地图名称">
+                  <Form.Item label="地图名称">
                     {getFieldDecorator('mapId', {
                       rules: [
                         {
@@ -235,7 +235,7 @@ class halmpAdd extends React.Component<Props, State> {
                         ))}
                       </Select>,
                     )}
-                  </Form.Item> */}
+                  </Form.Item>
                   <Form.Item className={styles.area_style} label="备注">
                     {getFieldDecorator('remark', {
                       rules: [
