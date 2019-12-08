@@ -31,7 +31,7 @@ class LeftMenuList extends Component<any> {
     this.props.dispatch({
       type: 'menu/changeOpen',
       payload: {
-        menus: data.result,
+        menus: data.result || [],
         current,
         openKeys,
       },
