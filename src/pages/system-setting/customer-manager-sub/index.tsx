@@ -1,5 +1,5 @@
 /**
- * title: 设置 > 系统管理员设置 > 用户管理（值班员）
+ * title: 设置 > 高级管理员设置 > 值班员设置 > 用户管理
  */
 import React from 'react';
 import { UmiComponentProps } from '@/common/type';
@@ -115,7 +115,7 @@ class UserManager extends React.Component<Props, State> {
   };
 
   addUser = () => {
-    router.push('/system-setting/customer-manager/add');
+    router.push('/system-setting/customer-manager-sub/add');
   };
 
   deleteColumn = (item: DeleteUser) => {
@@ -159,7 +159,7 @@ class UserManager extends React.Component<Props, State> {
         customManagerRecord: data,
       },
     });
-    router.push('/system-setting/customer-manager/edit');
+    router.push('/system-setting/customer-manager-sub/edit');
   }
 
   render() {
