@@ -69,7 +69,7 @@ export async function warningInfoSearch(params: WarningInfoSearch) {
 }
 // 处理
 export async function warningInfoDeal(data: WarningInfoDeal) {
-  const resp = await request.delete(WARNING_INFO_DEAL, { data: format(data) });
+  const resp = await request.post(WARNING_INFO_DEAL, { data: format(data) });
   return resp.success === true && resp.code === 200;
 }
 

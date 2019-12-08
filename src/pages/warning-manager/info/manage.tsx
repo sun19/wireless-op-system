@@ -56,8 +56,9 @@ class TaskAdd extends React.Component<Props, State> {
         const { dataSource } = this.props
         const data ={ 
         userId: localStorage.getItem('userMessage'),
-            id:dataSource.id,
-            auditeType: '0',
+        type:'0',
+            alarmId:dataSource.id,
+            // auditeType: '0',
         }
        const isSuccessed = await warningInfoDeal(data)
        if (isSuccessed) {
