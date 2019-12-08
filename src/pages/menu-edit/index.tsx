@@ -1,147 +1,102 @@
 /**
- * title: 编辑
+ * title: 菜单编辑
  */
 import React from 'react';
-import { Form, Row, Col, Button, Input, message, Select, Icon, Tree } from 'antd';
-import { FormComponentProps } from 'antd/lib/form';
-import { connect } from 'dva';
-import router from 'umi/router';
-import * as _ from 'lodash';
-import ContentBorder from '../../components/ContentBorder';
-// import { InputText, TreeNodeMenu } from '../components';
-// import { updateUserType, getAllRoles } from '../services';
-import { getPeopleMenues, getAllMenues, editMenues } from '../login/login.service';
+import { Table, Badge, Menu, Dropdown, Icon } from 'antd';
+import request, { format } from '@/utils/request';
+
+import { getAllMenues } from '@/pages/login/login.service';
+import MainContent from './components/MainContent';
+import EditableTable from './components/EditorableTable';
 
 import styles from './index.less';
 
-const { TreeNode } = Tree;
-const { Option } = Select;
-type Props = FormComponentProps & ReturnType<typeof mapState>;
-
+const columns = [
+  {
+    title: '菜单名',
+    dataIndex: 'name',
+    editable: true,
+  },
+  {
+    title: '路径',
+    dataIndex: 'path',
+    editable: false,
+  },
+];
 
 interface State {
-    checkedKeys: any;
-    dataTree: any;
-    halfCheckedKeys: any;
-    editingValue?: string;
-    data: any
+  allMenus: any[];
 }
 
-class EditUserAuth extends React.Component<Props, State> {
-    constructor(props: Props) {
-        super(props);
-        this.onSubmit = this.onSubmit.bind(this);
-        this.state = {
-            checkedKeys: [],
-            dataTree: [],
-            halfCheckedKeys: [],
-            data: []
-        };
-    }
-    async componentDidMount() {
-        // 获取所有菜单
-        const data = await getAllMenues();
-        this.setState({ dataTree: data.result });
-    }
-    onCheck = (checkedKeys, info) => {
-        // console.log(info.checkedNodes)
-        this.setState({ checkedKeys: checkedKeys, halfCheckedKeys: info.halfCheckedKeys });
+export default class MenuEdit extends React.Component<any, State> {
+  constructor(props) {
+    super(props);
+    this.state = {
+      allMenus: [],
     };
-    onSubmit(e) {
-        // console.log(this.state.data)
-
-
-
-        //     // const isSuccessed = await editMenues(data);
-        //     // if (isSuccessed.success) {
-        //     //     message.success('编辑成功!');
-        //     //     setTimeout(() => router.push('/system-setting/people-type'), 1000);
-        //     // }
-
+    this.updateData = this.updateData.bind(this);
+  }
+  async componentDidMount() {
+    const menus = await getAllMenues();
+    this.setState({
+      allMenus: menus.result,
+    });
+  }
+  async updateData(newData, newItem) {
+    const isSuccessed = request.post(
+      'http://47.96.112.31:8086/jeecg-boot/intf/location/updateMenu',
+      {
+        data: format({
+          id: newItem.id,
+          name: newItem.name,
+        }),
+      },
+    );
+    if (isSuccessed) {
+      alert('修改成功');
+      const menus = await getAllMenues();
+      this.setState({
+        allMenus: menus.result,
+      });
     }
-    onChange = (e, item) => {
-        // console.log(e.target.value, item);
-        item.name = e.target.value
-        // console.log(item)
-        let currentData = this.state.data
-
-        const data = [{
-            id: item.id,
-            keys: item.keys,
-            name: e.target.value,
-            path: item.path
-        }]
-        const lastData = currentData.concat(data)
-        this.setState({ data: lastData })
-    };
-    titles = (item) => {
-        return <Input defaultValue={item.name} />
-         }
-    renderTreeNodes = data => {
-        // const self =this;
-        return data.map(item => {
-            if (item.child) {
-                return (
-                    <TreeNode title={this.titles(item)} key={item.id} dataRef={item}>
-                        {/* title={item.name} */}
-                        {item.name}
-                        {this.renderTreeNodes(item.child)}
-                    </TreeNode>
-                );
-            }
-            return <TreeNode title={this.titles(item)} key={item.id} />;
-        });
+  }
+  expandedRowRender = (record, index, indent, expanded) => {
+    const child = record.child;
+    if (child && Array.isArray(child) && child.length > 0) {
+      const columns = [
+        {
+          title: '菜单名',
+          dataIndex: 'name',
+          editable: true,
+        },
+        {
+          title: '路径',
+          dataIndex: 'path',
+          editable: false,
+        },
+      ];
+      return (
+        <EditableTable
+          columns={columns}
+          data={child}
+          pagination={false}
+          expandedRowRender={this.expandedRowRender}
+          showInlineEdit={true}
+        />
+      );
     }
-    render() {
-        const { getFieldDecorator } = this.props.form;
-        return (
-            <ContentBorder className={styles.auth_root}>
-                <Form layout="inline" style={{ marginTop: '0.57rem' }} onSubmit={this.onSubmit}>
-                    <div className="auth__inner--container  menu_tree">
-                        <Form.Item label="菜单编辑">
-                            {getFieldDecorator(
-                                'resourceIds',
-                                {},
-                            )(
-                                <Tree
-                                    checkable={false}
-                                    // defaultExpandedKeys={this.state.expandedKeys}
-                                    // defaultSelectedKeys={this.state.selectedKeys}
-                                    // defaultCheckedKeys={this.state.checkedKeys}
-                                    // expandedKeys={this.state.expandedKeys}
-                                    // selectedKeys={this.state.expandedKeys}
-                                    checkedKeys={this.state.checkedKeys}
-                                    // onSelect={this.onSelect}
-                                    onCheck={this.onCheck}
-                                >
-                                    {this.renderTreeNodes(this.state.dataTree)}
-                                </Tree>,
-                            )}
-                        </Form.Item>
-
-                        <Row type="flex" justify="center" style={{ marginTop: '0.35rem' }}>
-                            <Col span={6}>
-                                <Form.Item className={styles.button_type}>
-                                    <Button className={styles.form_btn} htmlType="submit">
-                                        确认
-                      </Button>
-                                </Form.Item>
-                            </Col>
-
-                        </Row>
-                    </div>
-                </Form>
-
-            </ContentBorder>
-        );
-    }
+  };
+  render() {
+    return (
+      <div className={styles.menu_edit}>
+        <EditableTable
+          columns={columns}
+          expandedRowRender={this.expandedRowRender}
+          data={this.state.allMenus}
+          showInlineEdit={true}
+          updateData={this.updateData}
+        />
+      </div>
+    );
+  }
 }
-
-const EditUserHOC = Form.create<Props>({ name: 'edit_user' })(EditUserAuth);
-
-const mapState = ({ menu }) => {
-    // const resp = systemSetting.peopleTypeRecord;
-    return { menu: menu.menus || [] };
-};
-
-export default connect(mapState)(EditUserHOC);
