@@ -88,11 +88,11 @@ const columns = [
     className: 'select_text',
     editable: true,
   },
-  {
-    title: '身份证号',
-    dataIndex: 'cardNo',
-    editable: true,
-  },
+  // {
+  //   title: '身份证号',
+  //   dataIndex: 'cardNo',
+  //   editable: true,
+  // },
   {
     title: '人员类型',
     dataIndex: 'type',

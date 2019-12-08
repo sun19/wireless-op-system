@@ -4,6 +4,7 @@
 
 :global(.ant-table-thead > tr > th) {
   color:#5eb4fe;
+  text-align: center;
   font-size: 24px;
   border-bottom: 1px solid rgba(67, 154, 255, 0.21);
 }
@@ -13,10 +14,19 @@
 
 :global(.ant-table-tbody > tr > td) {
   color: #fff;
+  text-align: center;
   font-size:21px;
   border-bottom: 1px solid  rgba(67, 154, 255, 0.21);
-}
 
+}
+:global(.ant-table-tbody > tr > td > span.ant-tag ) {
+  color: #fff;
+  text-align: center;
+  font-size:25px;
+  border-bottom: 1px solid  rgba(67, 154, 255, 0.21);
+  padding:5px 10px;
+
+}
 :global(.ant-table-tbody
     > tr:hover:not(.ant-table-expanded-row):not(.ant-table-row-selected)
     > td) {
@@ -35,6 +45,7 @@
 text-align: center;
   bottom: 30px;
   color: #1890ff;
+  
   font-size: 12px;
 }
 :global(.ant-btn.ant-btn-sm) {
