@@ -138,7 +138,7 @@ class WraningInfo extends React.Component<Props, State> {
           <div className={styles.public_hight_40}>
             <Form layout="inline" onSubmit={this.search}>
               <Row justify="start" align="middle" style={{ paddingLeft: '39px' }} gutter={16}>
-                <FormItem label="告警标签">
+                <FormItem label="告警名称">
                   {getFieldDecorator(
                     'name',
                     {},

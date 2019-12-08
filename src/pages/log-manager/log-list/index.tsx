@@ -38,12 +38,12 @@ const columns = [
   },
   {
     title: '操作用户',
-    dataIndex: 'userId',
+    dataIndex: 'userName',
     editable: true,
   },
   {
     title: '角色',
-    dataIndex: 'roleId',
+    dataIndex: 'roleName',
     className: 'select_text',
     editable: true,
   },
