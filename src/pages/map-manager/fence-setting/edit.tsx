@@ -180,6 +180,8 @@ class FencingSetting extends React.Component<Props, State> {
     const { getFieldDecorator } = this.props.form;
     return getFieldDecorator('lampIds', {
       rules: [],
+      initialValue:
+        (fencingTypesRecord.lampCode && fencingTypesRecord.lampCode.split(',')) || undefined,
     })(
       <Select
         mode="multiple"
