@@ -136,7 +136,7 @@ class UserInside extends React.Component<Props, State> {
     this.exportUser = this.exportUser.bind(this);
   }
   addUser = () => {
-    router.push('/user-manager/user-inside/add');
+    router.push('/user-manager/user-outside/add');
   };
 
   onNameChange = e => {
@@ -156,7 +156,9 @@ class UserInside extends React.Component<Props, State> {
   };
 
   async getUserList() {
-    const params = {};
+    const params = {
+      isIn:'1',
+    };
     const { name, cardNo } = this.state;
     if (name !== '') {
       params['name'] = name;
@@ -187,7 +189,7 @@ class UserInside extends React.Component<Props, State> {
         userInside: data,
       },
     });
-    router.push('/user-manager/user-inside/edit');
+    router.push('/user-manager/user-outside/edit');
   }
 
   deleteColumn(item) {

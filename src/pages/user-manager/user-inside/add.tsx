@@ -147,7 +147,11 @@ class UserAuths extends React.Component<Props, State> {
         message.error('填写信息有误 ', values);
         return;
       }
-      const isSuccessed = await addUser(values);
+      let data={
+        isIn: '0',
+        ...values,
+      }
+      const isSuccessed = await addUser(data);
       if (isSuccessed) {
         setTimeout(() => router.push('/user-manager/user-inside'), 1000);
       }

@@ -277,7 +277,7 @@ class AddUsers extends React.Component<Props, State> {
                         rules: [],
                         initialValue: currentIndex != null && currentUser.type,
                       })(
-                        <Select placeholder="请选择在职状态">
+                        <Select placeholder="请选择类型">
                           <Option value="0">内部</Option>
                           <Option value="1">外部</Option>
                         </Select>,

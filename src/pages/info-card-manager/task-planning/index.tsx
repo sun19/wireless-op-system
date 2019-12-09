@@ -156,7 +156,7 @@ class TaskPlan extends React.Component<Props, State> {
         {getFieldDecorator('task', {
           initialValue: '',
         })(
-          <Select placeholder="请选择任务" style={{ marginTop: '-3px' }}>
+          <Select placeholder="请选择任务" style={{ marginTop: '-5px' }}>
             <Option value="0">巡更路线</Option>
             <Option value="1">责任区</Option>
             <Option value="2">禁止区</Option>
@@ -186,15 +186,15 @@ class TaskPlan extends React.Component<Props, State> {
                 style={{ paddingLeft: '39px' }}
                 gutter={16}
               >
-                <FormItem label="姓名">
+                {/* <FormItem label="姓名">
                   {getFieldDecorator(
                     'name',
                     {},
                   )(<Input className={publicStyles.input_text} placeholder="请输入姓名" />)}
-                </FormItem>
+                </FormItem> */}
                 <FormItem label="信息牌">
                   {getFieldDecorator(
-                    'informationBoardName',
+                    'informationBoardId',
                     {},
                   )(<Input className={publicStyles.input_text} placeholder="信息牌编号" />)}
                 </FormItem>

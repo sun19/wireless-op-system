@@ -181,7 +181,9 @@ class UserInside extends React.Component<Props, State> {
   };
 
   async getUserList() {
-    const params = {};
+    const params = {
+      isIn: '0',
+    };
     const { name, cardNo } = this.state;
     if (name !== '') {
       params['name'] = name;

@@ -2,12 +2,13 @@
  * title: 电子围栏
  */
 import React, { Component } from 'react';
-import { message, Row, Col, Icon, Progress, Breadcrumb, Table } from 'antd';
+import { message, Row, Col,Tooltip, Icon, Progress, Breadcrumb, Table } from 'antd';
 import Konva from 'konva';
 import ReactEcharts from 'echarts-for-react';
 import { Stage, Layer, Image as ImageLayer, Line as LineLayer } from 'react-konva';
 import { connect } from 'dva';
 import * as _ from 'lodash';
+import moment from 'moment';
 
 import RealTime from '../../map-manager';
 import Title from '../components/Title';
@@ -715,9 +716,9 @@ class Realtime extends React.Component<Props, State> {
             <div>
               <span>{name}</span>
               {record.processResult == '1' ? (
-                <span className={styles.notResolved}>未处理</span>
+                <span style={{ marginLeft: '10px' }} className={styles.notResolved}>未处理</span>
               ) : (
-                <span className={styles.resolveed}>已处理</span>
+                <span style={{marginLeft: '10px' }} className={styles.resolveed}>已处理</span>
               )}
             </div>
           );
@@ -728,6 +729,18 @@ class Realtime extends React.Component<Props, State> {
         dataIndex: 'processTime',
         editable: true,
         ellipsis: true,
+        onCell: () => {
+          return {
+            style: {
+              // maxWidth: 150,
+              overflow: 'hidden',
+              whiteSpace: 'nowrap',
+              textOverflow: 'ellipsis',
+              cursor: 'pointer'
+            }
+          }
+        },
+        render: (item) => <Tooltip className='tooltips' placement="topLeft" title={item ? moment(item).format('MM-DD HH:mm') : ''}>{item ? moment(item).format('MM-DD HH:mm') : ''}</Tooltip>,
       },
     ];
     let historyWarns = this.props.historyWarns;
