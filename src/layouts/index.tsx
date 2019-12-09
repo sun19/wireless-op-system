@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout } from 'antd';
+import { Layout, notification } from 'antd';
 import withRouter from 'umi/withRouter';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { connect } from 'dva';
@@ -30,13 +30,47 @@ class BasicLayout extends React.Component<any, any> {
     this.ws = new WebSocket('ws://47.96.112.31:8086/jeecg-boot/websocket/1');
     this.ws.onmessage = evt => {
       let msgText = JSON.parse(evt.data);
-      // console.log(msgText, 'pppp');
-      msgText = msgText.map(item => ({
-        x: +item.xcoordinate,
-        y: +item.ycoordinate,
-        id: item.key,
-      }));
+      msgText = msgText.msgTxt;
+      const { warnType, lampCode, informationBordCodes } = msgText;
+      if (warnType == 0) {
+        notification.warn({
+          message: '弹框报警',
+          description: `
+            灯具编号：${lampCode}
+            信息牌编号：${informationBordCodes}
+          `,
+          duration: 0,
+        });
+      } else if (warnType == 1) {
+        notification.warn({
+          message: '声音报警',
+          description: `
+            灯具编号：${lampCode}
+            信息牌编号：${informationBordCodes}
+          `,
+          duration: 0,
+        });
+      } else if (warnType == 2) {
+        notification.warn({
+          message: '灯光报警',
+          description: `
+            灯具编号：${lampCode}
+            信息牌编号：${informationBordCodes}
+          `,
+          duration: 0,
+        });
+      } else {
+        notification.warn({
+          message: '报警',
+          description: `灯具编号：${lampCode}
+            信息牌编号：${informationBordCodes}
+          `,
+        });
+      }
     };
+  }
+  componentWillUnmount() {
+    this.ws && this.ws.close();
   }
   render() {
     const props = this.props;
