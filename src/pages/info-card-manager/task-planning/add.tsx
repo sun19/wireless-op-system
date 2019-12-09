@@ -30,7 +30,7 @@ interface routes {
   id?: string;
   name?: string;
 }
-interface FormProps extends FormComponentProps { }
+interface FormProps extends FormComponentProps {}
 type StateProps = ReturnType<typeof mapState>;
 type Props = StateProps & UmiComponentProps & FormProps;
 
@@ -43,7 +43,7 @@ interface State {
   name?: string;
   id?: string;
   note?: string;
-  routes?: routes[]
+  routes?: routes[];
 }
 function hasErrors(fieldsError) {
   return Object.keys(fieldsError).some(field => fieldsError[field]);
@@ -52,7 +52,7 @@ class TaskAdd extends React.Component<Props, State> {
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
-    // this.getRoute = this.getRoute.bind(this);
+    this.getRoute = this.getRoute.bind(this);
 
     this.state = {
       userTypes: [],
@@ -64,7 +64,7 @@ class TaskAdd extends React.Component<Props, State> {
   }
   goBack = () => {
     this.props.form.resetFields();
-    router.push('/info-card-manager/info-card-list');
+    router.push('/info-card-manager/task-planning');
   };
   handleSubmit(e) {
     e.preventDefault();
@@ -73,62 +73,63 @@ class TaskAdd extends React.Component<Props, State> {
         message.error('参数错误', err);
         return;
       }
-      const { startTime, endTime, ...props } = values
-      let data={
+      const { startTime, endTime, ...props } = values;
+      let data = {
         ...props,
-        startTime: values.startTime&&values.startTime.format('YYYY-MM-DD HH:mm:ss').toString()||'',
-        endTime: values.endTime&&values.endTime.format('YYYY-MM-DD HH:mm:ss').toString() ||'',
-
-      }
+        startTime:
+          (values.startTime && values.startTime.format('YYYY-MM-DD HH:mm:ss').toString()) || '',
+        endTime: (values.endTime && values.endTime.format('YYYY-MM-DD HH:mm:ss').toString()) || '',
+      };
       const isSuccessed = await addTaskList(data);
       if (isSuccessed) {
         message.success('添加成功!', 1000);
         setTimeout(() => router.push('/info-card-manager/task-planning'), 1000);
       }
     });
-  };
+  }
   getRoute() {
     const { getFieldDecorator, getFieldsError } = this.props.form;
-    const { route } = this.props
-    if (this.props.form.getFieldsValue().task === '0' && route.length > 0) {
+    const { route } = this.props;
+    if (this.props.form.getFieldsValue().task === '0' && route.length >= 0) {
       return (
-      <Row type="flex" justify="space-between" >
-        <Col span={12}>
-          <Form.Item label="巡更路线">
-            {getFieldDecorator('inspectionId', {
-              rules: [
-                {
-                  message: '请选择巡更路线',
-                },
-              ],
-              initialValue: route[0].id,
-            })(
-              <Select placeholder="请选择巡更路线">
-                {route.map(item => (
-                  <Option key={item.name} value={item.id}>{item.name}</Option>
-                ))}
-              </Select>,
-            )}
-          </Form.Item>
-        </Col>
-      </Row >
-      )
+        <Row type="flex" justify="space-between">
+          <Col span={12}>
+            <Form.Item label="巡更路线">
+              {getFieldDecorator('inspectionId', {
+                rules: [
+                  {
+                    message: '请选择巡更路线',
+                  },
+                ],
+                initialValue: (route[0] && route[0].id) || undefined,
+              })(
+                <Select placeholder="请选择巡更路线">
+                  {route.map(item => (
+                    <Option key={item.name} value={item.id}>
+                      {item.name}
+                    </Option>
+                  ))}
+                </Select>,
+              )}
+            </Form.Item>
+          </Col>
+        </Row>
+      );
     }
   }
 
   async componentWillMount() {
-    const route = await getPollingLineByName({})
+    const route = await getPollingLineByName({});
     this.props.dispatch({
       type: 'commonState/update',
       payload: {
-        route: route.result.records
+        route: route.result.records,
       },
     });
   }
 
   async componentDidMount() {
     this.props.form.validateFields();
-
   }
   render() {
     const props = this.props;
@@ -223,7 +224,9 @@ class TaskAdd extends React.Component<Props, State> {
                   </Col>
                   <Col span={6} className={styles.select_padding_left}>
                     <Form.Item>
-                      <Button className={styles.form_btn} onClick={this.goBack}>返回</Button>
+                      <Button className={styles.form_btn} onClick={this.goBack}>
+                        返回
+                      </Button>
                     </Form.Item>
                   </Col>
                 </Row>
@@ -239,7 +242,7 @@ const AddUserForm = Form.create<Props>({ name: 'add_user' })(TaskAdd);
 const mapState = ({ userManager, commonState }) => {
   const { route } = commonState;
   return {
-    route
+    route,
   };
 };
 export default connect(mapState)(AddUserForm);

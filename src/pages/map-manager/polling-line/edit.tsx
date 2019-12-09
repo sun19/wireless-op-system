@@ -308,33 +308,6 @@ class AddPollingLine extends React.Component<Props, State> {
                       </Select>,
                     )}
                   </Form.Item>
-                  <Form.Item label="巡检人员">
-                    {getFieldDecorator('login_id', {
-                      rules: [
-                        {
-                          message: '请输入巡检人员',
-                        },
-                      ],
-                      initialValue: pollingLinesRecord.login_id,
-                    })(<Input placeholder="请输入巡检人员" />)}
-                  </Form.Item>
-
-                  <Form.Item label="信息牌">
-                    {getFieldDecorator('informationBoardId', {
-                      rules: [
-                        {
-                          message: '请输入信息牌',
-                        },
-                      ],
-                      initialValue: pollingLinesRecord.informationBoardId,
-                    })(<Input placeholder="请输入信息牌" />)}
-                  </Form.Item>
-                  {this.setupAlarmSelect()}
-                </Col>
-              </Row>
-
-              <Row type="flex" justify="space-between">
-                <Col span={24}>
                   <Form.Item label="巡检路线">
                     {getFieldDecorator('inspectionRoute', {
                       rules: [],
@@ -368,6 +341,7 @@ class AddPollingLine extends React.Component<Props, State> {
                       />,
                     )}
                   </Form.Item>
+
                   <Form.Item label="结束时间">
                     {getFieldDecorator('endTime', {
                       rules: [],
@@ -385,6 +359,8 @@ class AddPollingLine extends React.Component<Props, State> {
 
               <Row type="flex" justify="space-between">
                 <Col span={24}>
+                  {this.setupAlarmSelect()}
+
                   <Form.Item className={styles.area_style} label="备注">
                     {getFieldDecorator('remark', {
                       rules: [
@@ -396,12 +372,18 @@ class AddPollingLine extends React.Component<Props, State> {
                     })(
                       <Input
                         placeholder="请输入备注"
-                        style={{ width: '11.8rem', backgroundSize: '11.8rem 0.4rem' }}
+                        // style={{ width: '11.8rem', backgroundSize: '11.8rem 0.4rem' }}
                       />,
                     )}
                   </Form.Item>
                 </Col>
               </Row>
+
+              {/* <Row type="flex" justify="space-between">
+                <Col span={24}>
+                
+                </Col>
+              </Row> */}
 
               <Row className={styles.line_style}>
                 <Col className={styles.line_type} span={11} />
