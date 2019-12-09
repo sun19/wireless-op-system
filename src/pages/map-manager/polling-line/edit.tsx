@@ -361,6 +361,17 @@ class AddPollingLine extends React.Component<Props, State> {
                 <Col span={24}>
                   {this.setupAlarmSelect()}
 
+                  <Form.Item className={styles.area_style} label="巡检名称">
+                    {getFieldDecorator('name', {
+                      rules: [],
+                      initialValue: pollingLinesRecord.name,
+                    })(
+                      <Input
+                        placeholder="请输入巡检名称"
+                        // style={{ width: '11.8rem', backgroundSize: '11.8rem 0.4rem' }}
+                      />,
+                    )}
+                  </Form.Item>
                   <Form.Item className={styles.area_style} label="备注">
                     {getFieldDecorator('remark', {
                       rules: [
