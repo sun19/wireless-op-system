@@ -113,6 +113,7 @@ class EditAuth extends React.Component<Props> {
         return;
       }
       const data={
+        isIn: '1',
         id: userInside.id,
         ...values
       }

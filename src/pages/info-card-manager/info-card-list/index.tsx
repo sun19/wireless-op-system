@@ -162,7 +162,7 @@ const columns = [
     dataIndex: 'incumbency',
     editable: true,
     render: onlineStatus => {
-      return ['离职', '在职'][onlineStatus];
+      return ['在职', '离职'][onlineStatus];
     },
   },
 ];

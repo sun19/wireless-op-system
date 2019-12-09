@@ -52,11 +52,14 @@ class TaskAdd extends React.Component<Props, State> {
         this.props.form.resetFields();
         router.push('/warning-manager/info');
     };
-   async goMenage () {
-        const { dataSource } = this.props
+   async goMenage (e) {
+       e.preventDefault();
+       const { dataSource } = this.props
+       this.props.form.validateFields(async (err, values) => {
+        //    console.log(values.type)
         const data ={ 
         userId: localStorage.getItem('userMessage'),
-        type:'0',
+            type: values.type,
             alarmId:dataSource.id,
             // auditeType: '0',
         }
@@ -64,8 +67,7 @@ class TaskAdd extends React.Component<Props, State> {
        if (isSuccessed) {
            setTimeout(() => router.push('/warning-manager/info'), 1000);
        }
-    }
-
+    })}
     async componentDidMount() {
         this.props.form.validateFields();
 
@@ -78,6 +80,7 @@ class TaskAdd extends React.Component<Props, State> {
                 <Form
                     layout="inline"
                     labelAlign="right"
+                    onSubmit={this.goMenage}
                     style={{ marginTop: '0.57rem' }}
                 >
                     <Row type="flex" justify="center" align="middle" className={styles.add}>
@@ -128,12 +131,22 @@ class TaskAdd extends React.Component<Props, State> {
                                             })(<Input disabled={true} />)}
                                         </Form.Item>
                                     </Col>
+                                    <Col span={12}>
+                                        <Form.Item label="处理方式">
+                                            {getFieldDecorator('type', {
+                                                initialValue: '1'
+                                            })(<Select placeholder="处理方式">
+                                                <Option value="1">误报</Option>
+                                                <Option value="2">手动解除</Option>
+                                            </Select>)}
+                                        </Form.Item>
+                                    </Col>
 
                                 </Row>
                                 <Row type="flex" justify="center" style={{ marginTop: '0.35rem' }}>
                                     <Col span={6} >
                                         <Form.Item>
-                                            <Button className={styles.form_btn} onClick={this.goMenage}>处理</Button>
+                                            <Button className={styles.form_btn} htmlType="submit">处理</Button>
                                         </Form.Item>
                                     </Col>
                                     <Col span={6} className={styles.select_padding_left}>

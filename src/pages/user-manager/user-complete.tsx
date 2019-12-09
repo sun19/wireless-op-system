@@ -48,9 +48,10 @@ class UserComplete extends React.Component<FormProps, any> {
         return;
       }
       const req = Object.assign({}, record, values);
-      updateUserInfo(req).then(resp => {
-        setTimeout(() => router.go(-1), 1000);
-      });
+      updateUserInfo(req)
+      // .then(resp => {
+      //   setTimeout(() => router.go(-1), 1000);
+      // });
     });
   };
   componentWillUnmount() {
@@ -127,13 +128,7 @@ class UserComplete extends React.Component<FormProps, any> {
                       </Button>
                     </Form.Item>
                   </Col>
-                  <Col span={6} className={styles.select_padding_left}>
-                    <Form.Item>
-                      <Button className={styles.form_btn} onClick={this.goBack}>
-                        返回
-                      </Button>
-                    </Form.Item>
-                  </Col>
+                  <Col span={6} className={styles.select_padding_left}/>>
                 </Row>
               </div>
             </Col>

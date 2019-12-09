@@ -41,7 +41,7 @@ class RouteInspectReport extends React.Component<Props, State> {
 
   async getNewReports(params: GetInspectReportsParams = {}) {
     const resp = await queryInspectionReportByTime(params);
-    // console.log(resp)
+    // console.log(resp) 
     if (!!resp.success) {
       let colum: any = [
         {
@@ -89,7 +89,11 @@ class RouteInspectReport extends React.Component<Props, State> {
 
   onClear = () => {
     this.props.form.resetFields();
-    this.getNewReports();
+    const data={
+          startTime: '2019-11-01 00:00:00',
+      endTime: '2019-11-30 23:59:59',
+    }
+    this.getNewReports(data);
   };
 
   componentWillMount() {
@@ -130,7 +134,7 @@ class RouteInspectReport extends React.Component<Props, State> {
                 gutter={16}
               >
                 <FormItem label="开始时间">
-                  {getFieldDecorator('createtime', {
+                  {getFieldDecorator('startTime', {
                     initialValue: moment('2019-11-01 00:00:00'),
                   })(<DatePicker showTime={true} placeholder="请选择开始时间" />)}
                 </FormItem>
