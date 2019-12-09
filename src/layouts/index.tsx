@@ -24,26 +24,42 @@ const ignoreLayout = [
   '/big-screen/homepage/lampshow',
 ];
 
-const BasicLayout: React.FC = (props: any) => {
-  let routeName = props.location.pathname;
-  if (ignoreLayout.includes(routeName)) {
-    return <div>{props.children}</div>;
+class BasicLayout extends React.Component<any, any> {
+  ws: WebSocket;
+  componentDidMount() {
+    this.ws = new WebSocket('ws://47.96.112.31:8086/jeecg-boot/websocket/1');
+    this.ws.onmessage = evt => {
+      let msgText = JSON.parse(evt.data);
+      // console.log(msgText, 'pppp');
+      msgText = msgText.map(item => ({
+        x: +item.xcoordinate,
+        y: +item.ycoordinate,
+        id: item.key,
+      }));
+    };
   }
-  return (
-    <>
-      <AppTitle />
-      <Layout className={[`${styles.layout}`, `${styles.no_background}`].join(' ')}>
-        <Sider className={[`${styles.left_bar_bg}`].join(' ')} width="280">
-          <LeftMenuList />
-        </Sider>
-        <Layout className={[`${styles.no_background}`].join(' ')}>
-          <TopHeader />
-          {props.children}
+  render() {
+    const props = this.props;
+    let routeName = props.location.pathname;
+    if (ignoreLayout.includes(routeName)) {
+      return <div>{props.children}</div>;
+    }
+    return (
+      <>
+        <AppTitle />
+        <Layout className={[`${styles.layout}`, `${styles.no_background}`].join(' ')}>
+          <Sider className={[`${styles.left_bar_bg}`].join(' ')} width="280">
+            <LeftMenuList />
+          </Sider>
+          <Layout className={[`${styles.no_background}`].join(' ')}>
+            <TopHeader />
+            {props.children}
+          </Layout>
         </Layout>
-      </Layout>
-    </>
-  );
-};
+      </>
+    );
+  }
+}
 
 export default BasicLayout;
 
