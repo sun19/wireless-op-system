@@ -26,6 +26,8 @@ import styles from './index.less';
 const { TextArea } = Input;
 const { Option } = Select;
 
+const scaleBy = 1.01;
+
 interface State {
   mapImage: any;
   width: number;
@@ -33,12 +35,15 @@ interface State {
   circleX: number;
   circleY: number;
   circleShow: boolean;
+  stageScale: number;
+  stageX: number;
+  stageY: number;
 }
 
 type StateProps = ReturnType<typeof mapState>;
 type Props = StateProps & UmiComponentProps & FormComponentProps;
 // interface Props extends FormComponentProps {}
-interface State { }
+interface State {}
 class AddPollingPoint extends React.Component<Props, State> {
   map: React.RefObject<HTMLDivElement>;
   constructor(props) {
@@ -50,6 +55,9 @@ class AddPollingPoint extends React.Component<Props, State> {
       height: 0,
       circleX: 10,
       circleY: 10,
+      stageScale: 1,
+      stageX: 0,
+      stageY: 0,
       circleShow: true,
     };
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -57,7 +65,7 @@ class AddPollingPoint extends React.Component<Props, State> {
   }
   async componentDidMount() {
     const mapImage = await this.dynamicLoadMapImage();
-    if(this.map.current) {
+    if (this.map.current) {
       const { clientWidth, clientHeight } = this.map.current;
 
       this.setState({
@@ -72,7 +80,7 @@ class AddPollingPoint extends React.Component<Props, State> {
     return new Promise(resolve => {
       const mapImage = new Image();
       mapImage.src = require('../../big-screen/assets/map.png');
-      mapImage.onload = function () {
+      mapImage.onload = function() {
         resolve(mapImage);
       };
     });
@@ -81,7 +89,7 @@ class AddPollingPoint extends React.Component<Props, State> {
     const x = this.state.circleX;
     const y = this.state.circleY;
     const circleShow = this.state.circleShow;
-    if(!circleShow) return;
+    if (!circleShow) return;
     return (
       <CircleLayer
         x={x}
@@ -123,7 +131,7 @@ class AddPollingPoint extends React.Component<Props, State> {
   handleSubmit(e) {
     e.preventDefault();
     this.props.form.validateFields(async (err, values) => {
-      if(err) {
+      if (err) {
         // console.error(err, values, 'err');
         message.error('填写信息有误 ', values);
         return;
@@ -137,11 +145,42 @@ class AddPollingPoint extends React.Component<Props, State> {
         endTime: values.endTime ? values.endTime.format('YYYY-MM-DD HH:mm:ss').toString() : '',
       };
       const isSuccessed = await addPollingPoint(data);
-      if(isSuccessed) {
+      if (isSuccessed) {
         setTimeout(() => router.push('/map-manager/polling-point'), 1000);
       }
     });
   }
+  onWheel = evt => {
+    evt.evt.preventDefault();
+    const stage = evt.target.getStage();
+    const oldScale = stage.scaleX();
+
+    const mousePointTo = {
+      x: stage.getPointerPosition().x / oldScale - stage.x() / oldScale,
+      y: stage.getPointerPosition().y / oldScale - stage.y() / oldScale,
+    };
+
+    const newScale = evt.evt.deltaY > 0 ? oldScale * scaleBy : oldScale / scaleBy;
+
+    stage.scale({ x: newScale, y: newScale });
+
+    this.setState({
+      stageScale: newScale,
+      stageX: -(mousePointTo.x - stage.getPointerPosition().x / newScale) * newScale,
+      stageY: -(mousePointTo.y - stage.getPointerPosition().y / newScale) * newScale,
+    });
+  };
+  mapClick = evt => {
+    const defaultWidth = 1920;
+    const defaultHeight = 1080;
+    const { clientWidth, clientHeight } = this.map.current;
+    const event: any = evt.evt;
+    const { x, y } = event;
+    this.setState({
+      circleX: Math.floor((event.layerX * defaultWidth) / clientWidth),
+      circleY: Math.floor((event.layerY * defaultHeight) / clientHeight),
+    });
+  };
 
   back = () => {
     router.goBack();
@@ -281,7 +320,17 @@ class AddPollingPoint extends React.Component<Props, State> {
               <Row className={styles.line_style}>
                 <Col className={styles.img_type} span={24}>
                   <div className={styles.map_manager} ref={this.map}>
-                    <Stage width={width} height={height} draggable={false}>
+                    <Stage
+                      width={width}
+                      height={height}
+                      draggable={true}
+                      onWheel={this.onWheel}
+                      scaleX={this.state.stageScale}
+                      scaleY={this.state.stageScale}
+                      x={this.state.stageX}
+                      y={this.state.stageY}
+                      onClick={this.mapClick}
+                    >
                       <Layer>
                         <ImageLayer image={mapImage} x={0} y={0} width={width} height={height} />
                         {this.setupCircle()}
