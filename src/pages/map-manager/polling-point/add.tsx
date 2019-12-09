@@ -53,8 +53,8 @@ class AddPollingPoint extends React.Component<Props, State> {
       mapImage: null,
       width: 0,
       height: 0,
-      circleX: 10,
-      circleY: 10,
+      circleX: -10,
+      circleY: -10,
       stageScale: 1,
       stageX: 0,
       stageY: 0,
@@ -175,10 +175,15 @@ class AddPollingPoint extends React.Component<Props, State> {
     const defaultHeight = 1080;
     const { clientWidth, clientHeight } = this.map.current;
     const event: any = evt.evt;
-    const { x, y } = event;
     this.setState({
-      circleX: Math.floor((event.layerX * defaultWidth) / clientWidth),
-      circleY: Math.floor((event.layerY * defaultHeight) / clientHeight),
+      circleX: Math.floor(event.layerX),
+      circleY: Math.floor(event.layerY),
+    });
+    this.props.form.setFieldsValue({
+      xCoordinate: Math.floor((event.layerX * defaultWidth) / clientWidth),
+    });
+    this.props.form.setFieldsValue({
+      yCoordinate: Math.floor((event.layerY * defaultHeight) / clientHeight),
     });
   };
 
@@ -315,7 +320,7 @@ class AddPollingPoint extends React.Component<Props, State> {
                 <Col className={styles.line_type} span={11} />
               </Row>
               <Row>
-                <div className={styles.tips}>请拖拽巡检点至指定位置</div>
+                <div className={styles.tips}>请点击或拖拽选择巡检点</div>
               </Row>
               <Row className={styles.line_style}>
                 <Col className={styles.img_type} span={24}>
@@ -323,8 +328,8 @@ class AddPollingPoint extends React.Component<Props, State> {
                     <Stage
                       width={width}
                       height={height}
-                      draggable={true}
-                      onWheel={this.onWheel}
+                      // draggable={true}
+                      // onWheel={this.onWheel}
                       scaleX={this.state.stageScale}
                       scaleY={this.state.stageScale}
                       x={this.state.stageX}
