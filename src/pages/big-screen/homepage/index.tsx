@@ -2,7 +2,7 @@
  * title: 电子围栏
  */
 import React, { Component } from 'react';
-import { message, Row, Col, Icon, Progress,Breadcrumb, Table } from 'antd';
+import { message, Row, Col, Icon, Progress, Breadcrumb, Table } from 'antd';
 import Konva from 'konva';
 import ReactEcharts from 'echarts-for-react';
 import { Stage, Layer, Image as ImageLayer, Line as LineLayer } from 'react-konva';
@@ -181,7 +181,6 @@ class DataView extends React.Component<Props, State> {
     });
   }
 
-
   selectShowA = () => {
     this.setState({ showPeopleInfo: true, currentIndex: false });
   };
@@ -315,6 +314,9 @@ class DataView extends React.Component<Props, State> {
     const { records } = eleFenceInfo;
     const data = records.map((item, index) => {
       const type = _.find(eleTypeInfo, { id: item.type });
+      if (!type) {
+        return null;
+      }
       return (
         <div className="flex_outer" key={index}>
           <div className="ele_title_top">
@@ -335,6 +337,21 @@ class DataView extends React.Component<Props, State> {
         </div>
       );
     });
+    if (data.indexOf(null) != -1)
+      return (
+        <div
+          style={{
+            width: '100%',
+            height: '100%',
+            textAlign: 'center',
+            top: '40%',
+            position: 'relative',
+            fontSize: '30px',
+          }}
+        >
+          没有电子围栏
+        </div>
+      );
     return data;
   };
   // 职位占比人数
@@ -584,13 +601,13 @@ class DataView extends React.Component<Props, State> {
             normal: {
               show: true,
               position: 'insideRight',
-              formatter: function (params) {
+              formatter: function(params) {
                 if (params.value > 0) {
                   return params.value;
                 } else {
                   return '';
                 }
-              }
+              },
             },
           },
           itemStyle: {
@@ -662,13 +679,11 @@ class DataView extends React.Component<Props, State> {
         },
       },
       yAxis: {
-
-        nameGap:20,
+        nameGap: 20,
         type: 'category',
         data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
         axisLine: {
           lineStyle: {
-
             color: '#7AB2E2',
           },
           splitLine: {
@@ -719,7 +734,7 @@ class DataView extends React.Component<Props, State> {
         },
       },
       {
-        title: '时间',
+        title: '处理时间',
         dataIndex: 'processTime',
         editable: true,
         ellipsis: true,
@@ -756,6 +771,7 @@ class DataView extends React.Component<Props, State> {
       return prev + Number(next.num);
     }, 0);
     const setupSecretLevels = secretLevelPeopleCount.map(item => {
+      if (allSecretLevel == 0) return { ...item, percent: 0 };
       return { ...item, percent: ((+item.num / allSecretLevel) * 100).toFixed(2) };
     });
     let { outPeople, onlinePeople, inPeople, yesHigh, toHigh } = bigScreenPeopleCount;
@@ -831,7 +847,7 @@ class DataView extends React.Component<Props, State> {
 
     return (
       <div className={styles.homepage_root_container}>
-        <div className="header"> 
+        <div className="header">
           <Navigation />
         </div>
         <div className="content">
@@ -920,17 +936,32 @@ class DataView extends React.Component<Props, State> {
               )}
               <div className="middle_text">
                 <Breadcrumb>
-                  <Breadcrumb.Item>  <div className={["text_panel", this.state.currentIndex ? "active" : null].join(' ')} onClick={this.selectShow}>
-                    人员信息
-                </div></Breadcrumb.Item>
+                  <Breadcrumb.Item>
+                    {' '}
+                    <div
+                      className={['text_panel', this.state.currentIndex ? 'active' : null].join(
+                        ' ',
+                      )}
+                      onClick={this.selectShow}
+                    >
+                      人员信息
+                    </div>
+                  </Breadcrumb.Item>
 
-                  <Breadcrumb.Item> <div className={["text_panel", !this.state.currentIndex ? "active" : null].join(' ')} onClick={this.selectShowA}>
-                    灯具显示
-                </div></Breadcrumb.Item>
+                  <Breadcrumb.Item>
+                    {' '}
+                    <div
+                      className={['text_panel', !this.state.currentIndex ? 'active' : null].join(
+                        ' ',
+                      )}
+                      onClick={this.selectShowA}
+                    >
+                      灯具显示
+                    </div>
+                  </Breadcrumb.Item>
                 </Breadcrumb>
               </div>
             </Col>
-            
           </Row>
         </div>
       </div>

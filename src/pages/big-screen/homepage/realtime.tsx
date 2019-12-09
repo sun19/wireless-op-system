@@ -313,6 +313,9 @@ class Realtime extends React.Component<Props, State> {
     // console.log(records)
     const data = records.map((item, index) => {
       const type = _.find(eleTypeInfo, { id: item.type });
+      if (!type) {
+        return null;
+      }
       return (
         <div className="flex_outer" key={index}>
           <div className="ele_title_top">
@@ -332,6 +335,21 @@ class Realtime extends React.Component<Props, State> {
         </div>
       );
     });
+    if (data.indexOf(null) != -1)
+      return (
+        <div
+          style={{
+            width: '100%',
+            height: '100%',
+            textAlign: 'center',
+            top: '40%',
+            position: 'relative',
+            fontSize: '30px',
+          }}
+        >
+          没有电子围栏
+        </div>
+      );
     return data;
   };
   // 职位占比人数
@@ -708,7 +726,7 @@ class Realtime extends React.Component<Props, State> {
         },
       },
       {
-        title: '时间',
+        title: '处理时间',
         dataIndex: 'processTime',
         editable: true,
         ellipsis: true,
@@ -742,6 +760,7 @@ class Realtime extends React.Component<Props, State> {
       return prev + Number(next.num);
     }, 0);
     const setupSecretLevels = secretLevelPeopleCount.map(item => {
+      if (allSecretLevel == 0) return { ...item, percent: 0 };
       return { ...item, percent: ((+item.num / allSecretLevel) * 100).toFixed(2) };
     });
     let { outPeople, onlinePeople, inPeople, yesHigh, toHigh } = bigScreenPeopleCount;
