@@ -15,7 +15,7 @@ import { UmiComponentProps } from '@/common/type';
 import SelectText from '../components/SelectText';
 import { OptionValue } from '../components/SelectText';
 import { getAllRoles } from '../../system-setting/services';
-import { getAllPosition, getAllSecretLevels,getAllDepartment } from '@/pages/login/login.service';
+import { getAllPosition, getAllSecretLevels, getAllDepartment } from '@/pages/login/login.service';
 import { editInfoList } from '../services';
 
 import styles from './index.less';
@@ -29,7 +29,7 @@ interface UserType {
   roleId: string;
 }
 
-interface FormProps extends FormComponentProps { }
+interface FormProps extends FormComponentProps {}
 type StateProps = ReturnType<typeof mapState>;
 type Props = StateProps & UmiComponentProps & FormProps;
 
@@ -55,7 +55,7 @@ class EditUser extends React.Component<Props, State> {
     };
   }
   setupDuties = () => {
-    const { allDuties,infoCardList } = this.props;
+    const { allDuties, infoCardList } = this.props;
     const { getFieldDecorator } = this.props.form;
     return (
       <Form.Item label="职务">
@@ -91,14 +91,15 @@ class EditUser extends React.Component<Props, State> {
               message: '请选择保密等级',
             },
           ],
-          initialValue:infoCardList.securityLevelId,
+          initialValue: infoCardList.securityLevelId,
         })(
           <Select placeholder="请选择保密等级">
-            {allSecretLevel&&allSecretLevel.map((level, index) => (
-              <Option value={level.id} key={index}>
-                {level.name}
-              </Option>
-            ))}
+            {allSecretLevel &&
+              allSecretLevel.map((level, index) => (
+                <Option value={level.id} key={index}>
+                  {level.name}
+                </Option>
+              ))}
           </Select>,
         )}
       </Form.Item>
@@ -113,7 +114,7 @@ class EditUser extends React.Component<Props, State> {
     router.push('/info-card-manager/info-card-list');
   };
   handleSubmit(e) {
-    const { infoCardList } = this.props
+    const { infoCardList } = this.props;
 
     e.preventDefault();
     this.props.form.validateFields(async (err, values) => {
@@ -121,10 +122,10 @@ class EditUser extends React.Component<Props, State> {
         message.error('参数错误', err);
         return;
       }
-      const data={
+      const data = {
         id: infoCardList.id,
-        ...values
-      }
+        ...values,
+      };
       const isSuccessed = await editInfoList(data);
       if (isSuccessed) {
         message.success('编辑成功!', 1000);
@@ -143,7 +144,7 @@ class EditUser extends React.Component<Props, State> {
     this.setState({ userTypes });
     const dutiesResp = await getAllPosition();
     const secretsLevelsResp = await getAllSecretLevels();
-    const allPositions = await getAllDepartment() 
+    const allPositions = await getAllDepartment();
     this.props.dispatch({
       type: 'commonState/update',
       payload: {
@@ -156,7 +157,7 @@ class EditUser extends React.Component<Props, State> {
   render() {
     const props = this.props;
     const { getFieldDecorator, getFieldsError } = this.props.form;
-    const { infoCardList, allPosition } = this.props
+    const { infoCardList, allPosition } = this.props;
     return (
       <ContentBorder className={styles.auth_root}>
         <Form
@@ -178,7 +179,7 @@ class EditUser extends React.Component<Props, State> {
                             message: '请输入姓名',
                           },
                         ],
-                        initialValue: infoCardList.userName ? infoCardList.userName : '',
+                        initialValue: infoCardList.userName,
                       })(<Input placeholder="请输入姓名" />)}
                     </Form.Item>
                   </Col>
@@ -192,7 +193,6 @@ class EditUser extends React.Component<Props, State> {
                           },
                         ],
                         initialValue: infoCardList.cardNo,
-
                       })(<Input placeholder="请输入身份证号" />)}
                     </Form.Item>
                   </Col>
@@ -208,7 +208,6 @@ class EditUser extends React.Component<Props, State> {
                           },
                         ],
                         initialValue: infoCardList.sex,
-
                       })(
                         <Select placeholder="请选择性别">
                           <Option value="0">男</Option>
@@ -227,7 +226,6 @@ class EditUser extends React.Component<Props, State> {
                           },
                         ],
                         initialValue: infoCardList.address,
-
                       })(<Input placeholder="请输入家庭住址" />)}
                     </Form.Item>
                   </Col>
@@ -243,7 +241,6 @@ class EditUser extends React.Component<Props, State> {
                           },
                         ],
                         initialValue: infoCardList.phone,
-
                       })(<Input placeholder="请输入联系方式" />)}
                     </Form.Item>
                   </Col>
@@ -255,15 +252,16 @@ class EditUser extends React.Component<Props, State> {
                             message: '请选择部门',
                           },
                         ],
-                        initialValue: infoCardList.type ? infoCardList.type : '',
+                        initialValue: infoCardList.departmentId,
                       })(
                         <Select placeholder="请选择部门">
-                          {allPosition&&allPosition.map(option => (
-                            <Option value={option.id} key={option.key}>
-                              {option.name}
-                            </Option>
-                          ))}
-                        </Select>
+                          {allPosition &&
+                            allPosition.map(option => (
+                              <Option value={option.id} key={option.key}>
+                                {option.name}
+                              </Option>
+                            ))}
+                        </Select>,
                       )}
                     </Form.Item>
                   </Col>
@@ -283,7 +281,7 @@ class EditUser extends React.Component<Props, State> {
                         <Select placeholder="请选择类型">
                           <Option value="0">内部</Option>
                           <Option value="1">外部</Option>
-                        </Select>
+                        </Select>,
                       )}
                     </Form.Item>
                   </Col>
@@ -299,7 +297,6 @@ class EditUser extends React.Component<Props, State> {
                           },
                         ],
                         initialValue: infoCardList.incumbency,
-
                       })(
                         <Select placeholder="请选择在职状态">
                           <Option value="0">在职</Option>
@@ -348,7 +345,9 @@ class EditUser extends React.Component<Props, State> {
                   </Col>
                   <Col span={6} className={styles.select_padding_left}>
                     <Form.Item>
-                      <Button className={styles.form_btn} onClick={this.goBack}>返回</Button>
+                      <Button className={styles.form_btn} onClick={this.goBack}>
+                        返回
+                      </Button>
                     </Form.Item>
                   </Col>
                 </Row>
@@ -367,7 +366,7 @@ const mapState = ({ userManager, infoCardManager, commonState }) => {
     allDuties: allDuties,
     allSecretLevel: allSecretLevel,
     allPosition: allPosition,
-    infoCardList: infoCardManager.infoCardList
-  }
+    infoCardList: infoCardManager.infoCardList,
+  };
 };
 export default connect(mapState)(AddUserForm);
