@@ -32,11 +32,15 @@ interface State {
   circleX: number;
   circleY: number;
   circleShow: boolean;
+  stageScale: number;
+  stageX: number;
+  stageY: number;
 }
 interface FormProps extends FormComponentProps {}
 
 type StateProps = ReturnType<typeof mapState>;
 type Props = StateProps & UmiComponentProps & FormProps;
+const scaleBy = 1.01;
 
 class halmpAdd extends React.Component<Props, State> {
   map: React.RefObject<HTMLDivElement>;
@@ -47,9 +51,12 @@ class halmpAdd extends React.Component<Props, State> {
       mapImage: null,
       width: 0,
       height: 0,
-      circleX: 10,
-      circleY: 10,
+      circleX: -10,
+      circleY: -10,
       circleShow: true,
+      stageScale: 1,
+      stageX: 0,
+      stageY: 0,
     };
     this.initRequest = this.initRequest.bind(this);
   }
@@ -150,6 +157,43 @@ class halmpAdd extends React.Component<Props, State> {
         onDragMove={this.onCircleDragging}
       />
     );
+  };
+
+  onWheel = evt => {
+    evt.evt.preventDefault();
+    const stage = evt.target.getStage();
+    const oldScale = stage.scaleX();
+
+    const mousePointTo = {
+      x: stage.getPointerPosition().x / oldScale - stage.x() / oldScale,
+      y: stage.getPointerPosition().y / oldScale - stage.y() / oldScale,
+    };
+
+    const newScale = evt.evt.deltaY > 0 ? oldScale * scaleBy : oldScale / scaleBy;
+
+    stage.scale({ x: newScale, y: newScale });
+
+    this.setState({
+      stageScale: newScale,
+      stageX: -(mousePointTo.x - stage.getPointerPosition().x / newScale) * newScale,
+      stageY: -(mousePointTo.y - stage.getPointerPosition().y / newScale) * newScale,
+    });
+  };
+  mapClick = evt => {
+    const defaultWidth = 1920;
+    const defaultHeight = 1080;
+    const { clientWidth, clientHeight } = this.map.current;
+    const event: any = evt.evt;
+    this.setState({
+      circleX: Math.floor(event.layerX),
+      circleY: Math.floor(event.layerY),
+    });
+    this.props.form.setFieldsValue({
+      xCoordinate: Math.floor((event.layerX * defaultWidth) / clientWidth),
+    });
+    this.props.form.setFieldsValue({
+      yCoordinate: Math.floor((event.layerY * defaultHeight) / clientHeight),
+    });
   };
 
   render() {
@@ -272,7 +316,7 @@ class halmpAdd extends React.Component<Props, State> {
                 <Col className={styles.line_type} span={11} />
               </Row>
               <Row>
-                <div className={styles.tips}>请拖拽灯具至指定位置</div>
+                <div className={styles.tips}>请点击或拖拽灯具至指定位置</div>
               </Row>
               <Row className={styles.line_style}>
                 <Col className={styles.img_type} span={24}>
@@ -280,8 +324,13 @@ class halmpAdd extends React.Component<Props, State> {
                     <Stage
                       width={this.state.width}
                       height={this.state.height}
-                      draggable={false}
-                      // onClick={this.onCircleClick}
+                      // draggable={true}
+                      // onWheel={this.onWheel}
+                      scaleX={this.state.stageScale}
+                      scaleY={this.state.stageScale}
+                      x={this.state.stageX}
+                      y={this.state.stageY}
+                      onClick={this.mapClick}
                     >
                       <Layer>
                         <ImageLayer

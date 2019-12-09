@@ -76,7 +76,6 @@ const scaleBy = 1.01;
 
 class Realtime extends React.Component<Props, State> {
   map: React.RefObject<HTMLDivElement>;
-  ws: WebSocket;
   constructor(props) {
     super(props);
     this.map = React.createRef<HTMLDivElement>();
@@ -255,7 +254,6 @@ class Realtime extends React.Component<Props, State> {
 
   componentWillUnmount() {
     message.destroy();
-    this.ws && this.ws.close();
   }
   dynamicLoadMapImage() {
     return new Promise(resolve => {

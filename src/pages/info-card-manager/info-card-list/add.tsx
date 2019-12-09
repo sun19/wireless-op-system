@@ -17,6 +17,7 @@ import { OptionValue } from '../components/SelectText';
 import { getAllRoles } from '../../system-setting/services';
 import { getAllPosition, getAllSecretLevels, getAllDepartment } from '@/pages/login/login.service';
 import { addInfoList } from '../services';
+import request from '@/utils/request';
 
 import styles from './index.less';
 
@@ -42,6 +43,9 @@ interface State {
   name?: string;
   id?: string;
   note?: string;
+  userInfoList: any[];
+  currentIndex?: number;
+  currentUser?: any;
 }
 function hasErrors(fieldsError) {
   return Object.keys(fieldsError).some(field => fieldsError[field]);
@@ -52,6 +56,7 @@ class AddUsers extends React.Component<Props, State> {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.state = {
       userTypes: [],
+      userInfoList: [],
     };
   }
   setupDuties = () => {
@@ -83,16 +88,12 @@ class AddUsers extends React.Component<Props, State> {
   setupAllSecretLevel = () => {
     const { allSecretLevel } = this.props;
     const { getFieldDecorator } = this.props.form;
+    const { currentIndex, currentUser } = this.state;
     return (
       <Form.Item label="保密等级">
         {getFieldDecorator('securityLevelId', {
-          rules: [
-            {
-              // required: true,
-              message: '请选择保密等级',
-            },
-          ],
-          // initialValue: (allSecretLevel && allSecretLevel[1] && allSecretLevel[1].id) || '',
+          rules: [],
+          initialValue: currentIndex != null && currentUser.securityLevelId,
         })(
           <Select placeholder="请选择保密等级">
             {allSecretLevel.map((level, index) => (
@@ -148,14 +149,54 @@ class AddUsers extends React.Component<Props, State> {
         allPosition: allPositions,
       },
     });
+
+    let userInfoList = await request.get(
+      'http://47.96.112.31:8086/jeecg-boot/intf/location/queryUserInfoList',
+    );
+    userInfoList = (userInfoList.result && userInfoList.result.records) || [];
+    this.setState({
+      userInfoList,
+    });
   }
+  onSelectChange = (value, index) => {
+    const { userInfoList } = this.state;
+    let currentIndex = undefined;
+    userInfoList.map((item, index) => {
+      if (item.name === value) {
+        currentIndex = index;
+        this.setState({
+          currentIndex,
+          currentUser: item,
+        });
+      }
+    });
+  };
+  setupSelectName = () => {
+    const { userInfoList } = this.state;
+    const { getFieldDecorator } = this.props.form;
+    return (
+      <Form.Item label="姓名">
+        {getFieldDecorator('userName', {
+          rules: [],
+        })(
+          <Select onSelect={this.onSelectChange}>
+            {userInfoList.map(user => {
+              return (
+                <Option key={user.id} value={user.name}>
+                  {user.name}
+                </Option>
+              );
+            })}
+          </Select>,
+        )}
+      </Form.Item>
+    );
+  };
   render() {
     const props = this.props;
     const { getFieldDecorator, getFieldsError } = this.props.form;
-    // if (this.state.userTypes.length === 0) return null;
-    // if (_.isEmpty(props.allDuties) || _.isEmpty(props.allSecretLevel)) return null;
     const { allPosition } = this.props;
-
+    const { currentIndex, currentUser } = this.state;
     return (
       <ContentBorder className={styles.auth_root}>
         <Form
@@ -168,27 +209,12 @@ class AddUsers extends React.Component<Props, State> {
             <Col span={12}>
               <div className="auth__inner--container">
                 <Row type="flex" justify="space-between">
-                  <Col span={12}>
-                    <Form.Item label="姓名">
-                      {getFieldDecorator('userName', {
-                        rules: [
-                          {
-                            //required: true,
-                            message: '请输入姓名',
-                          },
-                        ],
-                      })(<Input placeholder="请输入姓名" />)}
-                    </Form.Item>
-                  </Col>
+                  <Col span={12}>{this.setupSelectName()}</Col>
                   <Col span={12}>
                     <Form.Item label="身份证号">
                       {getFieldDecorator('cardNo', {
-                        rules: [
-                          {
-                            //required: true,
-                            message: '请输入身份证号',
-                          },
-                        ],
+                        rules: [],
+                        initialValue: (currentIndex != null && currentUser.cardNo) || undefined,
                       })(<Input placeholder="请输入身份证号" />)}
                     </Form.Item>
                   </Col>
@@ -197,13 +223,8 @@ class AddUsers extends React.Component<Props, State> {
                   <Col span={12}>
                     <Form.Item label="性别">
                       {getFieldDecorator('sex', {
-                        rules: [
-                          {
-                            //required: true,
-                            message: '请选择性别',
-                          },
-                        ],
-                        // initialValue: '0',
+                        rules: [],
+                        initialValue: currentIndex != null && currentUser.sex,
                       })(
                         <Select placeholder="请选择性别">
                           <Option value="0">男</Option>
@@ -215,12 +236,8 @@ class AddUsers extends React.Component<Props, State> {
                   <Col span={12}>
                     <Form.Item label="家庭住址">
                       {getFieldDecorator('address', {
-                        rules: [
-                          {
-                            //required: true,
-                            message: '请输入家庭住址',
-                          },
-                        ],
+                        rules: [],
+                        initialValue: (currentIndex != null && currentUser.address) || undefined,
                       })(<Input placeholder="请输入家庭住址" />)}
                     </Form.Item>
                   </Col>
@@ -229,24 +246,16 @@ class AddUsers extends React.Component<Props, State> {
                   <Col span={12}>
                     <Form.Item label="联系方式">
                       {getFieldDecorator('phone', {
-                        rules: [
-                          {
-                            //required: true,
-                            message: '请选输入联系方式',
-                          },
-                        ],
+                        rules: [],
+                        initialValue: (currentIndex != null && currentUser.phone) || undefined,
                       })(<Input placeholder="请输入联系方式" />)}
                     </Form.Item>
                   </Col>
                   <Col span={12}>
                     <Form.Item label="部门">
                       {getFieldDecorator('departmentId', {
-                        rules: [
-                          {
-                            message: '请选择部门',
-                          },
-                        ],
-                        // initialValue: (allPosition && allPosition[0] && allPosition[0].id) || '',
+                        rules: [],
+                        initialValue: currentIndex != null && currentUser.departmentId,
                       })(
                         <Select placeholder="请选择部门">
                           {allPosition &&
@@ -265,13 +274,8 @@ class AddUsers extends React.Component<Props, State> {
                   <Col span={12}>
                     <Form.Item label="类型">
                       {getFieldDecorator('type', {
-                        rules: [
-                          {
-                            //required: true,
-                            message: '请选择类型',
-                          },
-                        ],
-                        initialValue: '0',
+                        rules: [],
+                        initialValue: currentIndex != null && currentUser.type,
                       })(
                         <Select placeholder="请选择类型">
                           <Option value="0">内部</Option>
@@ -285,13 +289,8 @@ class AddUsers extends React.Component<Props, State> {
                   <Col span={12}>
                     <Form.Item label="在职状态">
                       {getFieldDecorator('incumbency', {
-                        rules: [
-                          {
-                            //required: true,
-                            message: '请选择在职状态',
-                          },
-                        ],
-                        // initialValue: '0',
+                        rules: [],
+                        initialValue: currentIndex != null && currentUser.incumbency,
                       })(
                         <Select placeholder="请选择在职状态">
                           <Option value="0">在职</Option>
@@ -306,12 +305,8 @@ class AddUsers extends React.Component<Props, State> {
                   <Col span={12}>
                     <Form.Item label="信息牌编号">
                       {getFieldDecorator('name', {
-                        rules: [
-                          {
-                            //required: true,
-                            message: '请选输入信息牌编号',
-                          },
-                        ],
+                        rules: [],
+                        initialValue: (currentIndex != null && currentUser.name) || undefined,
                       })(<Input placeholder="请输入信息牌编号" />)}
                     </Form.Item>
                   </Col>
@@ -319,9 +314,10 @@ class AddUsers extends React.Component<Props, State> {
                 <Row type="flex" justify="space-between">
                   <Col span={24} className="textarea">
                     <Form.Item label="备注">
-                      {getFieldDecorator('remark')(
-                        <TextArea autoSize={{ minRows: 6, maxRows: 8 }} />,
-                      )}
+                      {getFieldDecorator('remark', {
+                        rules: [],
+                        initialValue: currentIndex != null && currentUser.remark,
+                      })(<TextArea autoSize={{ minRows: 6, maxRows: 8 }} />)}
                     </Form.Item>
                   </Col>
                 </Row>

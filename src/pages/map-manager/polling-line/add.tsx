@@ -96,7 +96,7 @@ class AddPollingLine extends React.Component<Props, State> {
     return new Promise(resolve => {
       const mapImage = new Image();
       mapImage.src = require('../../big-screen/assets/map.png');
-      mapImage.onload = function () {
+      mapImage.onload = function() {
         resolve(mapImage);
       };
     });
@@ -105,13 +105,13 @@ class AddPollingLine extends React.Component<Props, State> {
     return new Promise(resolve => {
       const mapImage = new Image();
       mapImage.src = require('../../map-manager/assets/baoan.png');
-      mapImage.onload = function () {
+      mapImage.onload = function() {
         resolve(mapImage);
       };
     });
   }
   async componentDidMount() {
-    if(this.map.current) {
+    if (this.map.current) {
       const { clientWidth, clientHeight } = this.map.current;
       const mapImage = await this.dynamicLoadMapImage();
       const iconImage = await this.dynamicLoadIconImage();
@@ -129,7 +129,7 @@ class AddPollingLine extends React.Component<Props, State> {
     this.initRequest();
   }
   async initRequest() {
-    if(!this.map.current) return;
+    if (!this.map.current) return;
     const { clientWidth, clientHeight } = this.map.current;
     const maps = await getAllMap();
     let lamps = await getMapLamps({});
@@ -141,7 +141,7 @@ class AddPollingLine extends React.Component<Props, State> {
       },
     });
     let _lamps = lamps.result || {};
-    if(_.isEmpty(_lamps)) _lamps = { records: [] };
+    if (_.isEmpty(_lamps)) _lamps = { records: [] };
     //根据已选择的巡检路线，匹配灯具
     const { pollingLinesRecord } = this.props;
     const { inspectionRoute = '' } = pollingLinesRecord;
@@ -168,7 +168,7 @@ class AddPollingLine extends React.Component<Props, State> {
   };
   createLamps() {
     const lamps = this.state.showLamps;
-    if(lamps.length === 0) return;
+    if (lamps.length === 0) return;
     return lamps.map((lamp, index) => (
       <ImageLayer
         image={this.state.icon}
@@ -199,8 +199,9 @@ class AddPollingLine extends React.Component<Props, State> {
       const { startTime, endTime, ...props } = values;
       const data = {
         ...props,
-        startTime: values.startTime && values.startTime.format('YYYY-MM-DD HH:mm:ss').toString() || '',
-        endTime: values.endTime && values.endTime.format('YYYY-MM-DD HH:mm:ss').toString() || '',
+        startTime:
+          (values.startTime && values.startTime.format('YYYY-MM-DD HH:mm:ss').toString()) || '',
+        endTime: (values.endTime && values.endTime.format('YYYY-MM-DD HH:mm:ss').toString()) || '',
         inspectionRoute: values.inspectionRoute.join(','),
       };
 
@@ -210,7 +211,7 @@ class AddPollingLine extends React.Component<Props, State> {
     });
   };
   onLampSelectChange = e => {
-    if(!this.map.current) return;
+    if (!this.map.current) return;
     const { clientWidth, clientHeight } = this.map.current;
     let _lamps = this.props.lamps;
     let showLamps = _.filter(_lamps.records, route => e.includes(route.id));
@@ -243,7 +244,7 @@ class AddPollingLine extends React.Component<Props, State> {
   render() {
     const { getFieldDecorator } = this.props.form;
     let { maps, pollingLinesRecord, lamps } = this.props;
-    if(_.isEmpty(lamps)) lamps = { records: [] };
+    if (_.isEmpty(lamps)) lamps = { records: [] };
     const createdLamps = this.createLamps();
     const createdLine = this.createLampLines();
     const { mapImage, width, height } = this.state;
@@ -276,7 +277,7 @@ class AddPollingLine extends React.Component<Props, State> {
                       </Select>,
                     )}
                   </Form.Item>
-                  <Form.Item label="巡检人员">
+                  {/* <Form.Item label="巡检人员">
                     {getFieldDecorator('login_id', {
                       rules: [
                         {
@@ -284,8 +285,8 @@ class AddPollingLine extends React.Component<Props, State> {
                         },
                       ],
                     })(<Input placeholder="请输入巡检人员" />)}
-                  </Form.Item>
-
+                  </Form.Item> */}
+                  {/* 
                   <Form.Item label="信息牌">
                     {getFieldDecorator('informationBoardId', {
                       rules: [
@@ -294,13 +295,7 @@ class AddPollingLine extends React.Component<Props, State> {
                         },
                       ],
                     })(<Input placeholder="请输入信息牌" />)}
-                  </Form.Item>
-                  {this.setupAlarmSelect()}
-                </Col>
-              </Row>
-
-              <Row type="flex" justify="space-between">
-                <Col span={24}>
+                  </Form.Item> */}
                   <Form.Item label="巡检路线">
                     {getFieldDecorator('inspectionRoute', {
                       rules: [],
@@ -333,6 +328,7 @@ class AddPollingLine extends React.Component<Props, State> {
                       />,
                     )}
                   </Form.Item>
+
                   <Form.Item label="结束时间">
                     {getFieldDecorator('endTime', {
                       rules: [],
@@ -349,6 +345,7 @@ class AddPollingLine extends React.Component<Props, State> {
 
               <Row type="flex" justify="space-between">
                 <Col span={24}>
+                  {this.setupAlarmSelect()}
                   <Form.Item className={styles.area_style} label="备注">
                     {getFieldDecorator('remark', {
                       rules: [
@@ -359,21 +356,23 @@ class AddPollingLine extends React.Component<Props, State> {
                     })(
                       <Input
                         placeholder="请输入备注"
-                        style={{ width: '11.8rem', backgroundSize: '11.8rem 0.4rem' }}
+                        // style={{ width: '8.8rem', backgroundSize: '11.8rem 0.4rem' }}
                       />,
                     )}
                   </Form.Item>
                 </Col>
               </Row>
+              {/* 
+              <Row type="flex" justify="space-between">
+                <Col span={24}></Col>
+              </Row> */}
 
               <Row className={styles.line_style}>
                 <Col className={styles.line_type} span={11} />
                 <Col span={2}>地图</Col>
                 <Col className={styles.line_type} span={11} />
               </Row>
-              <Row>
-                <div className={styles.tips}>请拖拽灯具至指定位置</div>
-              </Row>
+              <Row>{/* <div className={styles.tips}>请点选或拖拽灯具至指定位置</div> */}</Row>
               <Row className={styles.line_style}>
                 <Col className={styles.img_type} span={24}>
                   <div style={{ width: '100%', height: '100%' }} ref={this.map}>
@@ -381,7 +380,7 @@ class AddPollingLine extends React.Component<Props, State> {
                       width={this.state.width}
                       height={this.state.height}
                       draggable={false}
-                    // onClick={this.onCircleClick}
+                      // onClick={this.onCircleClick}
                     >
                       <Layer>
                         <ImageLayer
