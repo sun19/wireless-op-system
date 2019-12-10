@@ -96,80 +96,6 @@ export default class EditableTable extends React.Component<Props, State> {
     super(props);
     this.state = { editingKey: '' };
     this.columns = this.props.columns;
-    if (this.props.showEdit) {
-      this.columns = this.columns.concat([
-        {
-          title: '操作',
-          dataIndex: 'operation',
-          render: (text, record) => {
-            const editable = this.isEditing(record);
-            return editable ? (
-              <span>
-                <EditableContext.Consumer>
-                  {form => (
-                    <IconFont
-                      type="icon-save1"
-                      onClick={this.onSave.bind(this, form, record)}
-                      style={{ marginRight: 8 }}
-                    />
-                  )}
-                </EditableContext.Consumer>
-                <Popconfirm
-                  title="确定要取消吗?"
-                  onConfirm={this.onCancel.bind(this, record)}
-                  okText="确定"
-                  cancelText="取消"
-                >
-                  <IconFont type="icon-cancel" />
-                </Popconfirm>
-              </span>
-            ) : (
-              <span>
-                <IconFont
-                  type="icon-edit"
-                  style={{ marginRight: '8px' }}
-                  onClick={this.onClick.bind(this, record)}
-                />
-                <IconFont type="icon-delete" onClick={this.onDelete.bind(this, record)} />
-              </span>
-            );
-          },
-        },
-      ]);
-    }
-    if (this.props.showLookOver) {
-      this.columns = this.columns.concat([
-        {
-          title: '查看',
-          key: 'action',
-          // fixed: 'right',
-          width: 100,
-          render: (text, record) => (
-            <span>
-              <IconFont
-                type="icon-preview"
-                onClick={this.preview.bind(this, record)}
-                style={{ marginRight: 8 }}
-              />
-            </span>
-          ),
-        },
-      ]);
-    }
-    if (this.props.showManage) {
-      this.columns = this.columns.concat([
-        {
-          title: '操作',
-          key: 'action',
-          width: 100,
-          render: (text, record) => (
-            <span style={{ color: '#FF41D9' }} onClick={this.manage.bind(this, record)}>
-              处理
-            </span>
-          ),
-        },
-      ]);
-    }
     if (this.props.showInlineEdit) {
       this.columns = this.columns.concat([
         {
@@ -190,7 +116,7 @@ export default class EditableTable extends React.Component<Props, State> {
                 </EditableContext.Consumer>
                 <Popconfirm
                   title="确定要取消吗?"
-                  // onConfirm={this.onCancel.bind(this, record)}
+                  onConfirm={this.onCancel.bind(this, record)}
                   okText="确定"
                   cancelText="取消"
                 >
