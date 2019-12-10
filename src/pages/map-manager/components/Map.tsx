@@ -46,7 +46,7 @@ export default class Map extends Component<Props, State> {
     return new Promise(resolve => {
       const mapImage = new Image();
       mapImage.src = require('../../big-screen/assets/地图2.png');
-      mapImage.onload = function () {
+      mapImage.onload = function() {
         resolve(mapImage);
       };
     });
@@ -57,7 +57,7 @@ export default class Map extends Component<Props, State> {
   };
   setupCircle = () => {
     const { circleOptions } = this.props;
-    if(!circleOptions || circleOptions.show === false) return null;
+    if (!circleOptions || circleOptions.show === false) return null;
     const {
       x,
       y,
@@ -81,14 +81,15 @@ export default class Map extends Component<Props, State> {
         draggable={draggable}
         listening={true}
         onDragEnd={onDragEnd}
-      // absolutePosition = { this.circleAbsolutePosition }
+        // absolutePosition = { this.circleAbsolutePosition }
       />
     );
   };
   async componentDidMount() {
     const mapImage = await this.dynamicLoadMapImage();
-    if(this.map.current) {
-      const { clientWidth, clientHeight } = this.map.current;
+    if (this.map.current) {
+      const { clientHeight } = this.map.current;
+      const clientWidth = Math.floor((clientHeight * 1920) / 1080);
 
       this.setState({
         mapImage,
