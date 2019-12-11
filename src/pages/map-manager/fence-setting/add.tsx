@@ -220,6 +220,17 @@ class FencingSetting extends React.Component<Props, State> {
   onBack = () => {
     router.push('/map-manager/fence-setting');
   };
+  areaSelectChange = value => {
+    //根据区域过滤灯具
+    getAllLamps({ id: value }).then(lamps => {
+      this.props.dispatch({
+        type: 'mapManager/update',
+        payload: {
+          lampsType: lamps.result,
+        },
+      });
+    });
+  };
 
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -368,6 +379,7 @@ class FencingSetting extends React.Component<Props, State> {
                       <Select
                         placeholder="请选择区域"
                         style={{ width: '5.25rem', backgroundSize: '5.25rem 0.4rem' }}
+                        onSelect={this.areaSelectChange}
                       >
                         {areas.map(item => (
                           <Option key={item.name} value={item.id}>

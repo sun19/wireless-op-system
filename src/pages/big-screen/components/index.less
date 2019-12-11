@@ -9,6 +9,24 @@
       color: #016597;
     }
   }
+  :global {
+    .ant-menu-item {
+      color: #ffffff;
+    }
+    .ant-menu-horizontal > .ant-menu-item:hover,
+    .ant-menu-horizontal > .ant-menu-submenu:hover,
+    .ant-menu-horizontal > .ant-menu-item-active,
+    .ant-menu-horizontal > .ant-menu-submenu-active,
+    .ant-menu-horizontal > .ant-menu-item-open,
+    .ant-menu-horizontal > .ant-menu-submenu-open,
+    .ant-menu-horizontal > .ant-menu-item-selected,
+    .ant-menu-horizontal > .ant-menu-submenu-selected {
+      color: #ffffff;
+      border-bottom: 2px solid #ffffff;
+      //    color: #00a7fe;
+      // border-bottom: 2px solid #00a7fe;
+    }
+  }
   .middle_panel {
     width: 10rem;
   }
@@ -37,7 +55,7 @@
       display: inline-block;
       width: 0.22rem;
       height: 0.4rem;
-      line-height:0.4rem;
+      line-height: 0.4rem;
       color: white;
       font-weight: 500;
       padding: 1px 0px 0px 3px;
@@ -47,13 +65,13 @@
     }
   }
 }
- 
-  :global(.left_panel .ant-menu-horizontal > .ant-menu-item-selected) {
-      font-size: 0.25rem;
-    }
- :global(.left_panel .ant-menu-horizontal > .ant-menu-item){
-      font-size: 0.25rem;
- }
+
+:global(.left_panel .ant-menu-horizontal > .ant-menu-item-selected) {
+  font-size: 0.25rem;
+}
+:global(.left_panel .ant-menu-horizontal > .ant-menu-item) {
+  font-size: 0.25rem;
+}
 .title {
   position: relative;
   padding: 10px 10px 0px 10px;

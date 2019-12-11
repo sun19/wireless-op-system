@@ -150,7 +150,7 @@ class UserAuths extends React.Component<Props, State> {
       let data = {
         isIn: '1',
         ...values,
-      }
+      };
       const isSuccessed = await addUser(data);
       if (isSuccessed) {
         setTimeout(() => router.push('/user-manager/user-inside'), 1000);
@@ -250,6 +250,7 @@ class UserAuths extends React.Component<Props, State> {
                         rules: [
                           {
                             message: '请选择部门',
+                            required: true,
                           },
                         ],
                         initialValue: allPosition && allPosition[0] && allPosition[0].id,

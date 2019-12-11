@@ -20,84 +20,58 @@ const IconFont = Icon.createFromIconfontCN({
 });
 
 const columns = [
-  // {
-  //   title: '序号',
-  //   dataIndex: 'id',
-  //   width: '10%',
-  //   editable: false,
-  // },
   {
-    title: '姓名',
+    title: '序号',
+    dataIndex: 'id',
+    width: '10%',
+    editable: false,
+  },
+  {
+    title: '图片名称',
     dataIndex: 'name',
     width: '10%',
     editable: true,
   },
-  // {
-  //   title: '身份证号',
-  //   dataIndex: 'cardNo',
-  //   width: '10%',
-  //   editable: true,
-  // },
   {
-    title: '性别',
+    title: '导入格式',
+    dataIndex: 'cardNo',
+    width: '10%',
+    editable: true,
+  },
+  {
+    title: '导入时间',
     dataIndex: 'sex',
     width: '5%',
     className: 'select_text',
     editable: true,
     render: onlineStatus => {
-      return ['男', '女'][onlineStatus]
+      return ['男', '女'][onlineStatus];
     },
   },
-  // {
-  //   title: '家庭住址',
-  //   dataIndex: 'address',
-  //   width: '10%',
-  //   editable: true,
-  // },
-  // {
-  //   title: '联系方式',
-  //   dataIndex: 'phone',
-  //   width: '10%',
-  //   editable: true,
-  // },
   {
-    title: '部门名称',
+    title: '地图编号',
+    dataIndex: 'address',
+    width: '10%',
+    editable: true,
+  },
+  {
+    title: '地图名称',
+    dataIndex: 'phone',
+    width: '10%',
+    editable: true,
+  },
+  {
+    title: '储存地址',
     dataIndex: 'departmentName',
     width: '10%',
     className: 'select_text',
     editable: true,
   },
   {
-    title: '职务名称',
+    title: '坐标',
     dataIndex: 'positionName',
     width: '5%',
     className: 'select_text',
-    editable: true,
-  },
-
-  {
-    title: '保密登记名称',
-    dataIndex: 'securityLevelName',
-    width: '5%',
-    className: 'select_text',
-    editable: true,
-  },
-  {
-    title: '信息牌名称',
-    dataIndex: 'informationBoardName',
-    width: '5%',
-    editable: true,
-  },
-  {
-    title: '录入时间',
-    dataIndex: 'entryTime',
-    width: '10%',
-    editable: true,
-  },
-  {
-    title: '注销时间',
-    dataIndex: 'logoutTime',
-    width: '10%',
     editable: true,
   },
 ];
@@ -149,7 +123,7 @@ class SuperAdmin extends React.Component {
               </Row>
             </Form>
           </div>
-          <MainContent />
+          <MainContent columns={columns} data={[]} total={0} showEdit={true} />
         </Content>
       </div>
     );
@@ -163,4 +137,4 @@ const mapState = ({ userManager }) => {
   };
 };
 
-export default connect(mapState)(SuperAdmin);
+export default connect()(SuperAdmin);

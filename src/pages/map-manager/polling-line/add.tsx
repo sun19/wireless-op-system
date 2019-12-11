@@ -142,23 +142,6 @@ class AddPollingLine extends React.Component<Props, State> {
         lamps: lamps.result,
       },
     });
-    let _lamps = lamps.result || {};
-    if (_.isEmpty(_lamps)) _lamps = { records: [] };
-    //根据已选择的巡检路线，匹配灯具
-    const { pollingLinesRecord } = this.props;
-    const { inspectionRoute = '' } = pollingLinesRecord;
-    const routes = inspectionRoute.split(',');
-    let showLamps = _.filter(_lamps.records, route => routes.includes(route.id));
-    // let showLamps = _lamps.records;
-    showLamps = showLamps.map(lamp => ({
-      x: _.isString(lamp.xcoordinate) && lamp.xcoordinate != '' ? +lamp.xcoordinate : 0,
-      y: _.isString(lamp.ycoordinate) && lamp.ycoordinate != '' ? +lamp.ycoordinate : 0,
-      id: lamp.id,
-    }));
-    const currentLamps = this.setupLampData(showLamps, clientWidth, clientHeight);
-    this.setState({
-      showLamps: currentLamps,
-    });
   }
   setupLampData = (data, currentWidth, currentHeight) => {
     const defaultWidth = 1920;
@@ -218,7 +201,17 @@ class AddPollingLine extends React.Component<Props, State> {
     const clientWidth = Math.floor((clientHeight * 1920) / 1080);
 
     let _lamps = this.props.lamps;
-    let showLamps = _.filter(_lamps.records, route => e.includes(route.id));
+    // let showLamps = _.filter(_lamps.records, route => e.includes(route.id));
+    let showLamps = [];
+    for (let i = 0, len = e.length; i < len; i++) {
+      const route = e[i];
+      for (let j = 0; j < _lamps.records.length; j++) {
+        const lamp = _lamps.records[j];
+        if (lamp.id == route) {
+          showLamps.push(lamp);
+        }
+      }
+    }
     // let showLamps = _lamps.records;
     showLamps = showLamps.map(lamp => ({
       x: _.isString(lamp.xcoordinate) && lamp.xcoordinate != '' ? +lamp.xcoordinate : 0,
@@ -304,10 +297,6 @@ class AddPollingLine extends React.Component<Props, State> {
                   <Form.Item label="巡检路线">
                     {getFieldDecorator('inspectionRoute', {
                       rules: [],
-                      initialValue:
-                        (pollingLinesRecord.inspectionRoute &&
-                          pollingLinesRecord.inspectionRoute.split(',')) ||
-                        [],
                     })(
                       <Select
                         mode="multiple"

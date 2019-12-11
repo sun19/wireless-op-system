@@ -88,3 +88,7 @@ export interface DeleteSuperAdminParams {
   id: string;
   updateId?: string;
 }
+
+export interface GetAllRolesParams {
+  userType?: string;
+}

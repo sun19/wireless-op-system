@@ -33,6 +33,7 @@ import {
   GetSuperAdminListParams,
   UpdateSuperAdminParams,
   DeleteSuperAdminParams,
+  GetAllRolesParams,
 } from './index.interfaces';
 
 export async function getUserList(params: GetUserListParams) {
@@ -58,8 +59,8 @@ export async function deleteUser(data: DeleteUser) {
   return resp.success === true && resp.code === 200;
 }
 
-export async function getAllRoles() {
-  const resp = await request.get(GET_ALL_ROLES);
+export async function getAllRoles(params: GetAllRolesParams = {}) {
+  const resp = await request.get(GET_ALL_ROLES, { params });
   return resp;
 }
 

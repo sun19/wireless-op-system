@@ -14,7 +14,7 @@ const IconFont = Icon.createFromIconfontCN({
   scriptUrl: ICON_FONTS_URL,
 });
 
-class LeftMenuList extends Component<any> {
+class LeftMenuList extends Component<any, any> {
   constructor(props) {
     super(props);
     this.state = {

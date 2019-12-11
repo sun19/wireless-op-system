@@ -98,7 +98,9 @@ class AddUser extends React.Component<Props, State> {
   }
 
   async componentDidMount() {
-    let userTypes = await getAllRoles();
+    let userTypes = await getAllRoles({
+      userType: '2',
+    });
     userTypes = userTypes.map(item => ({
       key: item.id,
       value: item.roleName,

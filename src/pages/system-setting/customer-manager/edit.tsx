@@ -99,7 +99,9 @@ class EditUser extends React.Component<Props, State> {
   }
 
   async componentDidMount() {
-    let userTypes = await getAllRoles();
+    let userTypes = await getAllRoles({
+      userType: '1',
+    });
     userTypes = userTypes.map(item => ({
       key: item.id,
       value: item.roleName,
