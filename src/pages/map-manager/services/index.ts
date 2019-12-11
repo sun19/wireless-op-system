@@ -52,6 +52,7 @@ import {
   UpdatePollingLineParams,
   DeletePollingLineParams,
   GetPollingLineDetailParams,
+  GetAllLampsParams,
 } from './index.interface';
 
 export async function getMapArea(params: GetMapAreaParams) {
@@ -225,7 +226,7 @@ export async function getAllWarningType() {
   return resp;
 }
 
-export async function getAllLamps() {
-  const resp = await request.get(COMMON_GET_ALL_LAMP_ID);
+export async function getAllLamps(params: GetAllLampsParams = {}) {
+  const resp = await request.get(COMMON_GET_ALL_LAMP_ID, { params });
   return resp;
 }

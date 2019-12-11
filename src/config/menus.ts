@@ -113,6 +113,11 @@ export const LEFT_MENUS = [
                         path: '/info-card-manager/info-card-list',
                     },
                     {
+                        name: '信息牌设置',
+                        key: '088',
+                        path: '/system-setting/message-card'
+                    },
+                    {
                         name: '电子围栏设置',
                         key: '016',
                         path: '/map-manager/fence-setting',

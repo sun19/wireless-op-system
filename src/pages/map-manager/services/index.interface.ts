@@ -192,3 +192,7 @@ export interface DeletePollingLineParams {
 export interface GetPollingLineDetailParams {
   id: string;
 }
+
+export interface GetAllLampsParams {
+  id?: string;
+}
