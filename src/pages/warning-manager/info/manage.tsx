@@ -52,22 +52,23 @@ class TaskAdd extends React.Component<Props, State> {
         this.props.form.resetFields();
         router.push('/warning-manager/info');
     };
-   async goMenage (e) {
-       e.preventDefault();
-       const { dataSource } = this.props
-       this.props.form.validateFields(async (err, values) => {
-        //    console.log(values.type)
-        const data ={ 
-        userId: localStorage.getItem('userMessage'),
-            type: values.type,
-            alarmId:dataSource.id,
-            // auditeType: '0',
-        }
-       const isSuccessed = await warningInfoDeal(data)
-       if (isSuccessed) {
-           setTimeout(() => router.push('/warning-manager/info'), 1000);
-       }
-    })}
+    async goMenage(e) {
+        e.preventDefault();
+        const { dataSource } = this.props
+        this.props.form.validateFields(async (err, values) => {
+            //    console.log(values.type)
+            const data = {
+                userId: localStorage.getItem('userMessage'),
+                type: values.type,
+                alarmId: dataSource.id,
+                // auditeType: '0',
+            }
+            const isSuccessed = await warningInfoDeal(data)
+            if (isSuccessed) {
+                setTimeout(() => router.push('/warning-manager/info'), 1000);
+            }
+        })
+    }
     async componentDidMount() {
         this.props.form.validateFields();
 

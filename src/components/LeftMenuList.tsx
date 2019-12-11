@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Menu, Icon } from 'antd';
 import { connect } from 'dva';
 import router from 'umi/router';
+import * as _ from 'lodash';
 import { getAllMenues, getLeftMenues } from '../pages/login/login.service';
 
 import { ICON_FONTS_URL } from '../config/constants';
@@ -16,16 +17,15 @@ const IconFont = Icon.createFromIconfontCN({
 class LeftMenuList extends Component<any> {
   constructor(props) {
     super(props);
+    this.state = {
+      names:[]
+    }
   }
   async getMenus() {
     let user = {
       roleId: localStorage.getItem('userMessage'),
-      // 'f73846cfd1f007f9e8c06935d570fe3c',
-      //  localStorage.getItem('userMessage')
     };
     let data = await getLeftMenues(user);
-    // let data = await getAllMenues(user);
-    // console.log(data)
     const current = localStorage.getItem('current');
     const openKeys = JSON.parse(localStorage.getItem('openKeys') || '[]');
     this.props.dispatch({
@@ -38,9 +38,18 @@ class LeftMenuList extends Component<any> {
     });
   }
   handleClick = value => {
+    const { menus, rootKeys } = this.props;
+
+    let key = value.keyPath
+    let title = []
+    key.map(item=>{
+      const name=_.find(this.state.names,{id:item})
+      title.push(name.name)
+    })
     this.props.dispatch({
       type: 'menu/clickMenuItem',
       payload: {
+        title: _.reverse(title),
         current: value.key,
         openKeys: value.keyPath,
       },
@@ -59,6 +68,22 @@ class LeftMenuList extends Component<any> {
   };
   componentDidMount() {
     this.getMenus();
+    const { menus, rootKeys } = this.props;
+
+    const names = [];
+    getId(menus);
+    function getId(list) {
+      for (let i = 0; i < list.length; i++) {
+        const item = list[i];
+        if (item.child && item.child.length > 0) {
+          names.push({ name: item.name, id: item.id });
+          getId(item.child);
+        } else {
+          names.push({ name: item.name, id: item.id});
+        }
+      }
+    }
+    this.setState({ names})
   }
   matchCurrentRouter = (menus, pathname) => {
     let { current = '', openKeys = [] } = this.props;

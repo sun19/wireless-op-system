@@ -2,10 +2,12 @@
  * title: 菜单编辑
  */
 import React from 'react';
-import { Table, Badge, Menu, Dropdown, Icon } from 'antd';
+import { Table, message, Badge, Menu, Dropdown, Icon } from 'antd';
 import request, { format } from '@/utils/request';
+import { connect } from 'dva';
 
-import { getAllMenues } from '@/pages/login/login.service';
+
+import { getAllMenues, getLeftMenues } from '@/pages/login/login.service';
 import MainContent from './components/MainContent';
 import EditableTable from './components/EditorableTable';
 
@@ -28,15 +30,19 @@ interface State {
   allMenus: any[];
 }
 
-export default class MenuEdit extends React.Component<any, State> {
+ class MenuEdit extends React.Component<any, State> {
   constructor(props) {
     super(props);
     this.state = {
       allMenus: [],
     };
     this.updateData = this.updateData.bind(this);
+    this.cancel = this.cancel.bind(this)
   }
   async componentDidMount() {
+  this.getData()
+  }
+  async getData(){
     const menus = await getAllMenues();
     this.setState({
       allMenus: menus.result,
@@ -53,11 +59,18 @@ export default class MenuEdit extends React.Component<any, State> {
       },
     );
     if (isSuccessed) {
-      //alert('修改成功');
-      const menus = await getAllMenues();
-      this.setState({
-        allMenus: menus.result,
+     this.getData()
+      let user = {
+        roleId: localStorage.getItem('userMessage'),
+      };
+      let data = await getLeftMenues(user);
+      this.props.dispatch({
+        type: 'menu/changeOpen',
+        payload: {
+          menus: data.result || [],
+        },
       });
+      message.success('编辑成功')
     }
   }
   expandedRowRender = (record, index, indent, expanded) => {
@@ -80,12 +93,15 @@ export default class MenuEdit extends React.Component<any, State> {
           columns={columns}
           data={child}
           pagination={false}
+          cancel={this.cancel}
           expandedRowRender={this.expandedRowRender}
           showInlineEdit={true}
         />
       );
     }
   };
+   cancel(){
+   }
   render() {
     return (
       <div className={styles.menu_edit}>
@@ -94,9 +110,17 @@ export default class MenuEdit extends React.Component<any, State> {
           expandedRowRender={this.expandedRowRender}
           data={this.state.allMenus}
           showInlineEdit={true}
+          cancel={this.cancel}
           updateData={this.updateData}
         />
       </div>
     );
   }
 }
+
+const mapState = ({ menu, router }) => ({
+  ...menu,
+  router,
+});
+
+export default connect(mapState)(MenuEdit);

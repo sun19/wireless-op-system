@@ -28,7 +28,8 @@ export default {
     menus: [],
     rootKeys: [],
     current: '1',
-    openKeys: []
+    openKeys: [],
+    title:[]
   },
   reducers: {
     changeOpen(state, { payload }) {

@@ -261,7 +261,7 @@ class EditType extends React.Component<Props, State> {
                   <Form.Item label="所属地图">{this.setupMapSelect()}</Form.Item>
                   <Form.Item label="区域选择">{this.setupAreaSelect()}</Form.Item>
                   <Form.Item label="关联标签">
-                    {getFieldDecorator('informationBoardName', {
+                    {getFieldDecorator('informationBoardId', {
                       rules: [],
                       initialValue: typeRecord.informationBoardName,
                     })(<Input placeholder="请输入关联标签" />)}
