@@ -60,7 +60,9 @@ export default class MapManager extends React.Component<Props, State> {
     const mapImage = await this.dynamicLoadMapImage();
     const iconImage = await this.dynamicLoadIconImage();
     if (!this.map.current) return;
-    const { clientWidth, clientHeight } = this.map.current;
+    const { clientWidth } = this.map.current;
+    const clientHeight = Math.floor((clientWidth * 1080) / 1920);
+
     this.connectWs();
     this.setState({
       mapImage,
@@ -70,7 +72,9 @@ export default class MapManager extends React.Component<Props, State> {
     });
   }
   connectWs() {
-    const { clientWidth, clientHeight } = this.map.current;
+    const { clientWidth } = this.map.current;
+    const clientHeight = Math.floor((clientWidth * 1080) / 1920);
+
     // this.ws = new WebSocket('ws://47.96.112.31:8084/jeecg-boot/websocket/1');
     this.ws = new WebSocket('ws://47.96.112.31:8086/jeecg-boot/websocket/1');
 

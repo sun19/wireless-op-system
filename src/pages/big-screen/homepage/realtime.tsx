@@ -2,7 +2,7 @@
  * title: 电子围栏
  */
 import React, { Component } from 'react';
-import { message, Row, Col,Tooltip, Icon, Progress, Breadcrumb, Table } from 'antd';
+import { message, Row, Col, Tooltip, Icon, Progress, Breadcrumb, Table } from 'antd';
 import Konva from 'konva';
 import ReactEcharts from 'echarts-for-react';
 import { Stage, Layer, Image as ImageLayer, Line as LineLayer } from 'react-konva';
@@ -101,7 +101,9 @@ class Realtime extends React.Component<Props, State> {
     const iconImage = await this.dynamicLoadIconImage();
     const iconRedImage = await this.dynamicLoadIconRedImage();
     if (this.map.current) {
-      const { clientWidth, clientHeight } = this.map.current;
+      const { clientWidth } = this.map.current;
+      const clientHeight = Math.floor((clientWidth * 1080) / 1920);
+
       // this.showLine();
       this.setState({
         mapImage,
@@ -186,7 +188,9 @@ class Realtime extends React.Component<Props, State> {
   };
 
   showLine() {
-    const { clientWidth, clientHeight } = this.map.current;
+    const { clientWidth } = this.map.current;
+    const clientHeight = Math.floor((clientWidth * 1080) / 1920);
+
     let i = 0;
     let temp = [];
     const timer = setInterval(() => {
@@ -716,9 +720,13 @@ class Realtime extends React.Component<Props, State> {
             <div>
               <span>{name}</span>
               {record.processResult == '1' ? (
-                <span style={{ marginLeft: '10px' }} className={styles.notResolved}>未处理</span>
+                <span style={{ marginLeft: '10px' }} className={styles.notResolved}>
+                  未处理
+                </span>
               ) : (
-                <span style={{marginLeft: '10px' }} className={styles.resolveed}>已处理</span>
+                <span style={{ marginLeft: '10px' }} className={styles.resolveed}>
+                  已处理
+                </span>
               )}
             </div>
           );
@@ -736,11 +744,19 @@ class Realtime extends React.Component<Props, State> {
               overflow: 'hidden',
               whiteSpace: 'nowrap',
               textOverflow: 'ellipsis',
-              cursor: 'pointer'
-            }
-          }
+              cursor: 'pointer',
+            },
+          };
         },
-        render: (item) => <Tooltip className='tooltips' placement="topLeft" title={item ? moment(item).format('MM-DD HH:mm') : ''}>{item ? moment(item).format('MM-DD HH:mm') : ''}</Tooltip>,
+        render: item => (
+          <Tooltip
+            className="tooltips"
+            placement="topLeft"
+            title={item ? moment(item).format('MM-DD HH:mm') : ''}
+          >
+            {item ? moment(item).format('MM-DD HH:mm') : ''}
+          </Tooltip>
+        ),
       },
     ];
     let historyWarns = this.props.historyWarns;
