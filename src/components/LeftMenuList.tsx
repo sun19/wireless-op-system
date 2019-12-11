@@ -18,16 +18,21 @@ class LeftMenuList extends Component<any> {
   constructor(props) {
     super(props);
     this.state = {
-      names: [],
-    };
+      menues:[]
+    }
+    this.getMenus()
+
   }
   async getMenus() {
+
     let user = {
       roleId: localStorage.getItem('userMessage'),
     };
     let data = await getLeftMenues(user);
     const current = localStorage.getItem('current');
     const openKeys = JSON.parse(localStorage.getItem('openKeys') || '[]');
+    this.setState({ menues: data.result})
+    this.setTitle(openKeys)
     this.props.dispatch({
       type: 'menu/changeOpen',
       payload: {
@@ -37,13 +42,24 @@ class LeftMenuList extends Component<any> {
       },
     });
   }
-  handleClick = value => {
-    const { menus, rootKeys } = this.props;
-
-    let key = value.keyPath;
+  setTitle=(key)=>{
+    let data = this.state.menues;
+    const names = [];
+   getId(data);
+    function getId(list) {
+      for (let i = 0; i < list.length; i++) {
+        const item = list[i];
+        if (item.child && item.child.length > 0) {
+          names.push({ name: item.name, id: item.id });
+          getId(item.child);
+        } else {
+          names.push({ name: item.name, id: item.id });
+        }
+      }
+    }
     let title = [];
     key.map(item => {
-      const name = _.find(this.state.names, { id: item });
+      const name = _.find(names, { id: item });
       //Todo
       if (!name) return;
       title.push(name.name);
@@ -51,7 +67,18 @@ class LeftMenuList extends Component<any> {
     this.props.dispatch({
       type: 'menu/clickMenuItem',
       payload: {
-        title: _.reverse(title),
+        title: title,
+      },
+    });
+    localStorage.setItem('title', JSON.stringify(_.reverse(title)));
+
+  }
+  handleClick = value => {
+    let key = value.keyPath;
+    this.setTitle(key)
+    this.props.dispatch({
+      type: 'menu/clickMenuItem',
+      payload: {
         current: value.key,
         openKeys: value.keyPath,
       },
@@ -68,25 +95,10 @@ class LeftMenuList extends Component<any> {
     });
     localStorage.setItem('openKeys', JSON.stringify(openKeys));
   };
-  componentDidMount() {
-    this.getMenus();
-    const { menus, rootKeys } = this.props;
 
-    const names = [];
-    getId(menus);
-    function getId(list) {
-      for (let i = 0; i < list.length; i++) {
-        const item = list[i];
-        if (item.child && item.child.length > 0) {
-          names.push({ name: item.name, id: item.id });
-          getId(item.child);
-        } else {
-          names.push({ name: item.name, id: item.id });
-        }
-      }
-    }
-    this.setState({ names });
-  }
+  // componentWillMount() {
+   
+  // }
   matchCurrentRouter = (menus, pathname) => {
     let { current = '', openKeys = [] } = this.props;
     for (let i = 0, len = menus.length; i < len; i++) {
@@ -149,7 +161,7 @@ class LeftMenuList extends Component<any> {
                                 return (
                                   <Menu.Item key={lastChild.id}>
                                     <Link className={`${styles.menu_item}`} to={lastChild.path}>
-                                      {lastChild.name}
+                               <span className={`${styles.red_item}`}/>{lastChild.name}
                                     </Link>
                                   </Menu.Item>
                                 );
@@ -159,8 +171,10 @@ class LeftMenuList extends Component<any> {
                         } else {
                           return (
                             <Menu.Item key={itemChild.id}>
+                            
+
                               <Link className={`${styles.menu_item}`} to={itemChild.path}>
-                                {itemChild.name}
+                                <span className={`${styles.red_item}`}/>{itemChild.name}
                               </Link>
                             </Menu.Item>
                           );
@@ -171,8 +185,9 @@ class LeftMenuList extends Component<any> {
                 } else {
                   return (
                     <Menu.Item key={item.id}>
+                
                       <Link className={`${styles.menu_item}`} to={item.path}>
-                        {item.name}
+                        <span className={`${styles.red_item}`}/>{item.name}
                       </Link>
                     </Menu.Item>
                   );

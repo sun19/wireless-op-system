@@ -10,6 +10,7 @@ import styles from './menuBreadCrumb.less';
 class MenuBreadCrumb extends React.Component<any, any> {
   render() {
     const { title} = this.props;
+    // let title = JSON.parse(localStorage.getItem('title'))
     // let titles = breadcrumbs.map(({ title, match }) => (title))
     // let childrens = [];
     // if (!!_.compact(titles)[1]) {
