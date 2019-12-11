@@ -159,7 +159,17 @@ class AddPollingLine extends React.Component<Props, State> {
     const { pollingLinesRecord } = this.props;
     const { inspectionRoute = '' } = pollingLinesRecord;
     const routes = inspectionRoute && inspectionRoute.split(',');
-    let showLamps = _.filter(_lamps.records, route => routes.includes(route.id));
+    // let showLamps = _.filter(_lamps.records, route => routes.includes(route.id));
+    let showLamps = [];
+    for (let i = 0, len = routes.length; i < len; i++) {
+      const route = routes[i];
+      for (let j = 0; j < _lamps.records.length; j++) {
+        const lamp = _lamps.records[j];
+        if (lamp.id == route) {
+          showLamps.push(lamp);
+        }
+      }
+    }
     // let showLamps = _lamps.records;
     showLamps = showLamps.map(lamp => ({
       x: _.isString(lamp.xcoordinate) && lamp.xcoordinate != '' ? +lamp.xcoordinate : 0,
@@ -263,7 +273,16 @@ class AddPollingLine extends React.Component<Props, State> {
     const { clientHeight } = this.map.current;
     const clientWidth = Math.floor((clientHeight * 1920) / 1080);
     let _lamps = this.props.lamps;
-    let showLamps = _.filter(_lamps.records, route => e.includes(route.id));
+    let showLamps = [];
+    for (let i = 0, len = e.length; i < len; i++) {
+      const route = e[i];
+      for (let j = 0; j < _lamps.records.length; j++) {
+        const lamp = _lamps.records[j];
+        if (lamp.id == route) {
+          showLamps.push(lamp);
+        }
+      }
+    }
     // let showLamps = _lamps.records;
     showLamps = showLamps.map(lamp => ({
       x: _.isString(lamp.xcoordinate) && lamp.xcoordinate != '' ? +lamp.xcoordinate : 0,

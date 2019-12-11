@@ -86,9 +86,15 @@ export const LEFT_MENUS = [
                         ]
                     },
                     {
-                        name: '完善信息', //没有页面
+                        name: '完善信息',
                         key: '012',
                         path: '/user-manager/user-complete',
+                    },
+                    {
+                        name: '地图导入',
+                        key: '13',
+                        path: '/map-manager/map-import',
+                        component: './pages/map-manager/map-import/index.tsx',
                     },
                     {
                         name: '内部人员信息录入',

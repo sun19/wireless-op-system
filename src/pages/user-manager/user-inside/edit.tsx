@@ -35,7 +35,7 @@ class EditAuth extends React.Component<Props> {
   goBack = () => {
     this.props.form.resetFields();
     router.push('/user-manager/user-inside');
-  }; 
+  };
   setupDuties = () => {
     const { allDuties, userInside } = this.props;
     const { getFieldDecorator } = this.props.form;
@@ -47,14 +47,15 @@ class EditAuth extends React.Component<Props> {
               message: '请选择职务',
             },
           ],
-          initialValue: userInside.positionId ? userInside.positionId:'',
+          initialValue: userInside.positionId ? userInside.positionId : '',
         })(
           <Select placeholder="请选择职务">
-            {allDuties&&allDuties.map((duty, index) => (
-              <Option value={duty.id} key={index}>
-                {duty.name}
-              </Option>
-            ))}
+            {allDuties &&
+              allDuties.map((duty, index) => (
+                <Option value={duty.id} key={index}>
+                  {duty.name}
+                </Option>
+              ))}
           </Select>,
         )}
       </Form.Item>
@@ -73,15 +74,15 @@ class EditAuth extends React.Component<Props> {
               message: '请选择保密等级',
             },
           ],
-          initialValue: userInside.securityLevelId ? userInside.securityLevelId:'',
-
+          initialValue: userInside.securityLevelId ? userInside.securityLevelId : '',
         })(
           <Select placeholder="请选择保密等级">
-            {allSecretLevel&&allSecretLevel.map((level, index) => (
-              <Option value={level.id} key={index}>
-                {level.name}
-              </Option>
-            ))}
+            {allSecretLevel &&
+              allSecretLevel.map((level, index) => (
+                <Option value={level.id} key={index}>
+                  {level.name}
+                </Option>
+              ))}
           </Select>,
         )}
       </Form.Item>
@@ -91,7 +92,7 @@ class EditAuth extends React.Component<Props> {
   async componentDidMount() {
     const dutiesResp = await getAllPosition();
     const secretsLevelsResp = await getAllSecretLevels();
-    const allPositions = await getAllDepartment()
+    const allPositions = await getAllDepartment();
 
     this.props.dispatch({
       type: 'commonState/update',
@@ -99,24 +100,23 @@ class EditAuth extends React.Component<Props> {
         allDuties: dutiesResp.result,
         allSecretLevel: secretsLevelsResp.result,
         allPosition: allPositions,
-
       },
     });
   }
 
   handleSubmit(e) {
     e.preventDefault();
-    const { userInside}=this.props
+    const { userInside } = this.props;
     this.props.form.validateFields(async (err, values) => {
       if (err) {
         message.error('填写信息有误 ', values);
         return;
       }
-      const data={
+      const data = {
         isIn: '0',
         id: userInside.id,
-        ...values
-      }
+        ...values,
+      };
       const isSuccessed = await updateUser(data);
       if (isSuccessed) {
         setTimeout(() => router.push('/user-manager/user-inside'), 1000);
@@ -127,7 +127,7 @@ class EditAuth extends React.Component<Props> {
   render() {
     const props = this.props;
     const { getFieldDecorator } = props.form;
-    const { userInside,allPosition}=this.props
+    const { userInside, allPosition } = this.props;
     return (
       <ContentBorder className={styles.auth_root}>
         <Form
@@ -161,7 +161,6 @@ class EditAuth extends React.Component<Props> {
                           },
                         ],
                         initialValue: userInside.cardNo,
-
                       })(<Input placeholder="请输入身份证号" />)}
                     </Form.Item>
                   </Col>
@@ -176,7 +175,6 @@ class EditAuth extends React.Component<Props> {
                           },
                         ],
                         initialValue: userInside.sex,
-
                       })(
                         <Select placeholder="请选择性别">
                           <Option value="0">男</Option>
@@ -194,7 +192,6 @@ class EditAuth extends React.Component<Props> {
                           },
                         ],
                         initialValue: userInside.address,
-
                       })(<Input placeholder="请输入家庭住址" />)}
                     </Form.Item>
                   </Col>
@@ -209,7 +206,6 @@ class EditAuth extends React.Component<Props> {
                           },
                         ],
                         initialValue: userInside.phone,
-
                       })(<Input placeholder="请输入联系方式" />)}
                     </Form.Item>
                   </Col>
@@ -218,18 +214,20 @@ class EditAuth extends React.Component<Props> {
                       {getFieldDecorator('departmentId', {
                         rules: [
                           {
+                            required: true,
                             message: '请选择部门',
                           },
                         ],
                         initialValue: userInside.departmentId ? userInside.departmentId : '',
                       })(
                         <Select placeholder="请选择部门">
-                          {allPosition && allPosition.map(option => (
-                            <Option value={option.id} key={option.key}>
-                              {option.name}
-                            </Option>
-                          ))}
-                        </Select>
+                          {allPosition &&
+                            allPosition.map(option => (
+                              <Option value={option.id} key={option.key}>
+                                {option.name}
+                              </Option>
+                            ))}
+                        </Select>,
                       )}
                     </Form.Item>
                   </Col>
@@ -245,7 +243,6 @@ class EditAuth extends React.Component<Props> {
                           },
                         ],
                         initialValue: userInside.address,
-
                       })(
                         <Select placeholder="请选择在职状态">
                           <Option value="0">在职</Option>
@@ -268,7 +265,9 @@ class EditAuth extends React.Component<Props> {
                   </Col>
                   <Col span={6} className={styles.select_padding_left}>
                     <Form.Item>
-                      <Button className={styles.form_btn} onClick={this.goBack}>返回</Button>
+                      <Button className={styles.form_btn} onClick={this.goBack}>
+                        返回
+                      </Button>
                     </Form.Item>
                   </Col>
                 </Row>
@@ -283,7 +282,7 @@ class EditAuth extends React.Component<Props> {
 
 const AddUserForm = Form.create<Props>({ name: 'auth_user' })(EditAuth);
 
-const mapState = ({ userManager, commonState,  }) => {
+const mapState = ({ userManager, commonState }) => {
   const resp = userManager.innerUserList;
   const { allDuties, allSecretLevel, allPosition } = commonState;
   return {
@@ -292,7 +291,6 @@ const mapState = ({ userManager, commonState,  }) => {
     allSecretLevel: allSecretLevel,
     userInside: userManager.userInside,
     allPosition: allPosition,
-
   };
 };
 

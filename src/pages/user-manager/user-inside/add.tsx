@@ -147,10 +147,10 @@ class UserAuths extends React.Component<Props, State> {
         message.error('填写信息有误 ', values);
         return;
       }
-      let data={
+      let data = {
         isIn: '0',
         ...values,
-      }
+      };
       const isSuccessed = await addUser(data);
       if (isSuccessed) {
         setTimeout(() => router.push('/user-manager/user-inside'), 1000);
@@ -250,6 +250,7 @@ class UserAuths extends React.Component<Props, State> {
                         rules: [
                           {
                             message: '请选择部门',
+                            required: true,
                           },
                         ],
                         // initialValue: allPosition && allPosition[0] && allPosition[0].id,
