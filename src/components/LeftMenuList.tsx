@@ -18,8 +18,8 @@ class LeftMenuList extends Component<any> {
   constructor(props) {
     super(props);
     this.state = {
-      names:[]
-    }
+      names: [],
+    };
   }
   async getMenus() {
     let user = {
@@ -40,12 +40,14 @@ class LeftMenuList extends Component<any> {
   handleClick = value => {
     const { menus, rootKeys } = this.props;
 
-    let key = value.keyPath
-    let title = []
-    key.map(item=>{
-      const name=_.find(this.state.names,{id:item})
-      title.push(name.name)
-    })
+    let key = value.keyPath;
+    let title = [];
+    key.map(item => {
+      const name = _.find(this.state.names, { id: item });
+      //Todo
+      if (!name) return;
+      title.push(name.name);
+    });
     this.props.dispatch({
       type: 'menu/clickMenuItem',
       payload: {
@@ -79,11 +81,11 @@ class LeftMenuList extends Component<any> {
           names.push({ name: item.name, id: item.id });
           getId(item.child);
         } else {
-          names.push({ name: item.name, id: item.id});
+          names.push({ name: item.name, id: item.id });
         }
       }
     }
-    this.setState({ names})
+    this.setState({ names });
   }
   matchCurrentRouter = (menus, pathname) => {
     let { current = '', openKeys = [] } = this.props;
