@@ -107,6 +107,7 @@ class UserAuths extends React.Component<Props, State> {
         allSecretLevel: secretsLevelsResp.result,
       },
     });
+    request.get('http://47.96.112.31:8086/jeecg-boot/intf/location/executeUserCard?status=true');
     // this.connectWs();
   }
   UNSAFE_componentWillReceiveProps(nextProps) {
@@ -151,6 +152,7 @@ class UserAuths extends React.Component<Props, State> {
 
   componentWillUnmount() {
     this.ws && this.ws.close();
+    request.get('http://47.96.112.31:8086/jeecg-boot/intf/location/executeUserCard?status=false');
   }
 
   handleSubmit(e) {
