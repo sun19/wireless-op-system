@@ -1,6 +1,7 @@
 import React from 'react';
 import Konva from 'konva';
 import { Stage, Layer, Image as ImageLayer } from 'react-konva';
+import { connect } from 'dva';
 
 import styles from './index.less';
 
@@ -37,7 +38,7 @@ const defaultLamps = [
 ];
 const scaleBy = 1.01;
 
-export default class MapManager extends React.Component<Props, State> {
+class MapManager extends React.Component<Props, State> {
   map: React.RefObject<HTMLDivElement>;
   ws: WebSocket;
   checkUpdateTimer: any;
@@ -63,12 +64,32 @@ export default class MapManager extends React.Component<Props, State> {
     const { clientWidth } = this.map.current;
     const clientHeight = Math.floor((clientWidth * 1080) / 1920);
 
-    this.connectWs();
+    // this.connectWs();
     this.setState({
       mapImage,
       icon: iconImage,
       width: clientWidth,
       height: clientHeight,
+    });
+  }
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    const { clientWidth } = this.map.current;
+    const clientHeight = Math.floor((clientWidth * 1080) / 1920);
+    let msgInfo = nextProps.wsInfo;
+    if (msgInfo.msgType != '0') return;
+    let msgText = msgInfo.msgTxt;
+    // lastTime = new Date();
+    // const msgText = message.msgTxt;
+    msgText = msgText.map(item => ({
+      x: +item.xcoordinate,
+      y: +item.ycoordinate,
+      id: item.key,
+    }));
+    // const lamp = { };
+    const currentLamps = this.setupLampData(msgText, clientWidth, clientHeight);
+
+    this.setState({
+      lamps: currentLamps,
     });
   }
   connectWs() {
@@ -92,20 +113,19 @@ export default class MapManager extends React.Component<Props, State> {
       }
     }, maxDuraction);
     this.ws.onmessage = evt => {
-      let msgText = JSON.parse(evt.data);
-      lastTime = new Date();
-      // const msgText = message.msgTxt;
-      msgText = msgText.map(item => ({
-        x: +item.xcoordinate,
-        y: +item.ycoordinate,
-        id: item.key,
-      }));
-      // const lamp = { };
-      const currentLamps = this.setupLampData(msgText, clientWidth, clientHeight);
-
-      this.setState({
-        lamps: currentLamps,
-      });
+      // let msgText = JSON.parse(evt.data);
+      // lastTime = new Date();
+      // // const msgText = message.msgTxt;
+      // msgText = msgText.map(item => ({
+      //   x: +item.xcoordinate,
+      //   y: +item.ycoordinate,
+      //   id: item.key,
+      // }));
+      // // const lamp = { };
+      // const currentLamps = this.setupLampData(msgText, clientWidth, clientHeight);
+      // this.setState({
+      //   lamps: currentLamps,
+      // });
     };
     this.ws.onclose = () => {};
   }
@@ -131,8 +151,8 @@ export default class MapManager extends React.Component<Props, State> {
     ));
   }
   componentWillUnmount() {
-    clearInterval(this.checkUpdateTimer);
-    this.ws && this.ws.close();
+    // clearInterval(this.checkUpdateTimer);
+    // this.ws && this.ws.close();
   }
   dynamicLoadMapImage() {
     return new Promise(resolve => {
@@ -198,3 +218,11 @@ export default class MapManager extends React.Component<Props, State> {
     );
   }
 }
+
+const mapState = ({ commonState }) => {
+  return {
+    wsInfo: commonState.wsInfo,
+  };
+};
+
+export default connect(mapState)(MapManager);
