@@ -59,7 +59,7 @@ class NormalLoginForm extends React.Component<Props> {
         if (resp.code === 200 && resp.success) {
           const token = resp.result.token;
           localStorage.setItem('token', token);
-          // await this.preFetchAllCommonState();
+          await this.preFetchAllCommonState();
           localStorage.setItem('usepass', JSON.stringify(data));
           localStorage.setItem('userMessage', resp.result.userInfo.roleId);
           localStorage.setItem('userinfo', JSON.stringify(resp.result.userInfo));
@@ -76,26 +76,26 @@ class NormalLoginForm extends React.Component<Props> {
   }
 
   async preFetchAllCommonState() {
-    // const mapResp = await getAllMap();
-    // const areasResp = await getAllArea();
+    const mapResp = await getAllMap();
+    const areasResp = await getAllArea();
     const rolesResp = await getAllRoles();
-    // const levelsResp = await getAllLevels();
-    // const userInfoResp = await getAllUserInfo();
-    // const fencingTypesResp = await getAllFencingTypes();
-    // const dutiesResp = await getAllPosition();
-    // const secretsLevelsResp = await getAllSecretLevels();
+    const levelsResp = await getAllLevels();
+    const userInfoResp = await getAllUserInfo();
+    const fencingTypesResp = await getAllFencingTypes();
+    const dutiesResp = await getAllPosition();
+    const secretsLevelsResp = await getAllSecretLevels();
 
     this.props.dispatch({
       type: 'commonState/update',
       payload: {
-        // allUserInfo: userInfoResp.result,
-        // allMap: mapResp.result,
+        allUserInfo: userInfoResp.result,
+        allMap: mapResp.result,
         allRoles: rolesResp,
-        // allLevels: levelsResp.result,
-        // allFencingTypes: fencingTypesResp.result,
-        // allAreas: areasResp.result,
-        // allDuties: dutiesResp.result,
-        // allSecretLevel: secretsLevelsResp.result,
+        allLevels: levelsResp.result,
+        allFencingTypes: fencingTypesResp.result,
+        allAreas: areasResp.result,
+        allDuties: dutiesResp.result,
+        allSecretLevel: secretsLevelsResp.result,
       },
     });
   }

@@ -2,7 +2,7 @@
  * title: 添加方式
  */
 import React from 'react';
-import { Form, Row, Col, Button, Input, Select, message } from 'antd';
+import { Form, Row, Col, Button, Input, Select, message, Upload, Icon } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import { connect } from 'dva';
 import * as _ from 'lodash';
@@ -27,6 +27,25 @@ interface State {
   name?: string;
   cardNo?: string;
   realTimeData?: any;
+  loading?: any;
+  imageUrl?:any;
+}
+function getBase64(img, callback) {
+  const reader = new FileReader();
+  reader.addEventListener('load', () => callback(reader.result));
+  reader.readAsDataURL(img);
+}
+
+function beforeUpload(file) {
+  const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+  if (!isJpgOrPng) {
+    message.error('You can only upload JPG/PNG file!');
+  }
+  const isLt2M = file.size / 1024 / 1024 < 2;
+  if (!isLt2M) {
+    message.error('Image must smaller than 2MB!');
+  }
+  return isJpgOrPng && isLt2M;
 }
 
 class UserAuths extends React.Component<Props, State> {
@@ -35,9 +54,27 @@ class UserAuths extends React.Component<Props, State> {
     super(props);
     this.state = {
       realTimeData: {},
+      loading: false,
+      imageUrl: '',
     };
     this.handleSubmit = this.handleSubmit.bind(this);
   }
+  handleChange = info => {
+    if (info.file.status === 'uploading') {
+      this.setState({ loading: true });
+      return;
+    }
+    if (info.file.status === 'done') {
+      // Get this url from response in real world.
+      getBase64(info.file.originFileObj, imageUrl =>
+        this.setState({
+          imageUrl,
+          loading: false,
+        }),
+      );
+    }
+  };
+
   goBack = () => {
     this.props.form.resetFields();
     router.push('/user-manager/user-inside');
@@ -107,24 +144,9 @@ class UserAuths extends React.Component<Props, State> {
         allSecretLevel: secretsLevelsResp.result,
       },
     });
-    request.get('http://47.96.112.31:8086/jeecg-boot/intf/location/executeUserCard?status=true');
-    // this.connectWs();
+    this.connectWs();
   }
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    let msgText = nextProps.wsInfo;
-    //身份证只接受`msgType`为1的数据
-    if (msgText.msgType != '1') return;
-    msgText = msgText.msgTxt;
-    msgText = {
-      name: msgText.name,
-      sex: msgText.sex,
-      address: msgText.address,
-      cardNo: msgText.idnum,
-    };
-    this.setState({
-      realTimeData: msgText,
-    });
-  }
+
   connectWs() {
     this.ws = new WebSocket('ws://47.96.112.31:8086/jeecg-boot/websocket/1');
     this.ws.onopen = () => {
@@ -152,7 +174,6 @@ class UserAuths extends React.Component<Props, State> {
 
   componentWillUnmount() {
     this.ws && this.ws.close();
-    request.get('http://47.96.112.31:8086/jeecg-boot/intf/location/executeUserCard?status=false');
   }
 
   handleSubmit(e) {
@@ -165,8 +186,11 @@ class UserAuths extends React.Component<Props, State> {
       }
       let data = {
         isIn: '0',
+        imageUrl: this.state.imageUrl,
         ...values,
       };
+      // console.log(this.state.imageUrl)
+
       const isSuccessed = await addUser(data);
       if (isSuccessed) {
         setTimeout(() => router.push('/user-manager/user-inside'), 1000);
@@ -178,7 +202,13 @@ class UserAuths extends React.Component<Props, State> {
     const props = this.props;
     const { getFieldDecorator } = props.form;
     const { allPosition } = this.props;
-
+    const uploadButton = (
+      <div>
+        <Icon type={this.state.loading ? 'loading' : 'plus'} />
+        <div className="ant-upload-text">上传照片</div>
+      </div>
+    );
+    const { imageUrl } = this.state;
     // if (_.isEmpty(props.allDuties) || _.isEmpty(props.allSecretLevel)) return null;
     return (
       <ContentBorder className={styles.auth_root}>
@@ -305,6 +335,21 @@ class UserAuths extends React.Component<Props, State> {
                 </Row>
                 <Row type="flex" justify="space-between">
                   <Col span={12}>{this.setupAllSecretLevel()}</Col>
+                  <Col span={12}>
+                    <Form.Item label="上传照片">
+                      <Upload
+                        name="avatar"
+                        listType="picture-card"
+                        className="avatar-uploader"
+                        showUploadList={false}
+                        action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                        beforeUpload={beforeUpload}
+                        onChange={this.handleChange}
+                      >
+                        {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
+                      </Upload>
+                    </Form.Item>
+                  </Col>
                 </Row>
                 <Row type="flex" justify="center" style={{ marginTop: '0.35rem' }}>
                   <Col span={6}>
@@ -341,7 +386,6 @@ const mapState = ({ userManager, commonState }) => {
     allDuties: allDuties,
     allSecretLevel: allSecretLevel,
     allPosition: allPosition,
-    wsInfo: commonState.wsInfo,
   };
 };
 
