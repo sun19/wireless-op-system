@@ -130,7 +130,9 @@ export default class EditableTable extends React.Component<Props, State> {
                   style={{ marginRight: '8px' }}
                   onClick={this.onClick.bind(this, record)}
                 />
-                <IconFont type="icon-delete" onClick={this.onDelete.bind(this, record)} />
+      
+                  <IconFont hidden={this.props.showDelete==false} type="icon-delete" onClick={this.onDelete.bind(this, record)} />
+                
               </span>
             );
           },
