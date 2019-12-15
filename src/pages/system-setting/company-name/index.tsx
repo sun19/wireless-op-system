@@ -29,63 +29,11 @@ const IconFont = Icon.createFromIconfontCN({
 });
 
 const columns = [
-//   // {
-//   //   title: '序号',
-//   //   dataIndex: 'id',
-//   //   width: '20%',
-//   //   editable: false,
-//   // },
-//   {
-//     title: '键值',
-//     dataIndex: 'dictValue',
-//     // width: '15%',
-//     editable: true,
-//   },
-//   {
-//     title: '标签',
-//     dataIndex: 'dictName',
-//     // width: '25%',
-//     editable: true,
-//   },
-//   {
-//     title: '类型',
-//     dataIndex: 'type',
-//     // width: '15%',
-//     className: 'select_text',
-//     editable: true,
-//     // render: (name, record) => {
-//     //   return (
-//     //   <span>{ record. }</span>
-//     //   );
-//     // }
-//   },
-  // {
-  //   title: '描述',
-  //   dataIndex: 'remark',
-  //   // width: '20%',
-  //   editable: true,
-  // },
-  // {
-  //   title: '排序',
-  //   dataIndex: 'sort',
-  //   // width: '10%',
-  //   editable: true,
-  // },
-  // {
-  //   title: 'Action',
-  //   key: 'action',
-  //   render: (text, record) => (
-  //     <span>
-  //       <a>Invite {record.name}</a>
-  //       <Divider type="vertical" />
-  //       <a>Delete</a>
-  //     </span>
-  //   ),
-  // },
-{
-  title: '无线定位',
-    dataIndex: 'dictName',
-      editable: true,
+ 
+  {
+    title: '无线定位',
+    dataIndex: 'sort',
+    editable: true,
   },
 ];
 

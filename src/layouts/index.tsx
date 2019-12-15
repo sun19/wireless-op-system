@@ -29,17 +29,8 @@ class BasicLayout extends React.Component<any, any> {
   componentDidMount() {
     this.ws = new WebSocket('ws://47.96.112.31:8086/jeecg-boot/websocket/1');
     this.ws.onmessage = evt => {
-      let msgInfo = JSON.parse(evt.data);
-      this.props.dispatch({
-        type: 'commonState/update',
-        payload: {
-          wsInfo: msgInfo,
-        },
-      });
-      if (msgInfo.msgType != '2') return;
-
-      let msgText = msgInfo.msgTxt;
-
+      let msgText = JSON.parse(evt.data);
+      msgText = msgText.msgTxt;
       const { warnType, lampCode, informationBordCodes } = msgText;
       if (warnType == 0) {
         notification.warn({
@@ -91,7 +82,7 @@ class BasicLayout extends React.Component<any, any> {
       <>
         <AppTitle />
         <Layout className={[`${styles.layout}`, `${styles.no_background}`].join(' ')}>
-          <Sider className={[`${styles.left_bar_bg}`].join(' ')} width="280">
+          <Sider className={[`${styles.left_bar_bg}`].join(' ')} width="290">
             <LeftMenuList />
           </Sider>
           <Layout className={[`${styles.no_background}`].join(' ')}>
@@ -104,15 +95,7 @@ class BasicLayout extends React.Component<any, any> {
   }
 }
 
-// export default BasicLayout;
-
-const mapState = ({ commonState }) => {
-  return {
-    wsInfo: commonState.wsInfo,
-  };
-};
-
-export default connect(mapState)(BasicLayout);
+export default BasicLayout;
 
 //去除`router`切换动画
 // export default withRouter(props => (
