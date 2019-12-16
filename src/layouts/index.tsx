@@ -82,7 +82,7 @@ class BasicLayout extends React.Component<any, any> {
       <>
         <AppTitle />
         <Layout className={[`${styles.layout}`, `${styles.no_background}`].join(' ')}>
-          <Sider className={[`${styles.left_bar_bg}`].join(' ')} width="280">
+          <Sider className={[`${styles.left_bar_bg}`].join(' ')} width="290">
             <LeftMenuList />
           </Sider>
           <Layout className={[`${styles.no_background}`].join(' ')}>
