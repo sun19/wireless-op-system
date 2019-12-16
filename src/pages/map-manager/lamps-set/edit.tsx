@@ -170,9 +170,15 @@ class halmpAdd extends React.Component<Props, State> {
     const { clientHeight } = this.map.current;
     const clientWidth = Math.floor((clientHeight * 1920) / 1080);
     const event: any = evt.evt;
+    const stage = evt.target.getStage();
+    const oldScale = stage.scaleX();
+    const mousePointTo = {
+      x: stage.getPointerPosition().x / oldScale - stage.x() / oldScale,
+      y: stage.getPointerPosition().y / oldScale - stage.y() / oldScale,
+    };
     this.setState({
-      circleX: Math.floor(event.layerX),
-      circleY: Math.floor(event.layerY),
+      circleX: Math.floor(mousePointTo.x),
+      circleY: Math.floor(mousePointTo.y),
     });
     this.props.form.setFieldsValue({
       xCoordinate: Math.floor((event.layerX * defaultWidth) / clientWidth),
@@ -322,8 +328,8 @@ class halmpAdd extends React.Component<Props, State> {
                           // y={0}
                           width={this.state.width}
                           height={this.state.height}
-                          // draggable={true}
-                          // onWheel={this.onWheel}
+                          draggable={true}
+                          onWheel={this.onWheel}
                           scaleX={this.state.stageScale}
                           scaleY={this.state.stageScale}
                           x={this.state.stageX}

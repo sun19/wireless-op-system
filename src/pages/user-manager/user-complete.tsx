@@ -7,6 +7,7 @@ import { FormComponentProps } from 'antd/lib/form';
 import request from '@/utils/request';
 import router from 'umi/router';
 
+import { BASE_API_URL } from '../../config/constants';
 import ContentBorder from '../../components/ContentBorder';
 import { updateUserInfo } from '@/pages/system-setting/services';
 
@@ -27,7 +28,7 @@ class UserComplete extends React.Component<FormProps, any> {
     const userInfo = JSON.parse(localStorage.getItem('usepass'));
     const { username, roleId } = userInfo;
     const editInfo = await request.get(
-      'http://47.96.112.31:8086/jeecg-boot/intf/location/listUser',
+      BASE_API_URL+'/jeecg-boot/intf/location/listUser',
       {
         params: { loginName: username, userType: roleId },
       },

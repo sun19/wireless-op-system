@@ -4,6 +4,8 @@ import withRouter from 'umi/withRouter';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { connect } from 'dva';
 
+import { WEBSOCKET } from '../config/constants';
+
 import AppTitle from '../components/AppTitle';
 import LeftMenuList from '../components/LeftMenuList';
 import TopHeader from '../components/TopHeader';
@@ -27,10 +29,19 @@ const ignoreLayout = [
 class BasicLayout extends React.Component<any, any> {
   ws: WebSocket;
   componentDidMount() {
-    this.ws = new WebSocket('ws://47.96.112.31:8086/jeecg-boot/websocket/1');
+    this.ws = new WebSocket(WEBSOCKET+'/jeecg-boot/websocket/1');
     this.ws.onmessage = evt => {
-      let msgText = JSON.parse(evt.data);
-      msgText = msgText.msgTxt;
+      let msgInfo = JSON.parse(evt.data);
+      this.props.dispatch({
+        type: 'commonState/update',
+        payload: {
+          wsInfo: msgInfo,
+        },
+      });
+      if (msgInfo.msgType != '2') return;
+
+      let msgText = msgInfo.msgTxt;
+
       const { warnType, lampCode, informationBordCodes } = msgText;
       if (warnType == 0) {
         notification.warn({
@@ -95,7 +106,15 @@ class BasicLayout extends React.Component<any, any> {
   }
 }
 
-export default BasicLayout;
+// export default BasicLayout;
+
+const mapState = ({ commonState }) => {
+  return {
+    wsInfo: commonState.wsInfo,
+  };
+};
+
+export default connect(mapState)(BasicLayout);
 
 //去除`router`切换动画
 // export default withRouter(props => (

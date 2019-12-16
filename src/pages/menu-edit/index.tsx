@@ -6,7 +6,7 @@ import { Table, message, Badge, Menu, Dropdown, Icon } from 'antd';
 import request, { format } from '@/utils/request';
 import { connect } from 'dva';
 
-
+import { BASE_API_URL } from '../../config/constants';
 import { getAllMenues, getLeftMenues } from '@/pages/login/login.service';
 import MainContent from './components/MainContent';
 import EditableTable from './components/EditorableTable';
@@ -50,7 +50,7 @@ interface State {
   }
   async updateData(newData, newItem) {
     const isSuccessed = request.post(
-      'http://47.96.112.31:8086/jeecg-boot/intf/location/updateMenu',
+      BASE_API_URL+'/jeecg-boot/intf/location/updateMenu',
       {
         data: format({
           id: newItem.id,

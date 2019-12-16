@@ -8,6 +8,8 @@ import { connect } from 'dva';
 import * as _ from 'lodash';
 import router from 'umi/router';
 
+
+import { WEBSOCKET ,BASE_API_URL} from '../../../config/constants';
 import ContentBorder from '../../../components/ContentBorder';
 import { UmiComponentProps } from '@/common/type';
 import { getAllPosition, getAllSecretLevels, getAllDepartment } from '@/pages/login/login.service';
@@ -144,9 +146,24 @@ class UserAuths extends React.Component<Props, State> {
         allSecretLevel: secretsLevelsResp.result,
       },
     });
-    this.connectWs();
+    request.get('http://47.96.112.31:8086/jeecg-boot/intf/location/executeUserCard?status=true');
+    // this.connectWs();
   }
-
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    let msgText = nextProps.wsInfo;
+    //身份证只接受`msgType`为1的数据
+    if (msgText.msgType != '1') return;
+    msgText = msgText.msgTxt;
+    msgText = {
+      name: msgText.name,
+      sex: msgText.sex,
+      address: msgText.address,
+      cardNo: msgText.idnum,
+    };
+    this.setState({
+      realTimeData: msgText,
+    });
+  }
   connectWs() {
     this.ws = new WebSocket('ws://47.96.112.31:8086/jeecg-boot/websocket/1');
     this.ws.onopen = () => {
@@ -168,12 +185,13 @@ class UserAuths extends React.Component<Props, State> {
       });
     };
     this.ws.onclose = () => {
-      request.get('http://47.96.112.31:8086/jeecg-boot/intf/location/executeUserCard?status=false');
+      request.get( BASE_API_URL+'/jeecg-boot/intf/location/executeUserCard?status=false');
     };
   }
 
   componentWillUnmount() {
     this.ws && this.ws.close();
+    request.get('http://47.96.112.31:8086/jeecg-boot/intf/location/executeUserCard?status=false');
   }
 
   handleSubmit(e) {
@@ -189,6 +207,8 @@ class UserAuths extends React.Component<Props, State> {
         imageUrl: this.state.imageUrl,
         ...values,
       };
+      // console.log(this.state.imageUrl)
+
       const isSuccessed = await addUser(data);
       if (isSuccessed) {
         setTimeout(() => router.push('/user-manager/user-inside'), 1000);
@@ -384,6 +404,7 @@ const mapState = ({ userManager, commonState }) => {
     allDuties: allDuties,
     allSecretLevel: allSecretLevel,
     allPosition: allPosition,
+    wsInfo: commonState.wsInfo,
   };
 };
 

@@ -18,6 +18,7 @@ import {
   EDIT_SUPER_ADMIN,
   DELETE_SUPER_ADMIN,
   UPLOAD_SUPER_ADMIN,
+  GET_COMPANYNAME,
 } from '@/config/api';
 import {
   GetUserListParams,
@@ -34,6 +35,7 @@ import {
   UpdateSuperAdminParams,
   DeleteSuperAdminParams,
   GetAllRolesParams,
+  CompanyName,
 } from './index.interfaces';
 
 export async function getUserList(params: GetUserListParams) {
@@ -149,4 +151,11 @@ export async function uploadSuperAdmin() {
     ? message.success(`${resp.message}`)
     : message.error(`${resp.message}`);
   return resp.success === true && resp.code === 200;
+}
+
+
+//企业名称
+export async function getCompanyNameList(params: CompanyName) {
+  const resp = await request.get(GET_COMPANYNAME, { params });
+  return resp.result;
 }

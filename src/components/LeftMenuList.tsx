@@ -64,13 +64,15 @@ class LeftMenuList extends Component<any, any> {
       if (!name) return;
       title.push(name.name);
     });
+
+    localStorage.setItem('title', JSON.stringify(_.reverse(title)));
+
     this.props.dispatch({
       type: 'menu/clickMenuItem',
       payload: {
         title: title,
       },
     });
-    localStorage.setItem('title', JSON.stringify(_.reverse(title)));
 
   }
   handleClick = value => {

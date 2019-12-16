@@ -88,3 +88,11 @@ export const DELETE_SUPER_ADMIN = `${BASE_API_URL}/jeecg-boot/intf/location/dele
  */
 export const UPLOAD_SUPER_ADMIN =
   `${BASE_API_URL}/jeecg-boot/intf/location/importExcelDict`;
+
+
+
+
+/**
+ * 人员类型列表
+ */
+export const GET_COMPANYNAME = `${BASE_API_URL}/jeecg-boot/intf/location/listDict`;

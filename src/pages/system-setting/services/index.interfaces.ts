@@ -92,3 +92,7 @@ export interface DeleteSuperAdminParams {
 export interface GetAllRolesParams {
   userType?: string;
 }
+
+export interface CompanyName {
+  type?: string;
+}

@@ -1,6 +1,4 @@
-/**
- * title: 设置 > 高级管理员设置 > 超级管理员设置 > 编辑
- */
+
 import React from 'react';
 import { Form, Row, Col, Button, Input, message, Select, Tree } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
@@ -12,12 +10,13 @@ import { InputText, TreeNodeMenu } from '../components';
 import { updateUserType, updateSuperAdmin } from '../services';
 
 import styles from './index.less';
+import { LEFT_MENUS } from '../../../config/menus';
 
 const { TreeNode } = Tree;
 const { Option } = Select;
 const { TextArea } = Input;
 
-import { LEFT_MENUS } from '../../../config/menus';
+
 const defaultMenuNodes = LEFT_MENUS;
 
 // interface Props extends FormComponentProps {}
@@ -51,25 +50,12 @@ class EditSuperAdmin extends React.Component<Props, State> {
     };
   }
   async componentDidMount() {
-    // let userTypes = await getAllRoles();
-    // userTypes = userTypes.map(item => ({
-    //   key: item.id,
-    //   value: item.roleName,
-    //   selectValue: item.roleCode,
-    // }));
-    // this.setState({ userTypes });
-    // const { peopleTypeRecord } = this.props;
-    // // console.log(peopleTypeRecord)
-    // this.setState({
-    //   expandedKeys: peopleTypeRecord.roleId ? peopleTypeRecord.roleId : [],
-    //   selectedKeys: peopleTypeRecord.roleId ? peopleTypeRecord.roleId : [],
-    //   // autoExpandParent: true,
-    //   checkedKeys: peopleTypeRecord.roleId ? peopleTypeRecord.roleId : [],
-    // });
   }
   goBack = () => {
     this.props.form.resetFields();
-    router.push('/system-setting/people-type');
+    router.push('/system-setting/organization-tree');
+
+    // router.push('/system-setting/organization-tree/edit');
   };
   onSelect = (selectedKeys, info) => {
     // console.log('onSelect', info);
@@ -84,20 +70,26 @@ class EditSuperAdmin extends React.Component<Props, State> {
 
     e.preventDefault();
     const { superAdminRecord } = this.props;
+
     this.props.form.validateFields(async (err, values) => {
       if (err) {
         message.error('填写信息有误', values);
         return;
       }
-      const isSuccessed = await updateSuperAdmin(Object.assign(superAdminRecord, values));
+
+var dic = {}
+dic["dictName"] = values.dictName
+dic["id"] = superAdminRecord.id
+
+      const isSuccessed = await updateSuperAdmin(dic);
       if (isSuccessed) {
-        setTimeout(() => router.push('/system-setting/super-admin'), 1000);
+        setTimeout(() => router.push('/system-setting/organization-tree'), 1000);
       }
     });
   }
 
   onCancel() {
-    router.push('/system-setting/super-admin');
+    router.push('/system-setting/organization-tree');
   }
   renderTreeNodes = data =>
     data.map(item => {
@@ -121,46 +113,11 @@ class EditSuperAdmin extends React.Component<Props, State> {
               <div className="auth__inner--container">
                 <Row type="flex" justify="space-between">
                   <Col span={12}>
-                    <Form.Item label="键值">
-                      {getFieldDecorator('dictValue', {
-                        rules: [],
-                        initialValue: superAdminRecord.dictValue,
-                      })(<Input placeholder="请输入键值" />)}
-                    </Form.Item>
-                  </Col>
-                  <Col span={12}>
-                    <Form.Item label="标签">
+                    <Form.Item label="机构层级">
                       {getFieldDecorator('dictName', {
                         rules: [],
                         initialValue: superAdminRecord.dictName,
-                      })(<Input placeholder="请输入标签" />)}
-                    </Form.Item>
-                  </Col>
-                </Row>
-                <Row type="flex" justify="space-between">
-                  <Col span={12}>
-                    <Form.Item label="类型">
-                      {getFieldDecorator('type', {
-                        rules: [],
-                        initialValue: superAdminRecord.type,
-                      })(<Input placeholder="请输入类型" disabled={true} />)}
-                    </Form.Item>
-                  </Col>
-                  <Col span={12}>
-                    <Form.Item label="排序">
-                      {getFieldDecorator('sort', {
-                        rules: [],
-                        initialValue: superAdminRecord.sort,
-                      })(<Input placeholder="请输入排序" />)}
-                    </Form.Item>
-                  </Col>
-                </Row>
-                <Row type="flex" justify="space-between">
-                  <Col span={24} className="textarea">
-                    <Form.Item label="备描">
-                      {getFieldDecorator('remark', {
-                        initialValue: superAdminRecord.remark,
-                      })(<TextArea autoSize={{ minRows: 6, maxRows: 8 }} />)}
+                      })(<Input placeholder="请输入机构层级" />)}
                     </Form.Item>
                   </Col>
                 </Row>

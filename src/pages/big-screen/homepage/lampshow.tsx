@@ -10,6 +10,7 @@ import { connect } from 'dva';
 import * as _ from 'lodash';
 import moment from 'moment';
 
+import { BASE_API_URL } from '../../../config/constants';
 import Title from '../components/Title';
 import Navigation from '../components/navigation';
 import { UmiComponentProps } from '@/common/type';
@@ -115,7 +116,7 @@ class DataView extends React.Component<Props, State> {
       });
     }
     let lamps = await request.get(
-      'http://47.96.112.31:8086/jeecg-boot/intf/location/listByHistoryTrajectory',
+      BASE_API_URL+'/jeecg-boot/intf/location/listByHistoryTrajectory',
     );
     lamps = (lamps.result && lamps.result.records) || [];
     this.setState({

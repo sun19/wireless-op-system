@@ -1,5 +1,5 @@
 /**
- * title: 修改
+ * title: 添加
  */
 import React from 'react';
 import { Form, Row, Col, Button, Input, Select, DatePicker } from 'antd';
@@ -7,8 +7,6 @@ import router from 'umi/router';
 import { FormComponentProps } from 'antd/lib/form';
 import { connect } from 'dva';
 import Konva from 'konva';
-import moment from 'moment';
-
 import {
   Stage,
   Layer,
@@ -22,7 +20,7 @@ import ContentBorder from '../../../components/ContentBorder';
 import { warningTypeSearch } from '@/pages/warning-manager/services';
 import { UmiComponentProps } from '@/common/type';
 import { getAllMap } from '@/pages/login/login.service';
-import { getAllWarningType, updatePollingLine, getMapLamps } from '../services';
+import { getAllWarningType, addPollingLine, getMapLamps } from '../services';
 
 import styles from './index.less';
 
@@ -47,11 +45,7 @@ interface State {
   circleShow: boolean;
   showLamps: Lamp[];
   icon: any;
-  stageScale: number;
-  stageX: number;
-  stageY: number;
 }
-const scaleBy = 1.01;
 
 class AddPollingLine extends React.Component<Props, State> {
   map: React.RefObject<HTMLDivElement>;
@@ -68,9 +62,6 @@ class AddPollingLine extends React.Component<Props, State> {
       circleShow: true,
       showLamps: [],
       icon: null,
-      stageScale: 1,
-      stageX: 0,
-      stageY: 0,
     };
   }
   goBack = () => {
@@ -100,6 +91,7 @@ class AddPollingLine extends React.Component<Props, State> {
       </Form.Item>
     );
   };
+
   dynamicLoadMapImage() {
     return new Promise(resolve => {
       const mapImage = new Image();
@@ -109,7 +101,6 @@ class AddPollingLine extends React.Component<Props, State> {
       };
     });
   }
-
   dynamicLoadIconImage() {
     return new Promise(resolve => {
       const mapImage = new Image();
@@ -123,7 +114,6 @@ class AddPollingLine extends React.Component<Props, State> {
     if (this.map.current) {
       const { clientHeight } = this.map.current;
       const clientWidth = Math.floor((clientHeight * 1920) / 1080);
-
       const mapImage = await this.dynamicLoadMapImage();
       const iconImage = await this.dynamicLoadIconImage();
       this.setState({
@@ -144,7 +134,6 @@ class AddPollingLine extends React.Component<Props, State> {
     const { clientHeight } = this.map.current;
     const clientWidth = Math.floor((clientHeight * 1920) / 1080);
     const maps = await getAllMap();
-    //获取到所有的灯具信息
     let lamps = await getMapLamps({});
     this.props.dispatch({
       type: 'mapManager/update',
@@ -152,33 +141,6 @@ class AddPollingLine extends React.Component<Props, State> {
         allMaps: maps.result,
         lamps: lamps.result,
       },
-    });
-    let _lamps = lamps.result || {};
-    if (_.isEmpty(_lamps)) _lamps = { records: [] };
-    //根据已选择的巡检路线，匹配灯具
-    const { pollingLinesRecord } = this.props;
-    const { inspectionRoute = '' } = pollingLinesRecord;
-    const routes = inspectionRoute && inspectionRoute.split(',');
-    // let showLamps = _.filter(_lamps.records, route => routes.includes(route.id));
-    let showLamps = [];
-    for (let i = 0, len = routes.length; i < len; i++) {
-      const route = routes[i];
-      for (let j = 0; j < _lamps.records.length; j++) {
-        const lamp = _lamps.records[j];
-        if (lamp.id == route) {
-          showLamps.push(lamp);
-        }
-      }
-    }
-    // let showLamps = _lamps.records;
-    showLamps = showLamps.map(lamp => ({
-      x: _.isString(lamp.xcoordinate) && lamp.xcoordinate != '' ? +lamp.xcoordinate : 0,
-      y: _.isString(lamp.ycoordinate) && lamp.ycoordinate != '' ? +lamp.ycoordinate : 0,
-      id: lamp.id,
-    }));
-    const currentLamps = this.setupLampData(showLamps, clientWidth, clientHeight);
-    this.setState({
-      showLamps: currentLamps,
     });
   }
   setupLampData = (data, currentWidth, currentHeight) => {
@@ -214,49 +176,7 @@ class AddPollingLine extends React.Component<Props, State> {
       <LineLayer points={line} stroke="#1296db" strokeWidth={5} linecap="round" lineJoin="round" />
     );
   };
-  onWheel = evt => {
-    evt.evt.preventDefault();
-    const stage = evt.target.getStage();
-    const oldScale = stage.scaleX();
 
-    const mousePointTo = {
-      x: stage.getPointerPosition().x / oldScale - stage.x() / oldScale,
-      y: stage.getPointerPosition().y / oldScale - stage.y() / oldScale,
-    };
-
-    const newScale = evt.evt.deltaY > 0 ? oldScale * scaleBy : oldScale / scaleBy;
-
-    stage.scale({ x: newScale, y: newScale });
-
-    this.setState({
-      stageScale: newScale,
-      stageX: -(mousePointTo.x - stage.getPointerPosition().x / newScale) * newScale,
-      stageY: -(mousePointTo.y - stage.getPointerPosition().y / newScale) * newScale,
-    });
-  };
-  mapClick = evt => {
-    const defaultWidth = 1920;
-    const defaultHeight = 1080;
-    const { clientHeight } = this.map.current;
-    const clientWidth = Math.floor((clientHeight * 1920) / 1080);
-    const event: any = evt.evt;
-    const stage = evt.target.getStage();
-    const oldScale = stage.scaleX();
-    const mousePointTo = {
-      x: stage.getPointerPosition().x / oldScale - stage.x() / oldScale,
-      y: stage.getPointerPosition().y / oldScale - stage.y() / oldScale,
-    };
-    this.setState({
-      circleX: Math.floor(mousePointTo.x),
-      circleY: Math.floor(mousePointTo.y),
-    });
-    this.props.form.setFieldsValue({
-      xCoordinate: Math.floor((event.layerX * defaultWidth) / clientWidth),
-    });
-    this.props.form.setFieldsValue({
-      yCoordinate: Math.floor((event.layerY * defaultHeight) / clientHeight),
-    });
-  };
   onSubmit = e => {
     e.preventDefault();
     const { pollingLinesRecord } = this.props;
@@ -269,16 +189,19 @@ class AddPollingLine extends React.Component<Props, State> {
         endTime: (values.endTime && values.endTime.format('YYYY-MM-DD HH:mm:ss').toString()) || '',
         inspectionRoute: values.inspectionRoute.join(','),
       };
-      await updatePollingLine(Object.assign(pollingLinesRecord, data));
+
+      await addPollingLine(data);
       router.push('/map-manager/polling-line');
+      // this.getRouteInspectList(data);
     });
   };
-
   onLampSelectChange = e => {
     if (!this.map.current) return;
     const { clientHeight } = this.map.current;
     const clientWidth = Math.floor((clientHeight * 1920) / 1080);
+
     let _lamps = this.props.lamps;
+    // let showLamps = _.filter(_lamps.records, route => e.includes(route.id));
     let showLamps = [];
     for (let i = 0, len = e.length; i < len; i++) {
       const route = e[i];
@@ -300,6 +223,22 @@ class AddPollingLine extends React.Component<Props, State> {
       showLamps: currentLamps,
     });
   };
+
+  onCircleDragging = (event: any) => {
+    const defaultWidth = 1920;
+    const defaultHeight = 1080;
+    const { clientHeight } = this.map.current;
+    const clientWidth = Math.floor((clientHeight * 1920) / 1080);
+
+    const evt = event.evt;
+    //换算由于地图拉伸造成的坐标不一致
+    this.props.form.setFieldsValue({
+      xCoordinate: Math.floor((evt.layerX * defaultWidth) / clientWidth),
+    });
+    this.props.form.setFieldsValue({
+      yCoordinate: Math.floor((evt.layerY * defaultHeight) / clientHeight),
+    });
+  };
   render() {
     const { getFieldDecorator } = this.props.form;
     let { maps, pollingLinesRecord, lamps } = this.props;
@@ -307,7 +246,6 @@ class AddPollingLine extends React.Component<Props, State> {
     const createdLamps = this.createLamps();
     const createdLine = this.createLampLines();
     const { mapImage, width, height } = this.state;
-
     return (
       <ContentBorder className={styles.auth_root}>
         <Form
@@ -327,7 +265,6 @@ class AddPollingLine extends React.Component<Props, State> {
                           message: '请选择地图名称',
                         },
                       ],
-                      initialValue: pollingLinesRecord.mapId,
                     })(
                       <Select placeholder="请选择地图名称">
                         {maps.map(item => (
@@ -338,13 +275,28 @@ class AddPollingLine extends React.Component<Props, State> {
                       </Select>,
                     )}
                   </Form.Item>
+                  {/* <Form.Item label="巡检人员">
+                    {getFieldDecorator('login_id', {
+                      rules: [
+                        {
+                          message: '请输入巡检人员',
+                        },
+                      ],
+                    })(<Input placeholder="请输入巡检人员" />)}
+                  </Form.Item> */}
+                  {/* 
+                  <Form.Item label="信息牌">
+                    {getFieldDecorator('informationBoardId', {
+                      rules: [
+                        {
+                          message: '请输入信息牌',
+                        },
+                      ],
+                    })(<Input placeholder="请输入信息牌" />)}
+                  </Form.Item> */}
                   <Form.Item label="巡检路线">
                     {getFieldDecorator('inspectionRoute', {
                       rules: [],
-                      initialValue:
-                        (pollingLinesRecord.inspectionRoute &&
-                          pollingLinesRecord.inspectionRoute.split(',')) ||
-                        [],
                     })(
                       <Select
                         mode="multiple"
@@ -362,7 +314,6 @@ class AddPollingLine extends React.Component<Props, State> {
                   <Form.Item label="开始时间">
                     {getFieldDecorator('startTime', {
                       rules: [],
-                      initialValue: moment(pollingLinesRecord.startTime),
                     })(
                       <DatePicker
                         showTime={true}
@@ -375,7 +326,6 @@ class AddPollingLine extends React.Component<Props, State> {
                   <Form.Item label="结束时间">
                     {getFieldDecorator('endTime', {
                       rules: [],
-                      initialValue: moment(pollingLinesRecord.endTime),
                     })(
                       <DatePicker
                         showTime={true}
@@ -394,7 +344,6 @@ class AddPollingLine extends React.Component<Props, State> {
                   <Form.Item className={styles.area_style} label="巡检名称">
                     {getFieldDecorator('name', {
                       rules: [],
-                      initialValue: pollingLinesRecord.name,
                     })(
                       <Input
                         placeholder="请输入巡检名称"
@@ -409,21 +358,18 @@ class AddPollingLine extends React.Component<Props, State> {
                           message: '请输入备注',
                         },
                       ],
-                      initialValue: pollingLinesRecord.remark,
                     })(
                       <Input
                         placeholder="请输入备注"
-                        // style={{ width: '11.8rem', backgroundSize: '11.8rem 0.4rem' }}
+                        // style={{ width: '8.8rem', backgroundSize: '11.8rem 0.4rem' }}
                       />,
                     )}
                   </Form.Item>
                 </Col>
               </Row>
-
-              {/* <Row type="flex" justify="space-between">
-                <Col span={24}>
-                
-                </Col>
+              {/* 
+              <Row type="flex" justify="space-between">
+                <Col span={24}></Col>
               </Row> */}
 
               <Row className={styles.line_style}>
@@ -438,13 +384,8 @@ class AddPollingLine extends React.Component<Props, State> {
                     <Stage
                       width={this.state.width}
                       height={this.state.height}
-                      draggable={true}
-                      onWheel={this.onWheel}
-                      scaleX={this.state.stageScale}
-                      scaleY={this.state.stageScale}
-                      x={this.state.stageX}
-                      y={this.state.stageY}
-                      onClick={this.mapClick}
+                      draggable={false}
+                      // onClick={this.onCircleClick}
                     >
                       <Layer>
                         <ImageLayer
@@ -456,7 +397,6 @@ class AddPollingLine extends React.Component<Props, State> {
                         />
                         {createdLamps}
                         {createdLine}
-                        {/* {this.setupCircle()} */}
                       </Layer>
                     </Stage>
                   </div>
