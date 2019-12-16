@@ -55,7 +55,7 @@ class UserAuths extends React.Component<Props, State> {
               message: '请选择职务',
             },
           ],
-          initialValue: (allDuties && allDuties[0] && allDuties[0].id) || '',
+          // initialValue: (allDuties && allDuties[0] && allDuties[0].id) || '',
         })(
           <Select placeholder="请选择职务">
             {allDuties &&
@@ -82,7 +82,7 @@ class UserAuths extends React.Component<Props, State> {
               message: '请选择保密等级',
             },
           ],
-          initialValue: (allSecretLevel && allSecretLevel[0] && allSecretLevel[0].id) || '',
+          // initialValue: (allSecretLevel && allSecretLevel[0] && allSecretLevel[0].id) || '',
         })(
           <Select placeholder="请选择保密等级">
             {allSecretLevel &&
@@ -109,14 +109,27 @@ class UserAuths extends React.Component<Props, State> {
         allSecretLevel: secretsLevelsResp.result,
       },
     });
-    this.connectWs();
+    // this.connectWs();
   }
-
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    let msgText = nextProps.wsInfo;
+    //身份证只接受`msgType`为1的数据
+    if (msgText.msgType != '1') return;
+    msgText = msgText.msgTxt;
+    msgText = {
+      name: msgText.name,
+      sex: msgText.sex,
+      address: msgText.address,
+      cardNo: msgText.idnum,
+    };
+    this.setState({
+      realTimeData: msgText,
+    });
+  }
   connectWs() {
-    // this.ws = new WebSocket('ws://47.96.112.31:8086/jeecg-boot/websocket/1');
-    this.ws = new WebSocket(WEBSOCKET+'/jeecg-boot/websocket/1');
+    this.ws = new WebSocket('ws://47.96.112.31:8086/jeecg-boot/websocket/1');
     this.ws.onopen = () => {
-      request.get( BASE_API_URL+'/jeecg-boot/intf/location/executeUserCard?status=true');
+      request.get('http://47.96.112.31:8086/jeecg-boot/intf/location/executeUserCard?status=true');
     };
     this.ws.onmessage = evt => {
       let msgText = JSON.parse(evt.data);
@@ -134,7 +147,7 @@ class UserAuths extends React.Component<Props, State> {
       });
     };
     this.ws.onclose = () => {
-      request.get( BASE_API_URL+'/jeecg-boot/intf/location/executeUserCard?status=false');
+      request.get('http://47.96.112.31:8086/jeecg-boot/intf/location/executeUserCard?status=false');
     };
   }
 
@@ -256,7 +269,7 @@ class UserAuths extends React.Component<Props, State> {
                             required: true,
                           },
                         ],
-                        initialValue: allPosition && allPosition[0] && allPosition[0].id,
+                        // initialValue: allPosition && allPosition[0] && allPosition[0].id,
                       })(
                         <Select placeholder="请选择部门">
                           {allPosition &&
@@ -280,7 +293,7 @@ class UserAuths extends React.Component<Props, State> {
                             message: '请选择在职状态',
                           },
                         ],
-                        initialValue: '0',
+                        // initialValue: '0',
                       })(
                         <Select placeholder="请选择在职状态">
                           <Option value="0">在职</Option>
@@ -328,6 +341,7 @@ const mapState = ({ userManager, commonState }) => {
     allDuties: allDuties,
     allSecretLevel: allSecretLevel,
     allPosition: allPosition,
+    wsInfo: commonState.wsInfo,
   };
 };
 
