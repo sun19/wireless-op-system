@@ -11,7 +11,7 @@ import router from 'umi/router';
 import ContentBorder from '../../../components/ContentBorder';
 // import { InputText, TreeNodeMenu } from '../components';
 import { UmiComponentProps } from '@/common/type';
-
+import { BASE_API_URL } from '../../../config/constants';
 import SelectText from '../components/SelectText';
 import { OptionValue } from '../components/SelectText';
 import { getAllRoles } from '../../system-setting/services';
@@ -151,7 +151,7 @@ class AddUsers extends React.Component<Props, State> {
     });
 
     let userInfoList = await request.get(
-      'http://47.96.112.31:8086/jeecg-boot/intf/location/queryUserInfoList',
+      BASE_API_URL+'/jeecg-boot/intf/location/queryUserInfoList',
     );
     userInfoList = (userInfoList.result && userInfoList.result.records) || [];
     this.setState({

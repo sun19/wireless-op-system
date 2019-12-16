@@ -4,6 +4,8 @@ import withRouter from 'umi/withRouter';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { connect } from 'dva';
 
+import { WEBSOCKET } from '../config/constants';
+
 import AppTitle from '../components/AppTitle';
 import LeftMenuList from '../components/LeftMenuList';
 import TopHeader from '../components/TopHeader';
@@ -27,9 +29,10 @@ const ignoreLayout = [
 class BasicLayout extends React.Component<any, any> {
   ws: WebSocket;
   componentDidMount() {
-    this.ws = new WebSocket('ws://47.96.112.31:8086/jeecg-boot/websocket/1');
+    this.ws = new WebSocket(WEBSOCKET+'/jeecg-boot/websocket/1');
     this.ws.onmessage = evt => {
       let msgText = JSON.parse(evt.data);
+
       msgText = msgText.msgTxt;
       const { warnType, lampCode, informationBordCodes } = msgText;
       if (warnType == 0) {

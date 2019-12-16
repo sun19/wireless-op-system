@@ -1,5 +1,6 @@
 import React from 'react';
 import Konva from 'konva';
+import { WEBSOCKET } from '../../config/constants';
 import { Stage, Layer, Image as ImageLayer } from 'react-konva';
 
 import styles from './index.less';
@@ -76,7 +77,10 @@ export default class MapManager extends React.Component<Props, State> {
     const clientHeight = Math.floor((clientWidth * 1080) / 1920);
 
     // this.ws = new WebSocket('ws://47.96.112.31:8084/jeecg-boot/websocket/1');
-    this.ws = new WebSocket('ws://47.96.112.31:8086/jeecg-boot/websocket/1');
+    // this.ws = new WebSocket('ws://47.96.112.31:8086/jeecg-boot/websocket/1');
+    this.ws = new WebSocket(WEBSOCKET+'/jeecg-boot/websocket/1');
+
+
 
     this.ws.onopen = () => {};
     let lastTime = new Date();

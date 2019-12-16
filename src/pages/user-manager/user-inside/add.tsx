@@ -8,6 +8,8 @@ import { connect } from 'dva';
 import * as _ from 'lodash';
 import router from 'umi/router';
 
+
+import { WEBSOCKET ,BASE_API_URL} from '../../../config/constants';
 import ContentBorder from '../../../components/ContentBorder';
 import { UmiComponentProps } from '@/common/type';
 import { getAllPosition, getAllSecretLevels, getAllDepartment } from '@/pages/login/login.service';
@@ -148,9 +150,10 @@ class UserAuths extends React.Component<Props, State> {
   }
 
   connectWs() {
-    this.ws = new WebSocket('ws://47.96.112.31:8086/jeecg-boot/websocket/1');
+    // this.ws = new WebSocket('ws://47.96.112.31:8086/jeecg-boot/websocket/1');
+    this.ws = new WebSocket(WEBSOCKET+'/jeecg-boot/websocket/1');
     this.ws.onopen = () => {
-      request.get('http://47.96.112.31:8086/jeecg-boot/intf/location/executeUserCard?status=true');
+      request.get( BASE_API_URL+'/jeecg-boot/intf/location/executeUserCard?status=true');
     };
     this.ws.onmessage = evt => {
       let msgText = JSON.parse(evt.data);
@@ -168,7 +171,7 @@ class UserAuths extends React.Component<Props, State> {
       });
     };
     this.ws.onclose = () => {
-      request.get('http://47.96.112.31:8086/jeecg-boot/intf/location/executeUserCard?status=false');
+      request.get( BASE_API_URL+'/jeecg-boot/intf/location/executeUserCard?status=false');
     };
   }
 

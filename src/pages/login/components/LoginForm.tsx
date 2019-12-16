@@ -4,7 +4,7 @@ import { Form, Icon, Input, Row, Col, Radio, Button, Alert, message } from 'antd
 import request, { format } from '@/utils/request';
 import { connect } from 'dva';
 import { FormComponentProps } from 'antd/lib/form';
-
+import { BASE_API_URL } from '../../../config/constants';
 import { ICON_FONTS_URL } from '../../../config/constants';
 import {
   getAllMap,
@@ -51,7 +51,7 @@ class NormalLoginForm extends React.Component<Props> {
 
         this.showLoadingMessage();
         const resp = await request(
-          `http://47.96.112.31:8086/jeecg-boot/intf/location/login?username=${data.username}&password=${data.password}&roleId=${data.roleId}`,
+          `${BASE_API_URL}/jeecg-boot/intf/location/login?username=${data.username}&password=${data.password}&roleId=${data.roleId}`,
           {
             method: 'GET',
           },

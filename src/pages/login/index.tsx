@@ -3,6 +3,8 @@ import { Row, Col, Radio, Input, Icon, Layout, Form } from 'antd';
 import moment from 'moment';
 import request, { format } from '@/utils/request';
 
+import { BASE_API_URL } from '../../config/constants';
+
 import WrappedNormalLoginForm from './components/LoginForm';
 import styles from './index.less';
 // import { Icon } from 'antd';
@@ -47,7 +49,7 @@ export default class Login extends Component<any, State> {
   };
   async gettitle() {
     const resp = await request(
-      ' http://47.96.112.31:8086/jeecg-boot/intf/location/getSystemLogoTitle',
+      BASE_API_URL+'/jeecg-boot/intf/location/getSystemLogoTitle',
       {
         method: 'GET',
       },

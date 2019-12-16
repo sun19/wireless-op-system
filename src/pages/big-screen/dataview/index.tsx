@@ -8,6 +8,7 @@ import request, { format } from '@/utils/request';
 import { connect } from 'dva';
 import moment from 'moment';
 
+import { BASE_API_URL } from '../../../config/constants';
 import Navigation from '../components/navigation';
 import Title from '../components/Title';
 import {
@@ -35,10 +36,10 @@ class DataView extends Component<any, State> {
   }
   async componentDidMount() {
     const realInfo = await request.get(
-      'http://47.96.112.31:8086/jeecg-boot/intf/location/listByUserInfo',
+      BASE_API_URL+'/jeecg-boot/intf/location/listByUserInfo',
     );
     const routeData = await request.get(
-      'http://47.96.112.31:8086/jeecg-boot/intf/location/findbyInspectionReports',
+      BASE_API_URL+'/jeecg-boot/intf/location/findbyInspectionReports',
     );
     this.setState({
       routeData,
