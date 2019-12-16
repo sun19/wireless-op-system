@@ -9,6 +9,11 @@ export const GET_INFO_LIST =
 //  信息牌删除
 export const DEL_INFO_LIST =
   `${BASE_API_URL}/jeecg-boot/intf/location/deleteLnformationBoard`;
+//  信息牌注销
+export const CANCELLATION_INFO_LIST =
+  `${BASE_API_URL}/jeecg-boot/intf/location/updateisCancel`;
+  
+
 // 查看详情
 export const GET_INFO_DETIAL =
   `${BASE_API_URL}/jeecg-boot/intf/location/queryByIdInformationBoard`;

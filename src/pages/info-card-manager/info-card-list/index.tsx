@@ -10,9 +10,9 @@ import { connect } from 'dva';
 import { UmiComponentProps } from '@/common/type';
 import MainContent from '../components/MainContent';
 import { ICON_FONTS_URL } from '../../../config/constants';
-import { getInfoListParams, deleteInfo, exportIn, exportOut } from '../services';
+import { getInfoListParams, deleteInfo, exportIn, exportOut,cancellationInfo } from '../services';
 import { getUserTypes } from '../../system-setting/services';
-import { DeleteInfo } from '../services/index.interfaces';
+import { DeleteInfo,CancellationInfo } from '../services/index.interfaces';
 
 import styles from './index.less';
 import publicStyles from '../index.less';
@@ -62,6 +62,16 @@ const columns = [
       return ['在线', '离线'][item]
     }
   },
+  {
+    title: '注销状态',
+    dataIndex: 'isCancel',
+    className: 'select_text',
+    editable: true,
+    render: (item) => {
+      return ['使用中', '注销'][item]
+    }
+  },
+  
   {
     title: '定位',
     dataIndex: 'lampNumber',
@@ -178,6 +188,7 @@ class SuperAdmin extends React.Component<Props, State> {
     super(props);
     this.updateData = this.updateData.bind(this);
     this.deleteColumn = this.deleteColumn.bind(this);
+    this.cancellationColumn = this.cancellationColumn.bind(this);
     this.state = {
       userName: '',
       name: '',
@@ -235,6 +246,28 @@ class SuperAdmin extends React.Component<Props, State> {
       },
     });
   }
+  cancellationColumn(item: CancellationInfo) {
+    //TODO:修改人ID
+    // console.log(item.isCancel)
+    let self = this;
+    confirm({
+      title: '确定要注销这条信息吗？',
+      content: '',
+      okText: '取消',
+      okType: 'danger',
+      cancelText: '确定',
+      onOk() { },
+      async onCancel() {
+        await cancellationInfo({ 'id': item.id,'isCancel': item.isCancel==0?1:0  });
+        //重新请求数据重绘
+        self.getInfoListData();
+      },
+    });
+  }
+
+
+
+
 
   async componentDidMount() {
     const peopleType = await getUserTypes({});
@@ -254,6 +287,7 @@ class SuperAdmin extends React.Component<Props, State> {
   async getInfoListData() {
     const { userName, name, type } = this.state;
     const infoList = await getInfoListParams({ userName, name, type });
+    // console.log(infoList)
     this.props.dispatch({
       type: 'infoCardManager/update',
       payload: { customManager: infoList },
@@ -369,8 +403,10 @@ class SuperAdmin extends React.Component<Props, State> {
             columns={columns}
             updateData={this.updateData}
             deleteColumn={this.deleteColumn}
+            cancellationColumn={this.cancellationColumn}
             total={total}
             showEdit={true}
+            showCancellation={true}
           />
         </Content>
       </div>
