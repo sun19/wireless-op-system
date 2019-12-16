@@ -10,7 +10,7 @@ import * as _ from 'lodash';
 import ContentBorder from '../../../components/ContentBorder';
 import { InputText, TreeNodeMenu } from '../components';
 import { updateUserType, getAllRoles } from '../services';
-import { getPeopleMenues, getAllMenues, editMenues } from '../../login/login.service';
+import { getPeopleMenues, getLeftMenues,editMenues } from '../../login/login.service';
 
 import styles from './index.less';
 
@@ -51,8 +51,11 @@ class EditUserAuth extends React.Component<Props, State> {
     };
   }
   async componentDidMount() {
-    // 获取所有菜单
-    const data = await getAllMenues();
+    // 获取当前用户菜单
+    let user = {
+      roleId: localStorage.getItem('userMessage'),
+    };
+    const data = await getLeftMenues(user);
     this.setState({ dataTree: data.result });
 
     // 获取权限菜单id
