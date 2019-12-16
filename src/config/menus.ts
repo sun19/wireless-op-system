@@ -158,6 +158,16 @@ export const LEFT_MENUS = [
                         path: '/map-manager/polling-line',
                     },
                     {
+                        name: '责任区',
+                        key: '024',
+                        path: '/map-manager/duty-area',
+                    },
+                    {
+                        name: '禁止区',
+                        key: '024',
+                        path: '/map-manager/prohibit-area',
+                    },
+                    {
                         name: '区域设置',
                         key: '024',
                         path: '/map-manager/area-set',
