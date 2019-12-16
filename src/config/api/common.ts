@@ -54,7 +54,7 @@ export const COMMON_GET_ALL_SECRET_LEVELS =
 export const COMMON_GET_ALL_POSITION =
   `${BASE_API_URL}/jeecg-boot/intf/location/queryAllPosition`
 /**
- * 获取所有部门
+ * 获取所有部门m
  */
 export const COMMON_GET_ALL_DEPARTMENT =
   `${BASE_API_URL}/jeecg-boot/intf/location/queryAllDept`
