@@ -5,12 +5,14 @@ import {
   INSPECT_MANAGER_SEARCH,
   INSPECT_MANAGER_DETAIL,
   INSPECT_MANAGER_LIST_SEARCH,
-  NEW_INSPECT_MANAGER_LIST_SEARCH
+  NEW_INSPECT_MANAGER_LIST_SEARCH,
+  EXPORT_INSPECTION_XLS
 } from '@/config/api';
 import {
   GetInspectListParams,
   GetInspectDetailParams,
   GetInspectReportsParams,
+  ExportInspectionXls,
 } from './index.interfaces';
 
 export async function getInspectList(params: GetInspectListParams) {
@@ -34,3 +36,9 @@ export async function queryInspectionReportByTime(params: GetInspectReportsParam
   const resp = await request.get(NEW_INSPECT_MANAGER_LIST_SEARCH, { params });
   return resp;
 }
+// 导出
+export async function inspectExportOut(params: ExportInspectionXls) {
+  const resp = await request.get(EXPORT_INSPECTION_XLS, { params });
+  return resp;
+}
+ 
