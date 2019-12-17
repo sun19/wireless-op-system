@@ -80,9 +80,9 @@ class TaskEdit extends React.Component<Props, State> {
       let data = {
         id: editData.id,
         ...props,
-        startTime:
-          (values.startTime && values.startTime.format('YYYY-MM-DD HH:mm:ss').toString()) || '',
-        endTime: (values.endTime && values.endTime.format('YYYY-MM-DD HH:mm:ss').toString()) || '',
+        // startTime:
+        //   (values.startTime && values.startTime.format('YYYY-MM-DD HH:mm:ss').toString()) || '',
+        // endTime: (values.endTime && values.endTime.format('YYYY-MM-DD HH:mm:ss').toString()) || '',
       };
 
       const isSuccessed = await TaskListEdit(data);
@@ -187,7 +187,7 @@ class TaskEdit extends React.Component<Props, State> {
                     </Form.Item>
                   </Col>
                 </Row>
-                <Row type="flex" justify="space-between">
+                {/* <Row type="flex" justify="space-between">
                   <Col span={12}>
                     <Form.Item label="开始时间">
                       {getFieldDecorator('startTime', {
@@ -208,7 +208,7 @@ class TaskEdit extends React.Component<Props, State> {
                       )}
                     </Form.Item>
                   </Col>
-                </Row>
+                </Row> */}
                 {this.getRoute()}
                 <Row type="flex" justify="space-between">
                   <Col span={24} className="textarea">

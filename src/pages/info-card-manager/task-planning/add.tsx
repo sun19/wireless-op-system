@@ -76,9 +76,9 @@ class TaskAdd extends React.Component<Props, State> {
       const { startTime, endTime, ...props } = values;
       let data = {
         ...props,
-        startTime:
-          (values.startTime && values.startTime.format('YYYY-MM-DD HH:mm:ss').toString()) || '',
-        endTime: (values.endTime && values.endTime.format('YYYY-MM-DD HH:mm:ss').toString()) || '',
+        // startTime:
+        //   (values.startTime && values.startTime.format('YYYY-MM-DD HH:mm:ss').toString()) || '',
+        // endTime: (values.endTime && values.endTime.format('YYYY-MM-DD HH:mm:ss').toString()) || '',
       };
       const isSuccessed = await addTaskList(data);
       if (isSuccessed) {
@@ -177,7 +177,7 @@ class TaskAdd extends React.Component<Props, State> {
                     </Form.Item>
                   </Col>
                 </Row>
-                <Row type="flex" justify="space-between">
+                {/* <Row type="flex" justify="space-between">
                   <Col span={12}>
                     <Form.Item label="开始时间">
                       {getFieldDecorator(
@@ -199,7 +199,7 @@ class TaskAdd extends React.Component<Props, State> {
                       )}
                     </Form.Item>
                   </Col>
-                </Row>
+                </Row> */}
                 {this.getRoute()}
                 <Row type="flex" justify="space-between">
                   <Col span={24} className="textarea">

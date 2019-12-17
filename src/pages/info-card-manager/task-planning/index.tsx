@@ -46,18 +46,19 @@ const columns = [
     }
    
   },
+  // {
+  //   title: '开始时间',
+  //   dataIndex: 'startTime',
+  //   width: '20%',
+  //   editable: true,
+  // },
+  // {
+  //   title: '结束时间',
+  //   dataIndex: 'endTime',
+  //   width: '20%',
+  //   editable: true,
+  // }, 
   {
-    title: '开始时间',
-    dataIndex: 'startTime',
-    width: '20%',
-    editable: true,
-  },
-  {
-    title: '结束时间',
-    dataIndex: 'endTime',
-    width: '20%',
-    editable: true,
-  }, {
     title: '备注',
     dataIndex: 'remark',
     editable: true,
