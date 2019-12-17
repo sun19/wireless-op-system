@@ -17,6 +17,7 @@ import {
   EXPORT_TASK_OUT,
   EXPORT_TASK_IN,
   TASK_LIST_EDIT,
+  CANCELLATION_INFO_LIST,
 } from '@/config/api';
 import {
   GetInfoListParams,
@@ -28,6 +29,7 @@ import {
   GetTaskDetail,
   DelTaskList,
   AddTaskList,
+  CancellationInfo,
 } from './index.interfaces';
 
 /*************************************信息牌******************************** */
@@ -49,6 +51,15 @@ export async function deleteInfo(data: DeleteInfo) {
   }
   return resp.success === true && resp.code === 200;
 }
+// 信息牌注销
+export async function cancellationInfo(params: CancellationInfo) {
+  const resp = await request.post(CANCELLATION_INFO_LIST, { params });
+  if (resp.code == 500) {
+    message.error(`${resp.message}`);
+  }
+  return resp.success === true && resp.code === 200;
+}
+
 // 查看详情
 export async function getInfoDetial(data: GetInfoDetial) {
   const resp = await request.post(GET_INFO_DETIAL, {

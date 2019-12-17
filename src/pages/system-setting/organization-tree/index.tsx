@@ -50,6 +50,7 @@ class SuperAdmin extends React.Component<Props, State> {
 
   async getSuperAdminList() {
     const superAdmins = await getCompanyNameList({type:"multiDept"});
+
     this.props.dispatch({
       type: 'systemSetting/update',
       payload: {

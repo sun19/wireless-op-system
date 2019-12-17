@@ -382,18 +382,18 @@ class SuperAdmin extends React.Component<Props, State> {
                   </Button>
                 </span>
                 <span className={[`${publicStyles.form_btns}`].join(' ')}>
-                  <span
+                  {/* <span
                     className={[`${publicStyles.form_btn_add}`].join('')}
                     onClick={this.addUser}
                   >
                     <IconFont type="icon-plus" />
-                  </span>
+                  </span> */}
                   <span className={[`${publicStyles.form_btn_add}`].join('')} onClick={this.export}>
                     <IconFont type="icon-download-simple" />
                   </span>
-                  <span className={[`${publicStyles.form_btn_add}`].join('')} onClick={this.upload}>
+                  {/* <span className={[`${publicStyles.form_btn_add}`].join('')} onClick={this.upload}>
                     <IconFont type="icon-upload-light" />
-                  </span>
+                  </span> */}
                 </span>
               </Row>
             </Form>
@@ -402,11 +402,11 @@ class SuperAdmin extends React.Component<Props, State> {
             data={records}
             columns={columns}
             updateData={this.updateData}
-            deleteColumn={this.deleteColumn}
+            // deleteColumn={this.deleteColumn}
             cancellationColumn={this.cancellationColumn}
             total={total}
-            showEdit={true}
-            showCancellation={true}
+            // showEdit={true}
+            // showCancellation={true}
           />
         </Content>
       </div>

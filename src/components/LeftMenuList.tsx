@@ -3,7 +3,7 @@ import { Menu, Icon } from 'antd';
 import { connect } from 'dva';
 import router from 'umi/router';
 import * as _ from 'lodash';
-import { getAllMenues, getLeftMenues } from '../pages/login/login.service';
+import {getLeftMenues } from '../pages/login/login.service';
 
 import { ICON_FONTS_URL } from '../config/constants';
 import Link from 'umi/link';

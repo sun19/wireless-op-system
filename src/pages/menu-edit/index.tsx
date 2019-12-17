@@ -7,7 +7,7 @@ import request, { format } from '@/utils/request';
 import { connect } from 'dva';
 
 import { BASE_API_URL } from '../../config/constants';
-import { getAllMenues, getLeftMenues } from '@/pages/login/login.service';
+import {getLeftMenues } from '@/pages/login/login.service';
 import MainContent from './components/MainContent';
 import EditableTable from './components/EditorableTable';
 
@@ -43,7 +43,10 @@ interface State {
   this.getData()
   }
   async getData(){
-    const menus = await getAllMenues();
+    let user = {
+      roleId: localStorage.getItem('userMessage'),
+    };
+    const menus = await getLeftMenues(user);
     this.setState({
       allMenus: menus.result,
     });

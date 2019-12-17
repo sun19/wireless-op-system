@@ -10,6 +10,11 @@ export interface GetInfoListParams {
 export interface DeleteInfo {
   id: string;
 }
+// 信息牌注销
+export interface CancellationInfo {
+  id: string;
+  isCancel:number
+}
 // 查看详情
 export interface GetInfoDetial {
   id: string;
