@@ -125,7 +125,7 @@ class AddPollingLine extends React.Component<Props, State> {
     }
     const warningTypes = await getAllWarningType();
     this.setState({
-      warningTypes: warningTypes.result.records,
+      warningTypes: (warningTypes.result && warningTypes.result.records) || [],
     });
     this.initRequest();
   }
@@ -188,6 +188,7 @@ class AddPollingLine extends React.Component<Props, State> {
           (values.startTime && values.startTime.format('YYYY-MM-DD HH:mm:ss').toString()) || '',
         endTime: (values.endTime && values.endTime.format('YYYY-MM-DD HH:mm:ss').toString()) || '',
         inspectionRoute: values.inspectionRoute.join(','),
+        type: 1
       };
 
       await addPollingLine(data);
