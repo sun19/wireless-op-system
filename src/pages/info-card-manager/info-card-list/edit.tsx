@@ -318,7 +318,7 @@ class EditUser extends React.Component<Props, State> {
                           },
                         ],
                         initialValue: infoCardList.name,
-                      })(<Input placeholder="请输入信息牌编号" />)}
+                      })(<Input placeholder="请输入信息牌编号" readOnly={true}/>)}
                     </Form.Item>
                   </Col>
                 </Row>

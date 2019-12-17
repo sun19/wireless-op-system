@@ -96,3 +96,8 @@ export const UPLOAD_SUPER_ADMIN =
  * 人员类型列表
  */
 export const GET_COMPANYNAME = `${BASE_API_URL}/jeecg-boot/intf/location/listDict`;
+
+/**
+ * 新增部门
+ */
+export const ADD_DEPARTMENT = `${BASE_API_URL}/jeecg-boot/intf/location/addDepartment`;
