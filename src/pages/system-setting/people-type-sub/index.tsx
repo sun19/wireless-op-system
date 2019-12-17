@@ -126,6 +126,7 @@ class PeopelType extends React.Component<Props> {
             updateData={this.updateData}
             deleteColumn={this.deleteColumn}
             showEdit={true}
+            showDelete={false}
           />
         </Content>
       </div>
