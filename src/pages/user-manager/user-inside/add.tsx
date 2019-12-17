@@ -202,6 +202,7 @@ class UserAuths extends React.Component<Props, State> {
         message.error('填写信息有误 ', values);
         return;
       }
+      values.depaCode !== 'undefined'? delete values.depaCode: ''
       let data = {
         isIn: '0',
         imageUrl: this.state.imageUrl,
@@ -328,6 +329,32 @@ class UserAuths extends React.Component<Props, State> {
                             ))}
                         </Select>,
                       )}
+                    </Form.Item>
+                  </Col>
+                </Row>
+                <Row type="flex" justify="space-between" align="middle">
+                  <Col span={12}>
+                    <Form.Item label="部门编号">
+                      {getFieldDecorator('depaCode', {
+                        rules: [
+                          {
+                            message: '请输入部门编号',
+                          },
+                        ],
+                        initialValue: this.state.realTimeData.cardNo,
+                      })(<Input placeholder="请输入部门编号" />)}
+                    </Form.Item>
+                  </Col>
+                  <Col span={12}>
+                    <Form.Item label="人员编号">
+                      {getFieldDecorator('userCode', {
+                        rules: [
+                          {
+                            message: '请输入人员编号',
+                          },
+                        ],
+                        initialValue: this.state.realTimeData.cardNo,
+                      })(<Input placeholder="请输入人员编号" />)}
                     </Form.Item>
                   </Col>
                 </Row>
