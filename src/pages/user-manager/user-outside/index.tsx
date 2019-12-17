@@ -170,7 +170,7 @@ class UserInside extends React.Component<Props, State> {
     this.props.dispatch({
       type: 'userManager/update',
       payload: {
-        innerUserList: userList.result,
+        outSideUserList: userList.result,
       },
     });
   }
@@ -180,7 +180,7 @@ class UserInside extends React.Component<Props, State> {
     // if (resp) {
     //   this.props.dispatch({
     //     type: 'userManager/update',
-    //     payload: { innerUserList: { records: data } },
+    //     payload: { outSideUserList: { records: data } },
     //   });
     // }
     this.props.dispatch({
@@ -223,20 +223,26 @@ class UserInside extends React.Component<Props, State> {
     this.getUserList();
   }
 
+
   componentWillUnmount() {
     message.destroy();
+    this.props.dispatch({
+      type: 'userManager/update',
+      payload: {
+        outSideUserList: [],
+      },
+    });
   }
-
   render() {
-    let { innerUserList } = this.props;
+    let { outSideUserList } = this.props;
     const { name, cardNo } = this.state;
-    if (_.isEmpty(innerUserList)) {
-      innerUserList = {
+    if (_.isEmpty(outSideUserList)) {
+      outSideUserList = {
         records: [],
         total: 0,
       };
     }
-    let { records, total } = innerUserList;
+    let { records, total } = outSideUserList;
     records = records.map(item => {
       return _.assign(item, { key: item.id });
     });
@@ -313,9 +319,9 @@ class UserInside extends React.Component<Props, State> {
 }
 
 const mapState = ({ userManager }) => {
-  const resp = userManager.innerUserList;
+  const resp = userManager.outSideUserList;
   return {
-    innerUserList: resp,
+    outSideUserList: resp,
   };
 };
 
