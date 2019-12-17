@@ -250,7 +250,14 @@ class UserInside extends React.Component<Props, State> {
 
   componentWillUnmount() {
     message.destroy();
+    this.props.dispatch({
+      type: 'userManager/update',
+      payload: {
+        innerUserList:[],
+      },
+    });
   }
+
 
   render() {
     let { innerUserList } = this.props;

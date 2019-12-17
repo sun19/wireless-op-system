@@ -96,3 +96,10 @@ export interface GetAllRolesParams {
 export interface CompanyName {
   type?: string;
 }
+
+export interface AddDepartmentParams {
+  name?: string,
+  deptCode?: string,
+  remark?: string,
+  sort?: string 
+}

@@ -42,7 +42,7 @@ class UserAuths extends React.Component<Props, State> {
   }
   goBack = () => {
     this.props.form.resetFields();
-    router.push('/user-manager/user-inside');
+    router.push('/user-manager/user-outside');
   };
   setupDuties = () => {
     const { allDuties } = this.props;
@@ -169,7 +169,7 @@ class UserAuths extends React.Component<Props, State> {
       };
       const isSuccessed = await addUser(data);
       if (isSuccessed) {
-        setTimeout(() => router.push('/user-manager/user-inside'), 1000);
+        setTimeout(() => router.push('/user-manager/user-outside'), 1000);
       }
     });
   }
