@@ -46,7 +46,6 @@ interface State {
   userInfoList: any[];
   currentIndex?: number;
   currentUser?: any;
-  userInfoNumber?:number;
 }
 function hasErrors(fieldsError) {
   return Object.keys(fieldsError).some(field => fieldsError[field]);
@@ -158,18 +157,8 @@ class AddUsers extends React.Component<Props, State> {
     this.setState({
       userInfoList,
     });
-
-    let userInfoNumber = await request.get(
-      BASE_API_URL+'/jeecg-boot/intf/location/getDictNameByType?type=informationBoardNumber',
-    );
-
-    this.setState({
-      userInfoNumber,
-    });
   }
   onSelectChange = (value, index) => {
-
-
     const { userInfoList } = this.state;
     let currentIndex = undefined;
     userInfoList.map((item, index) => {
@@ -207,7 +196,7 @@ class AddUsers extends React.Component<Props, State> {
     const props = this.props;
     const { getFieldDecorator, getFieldsError } = this.props.form;
     const { allPosition } = this.props;
-    const { currentIndex, currentUser ,userInfoNumber} = this.state;
+    const { currentIndex, currentUser } = this.state;
     return (
       <ContentBorder className={styles.auth_root}>
         <Form
@@ -314,11 +303,11 @@ class AddUsers extends React.Component<Props, State> {
                 </Row>
                 <Row type="flex" justify="space-between">
                   <Col span={12}>
-                    <Form.Item label="人员编号">
+                    <Form.Item label="信息牌编号">
                       {getFieldDecorator('name', {
                         rules: [],
-                        initialValue: (userInfoNumber != null && userInfoNumber) || undefined,
-                      })(<Input placeholder="请输入信息牌编号"  disabled={true}/>)}
+                        initialValue: (currentIndex != null && currentUser.name) || undefined,
+                      })(<Input placeholder="请输入信息牌编号" />)}
                     </Form.Item>
                   </Col>
                 </Row>

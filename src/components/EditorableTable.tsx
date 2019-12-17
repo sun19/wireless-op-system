@@ -134,7 +134,7 @@ export default class EditableTable extends React.Component<Props, State> {
                 <IconFont hidden={this.props.showDelete==false} type="icon-delete" onClick={this.onDelete.bind(this, record)} />
                 
                 <IconFont //注销按钮
-                  hidden={this.props.showCancellation!=true}
+                  hidden={!(this.props.showCancellation==true)}
                   style={{ marginLeft: '8px' }}
                   type="icon-zhuxiao" 
                   onClick={this.onCancellation.bind(this, record)}

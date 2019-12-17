@@ -1,5 +1,5 @@
 /**
- * title: 添加方式
+ * title: 编辑
  */
 import React from 'react';
 import { Form, Row, Col, Button, Input, Select, message } from 'antd';
@@ -9,72 +9,89 @@ import * as _ from 'lodash';
 import router from 'umi/router';
 
 import ContentBorder from '../../../components/ContentBorder';
+// import { InputText, TreeNodeMenu } from '../components';
 import { UmiComponentProps } from '@/common/type';
+
+import SelectText from '../components/SelectText';
+import { OptionValue } from '../components/SelectText';
+import { getAllRoles } from '../../system-setting/services';
 import { getAllPosition, getAllSecretLevels, getAllDepartment } from '@/pages/login/login.service';
-import { updateUser } from '../services';
+import { editInfoList } from '../services';
 
 import styles from './index.less';
 
+const { TextArea } = Input;
 const { Option } = Select;
 
-interface FormProps extends FormComponentProps {}
+interface UserType {
+  key?: string;
+  value?: string;
+  roleId: string;
+}
 
+interface FormProps extends FormComponentProps {}
 type StateProps = ReturnType<typeof mapState>;
 type Props = StateProps & UmiComponentProps & FormProps;
 
 interface State {
-  name?: string;
+  userTypes: UserType[];
+  userName?: string;
   cardNo?: string;
+  phone?: string;
+  departmentId?: string;
+  name?: string;
+  id?: string;
+  note?: string;
 }
-
-class EditAuth extends React.Component<Props> {
+function hasErrors(fieldsError) {
+  return Object.keys(fieldsError).some(field => fieldsError[field]);
+}
+class EditUser extends React.Component<Props, State> {
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.state = {
+      userTypes: [],
+    };
   }
-  goBack = () => {
-    this.props.form.resetFields();
-    router.push('/user-manager/user-outside');
-  };
   setupDuties = () => {
-    const { allDuties, userInside } = this.props;
+    const { allDuties, infoCardList } = this.props;
     const { getFieldDecorator } = this.props.form;
     return (
       <Form.Item label="职务">
         {getFieldDecorator('positionId', {
           rules: [
             {
+              // required: true,
               message: '请选择职务',
             },
           ],
-          initialValue: userInside.positionId ? userInside.positionId : '',
+          initialValue: infoCardList.positionId,
         })(
           <Select placeholder="请选择职务">
-            {allDuties &&
-              allDuties.map((duty, index) => (
-                <Option value={duty.id} key={index}>
-                  {duty.name}
-                </Option>
-              ))}
+            {allDuties.map((duty, index) => (
+              <Option value={duty.id} key={index}>
+                {duty.name}
+              </Option>
+            ))}
           </Select>,
         )}
       </Form.Item>
     );
   };
-
   setupAllSecretLevel = () => {
-    const { allSecretLevel, userInside } = this.props;
+    const { allSecretLevel, infoCardList } = this.props;
     const { getFieldDecorator } = this.props.form;
-
     return (
       <Form.Item label="保密等级">
         {getFieldDecorator('securityLevelId', {
           rules: [
             {
+              // required: true,
               message: '请选择保密等级',
             },
           ],
-          initialValue: userInside.securityLevelId ? userInside.securityLevelId : '',
+          initialValue: infoCardList.securityLevelId,
         })(
           <Select placeholder="请选择保密等级">
             {allSecretLevel &&
@@ -89,11 +106,45 @@ class EditAuth extends React.Component<Props> {
     );
   };
 
-  async componentDidMount() {
+  componentWillUnmount() {
+    message.destroy();
+  }
+  goBack = () => {
+    this.props.form.resetFields();
+    router.push('/info-card-manager/info-card-list');
+  };
+  handleSubmit(e) {
+    const { infoCardList } = this.props;
+
+    e.preventDefault();
+    this.props.form.validateFields(async (err, values) => {
+      if (err) {
+        message.error('参数错误', err);
+        return;
+      }
+      const data = {
+        id: infoCardList.id,
+        ...values,
+      };
+      const isSuccessed = await editInfoList(data);
+      if (isSuccessed) {
+        message.success('编辑成功!', 1000);
+        setTimeout(() => router.push('/info-card-manager/info-card-list'), 1000);
+      }
+    });
+  }
+  async componentWillMount() {
+    this.props.form.validateFields();
+    let userTypes = await getAllRoles();
+    userTypes = userTypes.map(item => ({
+      key: item.id,
+      value: item.roleName,
+      roleId: item.id,
+    }));
+    this.setState({ userTypes });
     const dutiesResp = await getAllPosition();
     const secretsLevelsResp = await getAllSecretLevels();
     const allPositions = await getAllDepartment();
-
     this.props.dispatch({
       type: 'commonState/update',
       payload: {
@@ -103,31 +154,10 @@ class EditAuth extends React.Component<Props> {
       },
     });
   }
-
-  handleSubmit(e) {
-    e.preventDefault();
-    const { userInside } = this.props;
-    this.props.form.validateFields(async (err, values) => {
-      if (err) {
-        message.error('填写信息有误 ', values);
-        return;
-      }
-      const data = {
-        isIn: '1',
-        id: userInside.id,
-        ...values,
-      };
-      const isSuccessed = await updateUser(data);
-      if (isSuccessed) {
-        setTimeout(() => router.push('/user-manager/user-outside'), 1000);
-      }
-    });
-  }
-
   render() {
     const props = this.props;
-    const { getFieldDecorator } = props.form;
-    const { userInside, allPosition } = this.props;
+    const { getFieldDecorator, getFieldsError } = this.props.form;
+    const { infoCardList, allPosition } = this.props;
     return (
       <ContentBorder className={styles.auth_root}>
         <Form
@@ -142,13 +172,14 @@ class EditAuth extends React.Component<Props> {
                 <Row type="flex" justify="space-between">
                   <Col span={12}>
                     <Form.Item label="姓名">
-                      {getFieldDecorator('name', {
+                      {getFieldDecorator('userName', {
                         rules: [
                           {
+                            //required: true,
                             message: '请输入姓名',
                           },
                         ],
-                        initialValue: userInside.name,
+                        initialValue: infoCardList.userName,
                       })(<Input placeholder="请输入姓名" />)}
                     </Form.Item>
                   </Col>
@@ -157,10 +188,11 @@ class EditAuth extends React.Component<Props> {
                       {getFieldDecorator('cardNo', {
                         rules: [
                           {
+                            //required: true,
                             message: '请输入身份证号',
                           },
                         ],
-                        initialValue: userInside.cardNo,
+                        initialValue: infoCardList.cardNo,
                       })(<Input placeholder="请输入身份证号" />)}
                     </Form.Item>
                   </Col>
@@ -171,10 +203,11 @@ class EditAuth extends React.Component<Props> {
                       {getFieldDecorator('sex', {
                         rules: [
                           {
+                            //required: true,
                             message: '请选择性别',
                           },
                         ],
-                        initialValue: userInside.sex,
+                        initialValue: infoCardList.sex,
                       })(
                         <Select placeholder="请选择性别">
                           <Option value="0">男</Option>
@@ -188,10 +221,11 @@ class EditAuth extends React.Component<Props> {
                       {getFieldDecorator('address', {
                         rules: [
                           {
+                            //required: true,
                             message: '请输入家庭住址',
                           },
                         ],
-                        initialValue: userInside.address,
+                        initialValue: infoCardList.address,
                       })(<Input placeholder="请输入家庭住址" />)}
                     </Form.Item>
                   </Col>
@@ -202,10 +236,11 @@ class EditAuth extends React.Component<Props> {
                       {getFieldDecorator('phone', {
                         rules: [
                           {
+                            //required: true,
                             message: '请选输入联系方式',
                           },
                         ],
-                        initialValue: userInside.phone,
+                        initialValue: infoCardList.phone,
                       })(<Input placeholder="请输入联系方式" />)}
                     </Form.Item>
                   </Col>
@@ -215,10 +250,9 @@ class EditAuth extends React.Component<Props> {
                         rules: [
                           {
                             message: '请选择部门',
-                            required: true,
                           },
                         ],
-                        initialValue: userInside.departmentId ? userInside.departmentId : '',
+                        initialValue: infoCardList.departmentId,
                       })(
                         <Select placeholder="请选择部门">
                           {allPosition &&
@@ -235,14 +269,34 @@ class EditAuth extends React.Component<Props> {
                 <Row type="flex" justify="space-between">
                   <Col span={12}>{this.setupDuties()}</Col>
                   <Col span={12}>
-                    <Form.Item label="在职状态">
+                    <Form.Item label="类型">
                       {getFieldDecorator('type', {
                         rules: [
                           {
+                            message: '请选择类型',
+                          },
+                        ],
+                        initialValue: infoCardList.type,
+                      })(
+                        <Select placeholder="请选择类型">
+                          <Option value="0">内部</Option>
+                          <Option value="1">外部</Option>
+                        </Select>,
+                      )}
+                    </Form.Item>
+                  </Col>
+                </Row>
+                <Row type="flex" justify="space-between">
+                  <Col span={12}>
+                    <Form.Item label="在职状态">
+                      {getFieldDecorator('incumbency', {
+                        rules: [
+                          {
+                            //required: true,
                             message: '请选择在职状态',
                           },
                         ],
-                        initialValue: userInside.address,
+                        initialValue: infoCardList.incumbency,
                       })(
                         <Select placeholder="请选择在职状态">
                           <Option value="0">在职</Option>
@@ -251,14 +305,40 @@ class EditAuth extends React.Component<Props> {
                       )}
                     </Form.Item>
                   </Col>
+                  <Col span={12}>{this.setupAllSecretLevel()}</Col>
                 </Row>
                 <Row type="flex" justify="space-between">
-                  <Col span={12}>{this.setupAllSecretLevel()}</Col>
+                  <Col span={12}>
+                    <Form.Item label="信息牌编号">
+                      {getFieldDecorator('name', {
+                        rules: [
+                          {
+                            //required: true,
+                            message: '请选输入信息牌编号',
+                          },
+                        ],
+                        initialValue: infoCardList.name,
+                      })(<Input placeholder="请输入信息牌编号" />)}
+                    </Form.Item>
+                  </Col>
+                </Row>
+                <Row type="flex" justify="space-between">
+                  <Col span={24} className="textarea">
+                    <Form.Item label="备注">
+                      {getFieldDecorator('remark')(
+                        <TextArea autoSize={{ minRows: 6, maxRows: 8 }} />,
+                      )}
+                    </Form.Item>
+                  </Col>
                 </Row>
                 <Row type="flex" justify="center" style={{ marginTop: '0.35rem' }}>
                   <Col span={6}>
                     <Form.Item className={styles.button_type}>
-                      <Button className={styles.form_btn} htmlType="submit">
+                      <Button
+                        className={styles.form_btn}
+                        disabled={hasErrors(getFieldsError())}
+                        htmlType="submit"
+                      >
                         确认
                       </Button>
                     </Form.Item>
@@ -279,19 +359,14 @@ class EditAuth extends React.Component<Props> {
     );
   }
 }
-
-const AddUserForm = Form.create<Props>({ name: 'auth_user' })(EditAuth);
-
-const mapState = ({ userManager, commonState }) => {
-  const resp = userManager.innerUserList;
+const AddUserForm = Form.create<Props>({ name: 'edit_user' })(EditUser);
+const mapState = ({ userManager, infoCardManager, commonState }) => {
   const { allDuties, allSecretLevel, allPosition } = commonState;
   return {
-    innerUserList: resp,
     allDuties: allDuties,
     allSecretLevel: allSecretLevel,
-    userInside: userManager.userInside,
     allPosition: allPosition,
+    infoCardList: infoCardManager.infoCardList,
   };
 };
-
 export default connect(mapState)(AddUserForm);

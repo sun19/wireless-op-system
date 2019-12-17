@@ -1,6 +1,7 @@
-/**
- * title: 应用 > 信息牌列表
- */
+// /**
+//  * title: 应用 > 显示 > 用户信息牌查询
+//  * title: 应用 > 显示 > 信息牌用户查询
+//  */
 import React from 'react';
 import { Layout, Modal, Form, Input, Row, message, Tag, Select, Tooltip, Button, Icon } from 'antd';
 import router from 'umi/router';
@@ -10,9 +11,9 @@ import { connect } from 'dva';
 import { UmiComponentProps } from '@/common/type';
 import MainContent from '../components/MainContent';
 import { ICON_FONTS_URL } from '../../../config/constants';
-import { getInfoListParams, deleteInfo, exportIn, exportOut, cancellationInfo } from '../services';
+import { getInfoListParams, deleteInfo, exportIn, exportOut,cancellationInfo } from '../services';
 import { getUserTypes } from '../../system-setting/services';
-import { DeleteInfo, CancellationInfo } from '../services/index.interfaces';
+import { DeleteInfo,CancellationInfo } from '../services/index.interfaces';
 
 import styles from './index.less';
 import publicStyles from '../index.less';
@@ -36,23 +37,11 @@ const columns = [
   //   editable: true,
   // },
   {
-    title: '信息牌编号',
-    dataIndex: 'name',
+    title: '姓名',
+    dataIndex: 'userName',
     editable: true,
-    ellipsis: true,
-    onCell: () => {
-      return {
-        style: {
-          // maxWidth: 150,
-          overflow: 'hidden',
-          whiteSpace: 'nowrap',
-          textOverflow: 'ellipsis',
-          cursor: 'pointer'
-        }
-      }
-    },
-    render: (text) => <Tooltip className='tooltips' placement="topLeft" title={text}>{text}</Tooltip>,
   },
+
   {
     title: '状态',
     dataIndex: 'onlineStatus',
@@ -71,7 +60,6 @@ const columns = [
       return ['否', '是'][item]
     }
   },
-
   {
     title: '定位',
     dataIndex: 'lampNumber',
@@ -90,10 +78,28 @@ const columns = [
     },
     render: (text) => <Tooltip className='tooltips' placement="topLeft" title={text}>{text}</Tooltip>,
   },
+  // {
+  //   title: '姓名',
+  //   dataIndex: 'userName',
+  //   editable: true,
+  // },
   {
-    title: '姓名',
-    dataIndex: 'userName',
+    title: '信息牌编号',
+    dataIndex: 'name',
     editable: true,
+    ellipsis: true,
+    onCell: () => {
+      return {
+        style: {
+          // maxWidth: 150,
+          overflow: 'hidden',
+          whiteSpace: 'nowrap',
+          textOverflow: 'ellipsis',
+          cursor: 'pointer'
+        }
+      }
+    },
+    render: (text) => <Tooltip className='tooltips' placement="topLeft" title={text}>{text}</Tooltip>,
   },
   {
     title: '职务',
@@ -180,29 +186,29 @@ interface State {
   userName: string;
   name: string;
   type: string;
-  userState: string,
+  userState:string,
   pageNo?: number;
   hasData: boolean;
 }
 class SuperAdmin extends React.Component<Props, State> {
   constructor(props: any) {
     super(props);
-    this.updateData = this.updateData.bind(this);
-    this.deleteColumn = this.deleteColumn.bind(this);
-    this.cancellationColumn = this.cancellationColumn.bind(this);
+
     this.state = {
       userName: '',
       name: '',
       type: undefined,
-      userState: undefined,
+      userState:undefined,
       pageNo: 1,
       hasData: true,
     };
+
   }
   onNameChange = (e: any) => {
     this.setState({
       userName: e.target.value,
     });
+    
   };
   infoNameChange = (e: any) => {
     this.setState({
@@ -224,7 +230,7 @@ class SuperAdmin extends React.Component<Props, State> {
       userName: '',
       name: '',
       type: undefined,
-      userState: undefined,
+      userState:undefined,
     });
     this.forceUpdate(() => {
       this.getInfoListData();
@@ -234,60 +240,13 @@ class SuperAdmin extends React.Component<Props, State> {
   onSearch = () => {
     this.getInfoListData();
   };
-  addUser = () => {
-    router.push('/info-card-manager/info-card-list/add');
-  };
-  deleteColumn(item: DeleteInfo) {
-    //TODO:修改人ID
-    let self = this;
-    confirm({
-      title: '确定要删除这条信息吗？',
-      content: '',
-      okText: '取消',
-      okType: 'danger',
-      cancelText: '确定',
-      onOk() { },
-      async onCancel() {
-        await deleteInfo({ id: item.id });
-        //重新请求数据重绘
-        self.getInfoListData();
-      },
-    });
-  }
-  cancellationColumn(item: CancellationInfo) {
-    //TODO:修改人ID
-    // console.log(item.isCancel)
-
-    const showString = item.isCancel == 0 ? "确定要注销这条信息吗？" : "确定要恢复这条信息吗？"
-
-    let self = this;
-    confirm({
-      title: showString,
-      content: '',
-      okText: '取消',
-      okType: 'danger',
-      cancelText: '确定',
-      onOk() { },
-      async onCancel() {
-        await cancellationInfo({ 'id': item.id, 'isCancel': item.isCancel == 0 ? 1 : 0 });
-        //重新请求数据重绘
-        self.getInfoListData();
-      },
-    });
-  }
 
 
 
 
 
   async componentDidMount() {
-    // const peopleType = await getUserTypes({});
-    // this.props.dispatch({
-    //   type: 'infoCardManager/update',
-    //   payload: {
-    //     peopleType: peopleType.result,
-    //   },
-    // });
+
     await this.getInfoListData();
   }
 
@@ -298,7 +257,10 @@ class SuperAdmin extends React.Component<Props, State> {
   async getInfoListData() {
     const isCancel = this.state.userState
     const { userName, name, type } = this.state;
-    const infoList = await getInfoListParams({ userName, name, type, isCancel });
+
+   
+
+    const infoList = await getInfoListParams({ userName, name, type ,isCancel});
     // console.log(infoList)
     this.props.dispatch({
       type: 'infoCardManager/update',
@@ -306,15 +268,7 @@ class SuperAdmin extends React.Component<Props, State> {
     });
   }
 
-  async updateData(data, item) {
-    this.props.dispatch({
-      type: 'infoCardManager/update',
-      payload: {
-        infoCardList: data,
-      },
-    });
-    router.push('/info-card-manager/info-card-list/edit');
-  }
+
 
   setupUserType = () => {
     return (
@@ -337,7 +291,6 @@ class SuperAdmin extends React.Component<Props, State> {
       </div>
     );
   };
-
   setupUserState = () => {
     return (
       <div
@@ -349,17 +302,12 @@ class SuperAdmin extends React.Component<Props, State> {
           onChange={this.selectUserStateChange}
           value={this.state.userState}
         >
-          <Option value='0'>
-            否
-                    </Option>
-          <Option value='1'>
-            是
-                    </Option>
+          <Option value='0'> 否 </Option>
+          <Option value='1'> 是 </Option>
         </Select>
       </div>
     );
   };
-
   export = () => {
     exportIn().then(() => message.success('导出成功'));
   };
@@ -404,7 +352,6 @@ class SuperAdmin extends React.Component<Props, State> {
                 </FormItem>
                 <FormItem label="类型">{this.setupUserType()}</FormItem>
                 <FormItem label="是否注销">{this.setupUserState()}</FormItem>
-
                 <span className={publicStyles.button_type}>
                   <Button className={publicStyles.form_btn} onClick={this.onSearch}>
                     查询
@@ -418,18 +365,18 @@ class SuperAdmin extends React.Component<Props, State> {
                   </Button>
                 </span>
                 <span className={[`${publicStyles.form_btns}`].join(' ')}>
-                  <span
+                  {/* <span
                     className={[`${publicStyles.form_btn_add}`].join('')}
                     onClick={this.addUser}
                   >
                     <IconFont type="icon-plus" />
-                  </span>
+                  </span> */}
                   <span className={[`${publicStyles.form_btn_add}`].join('')} onClick={this.export}>
                     <IconFont type="icon-download-simple" />
                   </span>
-                  <span className={[`${publicStyles.form_btn_add}`].join('')} onClick={this.upload}>
+                  {/* <span className={[`${publicStyles.form_btn_add}`].join('')} onClick={this.upload}>
                     <IconFont type="icon-upload-light" />
-                  </span>
+                  </span> */}
                 </span>
               </Row>
             </Form>
@@ -438,11 +385,11 @@ class SuperAdmin extends React.Component<Props, State> {
             data={records}
             columns={columns}
             updateData={this.updateData}
-            deleteColumn={this.deleteColumn}
+            // deleteColumn={this.deleteColumn}
             cancellationColumn={this.cancellationColumn}
             total={total}
-            showEdit={true}
-            showCancellation={true}
+            // showEdit={true}
+            // showCancellation={true}
           />
         </Content>
       </div>
@@ -455,3 +402,4 @@ const mapState = ({ infoCardManager }) => {
 };
 
 export default connect(mapState)(SuperAdmin);
+

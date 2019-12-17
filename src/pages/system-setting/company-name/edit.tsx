@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Form, Row, Col, Button, Input, message, Select, Tree } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
@@ -15,7 +14,6 @@ import { LEFT_MENUS } from '../../../config/menus';
 const { TreeNode } = Tree;
 const { Option } = Select;
 const { TextArea } = Input;
-
 
 const defaultMenuNodes = LEFT_MENUS;
 
@@ -70,7 +68,6 @@ class EditSuperAdmin extends React.Component<Props, State> {
 
     e.preventDefault();
     const { superAdminRecord } = this.props;
-
     this.props.form.validateFields(async (err, values) => {
       if (err) {
         message.error('填写信息有误', values);

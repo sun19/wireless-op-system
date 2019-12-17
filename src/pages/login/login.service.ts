@@ -77,10 +77,10 @@ export async function getPeopleMenues(params: Menues) {
   return resp;
 }
 // 查询所有菜单
-export async function getAllMenues(params?: { userId: string }) {
-  const resp = await request.get(PEOPLE_MENUS, { params });
-  return resp;
-}
+// export async function getAllMenues(params?: { userId: string }) {
+//   const resp = await request.get(PEOPLE_MENUS, { params });
+//   return resp;
+// }
 // 编辑菜单
 export async function editMenues(params) {
   const resp = await request.post(EDIT_MENUS, { data: format(params) });

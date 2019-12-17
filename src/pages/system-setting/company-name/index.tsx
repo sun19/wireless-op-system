@@ -109,7 +109,6 @@ class SuperAdmin extends React.Component<Props, State> {
     return (
       <div className={publicStyles.public_hight}>
         <Content className={publicStyles.bg}>
-        
           <MainContent
             columns={columns}
             data={records}
