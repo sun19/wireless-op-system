@@ -29,7 +29,7 @@ const ignoreLayout = [
 class BasicLayout extends React.Component<any, any> {
   ws: WebSocket;
   componentDidMount() {
-    this.ws = new WebSocket(WEBSOCKET+'/jeecg-boot/websocket/1');
+    this.ws = new WebSocket(WEBSOCKET + '/jeecg-boot/websocket/1');
     this.ws.onmessage = evt => {
       let msgInfo = JSON.parse(evt.data);
       this.props.dispatch({

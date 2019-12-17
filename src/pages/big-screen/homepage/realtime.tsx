@@ -31,7 +31,6 @@ import { getAllFencingTypes } from '../../login/login.service';
 import request from 'umi-request';
 
 import styles from './index.less';
-import { findRepos } from 'jest-changed-files';
 
 interface State {
   mapImage: any | null;
@@ -114,7 +113,7 @@ class Realtime extends React.Component<Props, State> {
       });
     }
     let lamps = await request.get(
-      BASE_API_URL+'/jeecg-boot/intf/location/listByHistoryTrajectory',
+      BASE_API_URL + '/jeecg-boot/intf/location/listByHistoryTrajectory',
     );
     lamps = (lamps.result && lamps.result.records) || [];
     this.setState({
