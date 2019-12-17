@@ -54,7 +54,7 @@ import {
   GetPollingLineDetailParams,
   GetAllLampsParams,
 } from './index.interface';
-import { BIG_SCREEN_GET_LIST_LAMP, BIG_SCREEN_GET_LIST_REGION } from '@/config/api';
+import { BIG_SCREEN_GET_LIST_LAMP, BIG_SCREEN_GET_LIST_REGION, BIG_SCREEN_GET_INFO_BOARD } from '@/config/api';
 
 export async function getMapArea(params: GetMapAreaParams) {
   let resp = await request.get(MAP_MANAGER_AREA_SETTING_QUERY, { params });
@@ -244,5 +244,10 @@ export async function getRegionList() {
 
 export async function getLampList() {
   const resp = await request.get(BIG_SCREEN_GET_LIST_LAMP);
+  return resp;
+}
+
+export async function getInfoCardDetail(params: { number?: string }) {
+  const resp = await request.get(BIG_SCREEN_GET_INFO_BOARD, { params });
   return resp;
 }

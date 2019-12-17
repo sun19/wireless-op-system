@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Konva from 'konva';
 import h337 from 'heatmap.js';
+import * as _ from 'lodash';
 import {
   Stage,
   Layer,
@@ -10,13 +11,16 @@ import {
   Circle as CircleLayer,
 } from 'react-konva';
 import { connect } from 'dva';
+import { Tabs, Card, Icon, List } from 'antd';
 
-import { getLampList, getRegionList } from './services';
+import { getLampList, getRegionList, getInfoCardDetail } from './services';
 import { WEBSOCKET } from '../../config/constants';
 import HeatMap from '@/components/HeatMap';
 // import HeatMap from 'react-heatmap.js';
 
 import styles from './index.less';
+
+const { TabPane } = Tabs;
 
 interface State {
   mapImage: any | null;
@@ -31,6 +35,7 @@ interface State {
   areaText: any[];
   lamps: Lamp[];
   receiveWsInfo: boolean;
+  infoDetail: object;
 }
 interface Props {
   [key: string]: any;
@@ -40,6 +45,7 @@ interface InfoCard {
   y: number;
   id: string;
   color: string;
+  information: string;
 }
 
 interface Lamp {
@@ -83,7 +89,9 @@ class MapManager extends React.Component<Props, State> {
       lamps: [],
       heatmaps: [],
       receiveWsInfo: true,
+      infoDetail: {},
     };
+    this.onInfoCardClick = this.onInfoCardClick.bind(this);
   }
   //异步加载图片，保证渲染到canvas上时是已经OK的
   async componentDidMount() {
@@ -250,8 +258,20 @@ class MapManager extends React.Component<Props, State> {
           radius={10}
           fill={infoCard.color}
           key={index}
+          id={infoCard.information}
+          onClick={this.onInfoCardClick}
         />
       );
+    });
+  }
+  async onInfoCardClick(evt) {
+    const target = evt.target;
+    const attr = target.attrs;
+    const { id } = attr;
+    let info = await getInfoCardDetail({ number: id });
+    info = info.result || {};
+    this.setState({
+      infoDetail: info,
     });
   }
   createAreaText() {
@@ -309,7 +329,6 @@ class MapManager extends React.Component<Props, State> {
     //     y: Math.floor(item.y / oldScale - stage.y() / oldScale),
     //   };
     // });
-    // console.log(newHeatMaps, 'new');
     this.setState({
       stageScale: newScale,
       stageX: -(mousePointTo.x - stage.getPointerPosition().x / newScale) * newScale,
@@ -317,7 +336,19 @@ class MapManager extends React.Component<Props, State> {
       // heatmaps: newHeatMaps,
     });
   };
+  onMapClick = () => {
+    this.setState({
+      infoDetail: {},
+    });
+  };
 
+  renderInfoItem = item => {
+    return (
+      <List.Item>
+        <List.Item.Meta title={item.title} description={this.state.infoDetail[item.name]} />
+      </List.Item>
+    );
+  };
   render() {
     const { mapImage, width, height } = this.state;
     const infoCards = this.createInfoCards();
@@ -344,6 +375,7 @@ class MapManager extends React.Component<Props, State> {
               x={this.state.stageX}
               y={this.state.stageY}
               draggable={true}
+              onClick={this.onMapClick}
             >
               <Layer>
                 <ImageLayer image={mapImage} x={0} y={0} width={width} height={height} />
@@ -354,6 +386,52 @@ class MapManager extends React.Component<Props, State> {
             </Stage>
           </div>
         </HeatMap>
+        {_.isEmpty(this.state.infoDetail) ? null : (
+          <span className={styles.card_panel}>
+            <Card
+              title="详细信息"
+              actions={[
+                <span key="setting">
+                  <Icon type="setting" key="setting" />
+                  实时追踪
+                </span>,
+                <span key="edit">
+                  <Icon type="edit" key="edit" />
+                  历史轨迹
+                </span>,
+              ]}
+              style={{ width: 300 }}
+            >
+              <List
+                itemLayout="horizontal"
+                dataSource={[
+                  {
+                    title: '信息牌编号',
+                    name: 'name',
+                  },
+                  {
+                    title: '姓名',
+                    name: 'userName',
+                  },
+                  {
+                    title: '部门',
+                    name: 'departmentName',
+                  },
+                  {
+                    title: '人员类型',
+                    name: 'type',
+                  },
+                  {
+                    title: '保密等级',
+                    name: 'securityLevelName',
+                  },
+                ]}
+                renderItem={this.renderInfoItem}
+              />
+            </Card>
+            ,
+          </span>
+        )}
       </React.Fragment>
     );
   }

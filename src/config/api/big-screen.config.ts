@@ -71,3 +71,8 @@ export const BIG_SCREEN_GET_LIST_REGION = `${BASE_API_URL}/jeecg-boot/intf/locat
  * 获取灯具编号、灯具坐标
  */
 export const BIG_SCREEN_GET_LIST_LAMP = `${BASE_API_URL}/jeecg-boot/intf/location/listLamp`;
+
+/**
+ * 根据信息牌`infomation`获取详细信息
+ */
+export const BIG_SCREEN_GET_INFO_BOARD = `${BASE_API_URL}/jeecg-boot/intf/location/queryByNumberInformationBoard`;

@@ -269,3 +269,15 @@
     pointer-events: none;
   }
 }
+.card_panel {
+  position: absolute;
+  bottom: 0;
+  :global {
+    .ant-card.ant-card-bordered {
+      .ant-card-body {
+        max-height: 2.5rem;
+        overflow-y: scroll;
+      }
+    }
+  }
+}
