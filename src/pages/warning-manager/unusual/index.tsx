@@ -13,8 +13,9 @@ import MainContent from '../components/MainContent';
 import { ICON_FONTS_URL } from '../../../config/constants';
 import styles from './index.less';
 import publicStyles from '../index.less';
-import { warningTypeSearch, wraningTypeDel } from '../services';
+import { unusualData, wraningTypeDel } from '../services';
 import { WraningTypeDel } from '../services/index.interfaces';
+import { string } from 'prop-types';
 
 const { confirm } = Modal;
 const { Content } = Layout;
@@ -24,85 +25,49 @@ const IconFont = Icon.createFromIconfontCN({
   scriptUrl: ICON_FONTS_URL,
 });
 
-interface FormProps extends FormComponentProps {}
+interface FormProps extends FormComponentProps { }
 type StateProps = ReturnType<typeof mapState>;
 type Props = StateProps & UmiComponentProps & FormProps;
 const columns = [
   {
-    title: '告警名称',
+    title: '异常类型',
     dataIndex: 'name',
     editable: true,
   },
   {
-    title: '所属地图',
+    title: '异常发生时间',
     dataIndex: 'mapName',
-    // className: 'select_text',
     editable: true,
   },
   {
-    title: '区域选择',
+    title: '异常位置',
     dataIndex: 'regionalName',
-    // className: 'select_text',
     editable: true,
   },
   {
-    title: '关联标签',
+    title: '信息牌',
     dataIndex: 'informationBoardName',
     editable: true,
   },
   {
-    title: '开始时间',
+    title: '用户姓名',
     width: '20%',
     dataIndex: 'startTime',
-  },
-  {
-    title: '结束时间',
-    width: '20%',
-    dataIndex: 'endTime',
-  },
-
-  {
-    title: '聚集半径(m)',
-    dataIndex: 'aggregateRadius',
-    editable: true,
-  },
-  {
-    title: '超限人数',
-    dataIndex: 'overrunNum',
-    editable: true,
-  },
-  {
-    title: '超限时间',
-    dataIndex: 'overrunTime',
-  },
-  {
-    title: '重复类型',
-    dataIndex: 'repeatTypeName',
-    // className: 'select_text',
-    editable: true,
-  },
-  {
-    title: '告警方式',
-    dataIndex: 'warnModeName',
-    // className: 'select_text',
-    editable: true,
   },
 ];
 
 interface State {
-  name: string;
-  pageNo?: number;
+  type?: string;
 }
 
 class WraningType extends React.Component<Props, State> {
   constructor(props: any) {
     super(props);
-    this.updateData = this.updateData.bind(this);
-    this.deleteColumn = this.deleteColumn.bind(this);
+    // this.updateData = this.updateData.bind(this);
+    // this.deleteColumn = this.deleteColumn.bind(this);
     this.getwarningTypeList = this.getwarningTypeList.bind(this);
     this.state = {
-      name: '',
-      pageNo: 1,
+      type: ''
     };
   }
   async componentDidMount() {
@@ -110,60 +75,62 @@ class WraningType extends React.Component<Props, State> {
     this.props.form.validateFields();
   }
 
-  async getwarningTypeList(data?: State) {
-    const taskList = await warningTypeSearch(data);
+  async getwarningTypeList( ) {
+    const data = {
+      type: this.state.type,
+    }
+    const taskList = await unusualData(data);
     this.props.dispatch({
       type: 'warningManager/update',
-      payload: { type: taskList },
+      payload: { unusual: taskList.result },
     });
   }
-  async updateData(data, item) {
-    // const resp = await warningTypeSearch(item);
-    // if (resp) {
-    //   this.props.dispatch({
-    //     type: 'warningManager/update',
-    //     payload: { type: { records: data } },
-    //   });
-    // }
-    this.props.dispatch({
-      type: 'warningManager/update',
-      payload: {
-        typeRecord: data,
-      },
-    });
-    router.push('/warning-manager/type/edit');
-  }
-  // 删除
-  deleteColumn(item: WraningTypeDel) {
-    //TODO:修改人ID
 
-    let self = this;
-    confirm({
-      title: '确定要删除这条信息吗？',
-      content: '',
-      okText: '取消',
-      okType: 'danger',
-      cancelText: '确定',
-      onOk() { },
-      async onCancel() {
-        await wraningTypeDel({ id: item.id });
-        //重新请求数据重绘
-        self.getwarningTypeList();
-      },
- 
-    });
-  }
- 
+
   // 查询
   search = e => {
-    e.preventDefault();
-    this.props.form.validateFields(async (err, values) => {
-      this.getwarningTypeList(values);
-    });
+      this.getwarningTypeList();
   };
   handleReset = () => {
-    this.props.form.resetFields();
+    // this.props.form.resetFields();
+    this.setState({type:''})
     this.getwarningTypeList();
+  };
+  selectChange = (e: any) => {
+    this.setState({
+      type: e,
+    });
+  };
+  setupUserType = () => {
+    return (
+      <div
+        style={{ marginTop: '-3px' }}
+      >
+        <Select
+          placeholder="请选择类型"
+          className={publicStyles.select_text}
+          onChange={this.selectChange}
+          value={this.state.type}
+        >
+
+          <Option value='1'>
+            入口身份核实
+                      </Option>
+          <Option value='2'>
+            防止穿墙及瞬间移动
+                      </Option>
+          <Option value='3'>
+            呆滞时间原因分析
+                      </Option>
+          <Option value='4'>
+            轨迹点不连续分析
+                      </Option>
+          <Option value='5'>
+            异常消失分析
+                      </Option>
+        </Select>
+      </div>
+    );
   };
   render() {
     let { taskList } = this.props;
@@ -185,12 +152,19 @@ class WraningType extends React.Component<Props, State> {
           <div className={styles.public_hight_40}>
             <Form layout="inline" onSubmit={this.search}>
               <Row justify="start" align="middle" style={{ paddingLeft: '39px' }} gutter={16}>
-                <FormItem label="告警名称">
+                {/* <FormItem label="告警名称">
                   {getFieldDecorator(
                     'name',
                     {},
                   )(<Input className={publicStyles.input_text} placeholder="请输入告警名称" />)}
-                </FormItem>
+                </FormItem> */}
+                <FormItem label="类型">
+                  {getFieldDecorator(
+                    'type',
+                    {},
+                  )( this.setupUserType())}
+               </FormItem>
+
                 <span className={publicStyles.button_type}>
                   <Button className={publicStyles.form_btn} htmlType="submit">
                     查询
@@ -212,7 +186,7 @@ class WraningType extends React.Component<Props, State> {
             // updateData={this.updateData}
             // deleteColumn={this.deleteColumn}
             total={total}
-            // showEdit={true}
+          // showEdit={true}
           />
         </Content>
       </div>
@@ -222,7 +196,7 @@ class WraningType extends React.Component<Props, State> {
 
 const TaskPlanFrom = Form.create<Props>({ name: 'warn_manager_type' })(WraningType);
 const mapState = ({ warningManager }) => {
-  const resp = warningManager.type;
+  const resp = warningManager.unusual;
   return { taskList: resp };
 };
 export default connect(mapState)(TaskPlanFrom);

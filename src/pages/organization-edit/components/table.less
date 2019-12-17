@@ -1,0 +1,96 @@
+:global(.ant-table-thead th) {
+  background: rgba(0, 0, 0, 0) !important;
+}
+
+:global(.ant-table-thead > tr > th) {
+  color:#5eb4fe;
+  font-size: 24px;
+  border-bottom: 1px solid rgba(67, 154, 255, 0.21);
+}
+:global(label){
+
+}
+
+:global(.ant-table-tbody > tr > td) {
+  color: #fff;
+  font-size:21px;
+  border-bottom: 1px solid  rgba(67, 154, 255, 0.21);
+}
+
+:global(.ant-table-tbody
+    > tr:hover:not(.ant-table-expanded-row):not(.ant-table-row-selected)
+    > td) {
+  background: rgba(94, 180, 254, 0.6);
+}
+:global(.ant-table-thead
+    > tr:hover:not(.ant-table-expanded-row):not(.ant-table-row-selected)
+    > td) {
+  background: rgba(94, 180, 254, 0.4);
+}
+:global(.ant-table-pagination.ant-pagination) {
+  display: inline-block;
+  margin-right: calc(50% - 3.5rem);
+  max-width: 7rem;
+  width: 7rem;
+text-align: center;
+  bottom: 30px;
+  color: #1890ff;
+  font-size: 12px;
+}
+:global(.ant-btn.ant-btn-sm) {
+  height: 27px;
+  margin-right: 5px;
+  margin-left: 5px;
+  color: #1890ff;
+  border-color: #1890ff;
+  font-size: 17px;
+  background: rgba(0, 0, 0, 0);
+}
+:global(.ant-pagination-item) {
+  margin-right: 5px;
+  a {
+    font-size:17px;
+    color: #1890ff;
+  }
+}
+:global(.ant-pagination-item-active) {
+  background: #054780;
+  color: white;
+  font-size: 12px;
+}
+:global(.ant-pagination.mini .ant-pagination-options-quick-jumper) {
+  color: rgba(0, 0, 0, 0);
+  user-select: none;
+  margin-left: -30px;
+  span {
+    border: 1px solid #1890ff;
+    border-radius: 4px;
+    font-size: 12px;
+    padding: 3px 7px;
+    color: #1890ff;
+    cursor: pointer;
+  }
+  input {
+    background: rgba(0, 0, 0, 0);
+    border-color: #1890ff;
+  }
+}
+
+:global {
+  .editor_table--root {
+    .ant-form-item {
+      input {
+        color: rgba(94, 180, 254, 1);
+      }
+    }
+    .ant-table-placeholder {
+      background: rgba(0, 0, 0, 0);
+    }
+    .ant-table-placeholder {
+      border-width: 0;
+    }
+    .ant-empty-description {
+      color: rgba(94, 180, 254, 1);
+    }
+  }
+}

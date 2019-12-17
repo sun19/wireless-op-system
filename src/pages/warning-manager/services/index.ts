@@ -14,6 +14,8 @@ import {
   WARNING_HISTORY_SEARCH,
   COMMON_GET_ALL_MAP,
   COMMON_GET_ALL_AREAS,
+  UNUSUAL_DATA,
+
 } from '@/config/api';
 import {
   WarningTypeSearch,
@@ -24,6 +26,7 @@ import {
   WarningInfoSearch,
   WarningInfoDeal,
   //
+  UnusualData,
   WarningHistorySearch,
 } from './index.interfaces';
 
@@ -96,5 +99,11 @@ export async function getAllMaps() {
 
 export async function getAllAreas() {
   const resp = await request.get(COMMON_GET_ALL_AREAS);
+  return resp;
+}
+/*********************************异常分析 */
+
+export async function unusualData(params: UnusualData) {
+  const resp = await request.get(UNUSUAL_DATA, { params});
   return resp;
 }

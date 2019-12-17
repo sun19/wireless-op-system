@@ -11,6 +11,7 @@ export default {
     repeatTypes: [],
     lampsType: [],
     dataSource: {},
+    unusual:{},
   },
   reducers: {
     update(state, { payload }) {
