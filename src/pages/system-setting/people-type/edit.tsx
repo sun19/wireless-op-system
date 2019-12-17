@@ -51,9 +51,12 @@ class EditUserAuth extends React.Component<Props, State> {
     };
   }
   async componentDidMount() {
+
+
     // 获取当前用户菜单
     let user = {
-      roleId: localStorage.getItem('userMessage'),
+      // roleId: localStorage.getItem('userMessage'),
+      roleId:this.props.peopleTypeRecord.id
     };
     const data = await getLeftMenues(user);
     this.setState({ dataTree: data.result });
@@ -114,7 +117,7 @@ class EditUserAuth extends React.Component<Props, State> {
         return;
       }
       const isSuccessed = await editMenues(data);
-      await updateUserType(Object.assign({}, peopleTypeRecord, data));
+      // await updateUserType(Object.assign({}, peopleTypeRecord, data));
       if (isSuccessed.success) {
         // message.success('编辑成功!');
         setTimeout(() => router.push('/system-setting/people-type'), 1000);

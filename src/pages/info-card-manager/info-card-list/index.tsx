@@ -63,12 +63,12 @@ const columns = [
     }
   },
   {
-    title: '注销状态',
+    title: '是否注销',
     dataIndex: 'isCancel',
     className: 'select_text',
     editable: true,
     render: (item) => {
-      return ['使用中', '注销'][item]
+      return ['否', '是'][item]
     }
   },
   
@@ -180,6 +180,7 @@ interface State {
   userName: string;
   name: string;
   type: string;
+  userState:string,
   pageNo?: number;
   hasData: boolean;
 }
@@ -193,6 +194,7 @@ class SuperAdmin extends React.Component<Props, State> {
       userName: '',
       name: '',
       type: undefined,
+      userState:'',
       pageNo: 1,
       hasData: true,
     };
@@ -211,12 +213,18 @@ class SuperAdmin extends React.Component<Props, State> {
     this.setState({
       type: e,
     });
+  };  
+  selectUserStateChange = (e: any) => {
+    this.setState({
+      userState: e,
+    });
   };
   clearAllInput = () => {
     this.setState({
       userName: '',
       name: '',
       type: '',
+      userState:''
     });
     this.forceUpdate(() => {
       this.getInfoListData();
@@ -249,9 +257,12 @@ class SuperAdmin extends React.Component<Props, State> {
   cancellationColumn(item: CancellationInfo) {
     //TODO:修改人ID
     // console.log(item.isCancel)
+
+    const showString = item.isCancel==0?"确定要注销这条信息吗？":"确定要恢复这条信息吗？"
+
     let self = this;
     confirm({
-      title: '确定要注销这条信息吗？',
+      title: showString,
       content: '',
       okText: '取消',
       okType: 'danger',
@@ -285,8 +296,9 @@ class SuperAdmin extends React.Component<Props, State> {
   }
 
   async getInfoListData() {
+    const isCancel = this.state.userState
     const { userName, name, type } = this.state;
-    const infoList = await getInfoListParams({ userName, name, type });
+    const infoList = await getInfoListParams({ userName, name, type ,isCancel});
     // console.log(infoList)
     this.props.dispatch({
       type: 'infoCardManager/update',
@@ -321,6 +333,24 @@ class SuperAdmin extends React.Component<Props, State> {
           <Option value='1'>
             外部
                       </Option>
+        </Select>
+      </div>
+    );
+  };
+
+  setupUserState = () => {
+    return (
+      <div
+        style={{ marginTop: '-3px' }}
+      >
+        <Select
+          placeholder="请选择是否注销"
+          className={publicStyles.select_text}
+          onChange={this.selectUserStateChange}
+          value={this.state.userState}
+        >
+          <Option value='0'> 否 </Option>
+          <Option value='1'> 是 </Option>
         </Select>
       </div>
     );
@@ -369,6 +399,8 @@ class SuperAdmin extends React.Component<Props, State> {
                   />
                 </FormItem>
                 <FormItem label="类型">{this.setupUserType()}</FormItem>
+                <FormItem label="是否注销">{this.setupUserState()}</FormItem>
+
                 <span className={publicStyles.button_type}>
                   <Button className={publicStyles.form_btn} onClick={this.onSearch}>
                     查询

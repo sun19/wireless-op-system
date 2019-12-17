@@ -3,6 +3,7 @@ export interface GetInfoListParams {
   userName: string;
   name: string;
   type: string;
+  isCancel:string;
   pageNo?: number;
   pageSize?: number;
 }
