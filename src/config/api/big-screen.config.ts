@@ -54,6 +54,20 @@ export const BIG_SCREEN_REAL_TIME_PEOPLE_INFO =
  */
 export const BIG_SCREEN_INNER_OR_OUTER_POEPLE_COUNT =
   `${BASE_API_URL}/jeecg-boot/intf/location/listInnerOut`;
-//  获取大屏停留时长
+
+/**
+* 获取大屏停留时长
+*/
 export const BIG_SCREEN_STAY_TIME =
   ` ${BASE_API_URL}/jeecg-boot/intf/location/getStayTime`;
+
+
+/**
+ * 获取区域名称、区域坐标
+ */
+export const BIG_SCREEN_GET_LIST_REGION = `${BASE_API_URL}/jeecg-boot/intf/location/listScreenRegion`;
+
+/**
+ * 获取灯具编号、灯具坐标
+ */
+export const BIG_SCREEN_GET_LIST_LAMP = `${BASE_API_URL}/jeecg-boot/intf/location/listLamp`;

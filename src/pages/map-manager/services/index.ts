@@ -54,6 +54,7 @@ import {
   GetPollingLineDetailParams,
   GetAllLampsParams,
 } from './index.interface';
+import { BIG_SCREEN_GET_LIST_LAMP, BIG_SCREEN_GET_LIST_REGION } from '@/config/api';
 
 export async function getMapArea(params: GetMapAreaParams) {
   let resp = await request.get(MAP_MANAGER_AREA_SETTING_QUERY, { params });
@@ -228,5 +229,20 @@ export async function getAllWarningType() {
 
 export async function getAllLamps(params: GetAllLampsParams = {}) {
   const resp = await request.get(COMMON_GET_ALL_LAMP_ID, { params });
+  return resp;
+}
+
+
+// ---------------------------------------------------------------------------
+// 大屏`service`
+// ---------------------------------------------------------------------------
+
+export async function getRegionList() {
+  const resp = await request.get(BIG_SCREEN_GET_LIST_REGION);
+  return resp;
+}
+
+export async function getLampList() {
+  const resp = await request.get(BIG_SCREEN_GET_LIST_LAMP);
   return resp;
 }
