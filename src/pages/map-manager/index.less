@@ -4,8 +4,7 @@
 }
 .bg {
   height: 100%;
-    min-width: 1000px;
-
+  min-width: 1000px;
 }
 .public_hight {
   height: 100%;
@@ -263,4 +262,22 @@
   color: #08ce5b;
 
   background: center / contain no-repeat url(../../assets/map/1-begin.png);
+}
+
+:global {
+  .heatmap-canvas {
+    pointer-events: none;
+  }
+}
+.card_panel {
+  position: absolute;
+  bottom: 0;
+  :global {
+    .ant-card.ant-card-bordered {
+      .ant-card-body {
+        max-height: 2.5rem;
+        overflow-y: scroll;
+      }
+    }
+  }
 }
