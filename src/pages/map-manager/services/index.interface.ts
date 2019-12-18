@@ -197,3 +197,4 @@ export interface GetPollingLineDetailParams {
 export interface GetAllLampsParams {
   id?: string;
 }
+

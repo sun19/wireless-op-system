@@ -12,8 +12,15 @@ export interface GetInspectDetailParams {
 }
 
 export interface GetInspectReportsParams {
+  startTime?: string;
+  endTime?: string;
   createtime?: string;
   inspectionTime?: string;
   pageNo?: string;
   pageSize?: string;
+}
+export interface ExportInspectionXls {
+  startTime?: string;
+  endTime?: string;
+ 
 }

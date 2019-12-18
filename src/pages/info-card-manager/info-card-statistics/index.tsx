@@ -10,9 +10,9 @@ import { connect } from 'dva';
 import { UmiComponentProps } from '@/common/type';
 import MainContent from '../components/MainContent';
 import { ICON_FONTS_URL } from '../../../config/constants';
-import { getInfoListParams, deleteInfo, exportIn, exportOut,cancellationInfo } from '../services';
+import { getInfoListParams, deleteInfo, exportIn, exportOut, cancellationInfo, getAllRegionData } from '../services';
 import { getUserTypes } from '../../system-setting/services';
-import { DeleteInfo,CancellationInfo } from '../services/index.interfaces';
+import { DeleteInfo, CancellationInfo } from '../services/index.interfaces';
 
 import styles from './index.less';
 import publicStyles from '../index.less';
@@ -71,7 +71,7 @@ const columns = [
       return ['使用中', '注销'][item]
     }
   },
-  
+
   {
     title: '定位',
     dataIndex: 'lampNumber',
@@ -182,6 +182,7 @@ interface State {
   type: string;
   pageNo?: number;
   hasData: boolean;
+  allRegionData?: any;
 }
 class SuperAdmin extends React.Component<Props, State> {
   constructor(props: any) {
@@ -195,6 +196,7 @@ class SuperAdmin extends React.Component<Props, State> {
       type: undefined,
       pageNo: 1,
       hasData: true,
+      allRegionData: [],
     };
   }
   onNameChange = (e: any) => {
@@ -248,7 +250,6 @@ class SuperAdmin extends React.Component<Props, State> {
   }
   cancellationColumn(item: CancellationInfo) {
     //TODO:修改人ID
-    // console.log(item.isCancel)
     let self = this;
     confirm({
       title: '确定要注销这条信息吗？',
@@ -258,7 +259,7 @@ class SuperAdmin extends React.Component<Props, State> {
       cancelText: '确定',
       onOk() { },
       async onCancel() {
-        await cancellationInfo({ 'id': item.id,'isCancel': item.isCancel==0?1:0  });
+        await cancellationInfo({ 'id': item.id, 'isCancel': item.isCancel == 0 ? 1 : 0 });
         //重新请求数据重绘
         self.getInfoListData();
       },
@@ -277,6 +278,8 @@ class SuperAdmin extends React.Component<Props, State> {
         peopleType: peopleType.result,
       },
     });
+    const allRegionData = await getAllRegionData();
+    this.setState({ allRegionData: allRegionData.result })
     await this.getInfoListData();
   }
 
@@ -286,8 +289,13 @@ class SuperAdmin extends React.Component<Props, State> {
 
   async getInfoListData() {
     const { userName, name, type } = this.state;
-    const infoList = await getInfoListParams({ userName, name, type });
-    // console.log(infoList)
+    let data = {
+      userName,
+      name,
+      type,
+
+    }
+    const infoList = await getInfoListParams(data);
     this.props.dispatch({
       type: 'infoCardManager/update',
       payload: { customManager: infoList },
@@ -326,6 +334,33 @@ class SuperAdmin extends React.Component<Props, State> {
     );
   };
 
+  getAllRegion = () => {
+    // console.log(this.state.allRegionData)
+    return (
+      <div
+        style={{ marginTop: '-3px' }}
+      >
+        <Select
+          placeholder="请选择区域"
+          className={publicStyles.select_text}
+          onChange={this.selectChange}
+          value={this.state.type}
+        >
+          {
+            this.state.allRegionData.map((res, index) => {
+              return (
+                <Option value={res.id} key={index}>
+                  {res.name}
+                </Option>
+              )
+            }
+            )
+          }
+
+        </Select>
+      </div>
+    );
+  };
   export = () => {
     exportIn().then(() => message.success('导出成功'));
   };
@@ -369,6 +404,8 @@ class SuperAdmin extends React.Component<Props, State> {
                   />
                 </FormItem>
                 <FormItem label="类型">{this.setupUserType()}</FormItem>
+                <FormItem label="区域选择">{this.getAllRegion()}</FormItem>
+
                 <span className={publicStyles.button_type}>
                   <Button className={publicStyles.form_btn} onClick={this.onSearch}>
                     查询
@@ -382,18 +419,9 @@ class SuperAdmin extends React.Component<Props, State> {
                   </Button>
                 </span>
                 <span className={[`${publicStyles.form_btns}`].join(' ')}>
-                  {/* <span
-                    className={[`${publicStyles.form_btn_add}`].join('')}
-                    onClick={this.addUser}
-                  >
-                    <IconFont type="icon-plus" />
-                  </span> */}
                   <span className={[`${publicStyles.form_btn_add}`].join('')} onClick={this.export}>
                     <IconFont type="icon-download-simple" />
                   </span>
-                  {/* <span className={[`${publicStyles.form_btn_add}`].join('')} onClick={this.upload}>
-                    <IconFont type="icon-upload-light" />
-                  </span> */}
                 </span>
               </Row>
             </Form>
@@ -405,8 +433,8 @@ class SuperAdmin extends React.Component<Props, State> {
             // deleteColumn={this.deleteColumn}
             cancellationColumn={this.cancellationColumn}
             total={total}
-            // showEdit={true}
-            // showCancellation={true}
+          // showEdit={true}
+          // showCancellation={true}
           />
         </Content>
       </div>

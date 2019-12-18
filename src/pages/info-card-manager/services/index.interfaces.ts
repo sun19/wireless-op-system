@@ -36,6 +36,8 @@ export interface AddInfoList {
   name: string;
   id: string;
   note: string;
+  userCode: string;
+  dictCode: string;
 }
 
 /***************************************任务规划********************************************************/

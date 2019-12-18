@@ -156,6 +156,7 @@ class EditAuth extends React.Component<Props> {
         message.error('填写信息有误 ', values);
         return;
       }
+      values.deptUserCode !== 'undefined'? delete values.depaCode: ''
       const data = {
         isIn: '0',
         id: userInside.id,
@@ -281,6 +282,32 @@ class EditAuth extends React.Component<Props> {
                             ))}
                         </Select>,
                       )}
+                    </Form.Item>
+                  </Col>
+                </Row>
+                <Row type="flex" justify="space-between" align="middle">
+                  <Col span={12}>
+                    <Form.Item label="部门编号">
+                      {getFieldDecorator('depaCode', {
+                        rules: [
+                          {
+                            message: '请输入部门编号',
+                          },
+                        ],
+                        initialValue: userInside.deptUserCode,
+                      })(<Input placeholder="请输入部门编号" readOnly={true}/>)}
+                    </Form.Item>
+                  </Col>
+                  <Col span={12}>
+                    <Form.Item label="人员编号">
+                      {getFieldDecorator('userCode', {
+                        rules: [
+                          {
+                            message: '请输入人员编号',
+                          },
+                        ],
+                        initialValue: userInside.userCode,
+                      })(<Input placeholder="请输入人员编号" />)}
                     </Form.Item>
                   </Col>
                 </Row>

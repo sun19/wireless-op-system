@@ -49,3 +49,6 @@ export const EXPORT_TASK_IN =
 // 修改
 export const TASK_LIST_EDIT  =
   `${BASE_API_URL}/jeecg-boot/intf/location/updateTaskPlan`;
+// 所有区域的
+export const GET_ALL_REGION =
+  `${BASE_API_URL}/jeecg-boot/intf/location/getAllRegion`;

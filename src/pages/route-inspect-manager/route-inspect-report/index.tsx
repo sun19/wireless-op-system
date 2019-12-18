@@ -2,7 +2,7 @@
  * title: 显示 > 巡检报表
  */
 import React from 'react';
-import { Layout, Form, Input, Row, Col, TimePicker, Button, DatePicker, Icon } from 'antd';
+import { Layout, Form, Input, Row, Col, TimePicker, Button, message, DatePicker, Icon } from 'antd';
 import * as _ from 'lodash';
 import { FormComponentProps } from 'antd/lib/form';
 import { connect } from 'dva';
@@ -10,7 +10,7 @@ import { connect } from 'dva';
 import MainContent from '../components/MainContent';
 import { ICON_FONTS_URL } from '../../../config/constants';
 import { UmiComponentProps } from '@/common/type';
-import { getInspectReports, queryInspectionReportByTime } from '../services';
+import { getInspectReports, queryInspectionReportByTime, inspectExportOut } from '../services';
 import { GetInspectReportsParams } from '../services/index.interfaces';
 import styles from './index.less';
 import publicStyles from '../index.less';
@@ -76,10 +76,10 @@ class RouteInspectReport extends React.Component<Props, State> {
   onSearch = e => {
     e.preventDefault();
     this.props.form.validateFields(async (err, values) => {
-      const { createtime, endTime, ...props } = values;
+      const { startTime, endTime, ...props } = values;
       const data = {
         ...props,
-        createtime: values.createtime ? values.createtime.format('YYYY-MM-DD HH:mm:ss') : '',
+        startTime: values.startTime ? values.startTime.format('YYYY-MM-DD HH:mm:ss') : '',
 
         endTime: values.endTime ? values.endTime.format('YYYY-MM-DD HH:mm:ss') : '',
       };
@@ -90,17 +90,29 @@ class RouteInspectReport extends React.Component<Props, State> {
   onClear = () => {
     this.props.form.resetFields();
     const data={
-          startTime: '2019-11-01 00:00:00',
+          startTime: '2019-11-01 00:00:01',
       endTime: '2019-11-30 23:59:59',
     }
     this.getNewReports(data);
   };
+  upload = () => {
+    this.props.form.validateFields(async (err, values) => {
+      const { startTime, endTime, ...props } = values;
+      const data = {
+        startTime: values.startTime ? values.startTime.format('YYYY-MM-DD HH:mm:ss') : '',
 
+        endTime: values.endTime ? values.endTime.format('YYYY-MM-DD HH:mm:ss') : '',
+      };
+      // console.log(data)
+      inspectExportOut(data).then(() => message.success('导入成功'));
+    });
+   
+  };
   componentWillMount() {
     let data = {
       // startTime: moment().format('YYYY-MM-DD 00:00:00'),
       // endTime: moment().format('YYYY-MM-DD 23:59:59'),
-      startTime: '2019-11-01 00:00:00',
+      startTime: '2019-11-01 00:00:01',
       endTime: '2019-11-30 23:59:59',
     };
     // console.log(data)
@@ -135,7 +147,7 @@ class RouteInspectReport extends React.Component<Props, State> {
               >
                 <FormItem label="开始时间">
                   {getFieldDecorator('startTime', {
-                    initialValue: moment('2019-11-01 00:00:00'),
+                    initialValue: moment('2019-11-01 00:00:01'),
                   })(<DatePicker showTime={true} placeholder="请选择开始时间" />)}
                 </FormItem>
                 <FormItem label="结束时间">
@@ -164,6 +176,11 @@ class RouteInspectReport extends React.Component<Props, State> {
                   >
                     清空
                   </Button>
+                </span>
+                <span className={[`${publicStyles.form_btns}`].join(' ')}>
+                  <span className={[`${publicStyles.form_btn_add}`].join('')} onClick={this.upload}>
+                    <IconFont type="icon-upload-light" />
+                  </span>
                 </span>
               </Row>
             </Form>

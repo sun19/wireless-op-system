@@ -45,7 +45,7 @@ interface State {
   stageY: number;
   showPeopleInfo: boolean;
   currentIndex: boolean;
-
+  showLamps: boolean;
   dataStr?: string;
 }
 type StateProps = ReturnType<typeof mapState>;
@@ -92,6 +92,7 @@ class Realtime extends React.Component<Props, State> {
       currentIndex: true,
       ajaxLamps: [],
       dataStr: '2019-11-15',
+      showLamps: false,
     };
   }
   //异步加载图片，保证渲染到canvas上时是已经OK的
@@ -180,10 +181,10 @@ class Realtime extends React.Component<Props, State> {
   }
 
   selectShowA = () => {
-    this.setState({ showPeopleInfo: true, currentIndex: false });
+    this.setState({ showPeopleInfo: true, currentIndex: false, showLamps: true });
   };
   selectShow = () => {
-    this.setState({ showPeopleInfo: false, currentIndex: true });
+    this.setState({ showPeopleInfo: false, currentIndex: true, showLamps: false });
   };
 
   showLine() {
@@ -887,7 +888,7 @@ class Realtime extends React.Component<Props, State> {
                     {lamps}
                   </Layer>
                 </Stage> */}
-                <RealTime />
+                <RealTime showLamps={this.state.showLamps} />
               </div>
             </Col>
             <Col span={4} className="right_panel">
