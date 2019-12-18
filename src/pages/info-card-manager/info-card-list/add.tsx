@@ -47,6 +47,7 @@ interface State {
   currentIndex?: number;
   currentUser?: any;
   userInfoNumber?:number;
+  departmentNumber?:string;
 }
 function hasErrors(fieldsError) {
   return Object.keys(fieldsError).some(field => fieldsError[field]);
@@ -58,6 +59,7 @@ class AddUsers extends React.Component<Props, State> {
     this.state = {
       userTypes: [],
       userInfoList: [],
+      departmentNumber:''
     };
   }
   setupDuties = () => {
@@ -123,11 +125,12 @@ class AddUsers extends React.Component<Props, State> {
         return;
       }
       const { enableTime, ...props } = values
-
+      const { userInfoNumber,departmentNumber} = this.state;
       const data={
         ...props,
         enableTime: values.enableTime ? values.enableTime.format('YYYY-MM-DD HH:mm:ss').toString() : '',
-
+        userCode:userInfoNumber,
+        dictCode:departmentNumber,
       }
       const isSuccessed = await addInfoList(data);
       if (isSuccessed) {
@@ -147,14 +150,16 @@ class AddUsers extends React.Component<Props, State> {
     this.setState({ userTypes });
     const dutiesResp = await getAllPosition();
     const secretsLevelsResp = await getAllSecretLevels();
-    const allPositions = await getAllDepartment();
+    // const allPositions = await getAllDepartment();
+
+    const allPositions = await request.get(`${BASE_API_URL}/jeecg-boot/intf/location/listDepartment`);
 
     this.props.dispatch({
       type: 'commonState/update',
       payload: {
         allDuties: dutiesResp.result,
         allSecretLevel: secretsLevelsResp.result,
-        allPosition: allPositions,
+        allPosition: allPositions.result.records,
       },
     });
 
@@ -175,20 +180,47 @@ class AddUsers extends React.Component<Props, State> {
     });
   }
   onSelectChange = (value, index) => {
-
-
     const { userInfoList } = this.state;
+    const { allPosition } = this.props;
     let currentIndex = undefined;
     userInfoList.map((item, index) => {
       if (item.name === value) {
         currentIndex = index;
+
+        for (var i = 0; i < allPosition.length; i++) { 
+          var dic = allPosition[i]
+          if(dic.id == item.departmentId) {
+            this.setState({
+              departmentNumber: dic["deptCode"],
+            });
+          }
+       }
+
         this.setState({
           currentIndex,
           currentUser: item,
         });
       }
     });
+
+    
+    
+
+
+
+
+
+
+
+
   };
+  onSelectDepartmentChange = (value,key) => {
+    this.setState({
+      departmentNumber: key.key,
+      });
+  };
+
+
   setupSelectName = () => {
     const { userInfoList } = this.state;
     const { getFieldDecorator } = this.props.form;
@@ -210,11 +242,19 @@ class AddUsers extends React.Component<Props, State> {
       </Form.Item>
     );
   };
+
+
+
+
+
   render() {
     const props = this.props;
     const { getFieldDecorator, getFieldsError } = this.props.form;
     const { allPosition } = this.props;
-    const { currentIndex, currentUser ,userInfoNumber} = this.state;
+    const { currentIndex, currentUser ,userInfoNumber,departmentNumber} = this.state;
+
+
+
     return (
       <ContentBorder className={styles.auth_root}>
         <Form
@@ -275,15 +315,42 @@ class AddUsers extends React.Component<Props, State> {
                         rules: [],
                         initialValue: currentIndex != null && currentUser.departmentId,
                       })(
-                        <Select placeholder="请选择部门">
+                        <Select placeholder="请选择部门" onSelect={this.onSelectDepartmentChange}>
                           {allPosition &&
                             allPosition.map(option => (
-                              <Option value={option.id} key={option.key}>
+                              <Option value={option.id} key={option.deptCode} >
                                 {option.name}
                               </Option>
                             ))}
                         </Select>,
                       )}
+                    </Form.Item>
+                  </Col>
+                </Row>
+                <Row type="flex" justify="space-between">
+                  <Col span={12}>
+                    <Form.Item label="信息牌编号">
+                
+
+                    <Input disabled={true} value={departmentNumber+userInfoNumber}/>
+
+
+                    </Form.Item>
+                  </Col>
+                  <Col span={12}>
+                    <Form.Item label="部门编号">
+                      {getFieldDecorator('departmentId', {
+                        rules: [],
+                        initialValue: currentIndex != null && currentUser.departmentId,
+                      })(
+                        <Select placeholder="请选择部门编号">
+                          {allPosition &&
+                            allPosition.map(option => (
+                              <Option value={option.id} key={option.key}>
+                                {option.deptCode}
+                              </Option>
+                            ))}
+                        </Select>,)}
                     </Form.Item>
                   </Col>
                 </Row>
@@ -325,7 +392,7 @@ class AddUsers extends React.Component<Props, State> {
                       {getFieldDecorator('name', {
                         rules: [],
                         initialValue: (userInfoNumber != null && userInfoNumber) || undefined,
-                      })(<Input placeholder="请输入信息牌编号"  disabled={true}/>)}
+                      })(<Input  disabled={true}/>)}
                     </Form.Item>
                   </Col>
                   <Col span={12}>
