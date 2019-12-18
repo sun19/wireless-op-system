@@ -211,7 +211,6 @@ class FencingSetting extends React.Component<Props, State> {
         userId: userId.join(','),
         lampIds: lampIds.join(','),
       };
-
       const isSuccessed = await addMapFencingArea(data);
       isSuccessed && router.push('/map-manager/fence-setting');
     });
@@ -235,9 +234,9 @@ class FencingSetting extends React.Component<Props, State> {
   render() {
     const { getFieldDecorator } = this.props.form;
     const { mapImage, width, height } = this.state;
-    const { maps, fencingTypes, users, levels, areas } = this.props;
+    let { maps, fencingTypes, users, levels, areas } = this.props;
     const createdLamps = this.createLamps();
-
+    // areas = [{ name: '全部', value: undefined }].concat(areas);
     return (
       <ContentBorder className={styles.auth_root}>
         <Form

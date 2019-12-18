@@ -2,7 +2,7 @@
  * title: 实时轨迹
  */
 import React, { Component } from 'react';
-import { Row, Col, Icon, Table, Progress,Tooltip } from 'antd';
+import { Row, Col, Icon, Table, Progress, Tooltip } from 'antd';
 import ReactEcharts from 'echarts-for-react';
 import request, { format } from '@/utils/request';
 import { connect } from 'dva';
@@ -35,11 +35,9 @@ class DataView extends Component<any, State> {
     };
   }
   async componentDidMount() {
-    const realInfo = await request.get(
-      BASE_API_URL+'/jeecg-boot/intf/location/listByUserInfo',
-    );
+    const realInfo = await request.get(BASE_API_URL + '/jeecg-boot/intf/location/listByUserInfo');
     const routeData = await request.get(
-      BASE_API_URL+'/jeecg-boot/intf/location/findbyInspectionReports',
+      BASE_API_URL + '/jeecg-boot/intf/location/findbyInspectionReports',
     );
     this.setState({
       routeData,
@@ -721,19 +719,27 @@ class DataView extends Component<any, State> {
         dataIndex: 'inspectionTime',
         editable: true,
         ellipsis: true,
-    onCell: () => {
-      return {
-        style: {
-          // maxWidth: 150,
-          overflow: 'hidden',
-          whiteSpace: 'nowrap',
-          textOverflow: 'ellipsis',
-          cursor: 'pointer'
-        }
-      }
-    },
-        render: (text) => <Tooltip className='tooltips' placement="topLeft" title={moment(text).format('MM-DD HH:mm')}>{moment(text).format('MM-DD HH:mm')}</Tooltip>,
-  },
+        onCell: () => {
+          return {
+            style: {
+              // maxWidth: 150,
+              overflow: 'hidden',
+              whiteSpace: 'nowrap',
+              textOverflow: 'ellipsis',
+              cursor: 'pointer',
+            },
+          };
+        },
+        render: text => (
+          <Tooltip
+            className="tooltips"
+            placement="topLeft"
+            title={moment(text).format('MM-DD HH:mm')}
+          >
+            {moment(text).format('MM-DD HH:mm')}
+          </Tooltip>
+        ),
+      },
       {
         title: '结束时间',
         dataIndex: 'endTime',
@@ -746,11 +752,19 @@ class DataView extends Component<any, State> {
               overflow: 'hidden',
               whiteSpace: 'nowrap',
               textOverflow: 'ellipsis',
-              cursor: 'pointer'
-            }
-          }
+              cursor: 'pointer',
+            },
+          };
         },
-        render: (text) => <Tooltip className='tooltips' placement="topLeft" title={moment(text).format('MM-DD HH:mm')}>{moment(text).format('MM-DD HH:mm')}</Tooltip>,
+        render: text => (
+          <Tooltip
+            className="tooltips"
+            placement="topLeft"
+            title={moment(text).format('MM-DD HH:mm')}
+          >
+            {moment(text).format('MM-DD HH:mm')}
+          </Tooltip>
+        ),
       },
       {
         title: '巡检人员',
@@ -820,7 +834,7 @@ class DataView extends Component<any, State> {
     return (
       <Table
         columns={columns}
-        dataSource={records}
+        dataSource={records.result || []}
         size="small"
         pagination={false}
         fixed={true}
