@@ -74,14 +74,15 @@ class WraningType extends React.Component<Props, State> {
     };
   }
   async componentDidMount() {
-    this.getwarningTypeList();
+    const data = {
+      type: '',
+    }
+    this.getwarningTypeList(data);
     this.props.form.validateFields();
   }
 
-  async getwarningTypeList( ) {
-    const data = {
-      type: this.state.type,
-    }
+  async getwarningTypeList(data) {
+  
     const taskList = await unusualData(data);
     this.props.dispatch({
       type: 'warningManager/update',
@@ -92,12 +93,20 @@ class WraningType extends React.Component<Props, State> {
  
   // 查询
   search = e => {
-      this.getwarningTypeList();
+    const data = {
+      type: this.state.type,
+    }
+      this.getwarningTypeList(data);
   };
   handleReset = () => {
+
     // this.props.form.resetFields();
     this.setState({type:''})
-    this.getwarningTypeList();
+    const data = {
+      type: '',
+    }
+    this.getwarningTypeList(data);
+
   };
   selectChange = (e: any) => {
     this.setState({
