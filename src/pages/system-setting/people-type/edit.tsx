@@ -129,7 +129,7 @@ class EditUserAuth extends React.Component<Props, State> {
     router.push('/system-setting/people-type');
   }
   renderTreeNodes = data =>
-    data.map(item => {
+    data&&data.map(item => {
       if (item.child) {
         return (
           <TreeNode title={item.name} key={item.id} dataRef={item}>
