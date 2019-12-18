@@ -106,10 +106,10 @@ class PollingLine extends React.Component<Props, State> {
     };
   }
   addPollingLine = () => {
-    router.push('/map-manager/polling-line/add');
+    router.push('/map-manager/prohibit-area/add');
   };
 
-  async getPollingLines(params: GetPollingLineByNameParams = {}) {
+  async getPollingLines(params: GetPollingLineByNameParams = {type: 2}) {
     const resp = await getPollingLineByName(params);
     if (resp) {
       this.props.dispatch({

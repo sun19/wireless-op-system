@@ -105,15 +105,15 @@ class Navigation extends React.Component<Props, State> {
             <Menu onClick={this.handleClick} selectedKeys={[this.state.current]} mode="horizontal">
               <Menu.Item key="homepage">首页</Menu.Item>
               {/* <Menu.Item key="realtime">实时</Menu.Item> */}
-              <Menu.Item key="lampshow">灯具</Menu.Item>
+              {/* <Menu.Item key="lampshow">灯具</Menu.Item> */}
               <Menu.Item key="dataview">数据</Menu.Item>
-              <Menu.Item key="system">系统</Menu.Item>
+              <Menu.Item key="system">应用</Menu.Item>
               {/* <SubMenu title={<span className="submenu-title-wrapper">系统</span>}> */}
               {/* <Menu.Item key="setting:1">Option 1</Menu.Item>
                 <Menu.Item key="setting:2">Option 2</Menu.Item>
                 <Menu.Item key="setting:3">Option 3</Menu.Item> */}
               {/* </SubMenu> */}
-              <Menu.Item key="admin">管理员</Menu.Item>
+              <Menu.Item key="admin">admin</Menu.Item>
             </Menu>
           </Col>
           <Col span={13} className={styles.middle_panel}>
