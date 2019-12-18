@@ -2,15 +2,15 @@
  * title: 电子围栏
  */
 import React, { Component } from 'react';
-import { message, Row, Col, Tooltip, Icon, Progress, Breadcrumb, Table } from 'antd';
+import { message, Row, Col, Icon, Tooltip, Progress, Breadcrumb, Table } from 'antd';
 import Konva from 'konva';
 import ReactEcharts from 'echarts-for-react';
 import { Stage, Layer, Image as ImageLayer, Line as LineLayer } from 'react-konva';
 import { connect } from 'dva';
 import * as _ from 'lodash';
 import moment from 'moment';
+
 import { BASE_API_URL } from '../../../config/constants';
-import RealTime from '../../map-manager';
 import Title from '../components/Title';
 import Navigation from '../components/navigation';
 import { UmiComponentProps } from '@/common/type';
@@ -28,9 +28,12 @@ import {
 import { warningHistorySearch } from '../../warning-manager/services';
 import { queryFencingArea } from '../../map-manager/services';
 import { getAllFencingTypes } from '../../login/login.service';
+import { QueryFencingAreaParams } from '../../map-manager/services/index.interface';
+
 import request from 'umi-request';
 
 import styles from './index.less';
+import { findRepos } from 'jest-changed-files';
 
 interface State {
   mapImage: any | null;
@@ -45,7 +48,6 @@ interface State {
   stageY: number;
   showPeopleInfo: boolean;
   currentIndex: boolean;
-  showLamps: boolean;
   dataStr?: string;
 }
 type StateProps = ReturnType<typeof mapState>;
@@ -73,7 +75,7 @@ const defaultLamps = [
 
 const scaleBy = 1.01;
 
-class Realtime extends React.Component<Props, State> {
+class DataView extends React.Component<Props, State> {
   map: React.RefObject<HTMLDivElement>;
   constructor(props) {
     super(props);
@@ -92,7 +94,6 @@ class Realtime extends React.Component<Props, State> {
       currentIndex: true,
       ajaxLamps: [],
       dataStr: '2019-11-15',
-      showLamps: false,
     };
   }
   //异步加载图片，保证渲染到canvas上时是已经OK的
@@ -104,7 +105,7 @@ class Realtime extends React.Component<Props, State> {
       const { clientWidth } = this.map.current;
       const clientHeight = Math.floor((clientWidth * 1080) / 1920);
 
-      // this.showLine();
+      this.showLine();
       this.setState({
         mapImage,
         icon: iconImage,
@@ -148,6 +149,7 @@ class Realtime extends React.Component<Props, State> {
         positionPeopleCount: positionPeople.result,
       },
     });
+    // 警告类型统计
     const warningType = await getWarnTypeByTime({ dataStr: this.state.dataStr });
     this.props.dispatch({
       type: 'bigScreen/update',
@@ -172,6 +174,7 @@ class Realtime extends React.Component<Props, State> {
     });
     //获取大屏停留时长
     const stayTime = await getInnerStayTime();
+    // console.log(stayTime)
     this.props.dispatch({
       type: 'bigScreen/update',
       payload: {
@@ -181,12 +184,11 @@ class Realtime extends React.Component<Props, State> {
   }
 
   selectShowA = () => {
-    this.setState({ showPeopleInfo: true, currentIndex: false, showLamps: true });
+    this.setState({ showPeopleInfo: true, currentIndex: false });
   };
   selectShow = () => {
-    this.setState({ showPeopleInfo: false, currentIndex: true, showLamps: false });
+    this.setState({ showPeopleInfo: false, currentIndex: true });
   };
-
   showLine() {
     const { clientWidth } = this.map.current;
     const clientHeight = Math.floor((clientWidth * 1080) / 1920);
@@ -258,6 +260,7 @@ class Realtime extends React.Component<Props, State> {
 
   componentWillUnmount() {
     message.destroy();
+    this.ws && this.ws.close();
   }
   dynamicLoadMapImage() {
     return new Promise(resolve => {
@@ -313,7 +316,6 @@ class Realtime extends React.Component<Props, State> {
     const { eleTypeInfo } = this.props;
     if (eleFenceInfo.length === 0) return null;
     const { records } = eleFenceInfo;
-    // console.log(records)
     const data = records.map((item, index) => {
       const type = _.find(eleTypeInfo, { id: item.type });
       if (!type) {
@@ -323,6 +325,7 @@ class Realtime extends React.Component<Props, State> {
         <div className="flex_outer" key={index}>
           <div className="ele_title_top">
             <div className="ele_title">{item.name}</div>
+            {/* <div className="ele_title"> {type && type.name ? type.name : ''}</div> */}
           </div>
           <div className="ele_bag">
             {!!item.lampCode
@@ -461,7 +464,7 @@ class Realtime extends React.Component<Props, State> {
       },
       series: series,
     };
-    return <ReactEcharts option={option} style={{ height: '100%', width: '100%' }} />;
+    return <ReactEcharts option={option} style={{ height: '170px', width: '100%' }} />;
   };
   // 停留时长分析
 
@@ -478,7 +481,7 @@ class Realtime extends React.Component<Props, State> {
 
       grid: {
         left: 0,
-        top: 20,
+        top: 0,
         bottom: 10,
         right: 10,
         containLabel: true,
@@ -493,7 +496,7 @@ class Realtime extends React.Component<Props, State> {
         left: '0',
         itemWidth: 16,
         itemHeight: 8,
-        itemGap: 0,
+        itemGap: 2,
         textStyle: {
           color: '#A3E2F4',
           fontSize: 18,
@@ -536,7 +539,7 @@ class Realtime extends React.Component<Props, State> {
           },
         },
         axisLabel: {
-          formatter: '{value} %',
+          formatter: '{c}',
           show: false,
           padding: [0, 0, 20, 0],
           color: '#0B3E5E',
@@ -586,6 +589,7 @@ class Realtime extends React.Component<Props, State> {
     };
     return <ReactEcharts option={option} style={{ height: '100%', width: '100%' }} />;
   };
+  // 告警类型统计
   createPoliceType = () => {
     const { warningTypeInfo } = this.props;
     if (warningTypeInfo.length === 0) return null;
@@ -679,6 +683,7 @@ class Realtime extends React.Component<Props, State> {
         },
       },
       yAxis: {
+        nameGap: 20,
         type: 'category',
         data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
         axisLine: {
@@ -693,6 +698,8 @@ class Realtime extends React.Component<Props, State> {
           formatter: '{value}',
           // color: '#fff',
           fontSize: 10,
+          margin: 10,
+          // align:'left',
         },
         axisTick: {
           show: false,
@@ -715,6 +722,8 @@ class Realtime extends React.Component<Props, State> {
         dataIndex: 'warnName',
         editable: true,
         ellipsis: true,
+        className: 'select_text',
+
         render: (name, record) => {
           return (
             <div>
@@ -814,6 +823,7 @@ class Realtime extends React.Component<Props, State> {
           </div>
           <div className="yesterday-data">
             <span className="icon" />
+
             <span className="data-title">昨日最高值</span>
             <span className="data-number">{yesHigh}</span>
           </div>
@@ -872,7 +882,7 @@ class Realtime extends React.Component<Props, State> {
             </Col>
             <Col span={16} className="middle_panel">
               <div className={styles.map_manager} ref={this.map}>
-                {/* <Stage
+                <Stage
                   width={width}
                   height={height}
                   onWheel={this.onWheel}
@@ -887,8 +897,7 @@ class Realtime extends React.Component<Props, State> {
                     {line}
                     {lamps}
                   </Layer>
-                </Stage> */}
-                <RealTime showLamps={this.state.showLamps} />
+                </Stage>
               </div>
             </Col>
             <Col span={4} className="right_panel">
@@ -978,7 +987,6 @@ class Realtime extends React.Component<Props, State> {
                 </Breadcrumb>
               </div>
             </Col>
-            }
           </Row>
         </div>
       </div>
@@ -993,4 +1001,4 @@ const mapState = state => {
   };
 };
 
-export default connect(mapState)(Realtime);
+export default connect(mapState)(DataView);

@@ -72,7 +72,7 @@ class DataView extends Component<any, State> {
     this.props.dispatch({
       type: 'bigScreen/update',
       payload: {
-        innerOuterPeople: innerOuterPeople.result,
+        innerOuterPeople: innerOuterPeople.result || {},
       },
     });
     const warningType = await getWarnTypeByTime({ dataStr: this.state.dataStr });
