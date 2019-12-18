@@ -6,7 +6,13 @@ import { Form, Row, Col, Button, Input, Select, DatePicker, message, Cascader } 
 import { FormComponentProps } from 'antd/lib/form';
 import { connect } from 'dva';
 import Konva from 'konva';
-import { Stage, Layer, Image as ImageLayer, Line as LineLayer } from 'react-konva';
+import {
+  Stage,
+  Layer,
+  Image as ImageLayer,
+  Circle as CircleLayer,
+  Line as LineLayer,
+} from 'react-konva';
 import router from 'umi/router';
 import moment from 'moment';
 
@@ -20,6 +26,7 @@ import {
   getAllArea,
 } from '@/pages/login/login.service';
 import { addMapArea } from '../services';
+import { guid } from '@/utils/guid';
 
 import styles from './index.less';
 import publicStyles from '../index.less';
@@ -31,13 +38,23 @@ interface State {
   mapImage: any;
   width: number;
   height: number;
+  circleX: number;
+  circleY: number;
+  circleShow: boolean;
+  stageScale: number;
+  stageX: number;
+  stageY: number;
+  circles: any[];
+  canDraw: boolean;
 }
 
 type StateProps = ReturnType<typeof mapState>;
 type Props = StateProps & UmiComponentProps & FormComponentProps;
+const scaleBy = 1.01;
 
 class FencingSetting extends React.Component<Props, State> {
   map: React.RefObject<HTMLDivElement>;
+  num: 0;
   constructor(props) {
     super(props);
     this.map = React.createRef<HTMLDivElement>();
@@ -45,11 +62,40 @@ class FencingSetting extends React.Component<Props, State> {
       mapImage: null,
       width: 0,
       height: 0,
+      circleX: -10,
+      circleY: -10,
+      circleShow: true,
+      stageScale: 1,
+      stageX: 0,
+      stageY: 0,
+      circles: [],
+      canDraw: false,
     };
     this.initRequest = this.initRequest.bind(this);
   }
   async componentDidMount() {
+    const mapImage = await this.dynamicLoadMapImage();
+    if (this.map.current) {
+      const { clientHeight } = this.map.current;
+      const clientWidth = Math.floor((clientHeight * 1920) / 1080);
+
+      this.setState({
+        mapImage,
+        width: clientWidth,
+        height: clientHeight,
+      });
+    }
     this.initRequest();
+  }
+
+  dynamicLoadMapImage() {
+    return new Promise(resolve => {
+      const mapImage = new Image();
+      mapImage.src = require('../../big-screen/assets/map.png');
+      mapImage.onload = function() {
+        resolve(mapImage);
+      };
+    });
   }
 
   async initRequest() {
@@ -57,9 +103,9 @@ class FencingSetting extends React.Component<Props, State> {
     const fencingTypes = await getAllFencingTypes();
     let usersResp = await getAllUserInfo();
     let users = [];
-    for(let i = 0; i < usersResp.result.length; i++) {
+    for (let i = 0; i < usersResp.result.length; i++) {
       const dept = usersResp.result[i];
-      for(let j = 0; j < dept.relatePeopleResponses.length; j++) {
+      for (let j = 0; j < dept.relatePeopleResponses.length; j++) {
         const item = dept.relatePeopleResponses[j];
         users.push(item);
       }
@@ -78,16 +124,152 @@ class FencingSetting extends React.Component<Props, State> {
       },
     });
   }
+  //TODO:暂不提供拖拽功能
+  onCircleDragging = (event: any) => {
+    const defaultWidth = 1920;
+    const defaultHeight = 1080;
+    const { clientHeight } = this.map.current;
+    const clientWidth = Math.floor((clientHeight * 1920) / 1080);
 
-  // dynamicLoadMapImage() {
-  //   return new Promise(resolve => {
-  //     const mapImage = new Image();
-  //     mapImage.src = require('../../big-screen/assets/map.png');
-  //     mapImage.onload = function() {
-  //       resolve(mapImage);
-  //     };
-  //   });
-  // }
+    const evt = event.evt;
+    const target = event.target;
+    const attrs = target.attrs;
+    const id = attrs.id;
+    const { circles } = this.state;
+    const newCircles = circles.map(item => {
+      if (item.num === id) {
+        return { ...item, x: evt.layerX, y: evt.layerY };
+      }
+      return item;
+    });
+    this.setState({
+      circles: newCircles,
+    });
+    //换算由于地图拉伸造成的坐标不一致
+    // this.props.form.setFieldsValue({
+    //   xCoordinate: Math.floor((evt.layerX * defaultWidth) / clientWidth),
+    // });
+    // this.props.form.setFieldsValue({
+    //   yCoordinate: Math.floor((evt.layerY * defaultHeight) / clientHeight),
+    // });
+  };
+  onCircleClick = (event: any) => {
+    const defaultWidth = 1920;
+    const defaultHeight = 1080;
+    const { clientHeight } = this.map.current;
+    const clientWidth = Math.floor((clientHeight * 1920) / 1080);
+
+    const evt = event.evt;
+    //换算由于地图拉伸造成的坐标不一致
+    this.props.form.setFieldsValue({
+      xCoordinate: Math.floor((evt.x * defaultWidth) / clientWidth),
+    });
+    this.props.form.setFieldsValue({
+      yCoordinate: Math.floor((evt.y * defaultHeight) / clientHeight),
+    });
+    this.setState({
+      circleX: evt.x,
+      circleY: evt.y,
+      circleShow: true,
+    });
+  };
+  setupCircle = () => {
+    const { circles } = this.state;
+    const circleShow = this.state.circleShow;
+    if (!circleShow) return;
+    return circles.map((circle, index) => (
+      <CircleLayer
+        x={circle.circleX}
+        y={circle.circleY}
+        radius={10}
+        key={index}
+        fill="red"
+        id={circle.num}
+        // draggable={true}
+        listening={true}
+        onDragMove={this.onCircleDragging}
+      />
+    ));
+  };
+  setupPolygon = () => {
+    const { circles } = this.state;
+    const points = circles.reduce((p, n) => {
+      p.push(n.circleX);
+      p.push(n.circleY);
+      return p;
+    }, []);
+    return (
+      <LineLayer
+        points={points}
+        fill="rgba(0,0,0,0.2)"
+        stroke="#00D2FF"
+        strokeWidth={2}
+        closed={true}
+      />
+    );
+  };
+
+  onWheel = evt => {
+    evt.evt.preventDefault();
+    const stage = evt.target.getStage();
+    const oldScale = stage.scaleX();
+
+    const mousePointTo = {
+      x: stage.getPointerPosition().x / oldScale - stage.x() / oldScale,
+      y: stage.getPointerPosition().y / oldScale - stage.y() / oldScale,
+    };
+
+    const newScale = evt.evt.deltaY > 0 ? oldScale * scaleBy : oldScale / scaleBy;
+
+    stage.scale({ x: newScale, y: newScale });
+
+    this.setState({
+      stageScale: newScale,
+      stageX: -(mousePointTo.x - stage.getPointerPosition().x / newScale) * newScale,
+      stageY: -(mousePointTo.y - stage.getPointerPosition().y / newScale) * newScale,
+    });
+  };
+
+  mapClick = evt => {
+    if (!this.state.canDraw) return;
+    const defaultWidth = 1920;
+    const defaultHeight = 1080;
+    const { clientHeight } = this.map.current;
+    const clientWidth = Math.floor((clientHeight * 1920) / 1080);
+    const event: any = evt.evt;
+    const stage = evt.target.getStage();
+    const oldScale = stage.scaleX();
+    const mousePointTo = {
+      x: stage.getPointerPosition().x / oldScale - stage.x() / oldScale,
+      y: stage.getPointerPosition().y / oldScale - stage.y() / oldScale,
+    };
+    let circles = this.state.circles;
+    circles = circles.concat([
+      {
+        circleX: Math.floor(mousePointTo.x),
+        circleY: Math.floor(mousePointTo.y),
+        num: guid(),
+      },
+    ]);
+    this.setState({ circles });
+    // this.props.form.setFieldsValue({
+    //   xCoordinate: Math.floor((event.layerX * defaultWidth) / clientWidth),
+    // });
+    // this.props.form.setFieldsValue({
+    //   yCoordinate: Math.floor((event.layerY * defaultHeight) / clientHeight),
+    // });
+  };
+  onStartDraw = () => {
+    this.setState({
+      canDraw: true,
+      circles: [],
+    });
+  };
+  onEndDraw = () => {
+    this.setState({
+      canDraw: false,
+    });
+  };
 
   onSubmit = e => {
     e.preventDefault();
@@ -97,9 +279,8 @@ class FencingSetting extends React.Component<Props, State> {
         operatTime: moment().format('YYYY-MM-DD HH:mm:ss'),
         ...props,
       };
-
       const isSuccessed = await addMapArea(data);
-      if(isSuccessed) {
+      if (isSuccessed) {
         // message.success('添加成功!');
         setTimeout(() => router.push('/map-manager/area-set'), 1000);
       }
@@ -114,6 +295,7 @@ class FencingSetting extends React.Component<Props, State> {
     const { getFieldDecorator } = this.props.form;
     const { mapImage, width, height } = this.state;
     const { maps, fencingTypes, users, levels, areas } = this.props;
+    const polygon = this.setupPolygon();
     return (
       <ContentBorder className={styles.auth_root}>
         <Form layout="inline" style={{ marginTop: '0.57rem' }} onSubmit={this.onSubmit}>
@@ -173,21 +355,62 @@ class FencingSetting extends React.Component<Props, State> {
                       )}
                     </Form.Item>
                   </Col>
-                </Row>
-                <Row type="flex" justify="space-between" className={styles.remark_area}>
-                  <Col span={23} className={styles.text_areas}>
+                  <Col span={12} className={styles.text_areas}>
                     <Form.Item label="备注">
                       {getFieldDecorator('remark')(
                         <TextArea
                           className={publicStyles.text_area}
-                          autoSize={{ minRows: 6, maxRows: 8 }}
-                          style={{ width: '90%' }}
+                          autoSize={{ minRows: 1, maxRows: 8 }}
                         />,
                       )}
                     </Form.Item>
                   </Col>
                 </Row>
+                <Row className={styles.line_style}>
+                  <Col className={styles.img_type} span={24}>
+                    <div style={{ width: '100%', height: '100%' }} ref={this.map}>
+                      <Stage
+                        width={this.state.width}
+                        height={this.state.height}
+                        draggable={true}
+                        onWheel={this.onWheel}
+                        scaleX={this.state.stageScale}
+                        scaleY={this.state.stageScale}
+                        x={this.state.stageX}
+                        y={this.state.stageY}
+                        onClick={this.mapClick}
+                      >
+                        <Layer>
+                          <ImageLayer
+                            image={this.state.mapImage}
+                            x={0}
+                            y={0}
+                            width={this.state.width}
+                            height={this.state.height}
+                          />
+                          {polygon}
+                          {this.setupCircle()}
+                        </Layer>
+                      </Stage>
+                    </div>
+                  </Col>
+                </Row>
+
                 <Row type="flex" justify="center" style={{ marginTop: '0.35rem' }}>
+                  <Col span={6}>
+                    <Form.Item>
+                      <Button className={styles.form_btn} onClick={this.onStartDraw}>
+                        开始绘制
+                      </Button>
+                    </Form.Item>
+                  </Col>
+                  <Col span={6} className={styles.select_padding_left}>
+                    <Form.Item>
+                      <Button className={styles.form_btn} onClick={this.onEndDraw}>
+                        结束绘制
+                      </Button>
+                    </Form.Item>
+                  </Col>
                   <Col span={6}>
                     <Form.Item>
                       <Button className={styles.form_btn} htmlType="submit">
