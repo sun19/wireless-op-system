@@ -6,7 +6,13 @@ import { Form, Row, Col, Button, Input, Select, Cascader } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import { connect } from 'dva';
 import Konva from 'konva';
-import { Stage, Layer, Image as ImageLayer, Line as LineLayer } from 'react-konva';
+import {
+  Stage,
+  Layer,
+  Image as ImageLayer,
+  Circle as CircleLayer,
+  Line as LineLayer,
+} from 'react-konva';
 import router from 'umi/router';
 import moment from 'moment';
 
@@ -20,6 +26,7 @@ import {
   getAllArea,
 } from '@/pages/login/login.service';
 import { updateMapArea } from '../services';
+import { getLampList } from '@/pages/map-manager/services';
 
 import styles from './index.less';
 import publicStyles from '../index.less';
@@ -31,10 +38,20 @@ interface State {
   mapImage: any;
   width: number;
   height: number;
+  circleX: number;
+  circleY: number;
+  circleShow: boolean;
+  stageScale: number;
+  stageX: number;
+  stageY: number;
+  circles: any[];
+  canDraw: boolean;
+  lamps: any[];
 }
 
 type StateProps = ReturnType<typeof mapState>;
 type Props = StateProps & UmiComponentProps & FormComponentProps;
+const scaleBy = 1.01;
 
 class FencingSetting extends React.Component<Props, State> {
   map: React.RefObject<HTMLDivElement>;
@@ -45,24 +62,45 @@ class FencingSetting extends React.Component<Props, State> {
       mapImage: null,
       width: 0,
       height: 0,
+      circleX: -10,
+      circleY: -10,
+      circleShow: true,
+      stageScale: 1,
+      stageX: 0,
+      stageY: 0,
+      circles: [],
+      canDraw: false,
+      lamps: [],
     };
     this.initRequest = this.initRequest.bind(this);
   }
   async componentDidMount() {
-    // const mapImage = await this.dynamicLoadMapImage();
-    // if (this.map.current) {
-    //   const { clientWidth, clientHeight } = this.map.current;
+    const mapImage = await this.dynamicLoadMapImage();
+    if (this.map.current) {
+      const { clientHeight } = this.map.current;
+      const clientWidth = Math.floor((clientHeight * 1920) / 1080);
 
-    //   this.setState({
-    //     mapImage,
-    //     width: clientWidth,
-    //     height: clientHeight,
-    //   });
-    // }
+      this.setState({
+        mapImage,
+        width: clientWidth,
+        height: clientHeight,
+      });
+    }
     this.initRequest();
   }
-
+  dynamicLoadMapImage() {
+    return new Promise(resolve => {
+      const mapImage = new Image();
+      mapImage.src = require('../../big-screen/assets/map.png');
+      mapImage.onload = function() {
+        resolve(mapImage);
+      };
+    });
+  }
   async initRequest() {
+    const { clientHeight } = this.map.current;
+    const clientWidth = Math.floor((clientHeight * 1920) / 1080);
+
     const maps = await getAllMap();
     const fencingTypes = await getAllFencingTypes();
     let usersResp = await getAllUserInfo();
@@ -86,7 +124,81 @@ class FencingSetting extends React.Component<Props, State> {
         areas: areas.result,
       },
     });
+    let lamps = await getLampList();
+    lamps = (lamps.result && lamps.result.records) || [];
+    lamps = lamps.map(item => ({
+      x: +item.xcoordinate,
+      y: +item.ycoordinate,
+      id: item.id,
+    }));
+    lamps = this.setupLampData(lamps, clientWidth, clientHeight);
+    lamps = lamps.map(item => {
+      return Object.assign(item, { selected: false });
+    });
+    this.setState({
+      lamps: lamps,
+    });
   }
+  createLamps() {
+    const lamps = this.state.lamps;
+
+    return lamps.map((lamp, index) => (
+      <CircleLayer
+        x={lamp.x - 4}
+        y={lamp.y - 4}
+        radius={8}
+        fill={lamp.selected ? 'red' : 'blue'}
+        id={lamp.id}
+        key={index}
+        onClick={this.onLampClick}
+      />
+    ));
+  }
+  onLampClick = evt => {
+    const target = evt.target;
+    const attr = target.attrs;
+    const id = attr.id;
+    let lamps = this.state.lamps;
+    lamps = lamps.map(lamp => {
+      if (lamp.id === id) {
+        return Object.assign(lamp, { selected: !lamp.selected });
+      }
+      return lamp;
+    });
+    this.setState({
+      lamps: lamps,
+    });
+  };
+  setupLampData = (data, currentWidth, currentHeight) => {
+    const defaultWidth = 1920;
+    const defaultHeight = 1080;
+    return data.map(item => ({
+      ...item,
+      x: (item.x / defaultWidth) * currentWidth,
+      y: (item.y / defaultHeight) * currentHeight,
+    }));
+  };
+
+  onWheel = evt => {
+    evt.evt.preventDefault();
+    const stage = evt.target.getStage();
+    const oldScale = stage.scaleX();
+
+    const mousePointTo = {
+      x: stage.getPointerPosition().x / oldScale - stage.x() / oldScale,
+      y: stage.getPointerPosition().y / oldScale - stage.y() / oldScale,
+    };
+
+    const newScale = evt.evt.deltaY > 0 ? oldScale * scaleBy : oldScale / scaleBy;
+
+    stage.scale({ x: newScale, y: newScale });
+
+    this.setState({
+      stageScale: newScale,
+      stageX: -(mousePointTo.x - stage.getPointerPosition().x / newScale) * newScale,
+      stageY: -(mousePointTo.y - stage.getPointerPosition().y / newScale) * newScale,
+    });
+  };
 
   onSubmit = e => {
     e.preventDefault();
@@ -94,8 +206,12 @@ class FencingSetting extends React.Component<Props, State> {
 
     this.props.form.validateFields(async (err, values) => {
       const { ...props } = values;
+      let { lamps } = this.state;
+      lamps = lamps.filter(item => item.selected === true);
+      lamps = lamps.map(item => item.id);
       const data = {
         operatTime: moment().format('YYYY-MM-DD HH:mm:ss'),
+        lampIds: lamps.join(','),
         ...props,
       };
 
@@ -174,9 +290,7 @@ class FencingSetting extends React.Component<Props, State> {
                       )}
                     </Form.Item>
                   </Col>
-                </Row>
-                <Row type="flex" justify="space-between" className={styles.remark_area}>
-                  <Col span={23} className={styles.text_areas}>
+                  <Col span={12} className={styles.text_areas}>
                     <Form.Item label="备注">
                       {getFieldDecorator('remark', {
                         rules: [],
@@ -184,13 +298,40 @@ class FencingSetting extends React.Component<Props, State> {
                       })(
                         <TextArea
                           className={publicStyles.text_area}
-                          autoSize={{ minRows: 6, maxRows: 8 }}
-                          style={{ width: '90%' }}
+                          autoSize={{ minRows: 1, maxRows: 8 }}
                         />,
                       )}
                     </Form.Item>
                   </Col>
                 </Row>
+                <Row className={styles.line_style}>
+                  <Col className={styles.img_type} span={24}>
+                    <div style={{ width: '100%', height: '100%' }} ref={this.map}>
+                      <Stage
+                        width={this.state.width}
+                        height={this.state.height}
+                        draggable={true}
+                        onWheel={this.onWheel}
+                        scaleX={this.state.stageScale}
+                        scaleY={this.state.stageScale}
+                        x={this.state.stageX}
+                        y={this.state.stageY}
+                      >
+                        <Layer>
+                          <ImageLayer
+                            image={this.state.mapImage}
+                            x={0}
+                            y={0}
+                            width={this.state.width}
+                            height={this.state.height}
+                          />
+                          {this.createLamps()}
+                        </Layer>
+                      </Stage>
+                    </div>
+                  </Col>
+                </Row>
+
                 <Row type="flex" justify="center" style={{ marginTop: '0.35rem' }}>
                   <Col span={6}>
                     <Form.Item>

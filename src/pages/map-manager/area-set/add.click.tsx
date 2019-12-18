@@ -1,6 +1,8 @@
 /**
  * title: 添加
  */
+
+// 备份代码
 import React from 'react';
 import { Form, Row, Col, Button, Input, Select, DatePicker, message, Cascader } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
@@ -26,7 +28,6 @@ import {
   getAllArea,
 } from '@/pages/login/login.service';
 import { addMapArea } from '../services';
-import { getLampList } from '@/pages/map-manager/services';
 import { guid } from '@/utils/guid';
 
 import styles from './index.less';
@@ -47,7 +48,6 @@ interface State {
   stageY: number;
   circles: any[];
   canDraw: boolean;
-  lamps: any[];
 }
 
 type StateProps = ReturnType<typeof mapState>;
@@ -56,6 +56,7 @@ const scaleBy = 1.01;
 
 class FencingSetting extends React.Component<Props, State> {
   map: React.RefObject<HTMLDivElement>;
+  num: 0;
   constructor(props) {
     super(props);
     this.map = React.createRef<HTMLDivElement>();
@@ -71,7 +72,6 @@ class FencingSetting extends React.Component<Props, State> {
       stageY: 0,
       circles: [],
       canDraw: false,
-      lamps: [],
     };
     this.initRequest = this.initRequest.bind(this);
   }
@@ -101,9 +101,6 @@ class FencingSetting extends React.Component<Props, State> {
   }
 
   async initRequest() {
-    const { clientHeight } = this.map.current;
-    const clientWidth = Math.floor((clientHeight * 1920) / 1080);
-
     const maps = await getAllMap();
     const fencingTypes = await getAllFencingTypes();
     let usersResp = await getAllUserInfo();
@@ -128,59 +125,90 @@ class FencingSetting extends React.Component<Props, State> {
         areas: areas.result,
       },
     });
-    let lamps = await getLampList();
-    lamps = (lamps.result && lamps.result.records) || [];
-    lamps = lamps.map(item => ({
-      x: +item.xcoordinate,
-      y: +item.ycoordinate,
-      id: item.id,
-    }));
-    lamps = this.setupLampData(lamps, clientWidth, clientHeight);
-    lamps = lamps.map(item => {
-      return Object.assign(item, { selected: false });
-    });
-    this.setState({
-      lamps: lamps,
-    });
   }
-  createLamps() {
-    const lamps = this.state.lamps;
-
-    return lamps.map((lamp, index) => (
-      <CircleLayer
-        x={lamp.x - 4}
-        y={lamp.y - 4}
-        radius={8}
-        fill={lamp.selected ? 'red' : 'blue'}
-        id={lamp.id}
-        key={index}
-        onClick={this.onLampClick}
-      />
-    ));
-  }
-  onLampClick = evt => {
-    const target = evt.target;
-    const attr = target.attrs;
-    const id = attr.id;
-    let lamps = this.state.lamps;
-    lamps = lamps.map(lamp => {
-      if (lamp.id === id) {
-        return Object.assign(lamp, { selected: !lamp.selected });
-      }
-      return lamp;
-    });
-    this.setState({
-      lamps: lamps,
-    });
-  };
-  setupLampData = (data, currentWidth, currentHeight) => {
+  //TODO:暂不提供拖拽功能
+  onCircleDragging = (event: any) => {
     const defaultWidth = 1920;
     const defaultHeight = 1080;
-    return data.map(item => ({
-      ...item,
-      x: (item.x / defaultWidth) * currentWidth,
-      y: (item.y / defaultHeight) * currentHeight,
-    }));
+    const { clientHeight } = this.map.current;
+    const clientWidth = Math.floor((clientHeight * 1920) / 1080);
+
+    const evt = event.evt;
+    const target = event.target;
+    const attrs = target.attrs;
+    const id = attrs.id;
+    const { circles } = this.state;
+    const newCircles = circles.map(item => {
+      if (item.num === id) {
+        return { ...item, x: evt.layerX, y: evt.layerY };
+      }
+      return item;
+    });
+    this.setState({
+      circles: newCircles,
+    });
+    //换算由于地图拉伸造成的坐标不一致
+    // this.props.form.setFieldsValue({
+    //   xCoordinate: Math.floor((evt.layerX * defaultWidth) / clientWidth),
+    // });
+    // this.props.form.setFieldsValue({
+    //   yCoordinate: Math.floor((evt.layerY * defaultHeight) / clientHeight),
+    // });
+  };
+  onCircleClick = (event: any) => {
+    const defaultWidth = 1920;
+    const defaultHeight = 1080;
+    const { clientHeight } = this.map.current;
+    const clientWidth = Math.floor((clientHeight * 1920) / 1080);
+
+    const evt = event.evt;
+    //换算由于地图拉伸造成的坐标不一致
+    this.props.form.setFieldsValue({
+      xCoordinate: Math.floor((evt.x * defaultWidth) / clientWidth),
+    });
+    this.props.form.setFieldsValue({
+      yCoordinate: Math.floor((evt.y * defaultHeight) / clientHeight),
+    });
+    this.setState({
+      circleX: evt.x,
+      circleY: evt.y,
+      circleShow: true,
+    });
+  };
+  setupCircle = () => {
+    const { circles } = this.state;
+    const circleShow = this.state.circleShow;
+    if (!circleShow) return;
+    return circles.map((circle, index) => (
+      <CircleLayer
+        x={circle.circleX}
+        y={circle.circleY}
+        radius={10}
+        key={index}
+        fill="red"
+        id={circle.num}
+        // draggable={true}
+        listening={true}
+        onDragMove={this.onCircleDragging}
+      />
+    ));
+  };
+  setupPolygon = () => {
+    const { circles } = this.state;
+    const points = circles.reduce((p, n) => {
+      p.push(n.circleX);
+      p.push(n.circleY);
+      return p;
+    }, []);
+    return (
+      <LineLayer
+        points={points}
+        fill="rgba(0,0,0,0.2)"
+        stroke="#00D2FF"
+        strokeWidth={2}
+        closed={true}
+      />
+    );
   };
 
   onWheel = evt => {
@@ -204,16 +232,53 @@ class FencingSetting extends React.Component<Props, State> {
     });
   };
 
+  mapClick = evt => {
+    if (!this.state.canDraw) return;
+    const defaultWidth = 1920;
+    const defaultHeight = 1080;
+    const { clientHeight } = this.map.current;
+    const clientWidth = Math.floor((clientHeight * 1920) / 1080);
+    const event: any = evt.evt;
+    const stage = evt.target.getStage();
+    const oldScale = stage.scaleX();
+    const mousePointTo = {
+      x: stage.getPointerPosition().x / oldScale - stage.x() / oldScale,
+      y: stage.getPointerPosition().y / oldScale - stage.y() / oldScale,
+    };
+    let circles = this.state.circles;
+    circles = circles.concat([
+      {
+        circleX: Math.floor(mousePointTo.x),
+        circleY: Math.floor(mousePointTo.y),
+        num: guid(),
+      },
+    ]);
+    this.setState({ circles });
+    // this.props.form.setFieldsValue({
+    //   xCoordinate: Math.floor((event.layerX * defaultWidth) / clientWidth),
+    // });
+    // this.props.form.setFieldsValue({
+    //   yCoordinate: Math.floor((event.layerY * defaultHeight) / clientHeight),
+    // });
+  };
+  onStartDraw = () => {
+    this.setState({
+      canDraw: true,
+      circles: [],
+    });
+  };
+  onEndDraw = () => {
+    this.setState({
+      canDraw: false,
+    });
+  };
+
   onSubmit = e => {
     e.preventDefault();
     this.props.form.validateFields(async (err, values) => {
       const { ...props } = values;
-      let { lamps } = this.state;
-      lamps = lamps.filter(item => item.selected === true);
-      lamps = lamps.map(item => item.id);
       const data = {
         operatTime: moment().format('YYYY-MM-DD HH:mm:ss'),
-        lampIds: lamps.join(','),
         ...props,
       };
       const isSuccessed = await addMapArea(data);
@@ -232,6 +297,7 @@ class FencingSetting extends React.Component<Props, State> {
     const { getFieldDecorator } = this.props.form;
     const { mapImage, width, height } = this.state;
     const { maps, fencingTypes, users, levels, areas } = this.props;
+    const polygon = this.setupPolygon();
     return (
       <ContentBorder className={styles.auth_root}>
         <Form layout="inline" style={{ marginTop: '0.57rem' }} onSubmit={this.onSubmit}>
@@ -314,6 +380,7 @@ class FencingSetting extends React.Component<Props, State> {
                         scaleY={this.state.stageScale}
                         x={this.state.stageX}
                         y={this.state.stageY}
+                        onClick={this.mapClick}
                       >
                         <Layer>
                           <ImageLayer
@@ -323,7 +390,8 @@ class FencingSetting extends React.Component<Props, State> {
                             width={this.state.width}
                             height={this.state.height}
                           />
-                          {this.createLamps()}
+                          {polygon}
+                          {this.setupCircle()}
                         </Layer>
                       </Stage>
                     </div>
@@ -331,6 +399,20 @@ class FencingSetting extends React.Component<Props, State> {
                 </Row>
 
                 <Row type="flex" justify="center" style={{ marginTop: '0.35rem' }}>
+                  <Col span={6}>
+                    <Form.Item>
+                      <Button className={styles.form_btn} onClick={this.onStartDraw}>
+                        开始绘制
+                      </Button>
+                    </Form.Item>
+                  </Col>
+                  <Col span={6} className={styles.select_padding_left}>
+                    <Form.Item>
+                      <Button className={styles.form_btn} onClick={this.onEndDraw}>
+                        结束绘制
+                      </Button>
+                    </Form.Item>
+                  </Col>
                   <Col span={6}>
                     <Form.Item>
                       <Button className={styles.form_btn} htmlType="submit">

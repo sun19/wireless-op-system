@@ -192,7 +192,7 @@ class AddPollingLine extends React.Component<Props, State> {
       };
 
       await addPollingLine(data);
-      router.push('/map-manager/polling-line');
+      router.push('/map-manager/prohibit-area');
       // this.getRouteInspectList(data);
     });
   };
