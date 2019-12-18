@@ -31,8 +31,11 @@ type Props = StateProps & UmiComponentProps & FormProps;
 const columns = [
   {
     title: '异常类型',
-    dataIndex: 'name',
+    dataIndex: 'type',
     editable: true,
+    render(type) {
+      return ['','入口身份核实', '防止穿墙及瞬间移动', '呆滞时间原因分析', '轨迹点不连续分析', '异常消失分析'][type]
+    }
   },
   {
     title: '异常发生时间',
@@ -117,7 +120,7 @@ class WraningType extends React.Component<Props, State> {
             入口身份核实
                       </Option>
           <Option value='2'>
-            防止穿墙及瞬间移动
+                  防止穿墙及瞬间移动
                       </Option>
           <Option value='3'>
             呆滞时间原因分析
