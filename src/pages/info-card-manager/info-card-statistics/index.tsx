@@ -183,6 +183,7 @@ interface State {
   pageNo?: number;
   hasData: boolean;
   allRegionData?: any;
+  regionId?: string;
 }
 class SuperAdmin extends React.Component<Props, State> {
   constructor(props: any) {
@@ -197,6 +198,7 @@ class SuperAdmin extends React.Component<Props, State> {
       pageNo: 1,
       hasData: true,
       allRegionData: [],
+      regionId:'',
     };
   }
   onNameChange = (e: any) => {
@@ -214,11 +216,17 @@ class SuperAdmin extends React.Component<Props, State> {
       type: e,
     });
   };
+  regionIdChange = (e: any) => {
+    this.setState({
+      regionId: e,
+    });
+  };
   clearAllInput = () => {
     this.setState({
       userName: '',
       name: '',
       type: '',
+      regionId:'',
     });
     this.forceUpdate(() => {
       this.getInfoListData();
@@ -288,11 +296,12 @@ class SuperAdmin extends React.Component<Props, State> {
   }
 
   async getInfoListData() {
-    const { userName, name, type } = this.state;
+    const { userName, name, type ,regionId} = this.state;
     let data = {
       userName,
       name,
       type,
+      regionId,
 
     }
     const infoList = await getInfoListParams(data);
@@ -343,8 +352,8 @@ class SuperAdmin extends React.Component<Props, State> {
         <Select
           placeholder="请选择区域"
           className={publicStyles.select_text}
-          onChange={this.selectChange}
-          value={this.state.type}
+          onChange={this.regionIdChange}
+          value={this.state.regionId}
         >
           {
             this.state.allRegionData.map((res, index) => {

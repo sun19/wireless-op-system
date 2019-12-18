@@ -7,6 +7,7 @@ export interface GetInfoListParams {
   onlineStatus:string,
   pageNo?: number;
   pageSize?: number;
+  regionId?: string;
 }
 // 信息牌删除
 export interface DeleteInfo {

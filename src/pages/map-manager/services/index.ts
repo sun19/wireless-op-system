@@ -187,7 +187,6 @@ export async function getPollingPointDetail(params: GetPollingPointDetailParams)
 
 export async function getPollingLineByName(params: GetPollingLineByNameParams) {
   const resp = await request.get(MAP_MANAGER_POLLING_LINE_QUERY, { params });
-  // alert(JSON.stringify(params))
   return resp;
 }
 

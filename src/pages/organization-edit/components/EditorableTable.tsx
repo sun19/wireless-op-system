@@ -125,12 +125,14 @@ export default class EditableTable extends React.Component<Props, State> {
               </span>
             ) : (
               <span>
-                <IconFont
+                {/* <IconFont
                   type="icon-edit"
                   style={{ marginRight: '8px' }}
                   onClick={this.onClick.bind(this, record)}
-                />
-                  <IconFont hidden={this.props.showDelete == false} type="icon-delete" onClick={this.onDelete.bind(this, record)} />
+                /> */}
+                  {/* <IconFont hidden={this.props.showDelete == false} type="icon-delete" onClick={this.onDelete.bind(this, record)} /> */}
+                  <span hidden={this.props.showDelete == false} type="icon-delete" onClick={this.onEdit.bind(this, record)} >编辑|</span>
+                  <span hidden={this.props.showDelete == false} type="icon-delete" onClick={this.onDelete.bind(this, record)} >删除|</span>
                   <span hidden={this.props.showDelete == false} type="icon-delete" onClick={this.onAdd.bind(this, record)} >添加下级菜单</span>
               </span>
             );
@@ -196,7 +198,9 @@ export default class EditableTable extends React.Component<Props, State> {
   onAdd = record => {
     this.props.addColumn(record);
   };
-
+  onEdit = record => {
+    this.props.editColumn(record);
+  };
   setRowClassName = () => 'editable-row';
 
   setPagination = () => ({

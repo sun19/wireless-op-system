@@ -58,6 +58,9 @@ export const COMMON_GET_ALL_POSITION =
  */
 export const COMMON_GET_ALL_DEPARTMENT =
   `${BASE_API_URL}/jeecg-boot/intf/location/queryAllDept`
+
+//*************************** */*************************** */ 异常分析*************************** */*************************** */*************************** */
 // 异常信息
 export const UNUSUAL_DATA =
-  `${BASE_API_URL}/jeecg-boot/intf/location/queryPositionList`
+  `${BASE_API_URL}/jeecg-boot/intf/location/listbehavioral`
+ 

@@ -109,9 +109,8 @@ class PollingLine extends React.Component<Props, State> {
     router.push('/map-manager/duty-area/add');
   };
 
-  async getPollingLines(params: GetPollingLineByNameParams = {type: 1}) {
+  async getPollingLines(params: GetPollingLineByNameParams = { type: 1 }) {
     const resp = await getPollingLineByName(params);
-    alert(JSON.stringify(params))
     if (resp) {
       this.props.dispatch({
         type: 'mapManager/update',
