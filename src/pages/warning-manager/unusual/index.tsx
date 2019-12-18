@@ -36,23 +36,23 @@ const columns = [
   },
   {
     title: '异常发生时间',
-    dataIndex: 'mapName',
+    dataIndex: 'exceptionTime',
     editable: true,
   },
   {
     title: '异常位置',
-    dataIndex: 'regionalName',
+    dataIndex: 'abnormalPosition',
     editable: true,
   },
   {
     title: '信息牌',
-    dataIndex: 'informationBoardName',
+    dataIndex: 'boardNumber',
     editable: true,
   },
   {
     title: '用户姓名',
     width: '20%',
-    dataIndex: 'startTime',
+    dataIndex: 'userName',
   },
 ];
 
@@ -86,7 +86,7 @@ class WraningType extends React.Component<Props, State> {
     });
   }
 
-
+ 
   // 查询
   search = e => {
       this.getwarningTypeList();

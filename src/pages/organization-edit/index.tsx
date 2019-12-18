@@ -16,6 +16,9 @@ import EditableTable from './components/EditorableTable';
 
 import styles from './index.less';
 
+import { LEFT_MENUS } from '../../config/menus';
+const defaultMenuNodes = LEFT_MENUS;
+
 const { confirm } = Modal;
 const columns = [
   {
@@ -42,7 +45,9 @@ const columns = [
 interface State {
   allMenus: any[];
   visible?: boolean;
+  editName?:boolean;
   fatherValue?: string;
+  nameValue?: string;
 }
 interface FormProps extends FormComponentProps { }
 type StateProps = ReturnType<typeof mapState>;
@@ -55,20 +60,36 @@ class MenuEdit extends React.Component<Props, State> {
     this.state = {
       allMenus: [],
       visible: false,
-      fatherValue: ''
+      editName:false,
+      fatherValue: '',
+      nameValue:'',
     };
     this.updateData = this.updateData.bind(this);
     this.deleteColumn = this.deleteColumn.bind(this);
     this.addColumn = this.addColumn.bind(this)
+    this.editColumn = this.editColumn.bind(this)
     // this.cancel = this.cancel.bind(this)
   }
   addColumn(item) {
+
+    this.props.form.setFieldsValue({
+      name: item.name
+    })
     this.setState({
       visible: true,
-      fatherValue: item.name
+      // fatherValue: item.name
     });
   }
-
+  editColumn(item) {
+    // console.log(this.props.form)
+    this.props.form.setFieldsValue({
+      name: item.name
+    })
+    this.setState({
+      editName: true,
+      
+    });
+  }
   handleOk = e => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
@@ -95,6 +116,31 @@ class MenuEdit extends React.Component<Props, State> {
       }
     });
   }
+  handleEditOk = e => {
+    e.preventDefault();
+    this.props.form.validateFieldsAndScroll((err, values) => {
+      if (!err) {
+        this.setState({
+          editName: false,
+        });
+      }
+    });
+
+  };
+  handleEditSubmit = e => {
+    e.preventDefault();
+    this.props.form.validateFieldsAndScroll((err, values) => {
+      if (!err) {
+        // console.log('Received values of form: ', values);
+      }
+    });
+  }
+  handleEditCancel = e => {
+    // console.log(e);
+    this.setState({
+      visible: false,
+    });
+  };
   deleteColumn(item) {
     //TODO:修改人ID
     let self = this;
@@ -201,11 +247,27 @@ class MenuEdit extends React.Component<Props, State> {
           columns={columns}
           // expandedRowRender={this.expandedRowRender}
           data={this.state.allMenus}
+      //  data=   {defaultMenuNodes}
           showInlineEdit={true}
           updateData={this.updateData}
           deleteColumn={this.deleteColumn}
           addColumn={this.addColumn}
+          editColumn={this.editColumn}
         />
+        <Modal
+          title="修改名称"
+          visible={this.state.editName}
+          onOk={this.handleEditOk}
+          onCancel={this.handleEditCancel}
+          width={700}
+        >
+          <Form.Item {...formItemLayout} label="菜单名称">
+            {getFieldDecorator('name', {
+              rules: [],
+            })(<Input  />)}
+          </Form.Item>
+        </Modal>
+
         <Modal
           title="添加下级菜单"
           visible={this.state.visible}
@@ -213,20 +275,18 @@ class MenuEdit extends React.Component<Props, State> {
           onCancel={this.handleCancel}
           width={700}
         >
-      
-            {/* <Form labelAlign='right'  layout="inline"  onSubmit={this.handleSubmit}> */}
             <Form.Item  {...formItemLayout} label="上级目录名称">
-        
-              <Input value={this.state.fatherValue} disabled={true} />
-            </Form.Item>
-          <Form.Item {...formItemLayout}  label="菜单名称">
-            {getFieldDecorator('remark', {
+            {getFieldDecorator('name', {
               rules: [],
             })(<Input />)}
             </Form.Item>
-          {/* </Form>  */}
-
+          <Form.Item {...formItemLayout}  label="菜单名称">
+            {getFieldDecorator('childrenName', {
+              rules: [],
+            })(<Input />)}
+            </Form.Item>
         </Modal>
+      
       </div>
     );
   }
