@@ -51,6 +51,9 @@ const columns = [
     editable: true,
     // ellipsis: true,
     width: '15%',
+    render(value, item) {
+      return <span>{item.inspectionRouteName}</span>;
+    },
   },
   {
     title: '巡检开始时间',
@@ -109,7 +112,7 @@ class PollingLine extends React.Component<Props, State> {
     router.push('/map-manager/polling-line/add');
   };
 
-  async getPollingLines(params: GetPollingLineByNameParams = {type: 0}) {
+  async getPollingLines(params: GetPollingLineByNameParams = { type: 0 }) {
     const resp = await getPollingLineByName(params);
     if (resp) {
       this.props.dispatch({

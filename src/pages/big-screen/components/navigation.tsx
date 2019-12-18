@@ -2,6 +2,7 @@ import React from 'react';
 import { Menu, Icon, Row, Col, Button } from 'antd';
 import router from 'umi/router';
 
+import RolePanel from './RolePanel';
 import styles from './index.less';
 import { connect } from 'dva';
 
@@ -51,10 +52,10 @@ class Navigation extends React.Component<Props, State> {
     });
   };
   gotoLamp = () => {
-    router.push('/big-screen/homepage/lampshow');
+    router.push('/big-screen/homepage/realtime');
   };
   gotoHomepage = () => {
-    router.push('/big-screen/homepage');
+    router.push('/big-screen/homepage/realtime');
   };
   gotoRealTime = () => {
     router.push('/big-screen/homepage/realtime');
@@ -113,7 +114,9 @@ class Navigation extends React.Component<Props, State> {
                 <Menu.Item key="setting:2">Option 2</Menu.Item>
                 <Menu.Item key="setting:3">Option 3</Menu.Item> */}
               {/* </SubMenu> */}
-              <Menu.Item key="admin">admin</Menu.Item>
+              <Menu.Item key="admin">
+                <RolePanel showName="admin" />
+              </Menu.Item>
             </Menu>
           </Col>
           <Col span={13} className={styles.middle_panel}>

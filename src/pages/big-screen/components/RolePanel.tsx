@@ -5,7 +5,7 @@ import router from 'umi/router';
 import { UmiComponentProps } from '@/common/type';
 import { connect } from 'dva';
 
-import { BASE_API_URL } from '../config/constants';
+import { BASE_API_URL } from '@/config/constants';
 
 import styles from './rolePanel.less';
 // type StateProps = ReturnType<typeof mapState>;

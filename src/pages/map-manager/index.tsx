@@ -11,7 +11,7 @@ import {
   Circle as CircleLayer,
 } from 'react-konva';
 import { connect } from 'dva';
-import { Tabs, Card, Icon, List } from 'antd';
+import { Tabs, Card, Icon, List, Badge } from 'antd';
 
 import { getLampList, getRegionList, getInfoCardDetail } from './services';
 import { WEBSOCKET } from '../../config/constants';
@@ -414,9 +414,14 @@ class MapManager extends React.Component<Props, State> {
                 renderItem={this.renderInfoItem}
               />
             </Card>
-            ,
           </span>
         )}
+        <span>
+          <Badge color="#f50" text="#f50" />
+          <Badge color="#2db7f5" text="#2db7f5" />
+          <Badge color="#87d068" text="#87d068" />
+          <Badge color="#108ee9" text="#108ee9" />
+        </span>
       </React.Fragment>
     );
   }
