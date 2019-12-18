@@ -42,42 +42,45 @@ class BasicLayout extends React.Component<any, any> {
 
       let msgText = msgInfo.msgTxt;
 
-      const { warnType, lampCode, informationBordCodes } = msgText;
-      if (warnType == 0) {
-        notification.warn({
-          message: '弹框报警',
-          description: `
-            灯具编号：${lampCode}
-            信息牌编号：${informationBordCodes}
-          `,
-          duration: 0,
-        });
-      } else if (warnType == 1) {
-        notification.warn({
-          message: '声音报警',
-          description: `
-            灯具编号：${lampCode}
-            信息牌编号：${informationBordCodes}
-          `,
-          duration: 0,
-        });
-      } else if (warnType == 2) {
-        notification.warn({
-          message: '灯光报警',
-          description: `
-            灯具编号：${lampCode}
-            信息牌编号：${informationBordCodes}
-          `,
-          duration: 0,
-        });
-      } else {
-        notification.warn({
-          message: '报警',
-          description: `灯具编号：${lampCode}
-            信息牌编号：${informationBordCodes}
-          `,
-        });
-      }
+      // const { warnType, lampCode, informationBordCodes } = msgText;
+      msgText.map(item => {
+        const { warnType, lampCode, informationBordCodes } = item;
+        if (warnType == 0) {
+          notification.warn({
+            message: '弹框报警',
+            description: `
+              灯具编号：${lampCode}
+              信息牌编号：${informationBordCodes}
+            `,
+            duration: 0,
+          });
+        } else if (warnType == 1) {
+          notification.warn({
+            message: '声音报警',
+            description: `
+              灯具编号：${lampCode}
+              信息牌编号：${informationBordCodes}
+            `,
+            duration: 0,
+          });
+        } else if (warnType == 2) {
+          notification.warn({
+            message: '灯光报警',
+            description: `
+              灯具编号：${lampCode}
+              信息牌编号：${informationBordCodes}
+            `,
+            duration: 0,
+          });
+        } else {
+          notification.warn({
+            message: '报警',
+            description: `灯具编号：${lampCode}
+              信息牌编号：${informationBordCodes}
+            `,
+          });
+        }
+      });
     };
   }
   componentWillUnmount() {

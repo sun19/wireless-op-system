@@ -2,7 +2,7 @@
  * title: 发放
  */
 import React from 'react';
-import { Form, Row, Col, Button, Input, Select, message,DatePicker } from 'antd';
+import { Form, Row, Col, Button, Input, Select, message, DatePicker } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import { connect } from 'dva';
 import * as _ from 'lodash';
@@ -46,8 +46,8 @@ interface State {
   userInfoList: any[];
   currentIndex?: number;
   currentUser?: any;
-  userInfoNumber?:number;
-  departmentNumber?:string;
+  userInfoNumber?: number;
+  departmentNumber?: string;
 }
 function hasErrors(fieldsError) {
   return Object.keys(fieldsError).some(field => fieldsError[field]);
@@ -59,7 +59,7 @@ class AddUsers extends React.Component<Props, State> {
     this.state = {
       userTypes: [],
       userInfoList: [],
-      departmentNumber:''
+      departmentNumber: '',
     };
   }
   setupDuties = () => {
@@ -124,14 +124,17 @@ class AddUsers extends React.Component<Props, State> {
         message.error('参数错误', err);
         return;
       }
-      const { enableTime, ...props } = values
-      const { userInfoNumber,departmentNumber} = this.state;
-      const data={
+      const { enableTime, ...props } = values;
+      const { userInfoNumber, departmentNumber } = this.state;
+      const data = {
         ...props,
-        enableTime: values.enableTime ? values.enableTime.format('YYYY-MM-DD HH:mm:ss').toString() : '',
-        userCode:userInfoNumber,
-        dictCode:departmentNumber,
-      }
+        enableTime: values.enableTime
+          ? values.enableTime.format('YYYY-MM-DD HH:mm:ss').toString()
+          : '',
+        userCode: userInfoNumber,
+        dictCode: departmentNumber,
+        name: departmentNumber + userInfoNumber,
+      };
       const isSuccessed = await addInfoList(data);
       if (isSuccessed) {
         message.success('添加成功!', 1000);
@@ -152,7 +155,9 @@ class AddUsers extends React.Component<Props, State> {
     const secretsLevelsResp = await getAllSecretLevels();
     // const allPositions = await getAllDepartment();
 
-    const allPositions = await request.get(`${BASE_API_URL}/jeecg-boot/intf/location/listDepartment`);
+    const allPositions = await request.get(
+      `${BASE_API_URL}/jeecg-boot/intf/location/listDepartment`,
+    );
 
     this.props.dispatch({
       type: 'commonState/update',
@@ -164,7 +169,7 @@ class AddUsers extends React.Component<Props, State> {
     });
 
     let userInfoList = await request.get(
-      BASE_API_URL+'/jeecg-boot/intf/location/queryUserInfoList',
+      BASE_API_URL + '/jeecg-boot/intf/location/queryUserInfoList',
     );
     userInfoList = (userInfoList.result && userInfoList.result.records) || [];
     this.setState({
@@ -172,7 +177,7 @@ class AddUsers extends React.Component<Props, State> {
     });
 
     let userInfoNumber = await request.get(
-      BASE_API_URL+'/jeecg-boot/intf/location/getDictNameByType?type=informationBoardNumber',
+      BASE_API_URL + '/jeecg-boot/intf/location/getDictNameByType?type=informationBoardNumber',
     );
 
     this.setState({
@@ -187,14 +192,14 @@ class AddUsers extends React.Component<Props, State> {
       if (item.name === value) {
         currentIndex = index;
 
-        for (var i = 0; i < allPosition.length; i++) { 
-          var dic = allPosition[i]
-          if(dic.id == item.departmentId) {
+        for (var i = 0; i < allPosition.length; i++) {
+          var dic = allPosition[i];
+          if (dic.id == item.departmentId) {
             this.setState({
-              departmentNumber: dic["deptCode"],
+              departmentNumber: dic['deptCode'],
             });
           }
-       }
+        }
 
         this.setState({
           currentIndex,
@@ -202,24 +207,12 @@ class AddUsers extends React.Component<Props, State> {
         });
       }
     });
-
-    
-    
-
-
-
-
-
-
-
-
   };
-  onSelectDepartmentChange = (value,key) => {
+  onSelectDepartmentChange = (value, key) => {
     this.setState({
       departmentNumber: key.key,
-      });
+    });
   };
-
 
   setupSelectName = () => {
     const { userInfoList } = this.state;
@@ -243,17 +236,11 @@ class AddUsers extends React.Component<Props, State> {
     );
   };
 
-
-
-
-
   render() {
     const props = this.props;
     const { getFieldDecorator, getFieldsError } = this.props.form;
     const { allPosition } = this.props;
-    const { currentIndex, currentUser ,userInfoNumber,departmentNumber} = this.state;
-
-
+    const { currentIndex, currentUser, userInfoNumber, departmentNumber } = this.state;
 
     return (
       <ContentBorder className={styles.auth_root}>
@@ -318,7 +305,7 @@ class AddUsers extends React.Component<Props, State> {
                         <Select placeholder="请选择部门" onSelect={this.onSelectDepartmentChange}>
                           {allPosition &&
                             allPosition.map(option => (
-                              <Option value={option.id} key={option.deptCode} >
+                              <Option value={option.id} key={option.deptCode}>
                                 {option.name}
                               </Option>
                             ))}
@@ -330,11 +317,7 @@ class AddUsers extends React.Component<Props, State> {
                 <Row type="flex" justify="space-between">
                   <Col span={12}>
                     <Form.Item label="信息牌编号">
-                
-
-                    <Input disabled={true} value={departmentNumber+userInfoNumber}/>
-
-
+                      <Input disabled={true} value={departmentNumber + userInfoNumber} />
                     </Form.Item>
                   </Col>
                   <Col span={12}>
@@ -350,7 +333,8 @@ class AddUsers extends React.Component<Props, State> {
                                 {option.deptCode}
                               </Option>
                             ))}
-                        </Select>,)}
+                        </Select>,
+                      )}
                     </Form.Item>
                   </Col>
                 </Row>
@@ -379,7 +363,7 @@ class AddUsers extends React.Component<Props, State> {
                       })(
                         <Select placeholder="请选择在职状态">
                           <Option value="0">在职</Option>
-                          <Option value="1">离职</Option> 
+                          <Option value="1">离职</Option>
                         </Select>,
                       )}
                     </Form.Item>
@@ -392,15 +376,15 @@ class AddUsers extends React.Component<Props, State> {
                       {getFieldDecorator('name', {
                         rules: [],
                         initialValue: (userInfoNumber != null && userInfoNumber) || undefined,
-                      })(<Input  disabled={true}/>)}
+                      })(<Input disabled={true} />)}
                     </Form.Item>
                   </Col>
                   <Col span={12}>
                     <Form.Item label="启用时间">
-                      {getFieldDecorator('enableTime', {
-                      })(
-                        <DatePicker showTime={true} placeholder="请选择开始时间" />,
-                      )}
+                      {getFieldDecorator(
+                        'enableTime',
+                        {},
+                      )(<DatePicker showTime={true} placeholder="请选择开始时间" />)}
                     </Form.Item>
                   </Col>
                 </Row>

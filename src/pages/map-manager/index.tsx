@@ -105,14 +105,21 @@ class MapManager extends React.Component<Props, State> {
     //获取区域名称,区域坐标
     let areas = await getRegionList();
     let lamps = await getLampList();
-    areas = (areas.result && areas.result.records) || [];
+    areas = (areas.result && areas.result) || [];
     lamps = (lamps.result && lamps.result.records) || [];
     lamps = lamps.map(item => ({
       x: +item.xcoordinate,
       y: +item.ycoordinate,
       id: item.key,
     }));
+    areas = areas.map(item => ({
+      ...item,
+      x: +item.xcoordinate,
+      y: +item.ycoordinate,
+      id: item.id,
+    }));
     lamps = this.setupLampData(lamps, clientWidth, clientHeight);
+    areas = this.setupLampData(areas, clientWidth, clientHeight);
     this.setState({
       mapImage,
       icon: iconImage,
@@ -165,8 +172,8 @@ class MapManager extends React.Component<Props, State> {
       y: Math.floor(v.y),
       // x: Math.floor(v.x),
       // y: Math.floor(v.y),
-      value: Math.floor(Math.random() * 100),
-      radius: Math.floor(Math.random() * 100),
+      value: Math.floor(100),
+      radius: Math.floor(100),
     }));
     this.setState({
       infoCards: infoCards,
@@ -178,66 +185,31 @@ class MapManager extends React.Component<Props, State> {
    */
   serializeInfoCard = (msgText: any[]) => {
     let infoCards = [];
-    if (msgText){
-       for (let i = 0; i < msgText.length; i++) {
-      const lampWithInfoCards = msgText[i];
-      const information = lampWithInfoCards.information;
-      for (let j = 0; j < information.length; j++) {
-        infoCards.push({
-          ycoordinate: +lampWithInfoCards.ycoordinate[j],
-          color: lampWithInfoCards.color[j],
-          value: lampWithInfoCards.value,
-          key: lampWithInfoCards.key,
-          xcoordinate: +lampWithInfoCards.xcoordinate[j],
-          information: lampWithInfoCards.information[j],
-          id: lampWithInfoCards.information[j],
-        });
+    if (msgText) {
+      for (let i = 0; i < msgText.length; i++) {
+        const lampWithInfoCards = msgText[i];
+        const information = lampWithInfoCards.information;
+        for (let j = 0; j < information.length; j++) {
+          infoCards.push({
+            ycoordinate: +lampWithInfoCards.ycoordinate[j],
+            color: lampWithInfoCards.color[j],
+            value: lampWithInfoCards.value,
+            key: lampWithInfoCards.key,
+            xcoordinate: +lampWithInfoCards.xcoordinate[j],
+            information: lampWithInfoCards.information[j],
+            id: lampWithInfoCards.information[j],
+          });
+        }
       }
+      return infoCards;
     }
-    return infoCards;
-    }
-   
   };
-  connectWs() {
-    const { clientWidth } = this.map.current;
-    const clientHeight = Math.floor((clientWidth * 1080) / 1920);
 
-    this.ws = new WebSocket(WEBSOCKET + '/jeecg-boot/websocket/1');
-
-    this.ws.onopen = () => {};
-    let lastTime = new Date();
-    //5s不来新数据，则消失
-    const maxDuraction = 5000;
-    this.checkUpdateTimer = setInterval(() => {
-      const currentTime = new Date().getTime();
-      const duration = currentTime - lastTime.getTime();
-      if (duration > maxDuraction) {
-        this.setState({
-          infoCards: [],
-        });
-      }
-    }, maxDuraction);
-    this.ws.onmessage = evt => {
-      // let msgText = JSON.parse(evt.data);
-      // lastTime = new Date();
-      // // const msgText = message.msgTxt;
-      // msgText = msgText.map(item => ({
-      //   x: +item.xcoordinate,
-      //   y: +item.ycoordinate,
-      //   id: item.key,
-      // }));
-      // // const lamp = { };
-      // const currentLamps = this.setupLampData(msgText, clientWidth, clientHeight);
-      // this.setState({
-      //   lamps: currentLamps,
-      // });
-    };
-    this.ws.onclose = () => {};
-  }
   setupLampData = (data, currentWidth, currentHeight) => {
     const defaultWidth = 1920;
     const defaultHeight = 1080;
     return data.map(item => ({
+      ...item,
       x: (item.x / defaultWidth) * currentWidth,
       y: (item.y / defaultHeight) * currentHeight,
     }));
@@ -260,7 +232,7 @@ class MapManager extends React.Component<Props, State> {
           x={Math.floor(infoCard.x - 16)}
           y={Math.floor(infoCard.y - 16)}
           radius={10}
-          fill={infoCard.color}
+          fill={infoCard.color == '' || !infoCard.color ? 'red' : infoCard.color}
           key={index}
           id={infoCard.information}
           onClick={this.onInfoCardClick}
@@ -281,7 +253,14 @@ class MapManager extends React.Component<Props, State> {
   createAreaText() {
     const texts = this.state.areaText;
     return texts.map((text, index) => (
-      <TextLayer text={text.regionName} x={500} y={400} fontSize={20} fill="white" key={index} />
+      <TextLayer
+        text={text.regionName}
+        x={Math.floor(text.x)}
+        y={Math.floor(text.y)}
+        fontSize={20}
+        fill="white"
+        key={index}
+      />
     ));
   }
   createLamps() {
@@ -289,7 +268,7 @@ class MapManager extends React.Component<Props, State> {
     if (!showLamps) return;
     const lamps = this.state.lamps;
     return lamps.map((lamp, index) => (
-      <CircleLayer x={lamp.x - 16} y={lamp.y - 16} radius={16} fill="red" key={index} />
+      <CircleLayer x={lamp.x - 4} y={lamp.y - 4} radius={8} fill="red" key={index} />
     ));
   }
   componentWillUnmount() {

@@ -7,6 +7,7 @@ import { FormComponentProps } from 'antd/lib/form';
 import { connect } from 'dva';
 import * as _ from 'lodash';
 import router from 'umi/router';
+import moment from 'moment';
 
 import ContentBorder from '../../../components/ContentBorder';
 // import { InputText, TreeNodeMenu } from '../components';
@@ -122,13 +123,14 @@ class EditUser extends React.Component<Props, State> {
         message.error('参数错误', err);
         return;
       }
-      const { enableTime, ...props } = values
+      const { enableTime, ...props } = values;
 
       const data = {
         id: infoCardList.id,
         ...props,
-        enableTime: values.enableTime ? values.enableTime.format('YYYY-MM-DD HH:mm:ss').toString() : '',
-
+        enableTime: values.enableTime
+          ? values.enableTime.format('YYYY-MM-DD HH:mm:ss').toString()
+          : '',
       };
       const isSuccessed = await editInfoList(data);
       if (isSuccessed) {
@@ -322,16 +324,14 @@ class EditUser extends React.Component<Props, State> {
                           },
                         ],
                         initialValue: infoCardList.name,
-                      })(<Input placeholder="请输入信息牌编号" readOnly={true}/>)}
+                      })(<Input placeholder="请输入信息牌编号" readOnly={true} />)}
                     </Form.Item>
                   </Col>
                   <Col span={12}>
                     <Form.Item label="启用时间">
                       {getFieldDecorator('enableTime', {
-                        initialValue: infoCardList.enableTime,
-                      })(
-                        <DatePicker showTime={true} placeholder="请选择开始时间" />,
-                      )}
+                        initialValue: moment(infoCardList.enableTime),
+                      })(<DatePicker showTime={true} placeholder="请选择开始时间" />)}
                     </Form.Item>
                   </Col>
                 </Row>
