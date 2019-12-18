@@ -215,8 +215,11 @@ class FencingSetting extends React.Component<Props, State> {
         ...props,
       };
 
-      await updateMapArea(Object.assign(mapAreaRecord, data));
-      router.push('/map-manager/area-set');
+     let res= await updateMapArea(Object.assign(mapAreaRecord, data));
+     if(res.code===0){
+       router.push('/map-manager/area-set');
+     }
+    
       // // this.getRouteInspectList(data);
     });
   };
