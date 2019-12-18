@@ -35,6 +35,7 @@ const columns = [
     editable: true,
     render(type) {
       return ['','入口身份核实', '防止穿墙及瞬间移动', '呆滞时间原因分析', '轨迹点不连续分析', '异常消失分析'][type]
+      //
     }
   },
   {
