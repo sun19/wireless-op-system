@@ -8,6 +8,7 @@ import {getLeftMenues } from '../pages/login/login.service';
 import { ICON_FONTS_URL } from '../config/constants';
 import Link from 'umi/link';
 import styles from './leftMenuList.less';
+import menu from 'mock/menu';
 
 const { SubMenu } = Menu;
 const IconFont = Icon.createFromIconfontCN({
@@ -66,6 +67,9 @@ class LeftMenuList extends Component<any, any> {
     });
 
     localStorage.setItem('title', JSON.stringify(_.reverse(title)));
+
+    // console.log(title)
+
 
     this.props.dispatch({
       type: 'menu/clickMenuItem',
@@ -129,6 +133,12 @@ class LeftMenuList extends Component<any, any> {
 
   renderLeftMenu = () => {
     const { menus, rootKeys } = this.props;
+
+    // console.log("左侧菜单栏")
+    // console.log(menus)
+    // console.log(rootKeys)
+
+
 
     return menus.map((leftMenuItem, index) => {
       return (
