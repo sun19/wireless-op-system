@@ -178,7 +178,8 @@ class MapManager extends React.Component<Props, State> {
    */
   serializeInfoCard = (msgText: any[]) => {
     let infoCards = [];
-    for (let i = 0; i < msgText.length; i++) {
+    if (msgText){
+       for (let i = 0; i < msgText.length; i++) {
       const lampWithInfoCards = msgText[i];
       const information = lampWithInfoCards.information;
       for (let j = 0; j < information.length; j++) {
@@ -194,6 +195,8 @@ class MapManager extends React.Component<Props, State> {
       }
     }
     return infoCards;
+    }
+   
   };
   connectWs() {
     const { clientWidth } = this.map.current;

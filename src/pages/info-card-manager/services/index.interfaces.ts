@@ -4,6 +4,7 @@ export interface GetInfoListParams {
   name: string;
   type: string;
   isCancel:string;
+  onlineStatus:string,
   pageNo?: number;
   pageSize?: number;
   regionId?: string;

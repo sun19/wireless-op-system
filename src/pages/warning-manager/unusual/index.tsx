@@ -31,8 +31,12 @@ type Props = StateProps & UmiComponentProps & FormProps;
 const columns = [
   {
     title: '异常类型',
-    dataIndex: 'name',
+    dataIndex: 'type',
     editable: true,
+    render(type) {
+      return ['','入口身份核实', '防止穿墙及瞬间移动', '呆滞时间原因分析', '轨迹点不连续分析', '异常消失分析'][type]
+      //
+    }
   },
   {
     title: '异常发生时间',
@@ -71,14 +75,15 @@ class WraningType extends React.Component<Props, State> {
     };
   }
   async componentDidMount() {
-    this.getwarningTypeList();
+    const data = {
+      type: '',
+    }
+    this.getwarningTypeList(data);
     this.props.form.validateFields();
   }
 
-  async getwarningTypeList( ) {
-    const data = {
-      type: this.state.type,
-    }
+  async getwarningTypeList(data) {
+  
     const taskList = await unusualData(data);
     this.props.dispatch({
       type: 'warningManager/update',
@@ -89,12 +94,20 @@ class WraningType extends React.Component<Props, State> {
  
   // 查询
   search = e => {
-      this.getwarningTypeList();
+    const data = {
+      type: this.state.type,
+    }
+      this.getwarningTypeList(data);
   };
   handleReset = () => {
+
     // this.props.form.resetFields();
     this.setState({type:''})
-    this.getwarningTypeList();
+    const data = {
+      type: '',
+    }
+    this.getwarningTypeList(data);
+
   };
   selectChange = (e: any) => {
     this.setState({
@@ -117,7 +130,7 @@ class WraningType extends React.Component<Props, State> {
             入口身份核实
                       </Option>
           <Option value='2'>
-            防止穿墙及瞬间移动
+                  防止穿墙及瞬间移动
                       </Option>
           <Option value='3'>
             呆滞时间原因分析
