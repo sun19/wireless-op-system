@@ -153,7 +153,7 @@ class MapManager extends React.Component<Props, State> {
     const clientHeight = Math.floor((clientWidth * 1080) / 1920);
     let msgInfo = nextProps.wsInfo;
     if (msgInfo.msgType != '0') return;
-    let msgText = msgInfo.msgTxt;
+    let msgText = msgInfo.msgTxt || [];
 
     msgText = this.serializeInfoCard(msgText);
     const infoCards = this.setupInfoCardData(msgText, clientWidth, clientHeight);
