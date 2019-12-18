@@ -62,3 +62,6 @@ export interface WarningHistorySearch {
   alarmStartTime?: string;
   alarmEndTime?: string;
 }
+export interface UnusualData {
+  type?: string;
+}

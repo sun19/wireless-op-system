@@ -34,7 +34,7 @@ class EditAuth extends React.Component<Props> {
   }
   goBack = () => {
     this.props.form.resetFields();
-    router.push('/user-manager/user-inside');
+    router.push('/user-manager/user-outside');
   };
   setupDuties = () => {
     const { allDuties, userInside } = this.props;
@@ -119,7 +119,7 @@ class EditAuth extends React.Component<Props> {
       };
       const isSuccessed = await updateUser(data);
       if (isSuccessed) {
-        setTimeout(() => router.push('/user-manager/user-inside'), 1000);
+        setTimeout(() => router.push('/user-manager/user-outside'), 1000);
       }
     });
   }

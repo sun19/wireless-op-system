@@ -2,7 +2,7 @@
  * title: 发放
  */
 import React from 'react';
-import { Form, Row, Col, Button, Input, Select, message } from 'antd';
+import { Form, Row, Col, Button, Input, Select, message,DatePicker } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import { connect } from 'dva';
 import * as _ from 'lodash';
@@ -122,7 +122,14 @@ class AddUsers extends React.Component<Props, State> {
         message.error('参数错误', err);
         return;
       }
-      const isSuccessed = await addInfoList(values);
+      const { enableTime, ...props } = values
+
+      const data={
+        ...props,
+        enableTime: values.enableTime ? values.enableTime.format('YYYY-MM-DD HH:mm:ss').toString() : '',
+
+      }
+      const isSuccessed = await addInfoList(data);
       if (isSuccessed) {
         message.success('添加成功!', 1000);
         setTimeout(() => router.push('/info-card-manager/info-card-list'), 1000);
@@ -305,7 +312,7 @@ class AddUsers extends React.Component<Props, State> {
                       })(
                         <Select placeholder="请选择在职状态">
                           <Option value="0">在职</Option>
-                          <Option value="1">离职</Option>
+                          <Option value="1">离职</Option> 
                         </Select>,
                       )}
                     </Form.Item>
@@ -319,6 +326,14 @@ class AddUsers extends React.Component<Props, State> {
                         rules: [],
                         initialValue: (userInfoNumber != null && userInfoNumber) || undefined,
                       })(<Input placeholder="请输入信息牌编号"  disabled={true}/>)}
+                    </Form.Item>
+                  </Col>
+                  <Col span={12}>
+                    <Form.Item label="启用时间">
+                      {getFieldDecorator('enableTime', {
+                      })(
+                        <DatePicker showTime={true} placeholder="请选择开始时间" />,
+                      )}
                     </Form.Item>
                   </Col>
                 </Row>

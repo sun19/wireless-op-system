@@ -19,6 +19,7 @@ import {
   DELETE_SUPER_ADMIN,
   UPLOAD_SUPER_ADMIN,
   GET_COMPANYNAME,
+  ADD_DEPARTMENT
 } from '@/config/api';
 import {
   GetUserListParams,
@@ -36,6 +37,7 @@ import {
   DeleteSuperAdminParams,
   GetAllRolesParams,
   CompanyName,
+  AddDepartmentParams
 } from './index.interfaces';
 
 export async function getUserList(params: GetUserListParams) {
@@ -158,4 +160,13 @@ export async function uploadSuperAdmin() {
 export async function getCompanyNameList(params: CompanyName) {
   const resp = await request.get(GET_COMPANYNAME, { params });
   return resp.result;
+}
+
+// 增加部门
+export async function addDepartment(params: AddDepartmentParams) {
+  const resp = await request.post(ADD_DEPARTMENT, { data: format(params) });
+  resp.success === true && resp.code === 200
+    ? message.success(`${resp.message}`)
+    : message.error(`${resp.message}`);
+  return resp.success === true && resp.code === 200;
 }

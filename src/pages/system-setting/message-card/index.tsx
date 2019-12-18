@@ -17,6 +17,7 @@ import styles from './index.less';
 
 const { confirm } = Modal;
 const { Content } = Layout;
+const FormItem = Form.Item;
 const IconFont = Icon.createFromIconfontCN({
   scriptUrl: ICON_FONTS_URL,
 });
@@ -173,6 +174,10 @@ class MessageCard extends React.Component<Props, State> {
     this.getBuList();
   }
 
+  addDepartment(){
+    router.push('/system-setting/message-card/add')
+  }
+
   render() {
     let { infoCard } = this.props;
     // if (_.isEmpty(infoCard)) return null;
@@ -204,6 +209,24 @@ class MessageCard extends React.Component<Props, State> {
       <div className={publicStyles.public_hight}>
         <div className={publicStyles.bg}>
           <div className={publicStyles.public_hight_40} />
+          <Form layout="inline">
+              <Row
+                type="flex"
+                justify="start"
+                align="middle"
+                style={{ paddingLeft: '39px' }}
+                gutter={16}
+              >
+                <span className={[`${publicStyles.form_btns}`].join(' ')}>
+                  <span
+                    className={[`${publicStyles.form_btn_add}`].join('')}
+                    onClick={this.addDepartment}
+                  >
+                    <IconFont type="icon-plus" />
+                  </span>
+                </span>
+              </Row>
+            </Form>
           <MainContent
             columns={columns}
             data={records}

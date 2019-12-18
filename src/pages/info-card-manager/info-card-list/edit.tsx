@@ -2,7 +2,7 @@
  * title: 编辑
  */
 import React from 'react';
-import { Form, Row, Col, Button, Input, Select, message } from 'antd';
+import { Form, Row, Col, Button, Input, Select, DatePicker, message } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import { connect } from 'dva';
 import * as _ from 'lodash';
@@ -122,9 +122,13 @@ class EditUser extends React.Component<Props, State> {
         message.error('参数错误', err);
         return;
       }
+      const { enableTime, ...props } = values
+
       const data = {
         id: infoCardList.id,
-        ...values,
+        ...props,
+        enableTime: values.enableTime ? values.enableTime.format('YYYY-MM-DD HH:mm:ss').toString() : '',
+
       };
       const isSuccessed = await editInfoList(data);
       if (isSuccessed) {
@@ -318,7 +322,16 @@ class EditUser extends React.Component<Props, State> {
                           },
                         ],
                         initialValue: infoCardList.name,
-                      })(<Input placeholder="请输入信息牌编号" />)}
+                      })(<Input placeholder="请输入信息牌编号" readOnly={true}/>)}
+                    </Form.Item>
+                  </Col>
+                  <Col span={12}>
+                    <Form.Item label="启用时间">
+                      {getFieldDecorator('enableTime', {
+                        initialValue: infoCardList.enableTime,
+                      })(
+                        <DatePicker showTime={true} placeholder="请选择开始时间" />,
+                      )}
                     </Form.Item>
                   </Col>
                 </Row>

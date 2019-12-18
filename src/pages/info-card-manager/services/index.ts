@@ -18,6 +18,7 @@ import {
   EXPORT_TASK_IN,
   TASK_LIST_EDIT,
   CANCELLATION_INFO_LIST,
+  GET_ALL_REGION,
 } from '@/config/api';
 import {
   GetInfoListParams,
@@ -91,7 +92,12 @@ export async function exportOut() {
   const resp = await request.post(EXPORT_INFO_OUT);
   return resp.success === true && resp.code === 200;
 }
-
+//取所有区域的
+export async function getAllRegionData() {
+  const resp = await request.get(GET_ALL_REGION);
+  return resp;
+}
+ 
 /*************************************任务规划******************************** */
 
 // 列表
