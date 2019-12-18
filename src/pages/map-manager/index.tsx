@@ -39,6 +39,7 @@ interface State {
 }
 interface Props {
   [key: string]: any;
+  showLamps: boolean;
 }
 interface InfoCard {
   x: number;
@@ -281,6 +282,8 @@ class MapManager extends React.Component<Props, State> {
     ));
   }
   createLamps() {
+    const { showLamps } = this.props;
+    if (!showLamps) return;
     const lamps = this.state.lamps;
     return lamps.map((lamp, index) => (
       <CircleLayer x={lamp.x - 16} y={lamp.y - 16} radius={16} fill="red" key={index} />
