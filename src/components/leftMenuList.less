@@ -7,7 +7,7 @@
 }
 :global(.ant-layout-header){
   height: 80px;
-      padding: 0 30px;
+  padding: 0 30px;
       // background : url(../assets/)
 
 }
@@ -18,13 +18,19 @@
   background-color: rgba(0, 0, 0, 0);
   font-family: Source Han Sans CN;
   font-weight: 400;
-  color: #b8d9ff;
+  color: #b8d9ff;  //好像没用
   a {
-  font-size: 20px;//系统字体设定
-    color: #b8d9ff;
-    display: inline-block;
-    height: 32px;
+    font-size: 20px;//系统字体设定
+    // color: #b8d9ff;  //末级字体默认颜色
+    color: #ffffff;  //末级字体默认颜色
+    // display: inline-block;
+    // height: 32px;
     font-family:Source Han Sans CN;
+
+
+   .red_item {
+      background-color: #ffffff;  //末级字体前面圆颜色
+    }
   }
 }
 :global(.ant-menu-inline .ant-menu-submenu-title ) {
@@ -67,13 +73,32 @@
     border-image-slice: 30% 0%;
     background-size: repeat;
     padding-bottom: 3px;
-    color: #FFFFFF !important;
+    color: #00d8ff !important; //末级字体选中颜色
+
+
+    .red_item {
+      background-color: #00d8ff;  //末级字体前面圆颜色
+    }
+
   }
 }
 
 :global(.ant-menu-inline .ant-menu-item::after) {
   border-width: 0;
 }
+
+
+
+
+:global(.ant-menu-item > a:hover) {
+  color: #71c9d9; //末级字体悬浮颜色
+  .red_item {
+    background-color: #71c9d9;  //末级字体前面圆颜色
+  }
+}
+
+
+
 .sub_menu_list {
   position: relative;
   // width: 225px;
@@ -127,12 +152,21 @@
    font-size: 0.28rem;
  }
 .red_item{
-    display: inline-block;
+    // display: inline-block;
+    // margin-right: 5px;
+    // // line-height: 49px;
+    // // position: relative;
+    // width: 15px;
+    // height: 15px;
+    // border-radius: 10px;
+    // // background-color: #00d8ff;  //末级字体前面圆颜色
+    display: -webkit-inline-box;
+    
     margin-right: 5px;
-    line-height: 49px;
-    position: relative;
-    width: 15px;
-    height: 15px;
+    width: 10px;
+    height: 10px;
     border-radius: 10px;
-    background-color: red;
+    vertical-align: middle;
+    margin-bottom: 3px;
 }
+

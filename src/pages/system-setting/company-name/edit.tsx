@@ -74,9 +74,9 @@ class EditSuperAdmin extends React.Component<Props, State> {
         return;
       }
 
-var dic = {}
-dic["dictName"] = values.dictName
-dic["id"] = superAdminRecord.id
+      var dic = {}
+      dic["dictName"] = values.dictName
+      dic["id"] = superAdminRecord.id
 
       const isSuccessed = await updateSuperAdmin(dic);
       if (isSuccessed) {
