@@ -68,12 +68,20 @@ const defaultLamps = [
   { x: 1337, y: 815, id: '04' },
 ];
 const scaleBy = 1.01;
+//间隔时间
+//相隔`MAX_SHOW_DURATION`时间后仍无数据推送，清除信息牌。
+const MAX_SHOW_DURATION = 5000;
 
 class MapManager extends React.Component<Props, State> {
   map: React.RefObject<HTMLDivElement>;
   ws: WebSocket;
+  timer?: any;
+  heatmapTimer?: any;
   // heatmap: any;
   checkUpdateTimer: any;
+  oldScale: any;
+  stage: any;
+
   constructor(props) {
     super(props);
     this.map = React.createRef<HTMLDivElement>();
@@ -160,25 +168,57 @@ class MapManager extends React.Component<Props, State> {
     const clientHeight = Math.floor((clientWidth * 1080) / 1920);
     let msgInfo = nextProps.wsInfo;
     if (msgInfo.msgType != '0') return;
+    if (this.timer) {
+      clearTimeout(this.timer);
+    }
     let msgText = msgInfo.msgTxt || [];
 
     msgText = this.serializeInfoCard(msgText);
     const infoCards = this.setupInfoCardData(msgText, clientWidth, clientHeight);
-    //TODO:热力图数据
-    // const testData = this.setupLampData(defaultLamps, clientWidth, clientHeight);
 
-    const data = infoCards.map(v => ({
-      x: Math.floor(v.x),
-      y: Math.floor(v.y),
-      // x: Math.floor(v.x),
-      // y: Math.floor(v.y),
-      value: Math.floor(100),
-      radius: Math.floor(100),
-    }));
+    let data = [];
+    if (!this.stage) {
+      data = infoCards.map(v => ({
+        x: Math.floor(v.x),
+        y: Math.floor(v.y),
+        value: Math.floor(100),
+        radius: Math.floor(100),
+      }));
+      this.setState({
+        heatmaps: data,
+      });
+    }
     this.setState({
       infoCards: infoCards,
-      heatmaps: data,
     });
+    this.forceUpdate(() => {
+      if (this.stage) {
+        const layers = this.stage.children && this.stage.children[1];
+        if (!layers) return;
+        const infoCardLayers = layers.children;
+        if (!infoCardLayers) return;
+        const data = infoCardLayers.map((layer, index) => {
+          const _x = layer.absolutePosition().x;
+          const _y = layer.absolutePosition().y;
+          return {
+            x: Math.floor(_x),
+            y: Math.floor(_y),
+            value: Math.floor(100),
+            radius: Math.floor(100),
+          };
+        });
+        this.setState({
+          heatmaps: data,
+        });
+      }
+    });
+    //间隔`MAX_SHOW_DURATION`时间，仍无点位推送，清除信息牌
+    this.timer = setTimeout(() => {
+      this.setState({
+        infoCards: [],
+        heatmaps: [],
+      });
+    }, MAX_SHOW_DURATION);
   }
   /**
    * 序列化ws推送过来的信息牌数据，使其满足展示要求
@@ -272,8 +312,12 @@ class MapManager extends React.Component<Props, State> {
     ));
   }
   componentWillUnmount() {
-    // clearInterval(this.checkUpdateTimer);
-    // this.ws && this.ws.close();
+    if (this.timer) {
+      clearTimeout(this.timer);
+    }
+    if (this.heatmapTimer) {
+      clearTimeout(this.heatmapTimer);
+    }
   }
   dynamicLoadMapImage() {
     return new Promise(resolve => {
@@ -293,11 +337,39 @@ class MapManager extends React.Component<Props, State> {
       };
     });
   }
-
-  onWheel = evt => {
+  onMapDragEnd = evt => {
+    if (this.heatmapTimer) clearTimeout(this.heatmapTimer);
     evt.evt.preventDefault();
     const stage = evt.target.getStage();
     const oldScale = stage.scaleX();
+    this.oldScale = oldScale;
+    this.stage = stage;
+
+    const layers = stage.children && stage.children[1];
+    if (!layers) return;
+    const infoCardLayers = layers.children;
+    if (!infoCardLayers) return;
+    const data = infoCardLayers.map((layer, index) => {
+      const _x = layer.absolutePosition().x;
+      const _y = layer.absolutePosition().y;
+      return {
+        x: Math.floor(_x),
+        y: Math.floor(_y),
+        value: Math.floor(100),
+        radius: Math.floor(100),
+      };
+    });
+    this.setState({
+      heatmaps: data,
+    });
+  };
+  onWheel = evt => {
+    if (this.heatmapTimer) clearTimeout(this.heatmapTimer);
+    evt.evt.preventDefault();
+    const stage = evt.target.getStage();
+    const oldScale = stage.scaleX();
+    this.oldScale = oldScale;
+    this.stage = stage;
 
     const mousePointTo = {
       x: stage.getPointerPosition().x / oldScale - stage.x() / oldScale,
@@ -307,18 +379,30 @@ class MapManager extends React.Component<Props, State> {
     const newScale = evt.evt.deltaY > 0 ? oldScale * scaleBy : oldScale / scaleBy;
 
     stage.scale({ x: newScale, y: newScale });
-    // const newHeatMaps = this.state.heatmaps.map(item => {
-    //   return {
-    //     ...item,
-    //     x: Math.floor(item.x / oldScale - stage.x() / oldScale),
-    //     y: Math.floor(item.y / oldScale - stage.y() / oldScale),
-    //   };
-    // });
+
+    const layers = stage.children && stage.children[1];
+    if (!layers) return;
+    const infoCardLayers = layers.children;
+    if (!infoCardLayers) return;
+    this.heatmapTimer = setTimeout(() => {
+      const data = infoCardLayers.map((layer, index) => {
+        const _x = layer.absolutePosition().x;
+        const _y = layer.absolutePosition().y;
+        return {
+          x: Math.floor(_x),
+          y: Math.floor(_y),
+          value: Math.floor(100),
+          radius: Math.floor(100),
+        };
+      });
+      this.setState({
+        heatmaps: data,
+      });
+    }, 400);
     this.setState({
       stageScale: newScale,
       stageX: -(mousePointTo.x - stage.getPointerPosition().x / newScale) * newScale,
       stageY: -(mousePointTo.y - stage.getPointerPosition().y / newScale) * newScale,
-      // heatmaps: newHeatMaps,
     });
   };
   onMapClick = () => {
@@ -349,7 +433,31 @@ class MapManager extends React.Component<Props, State> {
     let max = 0;
     return (
       <React.Fragment>
-        <HeatMap configObject={config} max={max} data={this.state.heatmaps}>
+        {this.props.showHeatMap ? (
+          <HeatMap configObject={config} max={max} data={this.state.heatmaps}>
+            <div className={styles.map_manager} ref={this.map}>
+              <Stage
+                width={width}
+                height={height}
+                onWheel={this.onWheel}
+                scaleX={this.state.stageScale}
+                scaleY={this.state.stageScale}
+                x={this.state.stageX}
+                y={this.state.stageY}
+                draggable={true}
+                onDragEnd={this.onMapDragEnd}
+                onClick={this.onMapClick}
+              >
+                <Layer>
+                  <ImageLayer image={mapImage} x={0} y={0} width={width} height={height} />
+                  {lamps}
+                  {areaText}
+                </Layer>
+                <Layer>{infoCards}</Layer>
+              </Stage>
+            </div>
+          </HeatMap>
+        ) : (
           <div className={styles.map_manager} ref={this.map}>
             <Stage
               width={width}
@@ -360,17 +468,19 @@ class MapManager extends React.Component<Props, State> {
               x={this.state.stageX}
               y={this.state.stageY}
               draggable={true}
+              onDragEnd={this.onMapDragEnd}
               onClick={this.onMapClick}
             >
               <Layer>
                 <ImageLayer image={mapImage} x={0} y={0} width={width} height={height} />
                 {lamps}
                 {areaText}
-                {infoCards}
               </Layer>
+              <Layer>{infoCards}</Layer>
             </Stage>
           </div>
-        </HeatMap>
+        )}
+
         {_.isEmpty(this.state.infoDetail) ? null : (
           <span className={styles.card_panel}>
             <Card

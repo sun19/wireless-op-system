@@ -25,7 +25,8 @@ class ReactHeatmap extends React.Component<Props> {
     this.setData(this.props.min, this.props.max, this.props.data);
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    // console.log(nextProps.data, 'next');
     this.setData(nextProps.min, nextProps.max, nextProps.data);
   }
 

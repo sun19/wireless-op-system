@@ -46,6 +46,7 @@ interface State {
   showPeopleInfo: boolean;
   currentIndex: boolean;
   showLamps: boolean;
+  showHeatMap: boolean;
   dataStr?: string;
 }
 type StateProps = ReturnType<typeof mapState>;
@@ -93,6 +94,7 @@ class Realtime extends React.Component<Props, State> {
       ajaxLamps: [],
       dataStr: '2019-11-15',
       showLamps: false,
+      showHeatMap: false,
     };
   }
   //异步加载图片，保证渲染到canvas上时是已经OK的
@@ -305,6 +307,11 @@ class Realtime extends React.Component<Props, State> {
       stageScale: newScale,
       stageX: -(mousePointTo.x - stage.getPointerPosition().x / newScale) * newScale,
       stageY: -(mousePointTo.y - stage.getPointerPosition().y / newScale) * newScale,
+    });
+  };
+  showHeatMap = () => {
+    this.setState({
+      showHeatMap: !this.state.showHeatMap,
     });
   };
   //电子围栏
@@ -872,23 +879,10 @@ class Realtime extends React.Component<Props, State> {
             </Col>
             <Col span={16} className="middle_panel">
               <div className={styles.map_manager} ref={this.map}>
-                {/* <Stage
-                  width={width}
-                  height={height}
-                  onWheel={this.onWheel}
-                  scaleX={this.state.stageScale}
-                  scaleY={this.state.stageScale}
-                  x={this.state.stageX}
-                  y={this.state.stageY}
-                  draggable={true}
-                >
-                  <Layer>
-                    <ImageLayer image={mapImage} x={0} y={0} width={width} height={height} />
-                    {line}
-                    {lamps}
-                  </Layer>
-                </Stage> */}
-                <RealTime showLamps={this.state.showLamps} />
+                <RealTime showLamps={this.state.showLamps} showHeatMap={this.state.showHeatMap} />
+              </div>
+              <div className={styles.heatmapBtn} onClick={this.showHeatMap}>
+                热力图
               </div>
             </Col>
             <Col span={4} className="right_panel">

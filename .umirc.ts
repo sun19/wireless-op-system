@@ -38,6 +38,9 @@ const config: IConfig = {
   base: '/wireless-op-system/',
   publicPath: '/wireless-op-system/',
   history: 'hash',
+  targets: {
+    ie: 8
+  }
 };
 
 export default config;
