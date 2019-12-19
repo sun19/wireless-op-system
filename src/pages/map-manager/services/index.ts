@@ -27,6 +27,7 @@ import {
   MAP_MANAGER_POLLING_LINE_DETAIL,
   GET_SUPER_ADMIN_LIST,
   COMMON_GET_ALL_LAMP_ID,
+  BIG_SCREEN_HISTORY_TRACK,
 } from '@/config/api';
 import {
   GetMapAreaParams,
@@ -249,5 +250,11 @@ export async function getLampList() {
 
 export async function getInfoCardDetail(params: { number?: string }) {
   const resp = await request.get(BIG_SCREEN_GET_INFO_BOARD, { params });
+  return resp;
+}
+
+
+export async function getHistoryRoutes(params: { informationBoardName?: string }) {
+  const resp = await request.get(BIG_SCREEN_HISTORY_TRACK, { params });
   return resp;
 }

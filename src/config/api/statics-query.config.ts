@@ -2,7 +2,7 @@
 import { BASE_API_URL } from '../constants';
 
 /**
- * 获取超级管理员列表
+ * 获取历史轨迹
  */
 export const GET_STATISTICS_HISTORY_LIST =
   `${BASE_API_URL}/jeecg-boot/intf/location/listByHistoryTrajectory`;

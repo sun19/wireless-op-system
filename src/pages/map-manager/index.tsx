@@ -9,14 +9,14 @@ import {
   Image as ImageLayer,
   Text as TextLayer,
   Circle as CircleLayer,
+  Line as LineLayer,
 } from 'react-konva';
 import { connect } from 'dva';
 import { Tabs, Card, Icon, List, Badge } from 'antd';
 
-import { getLampList, getRegionList, getInfoCardDetail } from './services';
+import { getLampList, getRegionList, getInfoCardDetail, getHistoryRoutes } from './services';
 import { WEBSOCKET } from '../../config/constants';
 import HeatMap from '@/components/HeatMap';
-// import HeatMap from 'react-heatmap.js';
 
 import styles from './index.less';
 
@@ -36,6 +36,9 @@ interface State {
   lamps: Lamp[];
   receiveWsInfo: boolean;
   infoDetail: object;
+  mode: 'realtime' | 'history' | 'all';
+  historyLine?: number[];
+  historyPoints?: any[];
 }
 interface Props {
   [key: string]: any;
@@ -99,8 +102,10 @@ class MapManager extends React.Component<Props, State> {
       heatmaps: [],
       receiveWsInfo: true,
       infoDetail: {},
+      mode: 'all',
     };
     this.onInfoCardClick = this.onInfoCardClick.bind(this);
+    this.enterHistoryMode = this.enterHistoryMode.bind(this);
   }
   //异步加载图片，保证渲染到canvas上时是已经OK的
   async componentDidMount() {
@@ -168,12 +173,30 @@ class MapManager extends React.Component<Props, State> {
     const clientHeight = Math.floor((clientWidth * 1080) / 1920);
     let msgInfo = nextProps.wsInfo;
     if (msgInfo.msgType != '0') return;
+
     if (this.timer) {
       clearTimeout(this.timer);
     }
     let msgText = msgInfo.msgTxt || [];
 
     msgText = this.serializeInfoCard(msgText);
+
+    //接受全量模式
+    if (this.state.mode === 'all') {
+      //实时追踪模式
+    } else if (this.state.mode === 'realtime') {
+      const { infoDetail } = this.state;
+      const infoCardCode = (infoDetail as any).name;
+      //只取当前订阅的信息牌
+      msgText = msgText.filter(item => item.information === infoCardCode);
+      //历史轨迹模式
+    } else if (this.state.mode === 'history') {
+      this.setState({
+        infoCards: [],
+        heatmaps: [],
+      });
+      return;
+    }
     const infoCards = this.setupInfoCardData(msgText, clientWidth, clientHeight);
 
     let data = [];
@@ -405,11 +428,39 @@ class MapManager extends React.Component<Props, State> {
       stageY: -(mousePointTo.y - stage.getPointerPosition().y / newScale) * newScale,
     });
   };
+  //点击地图，切换回`all`模式
   onMapClick = () => {
     this.setState({
       infoDetail: {},
+      mode: 'all',
     });
   };
+  enterRealTimeMode = () => {
+    this.setState({
+      mode: 'realtime',
+    });
+  };
+  async enterHistoryMode() {
+    const { clientWidth } = this.map.current;
+    const clientHeight = Math.floor((clientWidth * 1080) / 1920);
+    const { infoDetail } = this.state;
+    const infoCardCode = (infoDetail as any).name;
+    const resp = await getHistoryRoutes({
+      informationBoardName: infoCardCode,
+    });
+    let points = (resp.result && resp.result.records) || [];
+    points = this.setupInfoCardData(points, clientWidth, clientHeight);
+    const lines = points.reduce((p, n) => {
+      p.push(+n.xcoordinate);
+      p.push(+n.ycoordinate);
+      return p;
+    }, []);
+    this.setState({
+      mode: 'history',
+      historyLine: lines,
+      historyPoints: points,
+    });
+  }
 
   renderInfoItem = item => {
     return (
@@ -431,6 +482,12 @@ class MapManager extends React.Component<Props, State> {
       blur: 0.75,
     };
     let max = 0;
+    //实时轨迹的线
+    const realtimeLine = this.state.infoCards.reduce((p, n) => {
+      p.push(n.x);
+      p.push(n.y);
+      return p;
+    }, []);
     return (
       <React.Fragment>
         {this.props.showHeatMap ? (
@@ -477,6 +534,37 @@ class MapManager extends React.Component<Props, State> {
                 {areaText}
               </Layer>
               <Layer>{infoCards}</Layer>
+              {this.state.mode === 'realtime' && (
+                <Layer>
+                  <LineLayer
+                    points={realtimeLine}
+                    stroke="#1296db"
+                    strokeWidth={5}
+                    linecap="round"
+                    lineJoin="round"
+                  />
+                </Layer>
+              )}
+              {this.state.mode === 'history' && (
+                <Layer>
+                  <LineLayer
+                    points={this.state.historyLine}
+                    stroke="#1296db"
+                    strokeWidth={5}
+                    linecap="round"
+                    lineJoin="round"
+                  />
+                  {this.state.historyPoints.map((item, index) => (
+                    <CircleLayer
+                      x={Math.floor(item.x - 4)}
+                      y={Math.floor(item.y - 4)}
+                      radius={8}
+                      fill="red"
+                      key={index}
+                    />
+                  ))}
+                </Layer>
+              )}
             </Stage>
           </div>
         )}
@@ -486,11 +574,11 @@ class MapManager extends React.Component<Props, State> {
             <Card
               title="详细信息"
               actions={[
-                <span key="setting">
+                <span key="setting" onClick={this.enterRealTimeMode}>
                   <Icon type="setting" key="setting" />
                   实时追踪
                 </span>,
-                <span key="edit">
+                <span key="edit" onClick={this.enterHistoryMode}>
                   <Icon type="edit" key="edit" />
                   历史轨迹
                 </span>,
