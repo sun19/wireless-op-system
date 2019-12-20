@@ -101,3 +101,12 @@ export const GET_COMPANYNAME = `${BASE_API_URL}/jeecg-boot/intf/location/listDic
  * 新增部门
  */
 export const ADD_DEPARTMENT = `${BASE_API_URL}/jeecg-boot/intf/location/addDepartment`;
+
+// 背景主题
+export const GET_DICT_NAME_TYPE = `${BASE_API_URL}/jeecg-boot/intf/location/getDictNameByType`;
+
+//获取企业
+export const GET_COMPANY_NAME = `${BASE_API_URL}/jeecg-boot/intf/location/getCompany`;
+//企业设置
+export const SET_COMPANY_NAME = `${BASE_API_URL}/jeecg-boot/intf/location/updateCompany`;
+

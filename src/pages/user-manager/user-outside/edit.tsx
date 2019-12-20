@@ -242,7 +242,7 @@ class EditAuth extends React.Component<Props> {
                             message: '请选择在职状态',
                           },
                         ],
-                        initialValue: userInside.address,
+                        initialValue: userInside.type,
                       })(
                         <Select placeholder="请选择在职状态">
                           <Option value="0">在职</Option>

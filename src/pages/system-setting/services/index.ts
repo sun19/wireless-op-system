@@ -20,7 +20,9 @@ import {
   UPLOAD_SUPER_ADMIN,
   GET_COMPANYNAME,
   ADD_DEPARTMENT,
-  GET_DICT_NAME_TYPE
+  GET_DICT_NAME_TYPE,
+  GET_COMPANY_NAME,
+  SET_COMPANY_NAME
 
 } from '@/config/api';
 import {
@@ -177,5 +179,15 @@ export async function addDepartment(params: AddDepartmentParams) {
 // 获取主题
 export async function getDictNameByType(params: ThemeType) {
   const resp = await request.get(GET_DICT_NAME_TYPE, { params });
+  return resp.result;
+}
+// 企业名称
+export async function getCompanyName(params: ThemeType) {
+  const resp = await request.get(GET_COMPANY_NAME, { params });
+  return resp.result;
+}
+// 修改企业设置
+export async function setCompanyName(params: ThemeType) {
+  const resp = await request.get(SET_COMPANY_NAME, { params });
   return resp.result;
 }

@@ -7,6 +7,7 @@ import { FormComponentProps } from 'antd/lib/form';
 import { connect } from 'dva';
 import * as _ from 'lodash';
 import router from 'umi/router';
+import moment from 'moment';
 
 import ContentBorder from '../../../components/ContentBorder';
 // import { InputText, TreeNodeMenu } from '../components';
@@ -383,7 +384,10 @@ class AddUsers extends React.Component<Props, State> {
                     <Form.Item label="启用时间">
                       {getFieldDecorator(
                         'enableTime',
-                        {},
+                        {
+                          initialValue:  moment(),
+
+                        },
                       )(<DatePicker showTime={true} placeholder="请选择开始时间" />)}
                     </Form.Item>
                   </Col>

@@ -9,6 +9,8 @@ export default {
     messageCard: {},
     superAdmin: {},
     superAdminRecord: {},
+    companyName:{},
+    companyNameRecord: {},
   },
   reducers: {
     update(state, { payload }) {

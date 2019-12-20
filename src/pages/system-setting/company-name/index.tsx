@@ -9,7 +9,7 @@ import * as _ from 'lodash';
 
 import MainContent from '../components/MainContent';
 import { UmiComponentProps } from '@/common/type';
-import { getCompanyNameList, updateSuperAdmin } from '../services';
+import {  getCompanyName,updateSuperAdmin } from '../services';
 import publicStyles from '../index.less';
 
 const { Content } = Layout;
@@ -17,8 +17,19 @@ const { Content } = Layout;
 const columns = [
   {
     title: '企业名称',
-    dataIndex: 'dictName',
+    dataIndex: 'name',
     editable: true,
+  }, {
+    title: '字体大小',
+    dataIndex: 'fontSize',
+    editable: true,
+  }, {
+    title: '是否显示',
+    dataIndex: 'isShow',
+    editable: true,
+    render(isShow) {
+      return isShow==='0'?'显示':'不显示'
+    }
   },
 ];
 
@@ -42,11 +53,11 @@ class SuperAdmin extends React.Component<Props, State> {
   }
 
   async getSuperAdminList() {
-    const superAdmins = await getCompanyNameList({ type: 'systemLogoTitle' });
+    const superAdmins = await getCompanyName({ type: 'systemLogoTitle' });
     this.props.dispatch({
       type: 'systemSetting/update',
       payload: {
-        superAdmin: superAdmins,
+         companyName: superAdmins,
       },
     });
   }
@@ -55,7 +66,7 @@ class SuperAdmin extends React.Component<Props, State> {
     this.props.dispatch({
       type: 'systemSetting/update',
       payload: {
-        superAdminRecord: data,
+        companyNameRecord: data,
       },
     });
     router.push('/system-setting/company-name/edit');
@@ -83,16 +94,18 @@ class SuperAdmin extends React.Component<Props, State> {
   }
 
   render() {
-    let { superAdmin } = this.props;
-    if (_.isEmpty(superAdmin)) {
-      superAdmin = {
+    let { companyName } = this.props;
+    let records=[]
+    let total=0
+    records.push(companyName)
+     if (_.isEmpty(companyName)) {
+      companyName = {
         records: [],
         total: 0,
       };
     }
-    let { records, total } = superAdmin;
     records = records.map(item => {
-      return _.assign(item, { key: item.id });
+      return _.assign(item, { key: 0});
     });
 
     return (
@@ -113,9 +126,9 @@ class SuperAdmin extends React.Component<Props, State> {
 }
 
 const mapState = ({ systemSetting }) => {
-  const resp = systemSetting.superAdmin;
+  const resp = systemSetting.companyName;
   return {
-    superAdmin: resp,
+    companyName: resp,
   };
 };
 

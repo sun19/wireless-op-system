@@ -105,5 +105,7 @@ export interface AddDepartmentParams {
 }
 
 export interface ThemeType {
-  type: string
+  fontSize?: string,
+  isShow?: string,
+  name?: string,
 }

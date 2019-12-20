@@ -19,6 +19,7 @@ interface State {
   title: string;
   year: string;
   time?: any;
+  size?: string;
 }
 
 export default class Login extends Component<any, State> {
@@ -30,6 +31,7 @@ export default class Login extends Component<any, State> {
       title: '',
       year: this.getYear(time),
       time: '',
+      size:'25',
     };
   }
 
@@ -49,14 +51,15 @@ export default class Login extends Component<any, State> {
   };
   async gettitle() {
     const resp = await request(
-      BASE_API_URL+'/jeecg-boot/intf/location/getSystemLogoTitle',
+      BASE_API_URL+'/jeecg-boot/intf/location/getCompany',
       {
         method: 'GET',
       },
     );
     // console.log(resp)
-    if (resp.isShow === '0') {
-      this.setState({ title: resp.content });
+    let result = resp.result
+    if ( result.isShow === '0') {
+      this.setState({ title: result.name, size:result.fontSize });
     }
   }
   componentDidMount() {
@@ -100,7 +103,7 @@ export default class Login extends Component<any, State> {
         {/* // </Row> */}
 
         {/* </Content> */}
-        <div className={styles.foot_text}>{this.state.title}</div>
+        <div style={{ 'fontSize': this.state.size}} className={styles.foot_text}>{this.state.title}</div>
 
         {/* <Footer className={[`${styles.no_bg}`].join(' ')}>
         </Footer> */}

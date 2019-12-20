@@ -6,7 +6,7 @@ import router from 'umi/router';
 
 import ContentBorder from '../../../components/ContentBorder';
 import { InputText, TreeNodeMenu } from '../components';
-import { updateUserType, updateSuperAdmin } from '../services';
+import { updateUserType, setCompanyName } from '../services';
 
 import styles from './index.less';
 import { LEFT_MENUS } from '../../../config/menus';
@@ -67,18 +67,13 @@ class EditSuperAdmin extends React.Component<Props, State> {
   onSubmit(e) {
 
     e.preventDefault();
-    const { superAdminRecord } = this.props;
+    const { companyNameRecord } = this.props;
     this.props.form.validateFields(async (err, values) => {
       if (err) {
         message.error('填写信息有误', values);
         return;
       }
-
-      var dic = {}
-      dic["dictName"] = values.dictName
-      dic["id"] = superAdminRecord.id
-
-      const isSuccessed = await updateSuperAdmin(dic);
+      const isSuccessed = await setCompanyName(values);
       if (isSuccessed) {
         setTimeout(() => router.push('/system-setting/company-name'), 1000);
       }
@@ -100,7 +95,7 @@ class EditSuperAdmin extends React.Component<Props, State> {
       return <TreeNode title={item.name} key={item.path} />;
     });
   render() {
-    const { superAdminRecord } = this.props;
+    const { companyNameRecord } = this.props;
     const { getFieldDecorator } = this.props.form;
     return (
       <ContentBorder className={styles.auth_root}>
@@ -111,10 +106,35 @@ class EditSuperAdmin extends React.Component<Props, State> {
                 <Row type="flex" justify="space-between">
                   <Col span={12}>
                     <Form.Item label="企业名称">
-                      {getFieldDecorator('dictName', {
+                      {getFieldDecorator('name', {
                         rules: [],
-                        initialValue: superAdminRecord.dictName,
+                        initialValue: companyNameRecord.name,
                       })(<Input placeholder="请输入企业名称" />)}
+                    </Form.Item>
+                  </Col>
+                  <Col span={12}>
+                    <Form.Item label="文字大小">
+                      {getFieldDecorator('fontSize', {
+                        rules: [],
+                        initialValue: companyNameRecord.fontSize,
+                      })(<Input placeholder="请输入文字大小" />)}
+                    </Form.Item>
+                  </Col>
+                  <Col span={12}>
+                    <Form.Item label="是否显示">
+                      {getFieldDecorator('isShow', {
+                        rules: [],
+                        initialValue: companyNameRecord.isShow,
+                      })( 
+                        <Select style={{ width: '2rem' }} className={styles.select_text}>
+                          <Option value='0' key='0'>
+                            显示
+                          </Option>
+                          <Option value='1' key='1'>
+                            不显示
+                          </Option>
+                        </Select>,
+                      )}
                     </Form.Item>
                   </Col>
                 </Row>
@@ -146,8 +166,8 @@ class EditSuperAdmin extends React.Component<Props, State> {
 const EditSuperAdminHOC = Form.create<Props>({ name: 'edit_superadmin' })(EditSuperAdmin);
 
 const mapState = ({ systemSetting }) => {
-  const resp = systemSetting.superAdminRecord;
-  return { superAdminRecord: resp };
+  const resp = systemSetting.companyNameRecord;
+  return { companyNameRecord: resp };
 };
 
 export default connect(mapState)(EditSuperAdminHOC);
