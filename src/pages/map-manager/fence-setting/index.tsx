@@ -240,9 +240,9 @@ class FencingSettings extends React.Component<Props> {
                     {getFieldDecorator('typeId', {
                       rules: [],
                     })(
-                      <Select className={publicStyles.select_text}>
+                      <Select className={publicStyles.select_text} placeholder="请选择围栏类型">
                         {fencingTypes.map(item => (
-                          <Option key={item.name} value={item.name}>
+                          <Option key={item.id} value={item.id}>
                             {item.name}
                           </Option>
                         ))}

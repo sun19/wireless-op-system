@@ -155,7 +155,8 @@ class TaskPlan extends React.Component<Props, State> {
     return (
       <Form.Item label="任务">
         {getFieldDecorator('task', {
-          initialValue: '',
+          rules: [],
+          // initialValue: '',
         })(
           <Select placeholder="请选择任务" style={{ marginTop: '-5px' }}>
             <Option value="0">巡更路线</Option>

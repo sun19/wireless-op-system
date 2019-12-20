@@ -73,6 +73,12 @@ interface State {
           menus: data.result || [],
         },
       });
+
+      this.setState({
+        allMenus: data.result,
+      });
+
+
       // message.success('编辑成功')
     }
   }
@@ -99,6 +105,7 @@ interface State {
           cancel={this.cancel}
           expandedRowRender={this.expandedRowRender}
           showInlineEdit={true}
+          updateData={this.updateData}
         />
       );
     }
