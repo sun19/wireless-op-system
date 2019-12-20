@@ -103,3 +103,7 @@ export interface AddDepartmentParams {
   remark?: string,
   sort?: string 
 }
+
+export interface ThemeType {
+  type: string
+}

@@ -19,7 +19,9 @@ import {
   DELETE_SUPER_ADMIN,
   UPLOAD_SUPER_ADMIN,
   GET_COMPANYNAME,
-  ADD_DEPARTMENT
+  ADD_DEPARTMENT,
+  GET_DICT_NAME_TYPE
+
 } from '@/config/api';
 import {
   GetUserListParams,
@@ -37,7 +39,8 @@ import {
   DeleteSuperAdminParams,
   GetAllRolesParams,
   CompanyName,
-  AddDepartmentParams
+  AddDepartmentParams,
+  ThemeType
 } from './index.interfaces';
 
 export async function getUserList(params: GetUserListParams) {
@@ -169,4 +172,10 @@ export async function addDepartment(params: AddDepartmentParams) {
     ? message.success(`${resp.message}`)
     : message.error(`${resp.message}`);
   return resp.success === true && resp.code === 200;
+}
+
+// 获取主题
+export async function getDictNameByType(params: ThemeType) {
+  const resp = await request.get(GET_DICT_NAME_TYPE, { params });
+  return resp.result;
 }
