@@ -109,3 +109,6 @@ export interface ThemeType {
   isShow?: string,
   name?: string,
 }
+export interface Theme {
+  type?: string;
+}

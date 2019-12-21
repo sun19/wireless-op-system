@@ -22,7 +22,8 @@ import {
   ADD_DEPARTMENT,
   GET_DICT_NAME_TYPE,
   GET_COMPANY_NAME,
-  SET_COMPANY_NAME
+  SET_COMPANY_NAME,
+  UPDATE_DICT_NAME_TYPE
 
 } from '@/config/api';
 import {
@@ -42,7 +43,8 @@ import {
   GetAllRolesParams,
   CompanyName,
   AddDepartmentParams,
-  ThemeType
+  ThemeType,
+  Theme
 } from './index.interfaces';
 
 export async function getUserList(params: GetUserListParams) {
@@ -177,9 +179,14 @@ export async function addDepartment(params: AddDepartmentParams) {
 }
 
 // 获取主题
-export async function getDictNameByType(params: ThemeType) {
+export async function getDictNameByType(params: Theme) {
   const resp = await request.get(GET_DICT_NAME_TYPE, { params });
-  return resp.result;
+  return resp;
+}
+// 修改主题
+export async function updateDictNameByType(params: Theme) {
+  const resp = await request.post(UPDATE_DICT_NAME_TYPE, { params });
+  return resp;
 }
 // 企业名称
 export async function getCompanyName(params: ThemeType) {

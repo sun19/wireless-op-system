@@ -15,13 +15,23 @@ const IconFont = Icon.createFromIconfontCN({
   scriptUrl: '//at.alicdn.com/t/font_1464236_mya4evtbh9i.js',
 });
 
+import {
+  getDictNameByType,
+
+} from '../system-setting/services';
+
 interface State {
   title: string;
   year: string;
   time?: any;
   size?: string;
+  type?:object;
 }
-
+import Background from '../../assets/login/1.png';
+import Background2 from '../../assets/login/2.png';
+import Background3 from '../../assets/login/3.png';
+import Background4 from '../../assets/login/4.png';
+import Background5 from '../../assets/login/5.png';
 export default class Login extends Component<any, State> {
   private timer;
   constructor(props: any) {
@@ -32,6 +42,7 @@ export default class Login extends Component<any, State> {
       year: this.getYear(time),
       time: '',
       size:'25',
+      type: Background,
     };
   }
 
@@ -62,6 +73,29 @@ export default class Login extends Component<any, State> {
       this.setState({ title: result.name, size:result.fontSize });
     }
   }
+  async getBack(){
+    const themes = await getDictNameByType({ type: "theme" });
+    switch (themes) {
+      case 1:
+        this.setState({ type: Background })
+        break;
+      case 2:
+        this.setState({ type: Background2 })
+        break;
+      case 3:
+        this.setState({ type: Background3 })
+        break;
+      case 4:
+        this.setState({ type: Background4 })
+        break;
+      case 5:
+        this.setState({ type: Background5 })
+        break;
+      default:
+        this.setState({ type: Background })
+    } 
+    // this.setState({ type: themes })
+  }
   componentDidMount() {
     this.gettitle();
     this.timer = setInterval(() => {
@@ -71,6 +105,7 @@ export default class Login extends Component<any, State> {
         time: moment().format('HH:mm'),
       });
     }, 1000);
+    this.getBack()
   }
 
   componentWillUnmount() {
@@ -79,9 +114,16 @@ export default class Login extends Component<any, State> {
   }
 
   render() {
+   let sectionStyle={
+      backgroundImage: `url(${this.state.type})` 
+    }
     const state: State = this.state as State;
     return (
-      <Layout className={styles.bg}>
+     
+      // < Layout className={styles.bg} style={{ backgroundImage: "url(" + `../../assets/login/${this.state.type}.png` + ")" }} > 
+
+ 
+    <Layout className={styles.bg} style={sectionStyle} > 
         <div className={styles.right_top_panel}>
           <div className={styles.date_string}>{(this.state as State).year}</div>
           <div className={styles.time_string}>

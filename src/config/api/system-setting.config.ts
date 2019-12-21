@@ -104,6 +104,9 @@ export const ADD_DEPARTMENT = `${BASE_API_URL}/jeecg-boot/intf/location/addDepar
 
 // 背景主题
 export const GET_DICT_NAME_TYPE = `${BASE_API_URL}/jeecg-boot/intf/location/getDictNameByType`;
+// 修改背景主题
+export const UPDATE_DICT_NAME_TYPE = `${BASE_API_URL}/jeecg-boot/intf/location/updateDictByType`;
+
 
 //获取企业
 export const GET_COMPANY_NAME = `${BASE_API_URL}/jeecg-boot/intf/location/getCompany`;
