@@ -187,7 +187,7 @@ export async function getCompanyName(params: ThemeType) {
   return resp.result;
 }
 // 修改企业设置
-export async function setCompanyName(params: ThemeType) {
-  const resp = await request.get(SET_COMPANY_NAME, { params });
-  return resp.result;
+export async function setCompanyName(params: CompanyName) {
+  const resp = await request.post(SET_COMPANY_NAME, { params });
+  return resp;
 }
