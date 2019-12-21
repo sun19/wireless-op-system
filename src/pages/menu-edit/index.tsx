@@ -79,7 +79,7 @@ interface State {
       });
 
 
-      // message.success('编辑成功')
+      message.success('编辑成功')
     }
   }
   expandedRowRender = (record, index, indent, expanded) => {
