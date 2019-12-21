@@ -31,7 +31,7 @@ interface UserType {
   roleId: string;
 }
 
-interface FormProps extends FormComponentProps {}
+interface FormProps extends FormComponentProps { }
 type StateProps = ReturnType<typeof mapState>;
 type Props = StateProps & UmiComponentProps & FormProps;
 
@@ -40,6 +40,7 @@ interface State {
   userName?: string;
   cardNo?: string;
   phone?: string;
+  sex?: string;
   departmentId?: string;
   name?: string;
   id?: string;
@@ -66,16 +67,12 @@ class AddUsers extends React.Component<Props, State> {
   setupDuties = () => {
     const { allDuties } = this.props;
     const { getFieldDecorator } = this.props.form;
+    const { currentIndex, currentUser } = this.state;
     return (
       <Form.Item label="职务">
         {getFieldDecorator('positionId', {
-          rules: [
-            {
-              // required: true,
-              message: '请选择职务',
-            },
-          ],
-          // initialValue: (allDuties && allDuties[0] && allDuties[0].id) || '',
+          rules: [],
+          initialValue: (currentIndex != null && currentUser.positionId) || undefined,
         })(
           <Select placeholder="请选择职务">
             {allDuties &&
@@ -126,15 +123,12 @@ class AddUsers extends React.Component<Props, State> {
         return;
       }
       const { enableTime, ...props } = values;
-      const { userInfoNumber, departmentNumber } = this.state;
       const data = {
         ...props,
         enableTime: values.enableTime
           ? values.enableTime.format('YYYY-MM-DD HH:mm:ss').toString()
           : '',
-        userCode: userInfoNumber,
-        dictCode: departmentNumber,
-        name: departmentNumber + userInfoNumber,
+
       };
       const isSuccessed = await addInfoList(data);
       if (isSuccessed) {
@@ -270,7 +264,7 @@ class AddUsers extends React.Component<Props, State> {
                     <Form.Item label="性别">
                       {getFieldDecorator('sex', {
                         rules: [],
-                        initialValue: currentIndex != null && currentUser.sex,
+                        initialValue: (currentIndex != null && currentUser.sex) || undefined,
                       })(
                         <Select placeholder="请选择性别">
                           <Option value="0">男</Option>
@@ -292,16 +286,14 @@ class AddUsers extends React.Component<Props, State> {
                   <Col span={12}>
                     <Form.Item label="联系方式">
                       {getFieldDecorator('phone', {
-                        rules: [],
                         initialValue: (currentIndex != null && currentUser.phone) || undefined,
                       })(<Input placeholder="请输入联系方式" />)}
                     </Form.Item>
                   </Col>
                   <Col span={12}>
-                    <Form.Item label="部门">
+                    <Form.Item label="部门" >
                       {getFieldDecorator('departmentId', {
-                        rules: [],
-                        initialValue: currentIndex != null && currentUser.departmentId,
+                        initialValue: (currentIndex != null && currentUser.departmentId) || undefined,
                       })(
                         <Select placeholder="请选择部门" onSelect={this.onSelectDepartmentChange}>
                           {allPosition &&
@@ -318,24 +310,19 @@ class AddUsers extends React.Component<Props, State> {
                 <Row type="flex" justify="space-between">
                   <Col span={12}>
                     <Form.Item label="信息牌编号">
-                      <Input disabled={true} value={departmentNumber + userInfoNumber} />
+                    {getFieldDecorator('name', {
+                        initialValue: (userInfoNumber != null && (departmentNumber + userInfoNumber)) || undefined,
+                      })(
+                        <Input disabled={true} />
+                      )}
                     </Form.Item>
                   </Col>
                   <Col span={12}>
                     <Form.Item label="部门编号">
-                      {getFieldDecorator('departmentId', {
+                      {getFieldDecorator('dictCode', {
                         rules: [],
-                        initialValue: currentIndex != null && currentUser.departmentId,
-                      })(
-                        <Select placeholder="请选择部门编号">
-                          {allPosition &&
-                            allPosition.map(option => (
-                              <Option value={option.id} key={option.key}>
-                                {option.deptCode}
-                              </Option>
-                            ))}
-                        </Select>,
-                      )}
+                        initialValue: (departmentNumber != null && departmentNumber) || undefined,
+                      })(<Input disabled={true} />)}
                     </Form.Item>
                   </Col>
                 </Row>
@@ -360,7 +347,7 @@ class AddUsers extends React.Component<Props, State> {
                     <Form.Item label="在职状态">
                       {getFieldDecorator('incumbency', {
                         rules: [],
-                        initialValue: currentIndex != null && currentUser.incumbency,
+                        initialValue: currentIndex != null && currentUser.type,
                       })(
                         <Select placeholder="请选择在职状态">
                           <Option value="0">在职</Option>
@@ -374,7 +361,7 @@ class AddUsers extends React.Component<Props, State> {
                 <Row type="flex" justify="space-between">
                   <Col span={12}>
                     <Form.Item label="人员编号">
-                      {getFieldDecorator('name', {
+                      {getFieldDecorator('userCode', {
                         rules: [],
                         initialValue: (userInfoNumber != null && userInfoNumber) || undefined,
                       })(<Input disabled={true} />)}
@@ -385,7 +372,7 @@ class AddUsers extends React.Component<Props, State> {
                       {getFieldDecorator(
                         'enableTime',
                         {
-                          initialValue:  moment(),
+                          initialValue: moment(),
 
                         },
                       )(<DatePicker showTime={true} placeholder="请选择开始时间" />)}

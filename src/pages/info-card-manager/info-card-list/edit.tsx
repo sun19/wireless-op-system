@@ -9,6 +9,7 @@ import * as _ from 'lodash';
 import router from 'umi/router';
 import moment from 'moment';
 
+import { BASE_API_URL } from '../../../config/constants';
 import ContentBorder from '../../../components/ContentBorder';
 // import { InputText, TreeNodeMenu } from '../components';
 import { UmiComponentProps } from '@/common/type';
@@ -19,6 +20,7 @@ import { getAllRoles } from '../../system-setting/services';
 import { getAllPosition, getAllSecretLevels, getAllDepartment } from '@/pages/login/login.service';
 import { editInfoList } from '../services';
 
+import request from '@/utils/request';
 import styles from './index.less';
 
 const { TextArea } = Input;
@@ -43,6 +45,8 @@ interface State {
   name?: string;
   id?: string;
   note?: string;
+
+  departmentNumber?: string;
 }
 function hasErrors(fieldsError) {
   return Object.keys(fieldsError).some(field => fieldsError[field]);
@@ -53,6 +57,8 @@ class EditUser extends React.Component<Props, State> {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.state = {
       userTypes: [],
+
+  departmentNumber: ''
     };
   }
   setupDuties = () => {
@@ -139,6 +145,13 @@ class EditUser extends React.Component<Props, State> {
       }
     });
   }
+
+  onSelectDepartmentChange = (value, key) => {
+    this.setState({
+      departmentNumber: key.key,
+    });
+  };
+
   async componentWillMount() {
     this.props.form.validateFields();
     let userTypes = await getAllRoles();
@@ -150,13 +163,17 @@ class EditUser extends React.Component<Props, State> {
     this.setState({ userTypes });
     const dutiesResp = await getAllPosition();
     const secretsLevelsResp = await getAllSecretLevels();
-    const allPositions = await getAllDepartment();
+    // const allPositions = await getAllDepartment();
+    const allPositions = await request.get(
+      `${BASE_API_URL}/jeecg-boot/intf/location/listDepartment`,
+    );
     this.props.dispatch({
       type: 'commonState/update',
       payload: {
         allDuties: dutiesResp.result,
         allSecretLevel: secretsLevelsResp.result,
-        allPosition: allPositions,
+        // allPosition: allPositions,
+        allPosition: allPositions.result.records,
       },
     });
   }
@@ -164,6 +181,8 @@ class EditUser extends React.Component<Props, State> {
     const props = this.props;
     const { getFieldDecorator, getFieldsError } = this.props.form;
     const { infoCardList, allPosition } = this.props;
+
+    const {  departmentNumber } = this.state;
     return (
       <ContentBorder className={styles.auth_root}>
         <Form
@@ -179,14 +198,9 @@ class EditUser extends React.Component<Props, State> {
                   <Col span={12}>
                     <Form.Item label="姓名">
                       {getFieldDecorator('userName', {
-                        rules: [
-                          {
-                            //required: true,
-                            message: '请输入姓名',
-                          },
-                        ],
+                        rules: [],
                         initialValue: infoCardList.userName,
-                      })(<Input placeholder="请输入姓名" />)}
+                      })(<Input readOnly={true}  />)}
                     </Form.Item>
                   </Col>
                   <Col span={12}>
@@ -260,15 +274,34 @@ class EditUser extends React.Component<Props, State> {
                         ],
                         initialValue: infoCardList.departmentId,
                       })(
-                        <Select placeholder="请选择部门">
+                        <Select placeholder="请选择部门" onSelect={this.onSelectDepartmentChange} >
                           {allPosition &&
                             allPosition.map(option => (
-                              <Option value={option.id} key={option.key}>
+                              <Option value={option.id} key={option.deptCode}>
                                 {option.name}
                               </Option>
                             ))}
                         </Select>,
                       )}
+                    </Form.Item>
+                  </Col>
+                </Row>
+                <Row type="flex" justify="space-between">
+                  <Col span={12}>
+                    <Form.Item label="人员编号">
+                    {getFieldDecorator('userCode', {
+                        initialValue: infoCardList.userCode,
+                      })(
+                        <Input readOnly={true} />
+                      )}
+                    </Form.Item>
+                  </Col>
+                  <Col span={12}>
+                    <Form.Item label="部门编号">
+                      {getFieldDecorator('dictCode', {
+                        rules: [],
+                        initialValue:(departmentNumber != null && departmentNumber) || infoCardList.dictCode,
+                      })(<Input readOnly={true}   />)}
                     </Form.Item>
                   </Col>
                 </Row>
@@ -317,14 +350,9 @@ class EditUser extends React.Component<Props, State> {
                   <Col span={12}>
                     <Form.Item label="信息牌编号">
                       {getFieldDecorator('name', {
-                        rules: [
-                          {
-                            //required: true,
-                            message: '请选输入信息牌编号',
-                          },
-                        ],
+                        rules: [],
                         initialValue: infoCardList.name,
-                      })(<Input placeholder="请输入信息牌编号" readOnly={true} />)}
+                      })(<Input readOnly={true} />)}
                     </Form.Item>
                   </Col>
                   <Col span={12}>
