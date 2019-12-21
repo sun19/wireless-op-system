@@ -5,19 +5,13 @@ import { connect } from 'dva';
 import router from 'umi/router';
 
 import ContentBorder from '../../../components/ContentBorder';
-import { InputText, TreeNodeMenu } from '../components';
-import { updateUserType, setCompanyName } from '../services';
+import { setCompanyName } from '../services';
 
 import styles from './index.less';
 import { LEFT_MENUS } from '../../../config/menus';
 
 const { TreeNode } = Tree;
 const { Option } = Select;
-const { TextArea } = Input;
-
-const defaultMenuNodes = LEFT_MENUS;
-
-// interface Props extends FormComponentProps {}
 type Props = FormComponentProps & ReturnType<typeof mapState>;
 
 interface UserType {
@@ -31,7 +25,6 @@ interface State {
   expandedKeys: any;
   selectedKeys: any;
   checkedKeys: any;
-  // autoExpandParent:boolean;
 }
 
 class EditSuperAdmin extends React.Component<Props, State> {
@@ -43,7 +36,6 @@ class EditSuperAdmin extends React.Component<Props, State> {
       userTypes: [],
       expandedKeys: [],
       selectedKeys: [],
-      // autoExpandParent: true,
       checkedKeys: [],
     };
   }
@@ -52,15 +44,11 @@ class EditSuperAdmin extends React.Component<Props, State> {
   goBack = () => {
     this.props.form.resetFields();
     router.push('/system-setting/company-name');
-
-    // router.push('/system-setting/company-name/edit');
   };
   onSelect = (selectedKeys, info) => {
-    // console.log('onSelect', info);
     this.setState({ selectedKeys });
   };
   onCheck = checkedKeys => {
-    // console.log('onCheck', checkedKeys);
     this.setState({ checkedKeys });
   };
 
@@ -74,7 +62,7 @@ class EditSuperAdmin extends React.Component<Props, State> {
         return;
       }
       const isSuccessed = await setCompanyName(values);
-      if (isSuccessed) {
+      if (isSuccessed.success) {
         setTimeout(() => router.push('/system-setting/company-name'), 1000);
       }
     });
@@ -126,7 +114,7 @@ class EditSuperAdmin extends React.Component<Props, State> {
                         rules: [],
                         initialValue: companyNameRecord.isShow,
                       })( 
-                        <Select style={{ width: '2rem' }} className={styles.select_text}>
+                        <Select style={{ width: '220px' }} className={styles.select_text}>
                           <Option value='0' key='0'>
                             显示
                           </Option>

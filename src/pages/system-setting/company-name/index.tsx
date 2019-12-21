@@ -9,7 +9,7 @@ import * as _ from 'lodash';
 
 import MainContent from '../components/MainContent';
 import { UmiComponentProps } from '@/common/type';
-import {  getCompanyName,updateSuperAdmin } from '../services';
+import {  getCompanyName } from '../services';
 import publicStyles from '../index.less';
 
 const { Content } = Layout;

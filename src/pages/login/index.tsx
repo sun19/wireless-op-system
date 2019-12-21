@@ -93,20 +93,10 @@ export default class Login extends Component<any, State> {
         <Header className={[`${styles.no_bg}`].join(' ')}>
           <div className={styles.system_name} />
         </Header>
-        {/* <Content className={[`${styles.no_bg}`].join(' ')}> */}
-        {/* <Row type="flex" justify="center" style={{ height: '100%','minHeight':'700px' }}> */}
-        {/* <Col span={10}> */}
         <div className={styles.loginPanel}>
           <WrappedNormalLoginForm />
         </div>
-        {/* </Col> */}
-        {/* // </Row> */}
-
-        {/* </Content> */}
-        <div style={{ 'fontSize': this.state.size}} className={styles.foot_text}>{this.state.title}</div>
-
-        {/* <Footer className={[`${styles.no_bg}`].join(' ')}>
-        </Footer> */}
+        <div style={{ fontSize: ` ${this.state.size}px`}} className={styles.foot_text}>{this.state.title}</div>
       </Layout>
     );
   }
