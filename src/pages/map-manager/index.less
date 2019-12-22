@@ -272,11 +272,50 @@
 .card_panel {
   position: absolute;
   bottom: 20px;
+  border: 1px dashed #527daa;
+  border-radius: 5px;
   :global {
     .ant-card.ant-card-bordered {
+      background: rgba(2, 10, 34, 0.5);
+      border: 0px;
+      color: white;
+      .ant-card-head {
+        border: 0px;
+        margin-top: 1px;
+        border-bottom: 1px solid #182039;
+        // border-top: 1px dashed #5ea1c8;
+        .ant-card-head-title {
+          color: #5ea1c8;
+        }
+      }
       .ant-card-body {
         max-height: 2.5rem;
         overflow-y: scroll;
+        .ant-list-split {
+          .ant-list-item {
+            .ant-list-item-meta-title {
+              color: #5ea1c8;
+            }
+            border: 0px;
+          }
+        }
+      }
+      .ant-card-actions {
+        border: 0px;
+        background: rgba(2, 10, 34, 0.5);
+        padding: 15px 5px;
+
+        > li {
+          color: #5ea1c8;
+          border-right: 0px;
+          span {
+            padding: 5px;
+            span {
+              padding: 10px;
+              border: 1px solid #5ea1c8;
+            }
+          }
+        }
       }
     }
   }

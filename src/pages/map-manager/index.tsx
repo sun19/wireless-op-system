@@ -101,7 +101,7 @@ class MapManager extends React.Component<Props, State> {
       lamps: [],
       heatmaps: [],
       receiveWsInfo: true,
-      infoDetail: { test: 1 },
+      infoDetail: {},
       mode: 'all',
     };
     this.onInfoCardClick = this.onInfoCardClick.bind(this);
@@ -575,12 +575,12 @@ class MapManager extends React.Component<Props, State> {
               title="详细信息"
               actions={[
                 <span key="setting" onClick={this.enterRealTimeMode}>
-                  <Icon type="setting" key="setting" />
+                  {/* <Icon type="setting" key="setting" /> */}
                   实时追踪
                 </span>,
                 <span key="edit" onClick={this.enterHistoryMode}>
-                  <Icon type="edit" key="edit" />
-                  历史轨迹
+                  {/* <Icon type="edit" key="edit" /> */}
+                  运动轨迹
                 </span>,
               ]}
               style={{ width: 300 }}
