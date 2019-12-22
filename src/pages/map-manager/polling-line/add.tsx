@@ -112,8 +112,8 @@ class AddPollingLine extends React.Component<Props, State> {
   }
   async componentDidMount() {
     if (this.map.current) {
-      const { clientHeight } = this.map.current;
-      const clientWidth = Math.floor((clientHeight * 1920) / 1080);
+      const { clientWidth } = this.map.current;
+      const clientHeight = Math.floor((clientWidth * 1080) / 1920);
       const mapImage = await this.dynamicLoadMapImage();
       const iconImage = await this.dynamicLoadIconImage();
       this.setState({
@@ -131,8 +131,8 @@ class AddPollingLine extends React.Component<Props, State> {
   }
   async initRequest() {
     if (!this.map.current) return;
-    const { clientHeight } = this.map.current;
-    const clientWidth = Math.floor((clientHeight * 1920) / 1080);
+    const { clientWidth } = this.map.current;
+    const clientHeight = Math.floor((clientWidth * 1080) / 1920);
     const maps = await getAllMap();
     let lamps = await getMapLamps({});
     this.props.dispatch({
@@ -188,7 +188,7 @@ class AddPollingLine extends React.Component<Props, State> {
           (values.startTime && values.startTime.format('YYYY-MM-DD HH:mm:ss').toString()) || '',
         endTime: (values.endTime && values.endTime.format('YYYY-MM-DD HH:mm:ss').toString()) || '',
         inspectionRoute: values.inspectionRoute.join(','),
-        type: 0
+        type: 0,
       };
 
       await addPollingLine(data);
@@ -198,8 +198,8 @@ class AddPollingLine extends React.Component<Props, State> {
   };
   onLampSelectChange = e => {
     if (!this.map.current) return;
-    const { clientHeight } = this.map.current;
-    const clientWidth = Math.floor((clientHeight * 1920) / 1080);
+    const { clientWidth } = this.map.current;
+    const clientHeight = Math.floor((clientWidth * 1080) / 1920);
 
     let _lamps = this.props.lamps;
     // let showLamps = _.filter(_lamps.records, route => e.includes(route.id));
@@ -228,8 +228,8 @@ class AddPollingLine extends React.Component<Props, State> {
   onCircleDragging = (event: any) => {
     const defaultWidth = 1920;
     const defaultHeight = 1080;
-    const { clientHeight } = this.map.current;
-    const clientWidth = Math.floor((clientHeight * 1920) / 1080);
+    const { clientWidth } = this.map.current;
+    const clientHeight = Math.floor((clientWidth * 1080) / 1920);
 
     const evt = event.evt;
     //换算由于地图拉伸造成的坐标不一致

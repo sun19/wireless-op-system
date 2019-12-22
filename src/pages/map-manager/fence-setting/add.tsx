@@ -70,11 +70,12 @@ class FencingSetting extends React.Component<Props, State> {
     const mapImage = await this.dynamicLoadMapImage();
     const iconImage = await this.dynamicLoadIconImage();
     if (this.map.current) {
-      const { clientHeight } = this.map.current;
+      const { clientWidth } = this.map.current;
+      const clientHeight = Math.floor((clientWidth * 1080) / 1920);
       this.setState({
         icon: iconImage,
         mapImage,
-        width: Math.floor((1920 * clientHeight) / 1080),
+        width: clientWidth,
         height: clientHeight,
       });
     }
@@ -137,8 +138,8 @@ class FencingSetting extends React.Component<Props, State> {
   };
   onLampSelectChange = e => {
     if (!this.map.current) return;
-    const { clientHeight } = this.map.current;
-    const clientWidth = Math.floor((clientHeight * 1920) / 1080);
+    const { clientWidth } = this.map.current;
+    const clientHeight = Math.floor((clientWidth * 1080) / 1920);
     let _lamps = this.props.lampsType;
     // const routes = inspectionRoute && inspectionRoute.split(',');
     let showLamps = _.filter(_lamps, route => e.includes(route.id));

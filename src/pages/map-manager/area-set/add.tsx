@@ -78,8 +78,8 @@ class FencingSetting extends React.Component<Props, State> {
   async componentDidMount() {
     const mapImage = await this.dynamicLoadMapImage();
     if (this.map.current) {
-      const { clientHeight } = this.map.current;
-      const clientWidth = Math.floor((clientHeight * 1920) / 1080);
+      const { clientWidth } = this.map.current;
+      const clientHeight = Math.floor((clientWidth * 1080) / 1920);
 
       this.setState({
         mapImage,
@@ -101,8 +101,8 @@ class FencingSetting extends React.Component<Props, State> {
   }
 
   async initRequest() {
-    const { clientHeight } = this.map.current;
-    const clientWidth = Math.floor((clientHeight * 1920) / 1080);
+    const { clientWidth } = this.map.current;
+    const clientHeight = Math.floor((clientWidth * 1080) / 1920);
 
     const maps = await getAllMap();
     const fencingTypes = await getAllFencingTypes();
@@ -236,11 +236,11 @@ class FencingSetting extends React.Component<Props, State> {
       <ContentBorder className={styles.auth_root}>
         <Form layout="inline" style={{ marginTop: '0.57rem' }} onSubmit={this.onSubmit}>
           <Row type="flex" justify="center" align="middle" className={styles.add}>
-            <Col span={12}>
+            <Col span={20}>
               {/* <Col span={12}> */}
               <div className="add__inner--container">
-                <Row type="flex" justify="space-between">
-                  <Col span={12}>
+                <Row type="flex" justify="center">
+                  <Col span={8}>
                     <Form.Item label="区域名称">
                       {getFieldDecorator('regionName', {
                         rules: [
@@ -251,7 +251,7 @@ class FencingSetting extends React.Component<Props, State> {
                       })(<Input placeholder="请输入区域名称" />)}
                     </Form.Item>
                   </Col>
-                  <Col span={12}>
+                  <Col span={8}>
                     <Form.Item label="地图名称">
                       {getFieldDecorator('mapId', {
                         rules: [
@@ -271,8 +271,8 @@ class FencingSetting extends React.Component<Props, State> {
                     </Form.Item>
                   </Col>
                 </Row>
-                <Row type="flex" justify="space-between">
-                  <Col span={12}>
+                <Row type="flex" justify="center">
+                  <Col span={8}>
                     <Form.Item label="区域级别">
                       {getFieldDecorator('regionalLevelId', {
                         rules: [
@@ -291,7 +291,7 @@ class FencingSetting extends React.Component<Props, State> {
                       )}
                     </Form.Item>
                   </Col>
-                  <Col span={12} className={styles.text_areas}>
+                  <Col span={8} className={styles.text_areas}>
                     <Form.Item label="备注">
                       {getFieldDecorator('remark')(
                         <TextArea
