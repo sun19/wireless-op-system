@@ -101,7 +101,7 @@ class MapManager extends React.Component<Props, State> {
       lamps: [],
       heatmaps: [],
       receiveWsInfo: true,
-      infoDetail: {},
+      infoDetail: { test: 1 },
       mode: 'all',
     };
     this.onInfoCardClick = this.onInfoCardClick.bind(this);
