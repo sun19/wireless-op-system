@@ -9,7 +9,6 @@ import { connect } from 'dva';
 import { UmiComponentProps } from '@/common/type';
 import { FormComponentProps } from 'antd/lib/form';
 
-
 import MainContent from '../components/MainContent';
 import { ICON_FONTS_URL } from '../../../config/constants';
 import styles from './index.less';
@@ -33,7 +32,7 @@ type Props = StateProps & UmiComponentProps & FormProps;
 const columns = [
   {
     title: '信息牌编号',
-    dataIndex: 'informationBoardName',
+    dataIndex: 'informationBoardId',
     editable: true,
   },
   {
@@ -42,9 +41,8 @@ const columns = [
     dataIndex: 'task',
     editable: true,
     render(item) {
-      return (['巡更路线', '责任区', '禁止区'][item])
-    }
-   
+      return ['巡更路线', '责任区', '禁止区'][item];
+    },
   },
   // {
   //   title: '开始时间',
@@ -57,7 +55,7 @@ const columns = [
   //   dataIndex: 'endTime',
   //   width: '20%',
   //   editable: true,
-  // }, 
+  // },
   {
     title: '备注',
     dataIndex: 'remark',
@@ -115,7 +113,6 @@ class TaskPlan extends React.Component<Props, State> {
       type: 'infoCardManager/update',
       payload: { editData: data },
     });
-  
   }
   addUser = () => {
     router.push('/info-card-manager/task-planning/add');
@@ -130,11 +127,11 @@ class TaskPlan extends React.Component<Props, State> {
       okText: '取消',
       okType: 'danger',
       cancelText: '确定',
-      onOk() { },
+      onOk() {},
       async onCancel() {
         await delTaskList({ id: item.id });
         //重新请求数据重绘
-        self.getTaskListData()
+        self.getTaskListData();
       },
     });
   }

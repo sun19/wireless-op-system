@@ -51,6 +51,9 @@ const columns = [
     editable: true,
     // ellipsis: true,
     width: '15%',
+    render(value, item) {
+      return <span>{item.inspectionRouteName}</span>;
+    },
   },
   {
     title: '巡检开始时间',

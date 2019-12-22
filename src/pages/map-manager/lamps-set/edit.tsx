@@ -281,6 +281,7 @@ class halmpAdd extends React.Component<Props, State> {
                           message: '请选择地图名称',
                         },
                       ],
+                      initialValue: lampRecord.mapId,
                     })(
                       <Select placeholder="请选择地图名称">
                         {maps.map(item => (

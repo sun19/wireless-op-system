@@ -221,7 +221,6 @@ class EditType extends React.Component<Props, State> {
         overrunTime:
           (values.overrunTime && values.overrunTime.format('YYYY-MM-DD HH:mm:ss').toString()) || '',
       };
-
       await wraningTypeEdit(Object.assign(typeRecord, data));
       router.push('/warning-manager/type');
     });

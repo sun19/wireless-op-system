@@ -59,17 +59,16 @@ type StateProps = ReturnType<typeof mapState>;
 type Props = StateProps & UmiComponentProps;
 
 interface colorInfo {
-  color?: string,
-  id?: string,
-  key?: string,
-  name?: string,
-
+  color?: string;
+  id?: string;
+  key?: string;
+  name?: string;
 }
 interface State {
-  visible: boolean,
-  displayColorPicker: boolean,
-  colorInfo: colorInfo,
-  cardMessage: colorInfo
+  visible: boolean;
+  displayColorPicker: boolean;
+  colorInfo: colorInfo;
+  cardMessage: colorInfo;
 }
 class MessageCard extends React.Component<Props, State> {
   constructor(props: any) {
@@ -83,7 +82,6 @@ class MessageCard extends React.Component<Props, State> {
       displayColorPicker: false,
       colorInfo: {},
       cardMessage: {},
-
     };
   }
 
@@ -104,21 +102,18 @@ class MessageCard extends React.Component<Props, State> {
 
   handleOk = e => {
     // console.log(this.state.colorInfo, this.state.cardMessage)
-    const { color, ...props } = this.state.cardMessage
+    const { color, ...props } = this.state.cardMessage;
     const data = {
       ...props,
-      color: this.state.colorInfo.color
-    }
-    updateMessageCard(data).then(
-      () => {
-        this.getBuList()
+      color: this.state.colorInfo.color,
+    };
+    updateMessageCard(data).then(() => {
+      this.getBuList();
 
-        this.setState({
-          visible: false,
-        });
-      }
-    )
-
+      this.setState({
+        visible: false,
+      });
+    });
   };
 
   handleCancel = e => {
@@ -127,18 +122,18 @@ class MessageCard extends React.Component<Props, State> {
     });
   };
   handleChangeComplete = e => {
+    const colorInfo = Object.assign({}, this.state.colorInfo);
+    colorInfo.color = e.hex;
     this.setState({
-      colorInfo: {
-        color: e.hex
-      },
+      colorInfo,
     });
-  }
+  };
   handleClick = () => {
-    this.setState({ displayColorPicker: !this.state.displayColorPicker })
+    this.setState({ displayColorPicker: !this.state.displayColorPicker });
   };
 
   handleClose = () => {
-    this.setState({ displayColorPicker: false })
+    this.setState({ displayColorPicker: false });
   };
   async updateData(data, item) {
     this.setState({
@@ -146,8 +141,8 @@ class MessageCard extends React.Component<Props, State> {
     });
     this.setState({
       cardMessage: data,
-      colorInfo: data
-    })
+      colorInfo: data,
+    });
   }
 
   deleteColumn(item) {
@@ -160,13 +155,12 @@ class MessageCard extends React.Component<Props, State> {
       okText: '取消',
       okType: 'danger',
       cancelText: '确定',
-      onOk() { },
+      onOk() {},
       async onCancel() {
         await deleteMessageCard({ id: item.id });
         //重新请求数据重绘
         self.getBuList();
       },
- 
     });
   }
 
@@ -174,8 +168,8 @@ class MessageCard extends React.Component<Props, State> {
     this.getBuList();
   }
 
-  addDepartment(){
-    router.push('/system-setting/message-card/add')
+  addDepartment() {
+    router.push('/system-setting/message-card/add');
   }
 
   render() {
@@ -196,37 +190,37 @@ class MessageCard extends React.Component<Props, State> {
     const popover = {
       position: 'absolute',
       zIndex: '2',
-    }
+    };
     const cover = {
       position: 'fixed',
       top: '0px',
       right: '0px',
       bottom: '0px',
       left: '0px',
-    }
+    };
 
     return (
       <div className={publicStyles.public_hight}>
         <div className={publicStyles.bg}>
           <div className={publicStyles.public_hight_40} />
           <Form layout="inline">
-              <Row
-                type="flex"
-                justify="start"
-                align="middle"
-                style={{ paddingLeft: '39px' }}
-                gutter={16}
-              >
-                <span className={[`${publicStyles.form_btns}`].join(' ')}>
-                  <span
-                    className={[`${publicStyles.form_btn_add}`].join('')}
-                    onClick={this.addDepartment}
-                  >
-                    <IconFont type="icon-plus" />
-                  </span>
+            <Row
+              type="flex"
+              justify="start"
+              align="middle"
+              style={{ paddingLeft: '39px' }}
+              gutter={16}
+            >
+              <span className={[`${publicStyles.form_btns}`].join(' ')}>
+                <span
+                  className={[`${publicStyles.form_btn_add}`].join('')}
+                  onClick={this.addDepartment}
+                >
+                  <IconFont type="icon-plus" />
                 </span>
-              </Row>
-            </Form>
+              </span>
+            </Row>
+          </Form>
           <MainContent
             columns={columns}
             data={records}
@@ -244,25 +238,42 @@ class MessageCard extends React.Component<Props, State> {
             okText="确认"
             cancelText="取消"
           >
-            <Form labelCol={{ span: 5 }} wrapperCol={{ span: 12 }} >
+            <Form labelCol={{ span: 5 }} wrapperCol={{ span: 12 }}>
               <Form.Item label="部门">
                 <span>{this.state.colorInfo.name}</span>
               </Form.Item>
               <Form.Item label="颜色">
                 <div className={styles.color_pick}>
                   <div>
-                    <div onClick={this.handleClick} className={styles.color_span} style={{   background: this.state.colorInfo.color,  }} />
+                    <div
+                      onClick={this.handleClick}
+                      className={styles.color_span}
+                      style={{ background: this.state.colorInfo.color }}
+                    />
                     {/* Pick Color</div> */}
-                    {this.state.displayColorPicker ? <div>
-                      <div style={{position: 'fixed', top: '0px', right: '0px',  bottom: '0px',  left: '0px', }} onClick={this.handleClose} />
-                      <ChromePicker style={{ width: '400px' }} color={this.state.colorInfo.color} onChangeComplete={this.handleChangeComplete} />
-                    </div> : null}
+                    {this.state.displayColorPicker ? (
+                      <div>
+                        <div
+                          style={{
+                            position: 'fixed',
+                            top: '0px',
+                            right: '0px',
+                            bottom: '0px',
+                            left: '0px',
+                          }}
+                          onClick={this.handleClose}
+                        />
+                        <ChromePicker
+                          style={{ width: '400px' }}
+                          color={this.state.colorInfo.color}
+                          onChangeComplete={this.handleChangeComplete}
+                        />
+                      </div>
+                    ) : null}
                   </div>
                 </div>
               </Form.Item>
             </Form>
-
-
           </Modal>
         </div>
       </div>

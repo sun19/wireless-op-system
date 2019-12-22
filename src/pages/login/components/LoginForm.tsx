@@ -18,6 +18,7 @@ import {
 } from '../login.service';
 import { UmiComponentProps } from '@/common/type';
 import styles from '../index.less';
+import { ids } from 'konva/types/Node';
 
 const IconFont = Icon.createFromIconfontCN({
   scriptUrl: ICON_FONTS_URL,
@@ -25,6 +26,7 @@ const IconFont = Icon.createFromIconfontCN({
 
 interface State {
   value: string;
+  message?: string;
 }
 
 type StateProps = ReturnType<typeof mapState>;
@@ -36,6 +38,7 @@ class NormalLoginForm extends React.Component<Props> {
     super(props);
     this.state = {
       value: '1',
+      message: '',
     };
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -63,18 +66,30 @@ class NormalLoginForm extends React.Component<Props> {
           localStorage.setItem('usepass', JSON.stringify(data));
           localStorage.setItem('userMessage', resp.result.userInfo.roleId);
           localStorage.setItem('userinfo', JSON.stringify(resp.result.userInfo));
+          this.setState({ message: this.getDialog('success', '登录成功') });
+          setTimeout(() => this.setState({ message: '' }), 3000);
           setTimeout(() => router.push('/big-screen/homepage'), 1000);
-          message.success(<span style={{ fontSize: '25px' }}>登录成功！</span>, 3);
-          // this.getMenus()
+
+          // message.success(<span style={{ fontSize: '25px' }}>登录成功！</span>);
         } else {
-          message.warning(<span style={{ fontSize: '25px' }}>登录失败!请重新登录！</span>, 3);
-          // this.getMenus()
-          // setTimeout(() => router.push('/big-screen/homepage'), 1000);
+          this.setState({ message: this.getDialog('error', '登录失败!请重新登录！') });
+          setTimeout(() => this.setState({ message: '' }), 3000);
         }
       }
     });
   }
-
+  getDialog = (data, message) => {
+    if (data === 'success' || data === 'error') {
+      return (
+        <div className="login_message">
+          <div className="login_message_box">
+            <Icon type="check-circle" theme="filled" />
+            {message}
+          </div>
+        </div>
+      );
+    }
+  };
   async preFetchAllCommonState() {
     // const mapResp = await getAllMap();
     // const areasResp = await getAllArea();
@@ -125,54 +140,61 @@ class NormalLoginForm extends React.Component<Props> {
     const { allRoles } = this.props;
 
     return (
-      <div className={styles.login_form}>
-        <div className={styles.login_title}>欢迎登录</div>
-        <Form onSubmit={this.handleSubmit} className={styles.login_main}>
-          <Form.Item>
-            {getFieldDecorator('roleId', { rules: [] })(
-              <div className={styles.redio_style}>
-                <Radio.Group>
-                  {allRoles.map((res, index) => {
-                    return (
-                      <Radio value={res.id} key={index}>
-                        <span className={styles.rolename} key={index}>
-                          {res.roleName}{' '}
-                        </span>
-                      </Radio>
-                    );
-                  })}
-                </Radio.Group>
-              </div>,
-            )}
-          </Form.Item>
-          <Form.Item>
-            {getFieldDecorator('username', {
-              rules: [{ required: true, message: '请输入登录名!' }],
-            })(<Input prefix={<IconFont type="icon-user" />} placeholder="  登录名" />)}
-          </Form.Item>
-          <Form.Item>
-            {getFieldDecorator('password', {
-              rules: [{ required: true, message: '请输入密码!' }],
-            })(
-              <Input prefix={<IconFont type="icon-key" />} type="password" placeholder="  密码" />,
-            )}
-          </Form.Item>
-          <Form.Item>
-            <Row type="flex" justify="center" style={{ height: '100%' }}>
-              <Col span={12}>
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  onClick={this.handleSubmit}
-                  className={styles.login_button}
-                >
-                  登录
-                </Button>
-              </Col>
-            </Row>
-          </Form.Item>
-        </Form>
-      </div>
+      <React.Fragment>
+        <div className={styles.login_form}>
+          <div className={styles.login_title}>欢迎登录</div>
+          <Form onSubmit={this.handleSubmit} className={styles.login_main}>
+            <Form.Item>
+              {getFieldDecorator('roleId', { rules: [] })(
+                <div className={styles.redio_style}>
+                  <Radio.Group>
+                    {allRoles.map((res, index) => {
+                      return (
+                        <Radio value={res.id} key={index}>
+                          <span className={styles.rolename} key={index}>
+                            {res.roleName}{' '}
+                          </span>
+                        </Radio>
+                      );
+                    })}
+                  </Radio.Group>
+                </div>,
+              )}
+            </Form.Item>
+            <Form.Item>
+              {getFieldDecorator('username', {
+                rules: [{ required: true, message: '请输入登录名!' }],
+              })(<Input prefix={<IconFont type="icon-user" />} placeholder="  登录名" />)}
+            </Form.Item>
+            <Form.Item>
+              {getFieldDecorator('password', {
+                rules: [{ required: true, message: '请输入密码!' }],
+              })(
+                <Input
+                  prefix={<IconFont type="icon-key" />}
+                  type="password"
+                  placeholder="  密码"
+                />,
+              )}
+            </Form.Item>
+            {this.state.message}
+            <Form.Item>
+              <Row type="flex" justify="center" style={{ height: '100%' }}>
+                <Col span={12}>
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    onClick={this.handleSubmit}
+                    className={styles.login_button}
+                  >
+                    登录
+                  </Button>
+                </Col>
+              </Row>
+            </Form.Item>
+          </Form>
+        </div>
+      </React.Fragment>
     );
   }
 }
