@@ -21,6 +21,7 @@
     "react-dom": "^16.8.6",
     "react-heatmap.js": "^1.0.0",
     "react-konva": "^16.10.1-0",
+    "react-orgchart": "^1.0.5",
     "react-router-breadcrumbs-hoc": "^3.2.3",
     "react-transition-group": "^4.3.0",
     "redux-persist": "^6.0.0",

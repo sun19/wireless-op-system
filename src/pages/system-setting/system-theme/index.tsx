@@ -2,7 +2,7 @@
  * title: 设置 > 高级管理员设置 > 基础数据设置 > 信息牌背景设置
  */
 import React from 'react';
-import { Layout, message, Radio,Form, Button } from 'antd';
+import { Layout, message, Radio, Form, Button } from 'antd';
 import { connect } from 'dva';
 import router from 'umi/router';
 import * as _ from 'lodash';
@@ -15,11 +15,7 @@ import {
 
 } from '../services';
 import publicStyles from '../index.less';
-
 const { Content } = Layout;
-
-
-
 type StateProps = ReturnType<typeof mapState>;
 type Props = StateProps & UmiComponentProps;
 interface State {
@@ -27,7 +23,6 @@ interface State {
   remark: string;
   value: number;
 }
-
 class SuperAdmin extends React.Component<Props, State> {
   constructor(props: any) {
     super(props);
@@ -54,7 +49,7 @@ class SuperAdmin extends React.Component<Props, State> {
     }
     const updateDictName = await updateDictNameByType(data);
     if (updateDictName.success) {
-      message.success('修改成功!', 1000);
+      message.success('修改成功!');
     }
   }
 
@@ -96,9 +91,9 @@ class SuperAdmin extends React.Component<Props, State> {
           <Button className={publicStyles.form_btn} onClick={this.updateData}>
             保存
                       </Button>
-                      
+
         </Form.Item>
-      
+
       </div>
     );
   }

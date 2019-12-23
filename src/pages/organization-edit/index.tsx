@@ -7,6 +7,8 @@ import request, { format } from '@/utils/request';
 import { connect } from 'dva';
 import { FormComponentProps } from 'antd/lib/form';
 import { UmiComponentProps } from '@/common/type';
+import OrgChart from 'react-orgchart';
+import 'react-orgchart/index.css';
 
 
 import { BASE_API_URL } from '../../config/constants';
@@ -41,7 +43,34 @@ const columns = [
   //   render: () => <a>Delete</a>,
   // },
 ];
-
+const initechOrg = {
+  name: "Bill Lumbergh",
+  actor: "Gary Cole",
+  children: [
+    {
+      name: "Peter Gibbons",
+      actor: "Ron Livingston",
+      children: [
+        {
+          name: "And More!!",
+          actor: "This is just to show how to build a complex tree with multiple levels of children. Enjoy!"
+        }
+      ]
+    },
+    {
+      name: "Milton Waddams",
+      actor: "Stephen Root"
+    },
+    {
+      name: "Bob Slydell",
+      actor: "John C. McGi..."
+    },
+  ]
+};
+const MyNodeComponent = ({ node }) => {
+  // onClick={() => alert("Hi my real name is: " + node.actor)}
+  return ( <div className={styles.initechNode} >{node.name}</div> );
+};
 interface State {
   allMenus: any[];
   visible?: boolean;
@@ -195,104 +224,20 @@ class MenuEdit extends React.Component<Props, State> {
       // message.success('编辑成功')
     }
   }
-  // expandedRowRender = (record, index, indent, expanded) => {
-  //   const child = record.child;
-  //   if (child && Array.isArray(child) && child.length > 0) {
-  //     const columns = [
-  //       {
-  //         title: '菜单名',
-  //         dataIndex: 'name',
-  //         editable: true,
-  //       },
-  //       {
-  //         title: '路径',
-  //         dataIndex: 'path',
-  //         editable: false,
-  //       },
-  //     ];
-  //     return (
-  //       <EditableTable
-  //         columns={columns}
-  //         data={child}
-  //         pagination={false}
-  //         cancel={this.cancel}
-  //         expandedRowRender={this.expandedRowRender}
-  //         showInlineEdit={true}
-  //       />
-  //     );
-  //   }
-  // };
-
   render() {
   const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: { span: 10 },
       wrapperCol: { span: 18 },
     };
-    const rowSelection = {
-      onChange: (selectedRowKeys, selectedRows) => {
-        // console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-      },
-      onSelect: (record, selected, selectedRows) => {
-        // console.log(record, selected, selectedRows);
-      },
-      onSelectAll: (selected, selectedRows, changeRows) => {
-        // console.log(selected, selectedRows, changeRows);
-      },
-    };
+  
     return (
       <div className={styles.menu_edit}>
-        {/* <Table columns={columns} rowSelection={rowSelection} dataSource={this.state.allMenus} />, */}
-        <EditableTable
-          columns={columns}
-          // expandedRowRender={this.expandedRowRender}
-          data={this.state.allMenus}
-      //  data=   {defaultMenuNodes}
-          showInlineEdit={true}
-          updateData={this.updateData}
-          deleteColumn={this.deleteColumn}
-          addColumn={this.addColumn}
-          editColumn={this.editColumn}
-        />
-        <Modal
-          title="修改名称"
-          visible={this.state.editName}
-          onOk={this.handleEditOk}
-          onCancel={this.handleEditCancel}
-          width={700}
-        >
-          <Form.Item {...formItemLayout} label="菜单名称">
-            {getFieldDecorator('name', {
-              rules: [],
-            })(<Input  />)}
-          </Form.Item>
-        </Modal>
-
-        <Modal
-          title="添加下级菜单"
-          visible={this.state.visible}
-          onOk={this.handleOk}
-          onCancel={this.handleCancel}
-          width={700}
-        >
-            <Form.Item  {...formItemLayout} label="上级目录名称">
-            {getFieldDecorator('name', {
-              rules: [],
-            })(<Input />)}
-            </Form.Item>
-          <Form.Item {...formItemLayout}  label="菜单名称">
-            {getFieldDecorator('childrenName', {
-              rules: [],
-            })(<Input />)}
-            </Form.Item>
-        </Modal>
-      
+        <OrgChart className={styles.treeEdit}  tree={initechOrg} NodeComponent={MyNodeComponent} />
       </div>
     );
   }
 }
-
- 
 
 const AddUserForm = Form.create<Props>({ name: 'add_user' })(MenuEdit);
 const mapState = ({ menu, router }) => ({
