@@ -17,6 +17,7 @@ import {
 import * as _ from 'lodash';
 
 import ContentBorder from '../../../components/ContentBorder';
+import { getSuperAdminList } from '@/pages/system-setting/services';
 import { warningTypeSearch } from '@/pages/warning-manager/services';
 import { UmiComponentProps } from '@/common/type';
 import { getAllMap } from '@/pages/login/login.service';
@@ -135,11 +136,16 @@ class AddPollingLine extends React.Component<Props, State> {
     const clientHeight = Math.floor((clientWidth * 1080) / 1920);
     const maps = await getAllMap();
     let lamps = await getMapLamps({});
+    const repeatTypes = await getSuperAdminList({
+      type: 'repeatType',
+      isShow: '1',
+    });
     this.props.dispatch({
       type: 'mapManager/update',
       payload: {
         allMaps: maps.result,
         lamps: lamps.result,
+        repeatTypes: repeatTypes.records || [],
       },
     });
   }
@@ -242,7 +248,7 @@ class AddPollingLine extends React.Component<Props, State> {
   };
   render() {
     const { getFieldDecorator } = this.props.form;
-    let { maps, pollingLinesRecord, lamps } = this.props;
+    let { maps, pollingLinesRecord, lamps, repeatTypes } = this.props;
     if (_.isEmpty(lamps)) lamps = { records: [] };
     const createdLamps = this.createLamps();
     const createdLine = this.createLampLines();
@@ -341,7 +347,23 @@ class AddPollingLine extends React.Component<Props, State> {
               <Row type="flex" justify="space-between">
                 <Col span={24}>
                   {this.setupAlarmSelect()}
-
+                  <Form.Item label="重复类型">
+                    {getFieldDecorator('repeatType', {
+                      rules: [
+                        {
+                          message: '请输入重复类型',
+                        },
+                      ],
+                    })(
+                      <Select placeholder="请选择重复类型">
+                        {repeatTypes.map(type => (
+                          <Option value={type.dictValue} key={type.dictValue}>
+                            {type.dictName}
+                          </Option>
+                        ))}
+                      </Select>,
+                    )}
+                  </Form.Item>
                   <Form.Item className={styles.area_style} label="巡检名称">
                     {getFieldDecorator('name', {
                       rules: [],
@@ -430,7 +452,16 @@ class AddPollingLine extends React.Component<Props, State> {
 const AddPollingLineHOC = Form.create<Props>({ name: 'add_polling_line' })(AddPollingLine);
 
 const mapState = ({ mapManager }) => {
-  const { allMaps, fencingTypes, users, levels, areas, pollingLinesRecord, lamps } = mapManager;
+  const {
+    allMaps,
+    fencingTypes,
+    users,
+    levels,
+    areas,
+    repeatTypes,
+    pollingLinesRecord,
+    lamps,
+  } = mapManager;
   return {
     mapFencing: mapManager.mapFencing,
     maps: allMaps,
@@ -440,6 +471,7 @@ const mapState = ({ mapManager }) => {
     areas,
     pollingLinesRecord,
     lamps,
+    repeatTypes,
   };
 };
 

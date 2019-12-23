@@ -66,7 +66,7 @@ class FencingSetting extends React.Component<Props, State> {
     return new Promise(resolve => {
       const mapImage = new Image();
       mapImage.src = require('../../map-manager/assets/baoan.png');
-      mapImage.onload = function () {
+      mapImage.onload = function() {
         resolve(mapImage);
       };
     });
@@ -123,7 +123,7 @@ class FencingSetting extends React.Component<Props, State> {
     return new Promise(resolve => {
       const mapImage = new Image();
       mapImage.src = require('../../big-screen/assets/map.png');
-      mapImage.onload = function () {
+      mapImage.onload = function() {
         resolve(mapImage);
       };
     });
@@ -136,7 +136,11 @@ class FencingSetting extends React.Component<Props, State> {
     return getFieldDecorator('userId', {
       rules: [],
     })(
-      <Select mode="multiple" placeholder="请选择关联人员" style={{ width: '100%' }}>
+      <Select
+        mode="multiple"
+        placeholder="请选择关联人员"
+        //  style={{ width: '100%' }}
+      >
         {users.map(user => (
           <Option key={user.id} value={user.id}>
             {user.name}
@@ -194,7 +198,7 @@ class FencingSetting extends React.Component<Props, State> {
       <Select
         mode="multiple"
         placeholder="请选择灯具设置围栏"
-        style={{ width: '100%' }}
+        // style={{ width: '100%' }}
         onChange={this.onLampSelectChange}
       >
         {lampsType.map(lamp => (
@@ -401,8 +405,6 @@ class FencingSetting extends React.Component<Props, State> {
                 </Col>
               </Row>
 
-
-
               <Row type="flex" justify="space-between">
                 <Col span={24}>
                   <Form.Item label="告警类型" className={styles.area_style}>
@@ -421,10 +423,6 @@ class FencingSetting extends React.Component<Props, State> {
                 </Col>
               </Row>
 
-
-
-
-
               <Row className={styles.line_style}>
                 <Col className={styles.line_type} span={11} />
                 <Col span={2}>地图</Col>
@@ -442,18 +440,6 @@ class FencingSetting extends React.Component<Props, State> {
                   </div>
                 </Col>
               </Row>
-
-
-
-
-
-
-
-
-
-
-
-
 
               <Row type="flex" justify="center" style={{ marginTop: '0.35rem' }}>
                 <Col span={2}>

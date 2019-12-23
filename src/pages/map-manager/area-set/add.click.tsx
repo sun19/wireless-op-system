@@ -78,8 +78,8 @@ class FencingSetting extends React.Component<Props, State> {
   async componentDidMount() {
     const mapImage = await this.dynamicLoadMapImage();
     if (this.map.current) {
-      const { clientHeight } = this.map.current;
-      const clientWidth = Math.floor((clientHeight * 1920) / 1080);
+      const { clientWidth } = this.map.current;
+      const clientHeight = Math.floor((clientWidth * 1080) / 1920);
 
       this.setState({
         mapImage,
@@ -130,8 +130,8 @@ class FencingSetting extends React.Component<Props, State> {
   onCircleDragging = (event: any) => {
     const defaultWidth = 1920;
     const defaultHeight = 1080;
-    const { clientHeight } = this.map.current;
-    const clientWidth = Math.floor((clientHeight * 1920) / 1080);
+    const { clientWidth } = this.map.current;
+    const clientHeight = Math.floor((clientWidth * 1080) / 1920);
 
     const evt = event.evt;
     const target = event.target;
@@ -158,8 +158,8 @@ class FencingSetting extends React.Component<Props, State> {
   onCircleClick = (event: any) => {
     const defaultWidth = 1920;
     const defaultHeight = 1080;
-    const { clientHeight } = this.map.current;
-    const clientWidth = Math.floor((clientHeight * 1920) / 1080);
+    const { clientWidth } = this.map.current;
+    const clientHeight = Math.floor((clientWidth * 1080) / 1920);
 
     const evt = event.evt;
     //换算由于地图拉伸造成的坐标不一致
@@ -236,8 +236,8 @@ class FencingSetting extends React.Component<Props, State> {
     if (!this.state.canDraw) return;
     const defaultWidth = 1920;
     const defaultHeight = 1080;
-    const { clientHeight } = this.map.current;
-    const clientWidth = Math.floor((clientHeight * 1920) / 1080);
+    const { clientWidth } = this.map.current;
+    const clientHeight = Math.floor((clientWidth * 1080) / 1920);
     const event: any = evt.evt;
     const stage = evt.target.getStage();
     const oldScale = stage.scaleX();

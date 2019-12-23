@@ -77,7 +77,7 @@ const columns = [
     className: 'select_text',
     editable: true,
   },
-
+  //TODO:重复类型字段
   {
     title: '重复类型',
     dataIndex: 'repeatTypeName',

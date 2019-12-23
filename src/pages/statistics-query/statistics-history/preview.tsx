@@ -59,8 +59,8 @@ class historyAdd extends React.Component<Props, State> {
   };
   async componentDidMount() {
     if (!this.map.current) return;
-    const { clientHeight } = this.map.current;
-    const clientWidth = Math.floor((clientHeight * 1920) / 1080);
+    const { clientWidth } = this.map.current;
+    const clientHeight = Math.floor((clientWidth * 1080) / 1920);
     const { historyRecord } = this.props;
     const { informationBoardName } = historyRecord;
     const historyDetail = await getHistoryDetail({
