@@ -148,7 +148,8 @@ class TaskAdd extends React.Component<Props, State> {
                 <Row type="flex" justify="space-between">
                   <Col span={12}>
                     <Form.Item label="信息牌">
-                      {getFieldDecorator('informationBoardName', {
+                      {/* {getFieldDecorator('informationBoardName', { */}
+                      {getFieldDecorator('informationBoardId', {
                         rules: [
                           {
                             //required: true,

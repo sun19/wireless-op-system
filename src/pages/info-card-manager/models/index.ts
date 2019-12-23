@@ -9,6 +9,7 @@ export default {
     infoCardList:{},
     allPosition:{},
     editData:{},
+    userInfoList: [],
   },
   reducers: {
     update(state, { payload }) {

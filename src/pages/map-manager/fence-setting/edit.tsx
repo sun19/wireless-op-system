@@ -20,6 +20,9 @@ import {
   getAllLevels,
   getAllArea,
 } from '@/pages/login/login.service';
+
+import { getSuperAdminList } from '@/pages/system-setting/services';
+import { warningTypeSearch } from '@/pages/warning-manager/services';
 import { updateFencingArea, getAllLamps } from '../services';
 
 import styles from './index.less';
@@ -88,9 +91,14 @@ class FencingSetting extends React.Component<Props, State> {
     const levels = await getAllLevels();
     const areas = await getAllArea();
     const lamps = await getAllLamps();
+
+    const warningTypes = await warningTypeSearch({});
+
+
     this.props.dispatch({
       type: 'mapManager/update',
       payload: {
+        warningTypes: warningTypes.records || [],
         allMaps: maps.result,
         fencingTypes: fencingTypes.result,
         users: users,
@@ -232,7 +240,7 @@ class FencingSetting extends React.Component<Props, State> {
   render() {
     const { getFieldDecorator } = this.props.form;
     const { mapImage, width, height } = this.state;
-    const { maps, fencingTypes, users, levels, areas, fencingTypesRecord } = this.props;
+    const { maps, fencingTypes, users, levels, areas, fencingTypesRecord,warningTypes} = this.props;
     const createdLamps = this.createLamps();
     return (
       <ContentBorder className={styles.auth_root}>
@@ -396,6 +404,25 @@ class FencingSetting extends React.Component<Props, State> {
                 </Col>
               </Row>
 
+              <Row type="flex" justify="space-between">
+                <Col span={24}>
+                  <Form.Item label="告警类型" className={styles.area_style}>
+                    {getFieldDecorator('warnModeId', {
+                      rules: [],
+                      initialValue: fencingTypesRecord.warnModeId,
+                    })(
+                      <Select placeholder="请选择告警方式">
+                        {warningTypes.map(type => (
+                          <Option value={type.id} key={type.id}>
+                            {type.name}
+                          </Option>
+                        ))}
+                      </Select>,
+                    )}
+                  </Form.Item>
+                </Col>
+              </Row>
+
               <Row className={styles.line_style}>
                 <Col className={styles.line_type} span={11} />
                 <Col span={2}>地图</Col>
@@ -450,6 +477,7 @@ const mapState = ({ mapManager }) => {
     levels,
     areas,
     lampsType,
+    warningTypes: mapManager.warningTypes,
   };
 };
 

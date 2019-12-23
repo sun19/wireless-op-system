@@ -36,7 +36,7 @@ type StateProps = ReturnType<typeof mapState>;
 type Props = StateProps & UmiComponentProps & FormProps;
 
 interface State {
-  userTypes: UserType[];
+  // userTypes: UserType[];
   userName?: string;
   cardNo?: string;
   phone?: string;
@@ -45,10 +45,10 @@ interface State {
   name?: string;
   id?: string;
   note?: string;
-  userInfoList: any[];
+  // userInfoList: any[];
   currentIndex?: number;
   currentUser?: any;
-  userInfoNumber?: number;
+  // userInfoNumber?: number;
   departmentNumber?: string;
 }
 function hasErrors(fieldsError) {
@@ -59,10 +59,12 @@ class AddUsers extends React.Component<Props, State> {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.state = {
-      userTypes: [],
-      userInfoList: [],
+      // userTypes: [],
+      // userInfoList: [],
       departmentNumber: '',
     };
+
+ 
   }
   setupDuties = () => {
     const { allDuties } = this.props;
@@ -138,20 +140,21 @@ class AddUsers extends React.Component<Props, State> {
     });
   }
   async componentDidMount() {
-    this.props.form.validateFields();
-    let userTypes = await getAllRoles();
-    userTypes = userTypes.map(item => ({
-      key: item.id,
-      value: item.roleName,
-      roleId: item.id,
-    }));
-    this.setState({ userTypes });
+    // 校验并获取一组输入域的值与 Error，若 fieldNames 参数为空，则校验全部组件
+    // this.props.form.validateFields();
+
+
     const dutiesResp = await getAllPosition();
     const secretsLevelsResp = await getAllSecretLevels();
-    // const allPositions = await getAllDepartment();
-
     const allPositions = await request.get(
       `${BASE_API_URL}/jeecg-boot/intf/location/listDepartment`,
+    );
+    let userInfoList1 = await request.get(
+      BASE_API_URL + '/jeecg-boot/intf/location/queryUserInfoList',
+    );
+    userInfoList1 = (userInfoList1.result && userInfoList1.result.records) || [];
+    let userInfoNumber = await request.get(
+      BASE_API_URL + '/jeecg-boot/intf/location/getDictNameByType?type=informationBoardNumber',
     );
 
     this.props.dispatch({
@@ -160,28 +163,14 @@ class AddUsers extends React.Component<Props, State> {
         allDuties: dutiesResp.result,
         allSecretLevel: secretsLevelsResp.result,
         allPosition: allPositions.result.records,
+        userInfoList:userInfoList1,
+        userInfoNumber:userInfoNumber
       },
-    });
-
-    let userInfoList = await request.get(
-      BASE_API_URL + '/jeecg-boot/intf/location/queryUserInfoList',
-    );
-    userInfoList = (userInfoList.result && userInfoList.result.records) || [];
-    this.setState({
-      userInfoList,
-    });
-
-    let userInfoNumber = await request.get(
-      BASE_API_URL + '/jeecg-boot/intf/location/getDictNameByType?type=informationBoardNumber',
-    );
-
-    this.setState({
-      userInfoNumber,
     });
   }
   onSelectChange = (value, index) => {
-    const { userInfoList } = this.state;
-    const { allPosition } = this.props;
+    // const { userInfoList } = this.state;
+    const { allPosition , userInfoList } = this.props;
     let currentIndex = undefined;
     userInfoList.map((item, index) => {
       if (item.name === value) {
@@ -210,12 +199,13 @@ class AddUsers extends React.Component<Props, State> {
   };
 
   setupSelectName = () => {
-    const { userInfoList } = this.state;
+    const { userInfoList } = this.props;
     const { getFieldDecorator } = this.props.form;
     return (
       <Form.Item label="姓名">
         {getFieldDecorator('userName', {
-          rules: [],
+          // rules: [],
+          rules: [{ required: true, message: "请选择一个用户!" }],
         })(
           <Select onSelect={this.onSelectChange}>
             {userInfoList.map(user => {
@@ -234,8 +224,10 @@ class AddUsers extends React.Component<Props, State> {
   render() {
     const props = this.props;
     const { getFieldDecorator, getFieldsError } = this.props.form;
-    const { allPosition } = this.props;
-    const { currentIndex, currentUser, userInfoNumber, departmentNumber } = this.state;
+    const { allPosition ,userInfoNumber} = this.props;
+    const { currentIndex, currentUser, departmentNumber } = this.state;
+
+   
 
     return (
       <ContentBorder className={styles.auth_root}>
@@ -253,7 +245,7 @@ class AddUsers extends React.Component<Props, State> {
                   <Col span={12}>
                     <Form.Item label="身份证号">
                       {getFieldDecorator('cardNo', {
-                        rules: [],
+                        // rules: [],
                         initialValue: (currentIndex != null && currentUser.cardNo) || undefined,
                       })(<Input placeholder="请输入身份证号" />)}
                     </Form.Item>
@@ -419,12 +411,13 @@ class AddUsers extends React.Component<Props, State> {
 }
 const AddUserForm = Form.create<Props>({ name: 'add_user' })(AddUsers);
 const mapState = ({ userManager, commonState }) => {
-  const { allDuties, allSecretLevel, allPosition } = commonState;
+  const { allDuties, allSecretLevel, allPosition,userInfoList,userInfoNumber } = commonState;
   return {
     allDuties: allDuties,
     allPosition: allPosition,
-
     allSecretLevel: allSecretLevel,
+    userInfoList:userInfoList,
+    userInfoNumber:userInfoNumber
   };
 };
 export default connect(mapState)(AddUserForm);

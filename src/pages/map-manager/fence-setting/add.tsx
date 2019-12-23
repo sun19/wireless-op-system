@@ -19,6 +19,11 @@ import {
   getAllLevels,
   getAllArea,
 } from '@/pages/login/login.service';
+
+import { getSuperAdminList } from '@/pages/system-setting/services';
+
+import { warningTypeSearch } from '@/pages/warning-manager/services';
+
 import { addMapFencingArea, getAllLamps } from '../services';
 
 import styles from './index.less';
@@ -61,7 +66,7 @@ class FencingSetting extends React.Component<Props, State> {
     return new Promise(resolve => {
       const mapImage = new Image();
       mapImage.src = require('../../map-manager/assets/baoan.png');
-      mapImage.onload = function() {
+      mapImage.onload = function () {
         resolve(mapImage);
       };
     });
@@ -97,9 +102,13 @@ class FencingSetting extends React.Component<Props, State> {
     const levels = await getAllLevels();
     const areas = await getAllArea();
     const lamps = await getAllLamps();
+
+    const warningTypes = await warningTypeSearch({});
+
     this.props.dispatch({
       type: 'mapManager/update',
       payload: {
+        warningTypes: warningTypes.records,
         allMaps: maps.result,
         fencingTypes: fencingTypes.result,
         users: users,
@@ -114,7 +123,7 @@ class FencingSetting extends React.Component<Props, State> {
     return new Promise(resolve => {
       const mapImage = new Image();
       mapImage.src = require('../../big-screen/assets/map.png');
-      mapImage.onload = function() {
+      mapImage.onload = function () {
         resolve(mapImage);
       };
     });
@@ -235,7 +244,7 @@ class FencingSetting extends React.Component<Props, State> {
   render() {
     const { getFieldDecorator } = this.props.form;
     const { mapImage, width, height } = this.state;
-    let { maps, fencingTypes, users, levels, areas } = this.props;
+    let { maps, fencingTypes, users, levels, areas, warningTypes } = this.props;
     const createdLamps = this.createLamps();
     // areas = [{ name: '全部', value: undefined }].concat(areas);
     return (
@@ -392,6 +401,30 @@ class FencingSetting extends React.Component<Props, State> {
                 </Col>
               </Row>
 
+
+
+              <Row type="flex" justify="space-between">
+                <Col span={24}>
+                  <Form.Item label="告警类型" className={styles.area_style}>
+                    {getFieldDecorator('warnModeId', {
+                      rules: [],
+                    })(
+                      <Select placeholder="请选择告警方式">
+                        {warningTypes.map(type => (
+                          <Option value={type.id} key={type.id}>
+                            {type.name}
+                          </Option>
+                        ))}
+                      </Select>,
+                    )}
+                  </Form.Item>
+                </Col>
+              </Row>
+
+
+
+
+
               <Row className={styles.line_style}>
                 <Col className={styles.line_type} span={11} />
                 <Col span={2}>地图</Col>
@@ -409,6 +442,19 @@ class FencingSetting extends React.Component<Props, State> {
                   </div>
                 </Col>
               </Row>
+
+
+
+
+
+
+
+
+
+
+
+
+
               <Row type="flex" justify="center" style={{ marginTop: '0.35rem' }}>
                 <Col span={2}>
                   <Form.Item className={styles.button_type}>
@@ -445,6 +491,7 @@ const mapState = ({ mapManager }) => {
     levels,
     areas,
     lampsType,
+    warningTypes: mapManager.warningTypes,
   };
 };
 
