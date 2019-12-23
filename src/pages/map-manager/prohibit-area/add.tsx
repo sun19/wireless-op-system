@@ -46,7 +46,11 @@ interface State {
   circleShow: boolean;
   showLamps: Lamp[];
   icon: any;
+  stageScale: number;
+  stageX: number;
+  stageY: number;
 }
+const scaleBy = 1.01;
 
 class AddPollingLine extends React.Component<Props, State> {
   map: React.RefObject<HTMLDivElement>;
@@ -63,6 +67,9 @@ class AddPollingLine extends React.Component<Props, State> {
       circleShow: true,
       showLamps: [],
       icon: null,
+      stageScale: 1,
+      stageX: 0,
+      stageY: 0,
     };
   }
   goBack = () => {
@@ -171,6 +178,26 @@ class AddPollingLine extends React.Component<Props, State> {
       />
     ));
   }
+  onWheel = evt => {
+    evt.evt.preventDefault();
+    const stage = evt.target.getStage();
+    const oldScale = stage.scaleX();
+
+    const mousePointTo = {
+      x: stage.getPointerPosition().x / oldScale - stage.x() / oldScale,
+      y: stage.getPointerPosition().y / oldScale - stage.y() / oldScale,
+    };
+
+    const newScale = evt.evt.deltaY > 0 ? oldScale * scaleBy : oldScale / scaleBy;
+
+    stage.scale({ x: newScale, y: newScale });
+
+    this.setState({
+      stageScale: newScale,
+      stageX: -(mousePointTo.x - stage.getPointerPosition().x / newScale) * newScale,
+      stageY: -(mousePointTo.y - stage.getPointerPosition().y / newScale) * newScale,
+    });
+  };
   createLampLines = () => {
     const lamps = this.state.showLamps;
     const line = [];
@@ -408,6 +435,11 @@ class AddPollingLine extends React.Component<Props, State> {
                       width={this.state.width}
                       height={this.state.height}
                       draggable={false}
+                      onWheel={this.onWheel}
+                      scaleX={this.state.stageScale}
+                      scaleY={this.state.stageScale}
+                      x={this.state.stageX}
+                      y={this.state.stageY}
                       // onClick={this.onCircleClick}
                     >
                       <Layer>
