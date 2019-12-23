@@ -97,11 +97,11 @@ const columns = [
     editable: true,
     className: 'select_text',
   },
-  {
-    title: '信息牌名称',
-    dataIndex: 'informationBoardName',
-    editable: true,
-  },
+  // {
+  //   title: '信息牌名称',
+  //   dataIndex: 'informationBoardName',
+  //   editable: true,
+  // },
   {
     title: '录入时间',
     dataIndex: 'entryTime',
