@@ -221,7 +221,7 @@ class StatisticsHistory extends React.Component<Props, State> {
                     <Select
                       // options={this.state.userTypes as OptionValue[]}
                       placeholder="请选择类型"
-                      style={{ width: '220px' }}
+                      style={{ width: '210px' }}
                     >
                       <Option value='0'>
                        内部

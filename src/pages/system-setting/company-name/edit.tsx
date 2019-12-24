@@ -114,7 +114,7 @@ class EditSuperAdmin extends React.Component<Props, State> {
                         rules: [],
                         initialValue: companyNameRecord.isShow,
                       })( 
-                        <Select style={{ width: '220px' }} className={styles.select_text}>
+                        <Select style={{ width: '210px' }} className={styles.select_text}>
                           <Option value='0' key='0'>
                             显示
                           </Option>

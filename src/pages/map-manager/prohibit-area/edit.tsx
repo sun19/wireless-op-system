@@ -20,8 +20,8 @@ import * as _ from 'lodash';
 
 import ContentBorder from '../../../components/ContentBorder';
 import { warningTypeSearch } from '@/pages/warning-manager/services';
-import { getSuperAdminList } from '@/pages/system-setting/services';
 import { UmiComponentProps } from '@/common/type';
+import { getSuperAdminList } from '@/pages/system-setting/services';
 import { getAllMap } from '@/pages/login/login.service';
 import { getAllWarningType, updatePollingLine, getMapLamps } from '../services';
 
@@ -51,6 +51,8 @@ interface State {
   stageScale: number;
   stageX: number;
   stageY: number;
+  warnModeName:string;
+  repeatTypeName:string;
 }
 const scaleBy = 1.01;
 
@@ -72,27 +74,46 @@ class AddPollingLine extends React.Component<Props, State> {
       stageScale: 1,
       stageX: 0,
       stageY: 0,
+      warnModeName:'',
+      repeatTypeName:""
     };
   }
   goBack = () => {
     this.props.form.resetFields();
-    router.push('/map-manager/polling-line');
+    router.push('/map-manager/prohibit-area');
+    
   };
+
+  selectAlarmName = (e,key) => {
+    this.setState({
+      warnModeName:key.key
+    });
+  };
+  selectRepeatName = (e,key) => {
+    this.setState({
+      repeatTypeName:key.key
+    });
+  };
+
+
+  
+
   setupAlarmSelect = () => {
     const { getFieldDecorator } = this.props.form;
     const { warningTypes } = this.state;
+
+    const { pollingLinesRecord } = this.props;
+
+
     return (
       <Form.Item label="告警方式" className={styles.area_style}>
-        {getFieldDecorator('alarmId', {
-          rules: [
-            {
-              message: '告警方式',
-            },
-          ],
+        {getFieldDecorator('warnMode', {
+          rules: [],
+          initialValue: pollingLinesRecord.warnMode,
         })(
-          <Select placeholder="告警方式">
+          <Select placeholder="告警方式" onSelect={this.selectAlarmName.bind(this)}>
             {warningTypes.map((item, index) => (
-              <Option value={item.dictValue} key={item.dictValue}>
+              <Option value={item.dictValue} key={item.dictName}>
                 {item.dictName}
               </Option>
             ))}
@@ -102,6 +123,7 @@ class AddPollingLine extends React.Component<Props, State> {
     );
   };
   dynamicLoadMapImage() {
+    
     return new Promise(resolve => {
       const mapImage = new Image();
       mapImage.src = require('../../big-screen/assets/map.png');
@@ -139,6 +161,23 @@ class AddPollingLine extends React.Component<Props, State> {
       warningTypes: (warningTypes.result && warningTypes.result.records) || [],
     });
     this.initRequest();
+
+
+
+
+
+    const { pollingLinesRecord } = this.props;
+
+    this.setState({
+      warnModeName:pollingLinesRecord.warnModeName,
+      repeatTypeName:pollingLinesRecord.repeatTypeName
+    });
+
+
+
+
+
+
   }
   async initRequest() {
     if (!this.map.current) return;
@@ -265,7 +304,15 @@ class AddPollingLine extends React.Component<Props, State> {
   };
   onSubmit = e => {
     e.preventDefault();
-    const { pollingLinesRecord } = this.props;
+    const  { pollingLinesRecord } = this.props ;
+
+
+    const { warnModeName ,repeatTypeName} = this.state;
+
+   
+
+
+
     this.props.form.validateFields(async (err, values) => {
       const { startTime, endTime, ...props } = values;
       const data = {
@@ -275,9 +322,11 @@ class AddPollingLine extends React.Component<Props, State> {
         endTime: (values.endTime && values.endTime.format('YYYY-MM-DD HH:mm:ss').toString()) || '',
         inspectionRoute: values.inspectionRoute.join(','),
         type: 2,
+        warnModeName:warnModeName,
+        repeatTypeName:repeatTypeName
       };
-      await updatePollingLine(Object.assign(pollingLinesRecord, data));
-      router.push('/map-manager/polling-line');
+      await updatePollingLine(Object.assign({},pollingLinesRecord, data));
+      router.push('/map-manager/prohibit-area');
     });
   };
 
@@ -406,9 +455,9 @@ class AddPollingLine extends React.Component<Props, State> {
                       ],
                       initialValue: pollingLinesRecord.repeatType,
                     })(
-                      <Select placeholder="请选择重复类型">
+                      <Select placeholder="请选择重复类型" onSelect={this.selectRepeatName.bind(this)}>
                         {repeatTypes.map(type => (
-                          <Option value={type.dictValue} key={type.dictValue}>
+                          <Option value={type.dictValue} key={type.dictName}>
                             {type.dictName}
                           </Option>
                         ))}
@@ -446,7 +495,7 @@ class AddPollingLine extends React.Component<Props, State> {
 
               {/* <Row type="flex" justify="space-between">
                 <Col span={24}>
-                
+
                 </Col>
               </Row> */}
 
@@ -518,8 +567,8 @@ const mapState = ({ mapManager }) => {
     fencingTypes,
     users,
     levels,
-    repeatTypes,
     areas,
+    repeatTypes,
     pollingLinesRecord,
     lamps,
   } = mapManager;

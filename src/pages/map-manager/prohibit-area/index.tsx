@@ -73,7 +73,7 @@ const columns = [
   },
   {
     title: '告警方式',
-    dataIndex: 'alarmName',
+    dataIndex: 'warnModeName',
     className: 'select_text',
     editable: true,
   },
@@ -138,7 +138,7 @@ class PollingLine extends React.Component<Props, State> {
         pollingLinesRecord: data,
       },
     });
-    router.push('/map-manager/polling-line/edit');
+    router.push('/map-manager/prohibit-area/edit');
   }
 
   deleteColumn(item) {
