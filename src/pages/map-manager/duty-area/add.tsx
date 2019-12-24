@@ -18,6 +18,7 @@ import * as _ from 'lodash';
 
 import ContentBorder from '../../../components/ContentBorder';
 import { warningTypeSearch } from '@/pages/warning-manager/services';
+import { getSuperAdminList } from '@/pages/system-setting/services';
 import { UmiComponentProps } from '@/common/type';
 import { getAllMap } from '@/pages/login/login.service';
 import { getAllWarningType, addPollingLine, getMapLamps } from '../services';
@@ -48,6 +49,8 @@ interface State {
   stageScale: number;
   stageX: number;
   stageY: number;
+  warnModeName:string;
+  repeatTypeName:string;
 }
 const scaleBy = 1.01;
 
@@ -69,27 +72,29 @@ class AddPollingLine extends React.Component<Props, State> {
       stageScale: 1,
       stageX: 0,
       stageY: 0,
+      warnModeName:'',
+      repeatTypeName:""
     };
   }
   goBack = () => {
     this.props.form.resetFields();
-    router.push('/map-manager/polling-line');
+    router.push('/map-manager/duty-area');
   };
   setupAlarmSelect = () => {
     const { getFieldDecorator } = this.props.form;
     const { warningTypes } = this.state;
     return (
       <Form.Item label="告警方式" className={styles.area_style}>
-        {getFieldDecorator('alarmId', {
+        {getFieldDecorator('warnMode', {
           rules: [
             {
               message: '告警方式',
             },
           ],
         })(
-          <Select placeholder="告警方式">
+          <Select placeholder="告警方式"  onSelect={this.selectAlarmName.bind(this)}>
             {warningTypes.map((item, index) => (
-              <Option value={item.dictValue} key={item.dictValue}>
+              <Option value={item.dictValue} key={item.dictName}>
                 {item.dictName}
               </Option>
             ))}
@@ -97,6 +102,17 @@ class AddPollingLine extends React.Component<Props, State> {
         )}
       </Form.Item>
     );
+  };
+
+  selectAlarmName = (e,key) => {
+    this.setState({
+      warnModeName:key.key
+    });
+  };
+  selectRepeatName = (e,key) => {
+    this.setState({
+      repeatTypeName:key.key
+    });
   };
 
   dynamicLoadMapImage() {
@@ -142,11 +158,16 @@ class AddPollingLine extends React.Component<Props, State> {
     const clientHeight = Math.floor((clientWidth * 1080) / 1920);
     const maps = await getAllMap();
     let lamps = await getMapLamps({});
+    const repeatTypes = await getSuperAdminList({
+      type: 'repeatType',
+      isShow: '1',
+    });
     this.props.dispatch({
       type: 'mapManager/update',
       payload: {
         allMaps: maps.result,
         lamps: lamps.result,
+        repeatTypes: repeatTypes.records || [],
       },
     });
   }
@@ -203,10 +224,12 @@ class AddPollingLine extends React.Component<Props, State> {
       stageY: -(mousePointTo.y - stage.getPointerPosition().y / newScale) * newScale,
     });
   };
-
   onSubmit = e => {
     e.preventDefault();
     const { pollingLinesRecord } = this.props;
+
+    const { warnModeName ,repeatTypeName} = this.state;
+
     this.props.form.validateFields(async (err, values) => {
       const { startTime, endTime, ...props } = values;
       const data = {
@@ -216,6 +239,8 @@ class AddPollingLine extends React.Component<Props, State> {
         endTime: (values.endTime && values.endTime.format('YYYY-MM-DD HH:mm:ss').toString()) || '',
         inspectionRoute: values.inspectionRoute.join(','),
         type: 1,
+        warnModeName:warnModeName,
+        repeatTypeName:repeatTypeName
       };
 
       await addPollingLine(data);
@@ -312,7 +337,7 @@ class AddPollingLine extends React.Component<Props, State> {
                       ],
                     })(<Input placeholder="请输入巡检人员" />)}
                   </Form.Item> */}
-                  {/* 
+                  {/*
                   <Form.Item label="信息牌">
                     {getFieldDecorator('informationBoardId', {
                       rules: [
@@ -376,13 +401,13 @@ class AddPollingLine extends React.Component<Props, State> {
                         },
                       ],
                     })(
-                      <Select placeholder="请选择重复类型">
-                        {repeatTypes.map(type => (
-                          <Option value={type.dictValue} key={type.dictValue}>
-                            {type.dictName}
-                          </Option>
-                        ))}
-                      </Select>,
+                      <Select placeholder="请选择重复类型" onSelect={this.selectRepeatName.bind(this)}>
+                      {repeatTypes.map(type => (
+                        <Option value={type.dictValue} key={type.dictName}>
+                          {type.dictName}
+                        </Option>
+                      ))}
+                    </Select>,
                     )}
                   </Form.Item>
                   <Form.Item className={styles.area_style} label="巡检名称">
@@ -411,7 +436,7 @@ class AddPollingLine extends React.Component<Props, State> {
                   </Form.Item>
                 </Col>
               </Row>
-              {/* 
+              {/*
               <Row type="flex" justify="space-between">
                 <Col span={24}></Col>
               </Row> */}
@@ -483,9 +508,9 @@ const mapState = ({ mapManager }) => {
     fencingTypes,
     users,
     levels,
-    repeatTypes,
     areas,
     pollingLinesRecord,
+    repeatTypes,
     lamps,
   } = mapManager;
   return {

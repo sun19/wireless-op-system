@@ -162,7 +162,7 @@ class AddUser extends React.Component<Props, State> {
                         ],
                         initialValue: this.state.userTypes[0].key,
                       })(
-                        <Select style={{ width: '220px' }} className={styles.select_text}>
+                        <Select style={{ width: '210px' }} className={styles.select_text}>
                           {this.state.userTypes.map(option => (
                             <Option value={option.key} key={option.key}>
                               {option.value}
@@ -184,7 +184,7 @@ class AddUser extends React.Component<Props, State> {
                       })(
                         <Select
                           // defaultValue={this.props.value}
-                          style={{ width: '220px' }}
+                          style={{ width: '210px' }}
                           className={styles.select_text}
                         >
                           {defaultGenderType.map(option => (
@@ -193,7 +193,7 @@ class AddUser extends React.Component<Props, State> {
                             </Option>
                           ))}
                         </Select>,
-                        // <SelectText options={defaultGenderType} style={{ width: '220px' }} />
+                        // <SelectText options={defaultGenderType} style={{ width: '210px' }} />
                       )}
                     </Form.Item>
                   </Col>
