@@ -162,11 +162,7 @@ class FencingSetting extends React.Component<Props, State> {
     return getFieldDecorator('userId', {
       rules: [],
     })(
-      <Select
-        mode="multiple"
-        placeholder="请选择关联人员"
-        //  style={{ width: '100%' }}
-      >
+      <Select mode="multiple" placeholder="请选择关联人员">
         {users.map(user => (
           <Option key={user.id} value={user.id}>
             {user.name}
@@ -221,12 +217,7 @@ class FencingSetting extends React.Component<Props, State> {
     return getFieldDecorator('lampIds', {
       rules: [],
     })(
-      <Select
-        mode="multiple"
-        placeholder="请选择灯具设置围栏"
-        // style={{ width: '100%' }}
-        onChange={this.onLampSelectChange}
-      >
+      <Select mode="multiple" placeholder="请选择灯具设置围栏" onChange={this.onLampSelectChange}>
         {lampsType.map(lamp => (
           <Option key={lamp.id} value={lamp.id}>
             {lamp.lampCode}
