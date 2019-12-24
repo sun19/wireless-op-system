@@ -6,7 +6,7 @@
     "test": "umi test",
     "lint:es": "eslint --ext .js src mock tests",
     "lint:ts": "tslint \"src/**/*.ts\" \"src/**/*.tsx\"",
-    "precommit": "lint-staged --no-verify "
+    "precommit": "lint-staged"
   },
   "dependencies": {
     "antd": "^3.19.5",
