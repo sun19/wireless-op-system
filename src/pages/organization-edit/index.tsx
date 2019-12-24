@@ -138,7 +138,7 @@ class Organization extends React.Component<Props, State> {
       async onCancel() {
         await delDepartment({ id: name.id });
         //  //重新请求数据重绘
-        self.getData();
+        self.getDataName();
       },
     });
   }
@@ -173,7 +173,7 @@ class Organization extends React.Component<Props, State> {
       id: "0",
       deptCode: "cs",
       parentId: "00000",
-      sort: 3,
+      sort: 1,
       children: []
     }
     resp.map(res => {
