@@ -25,7 +25,7 @@ const IconFont = Icon.createFromIconfontCN({
   scriptUrl: ICON_FONTS_URL,
 });
 
-interface FormProps extends FormComponentProps { }
+interface FormProps extends FormComponentProps {}
 type StateProps = ReturnType<typeof mapState>;
 type Props = StateProps & UmiComponentProps & FormProps;
 const columns = [
@@ -34,9 +34,16 @@ const columns = [
     dataIndex: 'type',
     editable: true,
     render(type) {
-      return ['','入口身份核实', '防止穿墙及瞬间移动', '呆滞时间原因分析', '轨迹点不连续分析', '异常消失分析'][type]
+      return [
+        '',
+        '入口身份核实',
+        '防止穿墙及瞬间移动',
+        '呆滞时间原因分析',
+        '轨迹点不连续分析',
+        '异常消失分析',
+      ][type];
       //
-    }
+    },
   },
   {
     title: '异常发生时间',
@@ -71,19 +78,18 @@ class WraningType extends React.Component<Props, State> {
     // this.deleteColumn = this.deleteColumn.bind(this);
     this.getwarningTypeList = this.getwarningTypeList.bind(this);
     this.state = {
-      type: ''
+      type: '',
     };
   }
   async componentDidMount() {
     const data = {
       type: '',
-    }
+    };
     this.getwarningTypeList(data);
     this.props.form.validateFields();
   }
 
   async getwarningTypeList(data) {
-  
     const taskList = await unusualData(data);
     this.props.dispatch({
       type: 'warningManager/update',
@@ -91,23 +97,20 @@ class WraningType extends React.Component<Props, State> {
     });
   }
 
- 
   // 查询
   search = e => {
     const data = {
       type: this.state.type,
-    }
-      this.getwarningTypeList(data);
+    };
+    this.getwarningTypeList(data);
   };
   handleReset = () => {
-
     // this.props.form.resetFields();
-    this.setState({type:''})
+    this.setState({ type: '' });
     const data = {
       type: '',
-    }
+    };
     this.getwarningTypeList(data);
-
   };
   selectChange = (e: any) => {
     this.setState({
@@ -116,31 +119,19 @@ class WraningType extends React.Component<Props, State> {
   };
   setupUserType = () => {
     return (
-      <div
-        style={{ marginTop: '-3px' }}
-      >
+      <div style={{ marginTop: '-3px' }}>
         <Select
+          getPopupContainer={triggerNode => triggerNode.parentElement}
           placeholder="请选择类型"
           className={publicStyles.select_text}
           onChange={this.selectChange}
           value={this.state.type}
         >
-
-          <Option value='1'>
-            入口身份核实
-                      </Option>
-          <Option value='2'>
-                  防止穿墙及瞬间移动
-                      </Option>
-          <Option value='3'>
-            呆滞时间原因分析
-                      </Option>
-          <Option value='4'>
-            轨迹点不连续分析
-                      </Option>
-          <Option value='5'>
-            异常消失分析
-                      </Option>
+          <Option value="1">入口身份核实</Option>
+          <Option value="2">防止穿墙及瞬间移动</Option>
+          <Option value="3">呆滞时间原因分析</Option>
+          <Option value="4">轨迹点不连续分析</Option>
+          <Option value="5">异常消失分析</Option>
         </Select>
       </div>
     );
@@ -172,11 +163,8 @@ class WraningType extends React.Component<Props, State> {
                   )(<Input className={publicStyles.input_text} placeholder="请输入告警名称" />)}
                 </FormItem> */}
                 <FormItem label="类型">
-                  {getFieldDecorator(
-                    'type',
-                    {},
-                  )( this.setupUserType())}
-               </FormItem>
+                  {getFieldDecorator('type', {})(this.setupUserType())}
+                </FormItem>
 
                 <span className={publicStyles.button_type}>
                   <Button className={publicStyles.form_btn} htmlType="submit">
@@ -199,7 +187,7 @@ class WraningType extends React.Component<Props, State> {
             // updateData={this.updateData}
             // deleteColumn={this.deleteColumn}
             total={total}
-          // showEdit={true}
+            // showEdit={true}
           />
         </Content>
       </div>

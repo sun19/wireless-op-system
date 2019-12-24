@@ -168,7 +168,7 @@ class EditUser extends React.Component<Props, State> {
                         rules: [],
                         initialValue: customManagerRecord.roleId,
                       })(
-                        <Select style={{ width: '210px' }} className={styles.select_text}>
+                        <Select   getPopupContainer={triggerNode => triggerNode.parentElement} style={{ width: '210px' }} className={styles.select_text}>
                           {this.state.userTypes.map(option => (
                             <Option value={option['selectValue']} key={option.key}>
                               {option.value}
@@ -189,7 +189,7 @@ class EditUser extends React.Component<Props, State> {
                           },
                         ],
                       })(
-                        <Select style={{ width: '210px' }} className={styles.select_text}>
+                        <Select   getPopupContainer={triggerNode => triggerNode.parentElement} style={{ width: '210px' }} className={styles.select_text}>
                           {defaultGenderType.map(option => (
                             <Option value={option.key} key={option.key}>
                               {option.value}

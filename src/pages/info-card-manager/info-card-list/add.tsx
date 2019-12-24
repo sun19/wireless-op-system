@@ -76,7 +76,7 @@ class AddUsers extends React.Component<Props, State> {
           rules: [],
           initialValue: (currentIndex != null && currentUser.positionId) || undefined,
         })(
-          <Select placeholder="请选择职务">
+          <Select   getPopupContainer={triggerNode => triggerNode.parentElement} placeholder="请选择职务">
             {allDuties &&
               allDuties.map((duty, index) => (
                 <Option value={duty.id} key={index}>
@@ -98,7 +98,7 @@ class AddUsers extends React.Component<Props, State> {
           rules: [],
           initialValue: currentIndex != null && currentUser.securityLevelId,
         })(
-          <Select placeholder="请选择保密等级">
+          <Select   getPopupContainer={triggerNode => triggerNode.parentElement} placeholder="请选择保密等级">
             {allSecretLevel.map((level, index) => (
               <Option value={level.id} key={index}>
                 {level.name}
@@ -207,7 +207,7 @@ class AddUsers extends React.Component<Props, State> {
           // rules: [],
           rules: [{ required: true, message: "请选择一个用户!" }],
         })(
-          <Select onSelect={this.onSelectChange}>
+          <Select   getPopupContainer={triggerNode => triggerNode.parentElement} onSelect={this.onSelectChange}>
             {userInfoList.map(user => {
               return (
                 <Option key={user.id} value={user.name}>
@@ -258,7 +258,7 @@ class AddUsers extends React.Component<Props, State> {
                         rules: [],
                         initialValue: (currentIndex != null && currentUser.sex) || undefined,
                       })(
-                        <Select placeholder="请选择性别">
+                        <Select   getPopupContainer={triggerNode => triggerNode.parentElement} placeholder="请选择性别">
                           <Option value="0">男</Option>
                           <Option value="1">女</Option>
                         </Select>,
@@ -287,7 +287,7 @@ class AddUsers extends React.Component<Props, State> {
                       {getFieldDecorator('departmentId', {
                         initialValue: (currentIndex != null && currentUser.departmentId) || undefined,
                       })(
-                        <Select placeholder="请选择部门" onSelect={this.onSelectDepartmentChange}>
+                        <Select   getPopupContainer={triggerNode => triggerNode.parentElement} placeholder="请选择部门" onSelect={this.onSelectDepartmentChange}>
                           {allPosition &&
                             allPosition.map(option => (
                               <Option value={option.id} key={option.deptCode}>
@@ -326,7 +326,7 @@ class AddUsers extends React.Component<Props, State> {
                         rules: [],
                         initialValue: currentIndex != null && currentUser.type,
                       })(
-                        <Select placeholder="请选择类型">
+                        <Select   getPopupContainer={triggerNode => triggerNode.parentElement} placeholder="请选择类型">
                           <Option value="0">内部</Option>
                           <Option value="1">外部</Option>
                         </Select>,
@@ -341,7 +341,7 @@ class AddUsers extends React.Component<Props, State> {
                         rules: [],
                         initialValue: currentIndex != null && currentUser.type,
                       })(
-                        <Select placeholder="请选择在职状态">
+                        <Select   getPopupContainer={triggerNode => triggerNode.parentElement} placeholder="请选择在职状态">
                           <Option value="0">在职</Option>
                           <Option value="1">离职</Option>
                         </Select>,

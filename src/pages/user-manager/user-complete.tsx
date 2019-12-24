@@ -112,7 +112,7 @@ class UserComplete extends React.Component<FormProps, any> {
                         ],
                         initialValue: record.sex,
                       })(
-                        <Select placeholder="请选择性别">
+                        <Select   getPopupContainer={triggerNode => triggerNode.parentElement} placeholder="请选择性别">
                           <Option value="0">男</Option>
                           <Option value="1">女</Option>
                         </Select>,

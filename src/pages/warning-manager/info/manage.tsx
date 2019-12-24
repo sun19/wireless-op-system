@@ -136,7 +136,7 @@ class TaskAdd extends React.Component<Props, State> {
                                         <Form.Item label="处理方式">
                                             {getFieldDecorator('type', {
                                                 initialValue: '1'
-                                            })(<Select placeholder="处理方式">
+                                            })(<Select   getPopupContainer={triggerNode => triggerNode.parentElement} placeholder="处理方式">
                                                 <Option value="1">误报</Option>
                                                 <Option value="2">手动解除</Option>
                                             </Select>)}

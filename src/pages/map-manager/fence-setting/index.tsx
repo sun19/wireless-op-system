@@ -240,7 +240,7 @@ class FencingSettings extends React.Component<Props> {
                     {getFieldDecorator('typeId', {
                       rules: [],
                     })(
-                      <Select className={publicStyles.select_text} placeholder="请选择围栏类型">
+                      <Select   getPopupContainer={triggerNode => triggerNode.parentElement} className={publicStyles.select_text} placeholder="请选择围栏类型">
                         {fencingTypes.map(item => (
                           <Option key={item.id} value={item.id}>
                             {item.name}

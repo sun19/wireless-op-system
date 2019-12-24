@@ -51,8 +51,8 @@ interface State {
   stageScale: number;
   stageX: number;
   stageY: number;
-  warnModeName:string;
-  repeatTypeName:string;
+  warnModeName: string;
+  repeatTypeName: string;
 }
 const scaleBy = 1.01;
 
@@ -74,29 +74,25 @@ class AddPollingLine extends React.Component<Props, State> {
       stageScale: 1,
       stageX: 0,
       stageY: 0,
-      warnModeName:'',
-      repeatTypeName:""
+      warnModeName: '',
+      repeatTypeName: '',
     };
   }
   goBack = () => {
     this.props.form.resetFields();
     router.push('/map-manager/duty-area');
-    
   };
 
-  selectAlarmName = (e,key) => {
+  selectAlarmName = (e, key) => {
     this.setState({
-      warnModeName:key.key
+      warnModeName: key.key,
     });
   };
-  selectRepeatName = (e,key) => {
+  selectRepeatName = (e, key) => {
     this.setState({
-      repeatTypeName:key.key
+      repeatTypeName: key.key,
     });
   };
-
-
-  
 
   setupAlarmSelect = () => {
     const { getFieldDecorator } = this.props.form;
@@ -104,14 +100,17 @@ class AddPollingLine extends React.Component<Props, State> {
 
     const { pollingLinesRecord } = this.props;
 
-
     return (
       <Form.Item label="告警方式" className={styles.area_style}>
         {getFieldDecorator('warnMode', {
           rules: [],
           initialValue: pollingLinesRecord.warnMode,
         })(
-          <Select placeholder="告警方式" onSelect={this.selectAlarmName.bind(this)}>
+          <Select
+            getPopupContainer={triggerNode => triggerNode.parentElement}
+            placeholder="告警方式"
+            onSelect={this.selectAlarmName.bind(this)}
+          >
             {warningTypes.map((item, index) => (
               <Option value={item.dictValue} key={item.dictName}>
                 {item.dictName}
@@ -123,7 +122,6 @@ class AddPollingLine extends React.Component<Props, State> {
     );
   };
   dynamicLoadMapImage() {
-    
     return new Promise(resolve => {
       const mapImage = new Image();
       mapImage.src = require('../../big-screen/assets/map.png');
@@ -162,22 +160,12 @@ class AddPollingLine extends React.Component<Props, State> {
     });
     this.initRequest();
 
-
-
-
-
     const { pollingLinesRecord } = this.props;
 
     this.setState({
-      warnModeName:pollingLinesRecord.warnModeName,
-      repeatTypeName:pollingLinesRecord.repeatTypeName
+      warnModeName: pollingLinesRecord.warnModeName,
+      repeatTypeName: pollingLinesRecord.repeatTypeName,
     });
-
-
-
-
-
-
   }
   async initRequest() {
     if (!this.map.current) return;
@@ -304,14 +292,9 @@ class AddPollingLine extends React.Component<Props, State> {
   };
   onSubmit = e => {
     e.preventDefault();
-    const  { pollingLinesRecord } = this.props ;
+    const { pollingLinesRecord } = this.props;
 
-
-    const { warnModeName ,repeatTypeName} = this.state;
-
-   
-
-
+    const { warnModeName, repeatTypeName } = this.state;
 
     this.props.form.validateFields(async (err, values) => {
       const { startTime, endTime, ...props } = values;
@@ -322,10 +305,10 @@ class AddPollingLine extends React.Component<Props, State> {
         endTime: (values.endTime && values.endTime.format('YYYY-MM-DD HH:mm:ss').toString()) || '',
         inspectionRoute: values.inspectionRoute.join(','),
         type: 1,
-        warnModeName:warnModeName,
-        repeatTypeName:repeatTypeName
+        warnModeName: warnModeName,
+        repeatTypeName: repeatTypeName,
       };
-      await updatePollingLine(Object.assign({},pollingLinesRecord, data));
+      await updatePollingLine(Object.assign({}, pollingLinesRecord, data));
       router.push('/map-manager/duty-area');
     });
   };
@@ -385,7 +368,10 @@ class AddPollingLine extends React.Component<Props, State> {
                       ],
                       initialValue: pollingLinesRecord.mapId,
                     })(
-                      <Select placeholder="请选择地图名称">
+                      <Select
+                        getPopupContainer={triggerNode => triggerNode.parentElement}
+                        placeholder="请选择地图名称"
+                      >
                         {maps.map(item => (
                           <Option value={item.id} key={item.name}>
                             {item.name}
@@ -403,6 +389,7 @@ class AddPollingLine extends React.Component<Props, State> {
                         [],
                     })(
                       <Select
+                        getPopupContainer={triggerNode => triggerNode.parentElement}
                         mode="multiple"
                         placeholder="请选择灯具，设置巡检路线"
                         onChange={this.onLampSelectChange}
@@ -455,7 +442,11 @@ class AddPollingLine extends React.Component<Props, State> {
                       ],
                       initialValue: pollingLinesRecord.repeatType,
                     })(
-                      <Select placeholder="请选择重复类型" onSelect={this.selectRepeatName.bind(this)}>
+                      <Select
+                        getPopupContainer={triggerNode => triggerNode.parentElement}
+                        placeholder="请选择重复类型"
+                        onSelect={this.selectRepeatName.bind(this)}
+                      >
                         {repeatTypes.map(type => (
                           <Option value={type.dictValue} key={type.dictName}>
                             {type.dictName}

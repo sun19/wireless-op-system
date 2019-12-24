@@ -47,29 +47,33 @@ const columns = [
           overflow: 'hidden',
           whiteSpace: 'nowrap',
           textOverflow: 'ellipsis',
-          cursor: 'pointer'
-        }
-      }
+          cursor: 'pointer',
+        },
+      };
     },
-    render: (text) => <Tooltip className='tooltips' placement="topLeft" title={text}>{text}</Tooltip>,
+    render: text => (
+      <Tooltip className="tooltips" placement="topLeft" title={text}>
+        {text}
+      </Tooltip>
+    ),
   },
   {
     title: '状态',
     dataIndex: 'onlineStatus',
     className: 'select_text',
     editable: true,
-    render: (item) => {
-      return ['在线', '离线'][item]
-    }
+    render: item => {
+      return ['在线', '离线'][item];
+    },
   },
   {
     title: '是否注销',
     dataIndex: 'isCancel',
     className: 'select_text',
     editable: true,
-    render: (item) => {
-      return ['否', '是'][item]
-    }
+    render: item => {
+      return ['否', '是'][item];
+    },
   },
 
   {
@@ -84,11 +88,15 @@ const columns = [
           overflow: 'hidden',
           whiteSpace: 'nowrap',
           textOverflow: 'ellipsis',
-          cursor: 'pointer'
-        }
-      }
+          cursor: 'pointer',
+        },
+      };
     },
-    render: (text) => <Tooltip className='tooltips' placement="topLeft" title={text}>{text}</Tooltip>,
+    render: text => (
+      <Tooltip className="tooltips" placement="topLeft" title={text}>
+        {text}
+      </Tooltip>
+    ),
   },
   {
     title: '姓名',
@@ -150,9 +158,9 @@ const columns = [
     dataIndex: 'type',
     className: 'select_text',
     editable: true,
-    render: (item) => {
-      return ['内部', '外部'][item]
-    }
+    render: item => {
+      return ['内部', '外部'][item];
+    },
   },
   {
     title: '保密等级',
@@ -180,7 +188,7 @@ interface State {
   userName: string;
   name: string;
   type: string;
-  userState: string,
+  userState: string;
   pageNo?: number;
   hasData: boolean;
 }
@@ -246,7 +254,7 @@ class SuperAdmin extends React.Component<Props, State> {
       okText: '取消',
       okType: 'danger',
       cancelText: '确定',
-      onOk() { },
+      onOk() {},
       async onCancel() {
         await deleteInfo({ id: item.id });
         //重新请求数据重绘
@@ -258,7 +266,7 @@ class SuperAdmin extends React.Component<Props, State> {
     //TODO:修改人ID
     // console.log(item.isCancel)
 
-    const showString = item.isCancel == 0 ? "确定要注销这条信息吗？" : "确定要恢复这条信息吗？"
+    const showString = item.isCancel == 0 ? '确定要注销这条信息吗？' : '确定要恢复这条信息吗？';
 
     let self = this;
     confirm({
@@ -267,18 +275,14 @@ class SuperAdmin extends React.Component<Props, State> {
       okText: '取消',
       okType: 'danger',
       cancelText: '确定',
-      onOk() { },
+      onOk() {},
       async onCancel() {
-        await cancellationInfo({ 'id': item.id, 'isCancel': item.isCancel == 0 ? 1 : 0 });
+        await cancellationInfo({ id: item.id, isCancel: item.isCancel == 0 ? 1 : 0 });
         //重新请求数据重绘
         self.getInfoListData();
       },
     });
   }
-
-
-
-
 
   async componentDidMount() {
     // const peopleType = await getUserTypes({});
@@ -296,7 +300,7 @@ class SuperAdmin extends React.Component<Props, State> {
   }
 
   async getInfoListData() {
-    const isCancel = this.state.userState
+    const isCancel = this.state.userState;
     const { userName, name, type } = this.state;
     const infoList = await getInfoListParams({ userName, name, type, isCancel });
     // console.log(infoList)
@@ -318,21 +322,16 @@ class SuperAdmin extends React.Component<Props, State> {
 
   setupUserType = () => {
     return (
-      <div
-        style={{ marginTop: '-3px' }}
-      >
+      <div style={{ marginTop: '-3px' }}>
         <Select
+          getPopupContainer={triggerNode => triggerNode.parentElement}
           placeholder="请选择类型"
           className={publicStyles.select_text}
           onChange={this.selectChange}
           value={this.state.type}
         >
-          <Option value='0'>
-            内部
-                      </Option>
-          <Option value='1'>
-            外部
-                      </Option>
+          <Option value="0">内部</Option>
+          <Option value="1">外部</Option>
         </Select>
       </div>
     );
@@ -340,21 +339,16 @@ class SuperAdmin extends React.Component<Props, State> {
 
   setupUserState = () => {
     return (
-      <div
-        style={{ marginTop: '-3px' }}
-      >
+      <div style={{ marginTop: '-3px' }}>
         <Select
+          getPopupContainer={triggerNode => triggerNode.parentElement}
           placeholder="请选择是否注销"
           className={publicStyles.select_text}
           onChange={this.selectUserStateChange}
           value={this.state.userState}
         >
-          <Option value='0'>
-            否
-                    </Option>
-          <Option value='1'>
-            是
-                    </Option>
+          <Option value="0">否</Option>
+          <Option value="1">是</Option>
         </Select>
       </div>
     );
@@ -451,7 +445,7 @@ class SuperAdmin extends React.Component<Props, State> {
 }
 const mapState = ({ infoCardManager }) => {
   const resp = infoCardManager.customManager;
-  return { userList: resp, };
+  return { userList: resp };
 };
 
 export default connect(mapState)(SuperAdmin);

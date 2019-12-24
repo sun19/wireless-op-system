@@ -92,7 +92,7 @@ class AddPollingLine extends React.Component<Props, State> {
             },
           ],
         })(
-          <Select placeholder="告警方式"  onSelect={this.selectAlarmName.bind(this)}>
+          <Select   getPopupContainer={triggerNode => triggerNode.parentElement} placeholder="告警方式"  onSelect={this.selectAlarmName.bind(this)}>
             {warningTypes.map((item, index) => (
               <Option value={item.dictValue} key={item.dictName}>
                 {item.dictName}
@@ -319,7 +319,7 @@ class AddPollingLine extends React.Component<Props, State> {
                         },
                       ],
                     })(
-                      <Select placeholder="请选择地图名称">
+                      <Select   getPopupContainer={triggerNode => triggerNode.parentElement} placeholder="请选择地图名称">
                         {maps.map(item => (
                           <Option value={item.id} key={item.name}>
                             {item.name}
@@ -351,7 +351,7 @@ class AddPollingLine extends React.Component<Props, State> {
                     {getFieldDecorator('inspectionRoute', {
                       rules: [],
                     })(
-                      <Select
+                      <Select   getPopupContainer={triggerNode => triggerNode.parentElement}
                         mode="multiple"
                         placeholder="请选择灯具，设置巡检路线"
                         onChange={this.onLampSelectChange}
@@ -401,7 +401,7 @@ class AddPollingLine extends React.Component<Props, State> {
                         },
                       ],
                     })(
-                      <Select placeholder="请选择重复类型" onSelect={this.selectRepeatName.bind(this)}>
+                      <Select   getPopupContainer={triggerNode => triggerNode.parentElement} placeholder="请选择重复类型" onSelect={this.selectRepeatName.bind(this)}>
                       {repeatTypes.map(type => (
                         <Option value={type.dictValue} key={type.dictName}>
                           {type.dictName}

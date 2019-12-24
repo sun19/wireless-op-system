@@ -112,7 +112,7 @@ class TaskEdit extends React.Component<Props, State> {
                 ],
                 initialValue: editData.inspectionId,
               })(
-                <Select placeholder="请选择巡更路线">
+                <Select   getPopupContainer={triggerNode => triggerNode.parentElement} placeholder="请选择巡更路线">
                   {route.map(item => (
                     <Option value={item.id}>{item.name}</Option>
                   ))}
@@ -174,7 +174,7 @@ class TaskEdit extends React.Component<Props, State> {
                         ],
                         initialValue: editData.task,
                       })(
-                        <Select placeholder="请选择任务">
+                        <Select   getPopupContainer={triggerNode => triggerNode.parentElement} placeholder="请选择任务">
                           <Option value="0" key="1">
                             巡更路线
                           </Option>

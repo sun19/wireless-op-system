@@ -31,7 +31,7 @@ class EditableCell extends React.Component<any> {
       this.props.className === 'select_text'
     ) {
       return (
-        <Select defaultValue={this.props.record[this.props.dataIndex]} style={{ width: 120 }} />
+        <Select   getPopupContainer={triggerNode => triggerNode.parentElement} defaultValue={this.props.record[this.props.dataIndex]} style={{ width: 120 }} />
       );
       {
         /* <Option value="1"> 男</Option>

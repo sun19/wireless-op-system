@@ -11,9 +11,9 @@ import { connect } from 'dva';
 import { UmiComponentProps } from '@/common/type';
 import MainContent from '../components/MainContent';
 import { ICON_FONTS_URL } from '../../../config/constants';
-import { getInfoListParams, deleteInfo, exportIn, exportOut,cancellationInfo } from '../services';
+import { getInfoListParams, deleteInfo, exportIn, exportOut, cancellationInfo } from '../services';
 import { getUserTypes } from '../../system-setting/services';
-import { DeleteInfo,CancellationInfo } from '../services/index.interfaces';
+import { DeleteInfo, CancellationInfo } from '../services/index.interfaces';
 
 import styles from './index.less';
 import publicStyles from '../index.less';
@@ -48,29 +48,35 @@ const columns = [
           overflow: 'hidden',
           whiteSpace: 'nowrap',
           textOverflow: 'ellipsis',
-          cursor: 'pointer'
-        }
-      }
+          cursor: 'pointer',
+        },
+      };
     },
-    render: (text) => (<div><Tooltip className='tooltips' placement="topLeft" title={text}>{text}</Tooltip></div>),
+    render: text => (
+      <div>
+        <Tooltip className="tooltips" placement="topLeft" title={text}>
+          {text}
+        </Tooltip>
+      </div>
+    ),
   },
   {
     title: '状态',
     dataIndex: 'onlineStatus',
     className: 'select_text',
     editable: true,
-    render: (item) => {
-      return ['在线', '离线'][item]
-    }
+    render: item => {
+      return ['在线', '离线'][item];
+    },
   },
   {
     title: '是否注销',
     dataIndex: 'isCancel',
     className: 'select_text',
     editable: true,
-    render: (item) => {
-      return ['否', '是'][item]
-    }
+    render: item => {
+      return ['否', '是'][item];
+    },
   },
   {
     title: '定位',
@@ -84,11 +90,15 @@ const columns = [
           overflow: 'hidden',
           whiteSpace: 'nowrap',
           textOverflow: 'ellipsis',
-          cursor: 'pointer'
-        }
-      }
+          cursor: 'pointer',
+        },
+      };
     },
-    render: (text) => <Tooltip className='tooltips' placement="topLeft" title={text}>{text}</Tooltip>,
+    render: text => (
+      <Tooltip className="tooltips" placement="topLeft" title={text}>
+        {text}
+      </Tooltip>
+    ),
   },
   {
     title: '姓名',
@@ -150,9 +160,9 @@ const columns = [
     dataIndex: 'type',
     className: 'select_text',
     editable: true,
-    render: (item) => {
-      return ['内部', '外部'][item]
-    }
+    render: item => {
+      return ['内部', '外部'][item];
+    },
   },
   {
     title: '保密等级',
@@ -180,8 +190,8 @@ interface State {
   userName: string;
   name: string;
   type: string;
-  userState:string,
-  onlineState:string,
+  userState: string;
+  onlineState: string;
   pageNo?: number;
   hasData: boolean;
 }
@@ -193,18 +203,16 @@ class SuperAdmin extends React.Component<Props, State> {
       userName: '',
       name: '',
       type: undefined,
-      userState:undefined,
-      onlineState:undefined,
+      userState: undefined,
+      onlineState: undefined,
       pageNo: 1,
       hasData: true,
     };
-
   }
   onNameChange = (e: any) => {
     this.setState({
       userName: e.target.value,
     });
-    
   };
   infoNameChange = (e: any) => {
     this.setState({
@@ -234,8 +242,8 @@ class SuperAdmin extends React.Component<Props, State> {
       userName: '',
       name: '',
       type: undefined,
-      userState:undefined,
-      onlineState:undefined
+      userState: undefined,
+      onlineState: undefined,
     });
     this.forceUpdate(() => {
       this.getInfoListData();
@@ -245,10 +253,6 @@ class SuperAdmin extends React.Component<Props, State> {
   onSearch = () => {
     this.getInfoListData();
   };
-
-
-
-
 
   async componentDidMount() {
     // const peopleType = await getUserTypes({});
@@ -267,13 +271,11 @@ class SuperAdmin extends React.Component<Props, State> {
   }
 
   async getInfoListData() {
-    const isCancel = this.state.userState
-    const onlineStatus = this.state.onlineState
+    const isCancel = this.state.userState;
+    const onlineStatus = this.state.onlineState;
     const { userName, name, type } = this.state;
 
- 
-
-    const infoList = await getInfoListParams({ userName, name, type ,isCancel, onlineStatus});
+    const infoList = await getInfoListParams({ userName, name, type, isCancel, onlineStatus });
     // console.log(infoList)
     this.props.dispatch({
       type: 'infoCardManager/update',
@@ -281,59 +283,50 @@ class SuperAdmin extends React.Component<Props, State> {
     });
   }
 
-
-
   setupUserType = () => {
     return (
-      <div
-        style={{ marginTop: '-3px' }}
-      >
+      <div style={{ marginTop: '-3px' }}>
         <Select
+          getPopupContainer={triggerNode => triggerNode.parentElement}
           placeholder="请选择类型"
           className={publicStyles.select_text}
           onChange={this.selectChange}
           value={this.state.type}
         >
-          <Option value='0'>
-            内部
-                      </Option>
-          <Option value='1'>
-            外部
-                      </Option>
+          <Option value="0">内部</Option>
+          <Option value="1">外部</Option>
         </Select>
       </div>
     );
   };
   setupUserState = () => {
     return (
-      <div
-        style={{ marginTop: '-3px' }}
-      >
+      <div style={{ marginTop: '-3px' }}>
         <Select
+          getPopupContainer={triggerNode => triggerNode.parentElement}
           placeholder="请选择是否注销"
           className={publicStyles.select_text}
           onChange={this.selectUserStateChange}
           value={this.state.userState}
         >
-          <Option value='0'> 否 </Option>
-          <Option value='1'> 是 </Option>
+          <Option value="0"> 否 </Option>
+          <Option value="1"> 是 </Option>
         </Select>
       </div>
     );
   };
   setupOnliineState = () => {
     return (
-      <div
-        style={{ marginTop: '-3px' }}
-      >
+      <div style={{ marginTop: '-3px' }}>
         <Select
+          getPopupContainer={triggerNode => triggerNode.parentElement}
           placeholder="请选择是否在线"
           className={publicStyles.select_text}
           onChange={this.selectOnlineStateChange}
           value={this.state.onlineState}
         >
-          <Option value='0'> 在线 </Option>
-          <Option value='1'> 不在线 </Option>
+          <Option value="0"> 在线 </Option>
+          <Option value="1"> 不在线 </Option>
         </Select>
       </div>
     );
@@ -429,8 +422,7 @@ class SuperAdmin extends React.Component<Props, State> {
 }
 const mapState = ({ infoCardManager }) => {
   const resp = infoCardManager.customManager;
-  return { userList: resp, };
+  return { userList: resp };
 };
 
 export default connect(mapState)(SuperAdmin);
-

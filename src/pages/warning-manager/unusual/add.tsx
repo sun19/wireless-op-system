@@ -128,7 +128,10 @@ class Adduth extends React.Component<Props, State> {
         },
       ],
     })(
-      <Select placeholder="请选择所属地图">
+      <Select
+        getPopupContainer={triggerNode => triggerNode.parentElement}
+        placeholder="请选择所属地图"
+      >
         {maps.map(item => (
           <Option value={item.id} key={item.name}>
             {item.name}
@@ -148,7 +151,10 @@ class Adduth extends React.Component<Props, State> {
         },
       ],
     })(
-      <Select placeholder="请选择所属区域">
+      <Select
+        getPopupContainer={triggerNode => triggerNode.parentElement}
+        placeholder="请选择所属区域"
+      >
         {areas.map(item => (
           <Option value={item.name} key={item.name}>
             {item.name}
@@ -226,6 +232,7 @@ class Adduth extends React.Component<Props, State> {
       rules: [],
     })(
       <Select
+        getPopupContainer={triggerNode => triggerNode.parentElement}
         mode="multiple"
         placeholder="请选择灯具设置围栏"
         style={{ width: '100%' }}
@@ -377,7 +384,10 @@ class Adduth extends React.Component<Props, State> {
                         },
                       ],
                     })(
-                      <Select placeholder="请选择重复类型">
+                      <Select
+                        getPopupContainer={triggerNode => triggerNode.parentElement}
+                        placeholder="请选择重复类型"
+                      >
                         {repeatTypes.map(type => (
                           <Option value={type.dictValue} key={type.dictValue}>
                             {type.dictName}
@@ -394,7 +404,10 @@ class Adduth extends React.Component<Props, State> {
                         },
                       ],
                     })(
-                      <Select placeholder="请选择告警方式">
+                      <Select
+                        getPopupContainer={triggerNode => triggerNode.parentElement}
+                        placeholder="请选择告警方式"
+                      >
                         {warningTypes.map(type => (
                           <Option value={type.dictValue} key={type.dictValue}>
                             {type.dictName}

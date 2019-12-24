@@ -49,7 +49,7 @@ class EditAuth extends React.Component<Props> {
           ],
           initialValue: userInside.positionId ? userInside.positionId : '',
         })(
-          <Select placeholder="请选择职务">
+          <Select   getPopupContainer={triggerNode => triggerNode.parentElement} placeholder="请选择职务">
             {allDuties &&
               allDuties.map((duty, index) => (
                 <Option value={duty.id} key={index}>
@@ -76,7 +76,7 @@ class EditAuth extends React.Component<Props> {
           ],
           initialValue: userInside.securityLevelId ? userInside.securityLevelId : '',
         })(
-          <Select placeholder="请选择保密等级">
+          <Select   getPopupContainer={triggerNode => triggerNode.parentElement} placeholder="请选择保密等级">
             {allSecretLevel &&
               allSecretLevel.map((level, index) => (
                 <Option value={level.id} key={index}>
@@ -176,7 +176,7 @@ class EditAuth extends React.Component<Props> {
                         ],
                         initialValue: userInside.sex,
                       })(
-                        <Select placeholder="请选择性别">
+                        <Select   getPopupContainer={triggerNode => triggerNode.parentElement} placeholder="请选择性别">
                           <Option value="0">男</Option>
                           <Option value="1">女</Option>
                         </Select>,
@@ -220,7 +220,7 @@ class EditAuth extends React.Component<Props> {
                         ],
                         initialValue: userInside.departmentId ? userInside.departmentId : '',
                       })(
-                        <Select placeholder="请选择部门">
+                        <Select   getPopupContainer={triggerNode => triggerNode.parentElement} placeholder="请选择部门">
                           {allPosition &&
                             allPosition.map(option => (
                               <Option value={option.id} key={option.key}>
@@ -244,7 +244,7 @@ class EditAuth extends React.Component<Props> {
                         ],
                         initialValue: userInside.type,
                       })(
-                        <Select placeholder="请选择在职状态">
+                        <Select   getPopupContainer={triggerNode => triggerNode.parentElement} placeholder="请选择在职状态">
                           <Option value="0">在职</Option>
                           <Option value="1">离职</Option>
                         </Select>,
