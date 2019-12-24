@@ -69,7 +69,7 @@ const initechOrg = {
 };
 const MyNodeComponent = ({ node }) => {
   // onClick={() => alert("Hi my real name is: " + node.actor)}
-  return ( <div className={styles.initechNode} >{node.name}</div> );
+  return ( <div className={styles.initechNode} >{node.name}</div> )
 };
 interface State {
   allMenus: any[];

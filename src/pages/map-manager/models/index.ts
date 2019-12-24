@@ -18,6 +18,8 @@ export default {
     levels: [],
     areas: [],
     lampsType: [],
+    warningTypes: [],
+    repeatTypes: [],
   },
   reducers: {
     update(state, { payload }) {

@@ -35,7 +35,11 @@ interface State {
   height: number;
   showLamps: Lamp[];
   icon: any;
+  stageScale: number;
+  stageX: number;
+  stageY: number;
 }
+const scaleBy = 1.01;
 
 class Adduth extends React.Component<Props, State> {
   map: React.RefObject<HTMLDivElement>;
@@ -48,6 +52,9 @@ class Adduth extends React.Component<Props, State> {
       height: 0,
       showLamps: [],
       icon: null,
+      stageScale: 1,
+      stageX: 0,
+      stageY: 0,
     };
     this.onSearch = this.onSearch.bind(this);
   }
@@ -64,8 +71,8 @@ class Adduth extends React.Component<Props, State> {
     const mapImage = await this.dynamicLoadMapImage();
     const iconImage = await this.dynamicLoadIconImage();
     if (this.map.current) {
-      const { clientHeight } = this.map.current;
-      const clientWidth = Math.floor((clientHeight * 1920) / 1080);
+      const { clientWidth } = this.map.current;
+      const clientHeight = Math.floor((clientWidth * 1080) / 1920);
       this.setState({
         icon: iconImage,
         mapImage,
@@ -152,8 +159,8 @@ class Adduth extends React.Component<Props, State> {
   };
   onLampSelectChange = e => {
     if (!this.map.current) return;
-    const { clientHeight } = this.map.current;
-    const clientWidth = Math.floor((clientHeight * 1920) / 1080);
+    const { clientWidth } = this.map.current;
+    const clientHeight = Math.floor((clientWidth * 1080) / 1920);
 
     let _lamps = this.props.lampsType;
     // const routes = inspectionRoute && inspectionRoute.split(',');
@@ -191,6 +198,27 @@ class Adduth extends React.Component<Props, State> {
       />
     ));
   }
+
+  onWheel = evt => {
+    evt.evt.preventDefault();
+    const stage = evt.target.getStage();
+    const oldScale = stage.scaleX();
+
+    const mousePointTo = {
+      x: stage.getPointerPosition().x / oldScale - stage.x() / oldScale,
+      y: stage.getPointerPosition().y / oldScale - stage.y() / oldScale,
+    };
+
+    const newScale = evt.evt.deltaY > 0 ? oldScale * scaleBy : oldScale / scaleBy;
+
+    stage.scale({ x: newScale, y: newScale });
+
+    this.setState({
+      stageScale: newScale,
+      stageX: -(mousePointTo.x - stage.getPointerPosition().x / newScale) * newScale,
+      stageY: -(mousePointTo.y - stage.getPointerPosition().y / newScale) * newScale,
+    });
+  };
   setupShowLamps = () => {
     const { lampsType } = this.props;
     const { getFieldDecorator } = this.props.form;
@@ -387,7 +415,16 @@ class Adduth extends React.Component<Props, State> {
               <Row className={styles.line_style}>
                 <Col className={styles.img_type} span={24}>
                   <div className={styles.map_manager} ref={this.map}>
-                    <Stage width={width} height={height} draggable={false}>
+                    <Stage
+                      width={width}
+                      height={height}
+                      draggable={false}
+                      onWheel={this.onWheel}
+                      scaleX={this.state.stageScale}
+                      scaleY={this.state.stageScale}
+                      x={this.state.stageX}
+                      y={this.state.stageY}
+                    >
                       <Layer>
                         <ImageLayer image={mapImage} x={0} y={0} width={width} height={height} />
                         {createdLamps}

@@ -95,6 +95,8 @@ class TaskEdit extends React.Component<Props, State> {
   getRoute() {
     const { editData } = this.props;
 
+    
+    
     const { getFieldDecorator, getFieldsError } = this.props.form;
     const { route } = this.props;
     if (this.props.form.getFieldsValue().task === '0' && route.length > 0) {
@@ -151,14 +153,14 @@ class TaskEdit extends React.Component<Props, State> {
                 <Row type="flex" justify="space-between">
                   <Col span={12}>
                     <Form.Item label="信息牌">
-                      {getFieldDecorator('informationBoardName', {
+                      {getFieldDecorator('informationBoardId', {
                         rules: [
                           {
                             //required: true,
                             message: '请选输入信息牌编号',
                           },
                         ],
-                        initialValue: editData.informationBoardName,
+                        initialValue: editData.informationBoardId,
                       })(<Input placeholder="请输入信息牌编号" />)}
                     </Form.Item>
                   </Col>

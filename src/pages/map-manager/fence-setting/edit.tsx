@@ -20,6 +20,9 @@ import {
   getAllLevels,
   getAllArea,
 } from '@/pages/login/login.service';
+
+import { getSuperAdminList } from '@/pages/system-setting/services';
+import { warningTypeSearch } from '@/pages/warning-manager/services';
 import { updateFencingArea, getAllLamps } from '../services';
 
 import styles from './index.less';
@@ -38,10 +41,14 @@ interface State {
   height: number;
   showLamps: Lamp[];
   icon: any;
+  stageScale: number;
+  stageX: number;
+  stageY: number;
 }
 
 type StateProps = ReturnType<typeof mapState>;
 type Props = StateProps & UmiComponentProps & FormComponentProps;
+const scaleBy = 1.01;
 
 class FencingSetting extends React.Component<Props, State> {
   map: React.RefObject<HTMLDivElement>;
@@ -54,6 +61,9 @@ class FencingSetting extends React.Component<Props, State> {
       height: 0,
       showLamps: [],
       icon: null,
+      stageScale: 1,
+      stageX: 0,
+      stageY: 0,
     };
     this.initRequest = this.initRequest.bind(this);
   }
@@ -61,8 +71,8 @@ class FencingSetting extends React.Component<Props, State> {
     const mapImage = await this.dynamicLoadMapImage();
     const iconImage = await this.dynamicLoadIconImage();
     if (this.map.current) {
-      const { clientHeight } = this.map.current;
-      const clientWidth = Math.floor((clientHeight * 1920) / 1080);
+      const { clientWidth } = this.map.current;
+      const clientHeight = Math.floor((clientWidth * 1080) / 1920);
       this.setState({
         icon: iconImage,
         mapImage,
@@ -88,9 +98,13 @@ class FencingSetting extends React.Component<Props, State> {
     const levels = await getAllLevels();
     const areas = await getAllArea();
     const lamps = await getAllLamps();
+
+    const warningTypes = await warningTypeSearch({});
+
     this.props.dispatch({
       type: 'mapManager/update',
       payload: {
+        warningTypes: warningTypes.records || [],
         allMaps: maps.result,
         fencingTypes: fencingTypes.result,
         users: users,
@@ -100,7 +114,26 @@ class FencingSetting extends React.Component<Props, State> {
       },
     });
   }
+  onWheel = evt => {
+    evt.evt.preventDefault();
+    const stage = evt.target.getStage();
+    const oldScale = stage.scaleX();
 
+    const mousePointTo = {
+      x: stage.getPointerPosition().x / oldScale - stage.x() / oldScale,
+      y: stage.getPointerPosition().y / oldScale - stage.y() / oldScale,
+    };
+
+    const newScale = evt.evt.deltaY > 0 ? oldScale * scaleBy : oldScale / scaleBy;
+
+    stage.scale({ x: newScale, y: newScale });
+
+    this.setState({
+      stageScale: newScale,
+      stageX: -(mousePointTo.x - stage.getPointerPosition().x / newScale) * newScale,
+      stageY: -(mousePointTo.y - stage.getPointerPosition().y / newScale) * newScale,
+    });
+  };
   dynamicLoadIconImage() {
     return new Promise(resolve => {
       const mapImage = new Image();
@@ -139,8 +172,8 @@ class FencingSetting extends React.Component<Props, State> {
   };
   onLampSelectChange = e => {
     if (!this.map.current) return;
-    const { clientHeight } = this.map.current;
-    const clientWidth = Math.floor((clientHeight * 1920) / 1080);
+    const { clientWidth } = this.map.current;
+    const clientHeight = Math.floor((clientWidth * 1080) / 1920);
 
     let _lamps = this.props.lampsType;
     // const routes = inspectionRoute && inspectionRoute.split(',');
@@ -232,7 +265,15 @@ class FencingSetting extends React.Component<Props, State> {
   render() {
     const { getFieldDecorator } = this.props.form;
     const { mapImage, width, height } = this.state;
-    const { maps, fencingTypes, users, levels, areas, fencingTypesRecord } = this.props;
+    const {
+      maps,
+      fencingTypes,
+      users,
+      levels,
+      areas,
+      fencingTypesRecord,
+      warningTypes,
+    } = this.props;
     const createdLamps = this.createLamps();
     return (
       <ContentBorder className={styles.auth_root}>
@@ -396,6 +437,25 @@ class FencingSetting extends React.Component<Props, State> {
                 </Col>
               </Row>
 
+              <Row type="flex" justify="space-between">
+                <Col span={24}>
+                  <Form.Item label="告警类型" className={styles.area_style}>
+                    {getFieldDecorator('warnModeId', {
+                      rules: [],
+                      initialValue: fencingTypesRecord.warnModeId,
+                    })(
+                      <Select placeholder="请选择告警方式">
+                        {warningTypes.map(type => (
+                          <Option value={type.id} key={type.id}>
+                            {type.name}
+                          </Option>
+                        ))}
+                      </Select>,
+                    )}
+                  </Form.Item>
+                </Col>
+              </Row>
+
               <Row className={styles.line_style}>
                 <Col className={styles.line_type} span={11} />
                 <Col span={2}>地图</Col>
@@ -404,7 +464,16 @@ class FencingSetting extends React.Component<Props, State> {
               <Row className={styles.line_style}>
                 <Col className={styles.img_type} span={24}>
                   <div className={styles.map_manager} ref={this.map}>
-                    <Stage width={width} height={height} draggable={false}>
+                    <Stage
+                      width={width}
+                      height={height}
+                      draggable={false}
+                      onWheel={this.onWheel}
+                      scaleX={this.state.stageScale}
+                      scaleY={this.state.stageScale}
+                      x={this.state.stageX}
+                      y={this.state.stageY}
+                    >
                       <Layer>
                         <ImageLayer image={mapImage} x={0} y={0} width={width} height={height} />
                         {createdLamps}
@@ -450,6 +519,7 @@ const mapState = ({ mapManager }) => {
     levels,
     areas,
     lampsType,
+    warningTypes: mapManager.warningTypes,
   };
 };
 

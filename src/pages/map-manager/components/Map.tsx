@@ -88,8 +88,8 @@ export default class Map extends Component<Props, State> {
   async componentDidMount() {
     const mapImage = await this.dynamicLoadMapImage();
     if (this.map.current) {
-      const { clientHeight } = this.map.current;
-      const clientWidth = Math.floor((clientHeight * 1920) / 1080);
+      const { clientWidth } = this.map.current;
+      const clientHeight = Math.floor((clientWidth * 1080) / 1920);
 
       this.setState({
         mapImage,

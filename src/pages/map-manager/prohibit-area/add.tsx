@@ -17,6 +17,7 @@ import {
 import * as _ from 'lodash';
 
 import ContentBorder from '../../../components/ContentBorder';
+import { getSuperAdminList } from '@/pages/system-setting/services';
 import { warningTypeSearch } from '@/pages/warning-manager/services';
 import { UmiComponentProps } from '@/common/type';
 import { getAllMap } from '@/pages/login/login.service';
@@ -45,7 +46,11 @@ interface State {
   circleShow: boolean;
   showLamps: Lamp[];
   icon: any;
+  stageScale: number;
+  stageX: number;
+  stageY: number;
 }
+const scaleBy = 1.01;
 
 class AddPollingLine extends React.Component<Props, State> {
   map: React.RefObject<HTMLDivElement>;
@@ -62,6 +67,9 @@ class AddPollingLine extends React.Component<Props, State> {
       circleShow: true,
       showLamps: [],
       icon: null,
+      stageScale: 1,
+      stageX: 0,
+      stageY: 0,
     };
   }
   goBack = () => {
@@ -112,8 +120,8 @@ class AddPollingLine extends React.Component<Props, State> {
   }
   async componentDidMount() {
     if (this.map.current) {
-      const { clientHeight } = this.map.current;
-      const clientWidth = Math.floor((clientHeight * 1920) / 1080);
+      const { clientWidth } = this.map.current;
+      const clientHeight = Math.floor((clientWidth * 1080) / 1920);
       const mapImage = await this.dynamicLoadMapImage();
       const iconImage = await this.dynamicLoadIconImage();
       this.setState({
@@ -131,15 +139,20 @@ class AddPollingLine extends React.Component<Props, State> {
   }
   async initRequest() {
     if (!this.map.current) return;
-    const { clientHeight } = this.map.current;
-    const clientWidth = Math.floor((clientHeight * 1920) / 1080);
+    const { clientWidth } = this.map.current;
+    const clientHeight = Math.floor((clientWidth * 1080) / 1920);
     const maps = await getAllMap();
     let lamps = await getMapLamps({});
+    const repeatTypes = await getSuperAdminList({
+      type: 'repeatType',
+      isShow: '1',
+    });
     this.props.dispatch({
       type: 'mapManager/update',
       payload: {
         allMaps: maps.result,
         lamps: lamps.result,
+        repeatTypes: repeatTypes.records || [],
       },
     });
   }
@@ -165,6 +178,26 @@ class AddPollingLine extends React.Component<Props, State> {
       />
     ));
   }
+  onWheel = evt => {
+    evt.evt.preventDefault();
+    const stage = evt.target.getStage();
+    const oldScale = stage.scaleX();
+
+    const mousePointTo = {
+      x: stage.getPointerPosition().x / oldScale - stage.x() / oldScale,
+      y: stage.getPointerPosition().y / oldScale - stage.y() / oldScale,
+    };
+
+    const newScale = evt.evt.deltaY > 0 ? oldScale * scaleBy : oldScale / scaleBy;
+
+    stage.scale({ x: newScale, y: newScale });
+
+    this.setState({
+      stageScale: newScale,
+      stageX: -(mousePointTo.x - stage.getPointerPosition().x / newScale) * newScale,
+      stageY: -(mousePointTo.y - stage.getPointerPosition().y / newScale) * newScale,
+    });
+  };
   createLampLines = () => {
     const lamps = this.state.showLamps;
     const line = [];
@@ -188,7 +221,7 @@ class AddPollingLine extends React.Component<Props, State> {
           (values.startTime && values.startTime.format('YYYY-MM-DD HH:mm:ss').toString()) || '',
         endTime: (values.endTime && values.endTime.format('YYYY-MM-DD HH:mm:ss').toString()) || '',
         inspectionRoute: values.inspectionRoute.join(','),
-        type: 2
+        type: 2,
       };
 
       await addPollingLine(data);
@@ -198,8 +231,8 @@ class AddPollingLine extends React.Component<Props, State> {
   };
   onLampSelectChange = e => {
     if (!this.map.current) return;
-    const { clientHeight } = this.map.current;
-    const clientWidth = Math.floor((clientHeight * 1920) / 1080);
+    const { clientWidth } = this.map.current;
+    const clientHeight = Math.floor((clientWidth * 1080) / 1920);
 
     let _lamps = this.props.lamps;
     // let showLamps = _.filter(_lamps.records, route => e.includes(route.id));
@@ -228,8 +261,8 @@ class AddPollingLine extends React.Component<Props, State> {
   onCircleDragging = (event: any) => {
     const defaultWidth = 1920;
     const defaultHeight = 1080;
-    const { clientHeight } = this.map.current;
-    const clientWidth = Math.floor((clientHeight * 1920) / 1080);
+    const { clientWidth } = this.map.current;
+    const clientHeight = Math.floor((clientWidth * 1080) / 1920);
 
     const evt = event.evt;
     //换算由于地图拉伸造成的坐标不一致
@@ -242,7 +275,7 @@ class AddPollingLine extends React.Component<Props, State> {
   };
   render() {
     const { getFieldDecorator } = this.props.form;
-    let { maps, pollingLinesRecord, lamps } = this.props;
+    let { maps, pollingLinesRecord, lamps, repeatTypes } = this.props;
     if (_.isEmpty(lamps)) lamps = { records: [] };
     const createdLamps = this.createLamps();
     const createdLine = this.createLampLines();
@@ -341,7 +374,23 @@ class AddPollingLine extends React.Component<Props, State> {
               <Row type="flex" justify="space-between">
                 <Col span={24}>
                   {this.setupAlarmSelect()}
-
+                  <Form.Item label="重复类型">
+                    {getFieldDecorator('repeatType', {
+                      rules: [
+                        {
+                          message: '请输入重复类型',
+                        },
+                      ],
+                    })(
+                      <Select placeholder="请选择重复类型">
+                        {repeatTypes.map(type => (
+                          <Option value={type.dictValue} key={type.dictValue}>
+                            {type.dictName}
+                          </Option>
+                        ))}
+                      </Select>,
+                    )}
+                  </Form.Item>
                   <Form.Item className={styles.area_style} label="巡检名称">
                     {getFieldDecorator('name', {
                       rules: [],
@@ -386,6 +435,11 @@ class AddPollingLine extends React.Component<Props, State> {
                       width={this.state.width}
                       height={this.state.height}
                       draggable={false}
+                      onWheel={this.onWheel}
+                      scaleX={this.state.stageScale}
+                      scaleY={this.state.stageScale}
+                      x={this.state.stageX}
+                      y={this.state.stageY}
                       // onClick={this.onCircleClick}
                     >
                       <Layer>
@@ -430,7 +484,16 @@ class AddPollingLine extends React.Component<Props, State> {
 const AddPollingLineHOC = Form.create<Props>({ name: 'add_polling_line' })(AddPollingLine);
 
 const mapState = ({ mapManager }) => {
-  const { allMaps, fencingTypes, users, levels, areas, pollingLinesRecord, lamps } = mapManager;
+  const {
+    allMaps,
+    fencingTypes,
+    users,
+    levels,
+    areas,
+    repeatTypes,
+    pollingLinesRecord,
+    lamps,
+  } = mapManager;
   return {
     mapFencing: mapManager.mapFencing,
     maps: allMaps,
@@ -440,6 +503,7 @@ const mapState = ({ mapManager }) => {
     areas,
     pollingLinesRecord,
     lamps,
+    repeatTypes,
   };
 };
 

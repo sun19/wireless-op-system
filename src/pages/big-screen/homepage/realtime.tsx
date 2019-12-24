@@ -33,7 +33,7 @@ import request from 'umi-request';
 import styles from './index.less';
 
 interface State {
-  mapImage: any | null;
+  // mapImage: any | null;
   icon: any;
   iconRed: any;
   width: number;
@@ -80,7 +80,7 @@ class Realtime extends React.Component<Props, State> {
     super(props);
     this.map = React.createRef<HTMLDivElement>();
     this.state = {
-      mapImage: null,
+      // mapImage: null,
       icon: null,
       iconRed: null,
       width: 0,
@@ -99,22 +99,22 @@ class Realtime extends React.Component<Props, State> {
   }
   //异步加载图片，保证渲染到canvas上时是已经OK的
   async componentDidMount() {
-    const mapImage = await this.dynamicLoadMapImage();
+    // const mapImage = await this.dynamicLoadMapImage();
     const iconImage = await this.dynamicLoadIconImage();
     const iconRedImage = await this.dynamicLoadIconRedImage();
-    if (this.map.current) {
-      const { clientWidth } = this.map.current;
-      const clientHeight = Math.floor((clientWidth * 1080) / 1920);
+    // if (this.map.current) {
+    //   const { clientWidth } = this.map.current;
+    //   const clientHeight = Math.floor((clientWidth * 1080) / 1920);
 
       // this.showLine();
       this.setState({
-        mapImage,
+        // mapImage,
         icon: iconImage,
         iconRed: iconRedImage,
-        width: clientWidth,
-        height: clientHeight,
+        // width: clientWidth,
+        // height: clientHeight,
       });
-    }
+    // }
     let lamps = await request.get(
       BASE_API_URL + '/jeecg-boot/intf/location/listByHistoryTrajectory',
     );
@@ -261,20 +261,20 @@ class Realtime extends React.Component<Props, State> {
   componentWillUnmount() {
     message.destroy();
   }
-  dynamicLoadMapImage() {
-    return new Promise(resolve => {
-      const mapImage = new Image();
-      mapImage.src = require('../assets/地图2.png');
-      mapImage.onload = function() {
-        resolve(mapImage);
-      };
-    });
-  }
+  // dynamicLoadMapImage() {
+  //   return new Promise(resolve => {
+  //     const mapImage = new Image();
+  //     mapImage.src = require('../assets/地图2.png');
+  //     mapImage.onload = function () {
+  //       resolve(mapImage);
+  //     };
+  //   });
+  // }
   dynamicLoadIconImage() {
     return new Promise(resolve => {
       const mapImage = new Image();
       mapImage.src = require('../assets/baoan.png');
-      mapImage.onload = function() {
+      mapImage.onload = function () {
         resolve(mapImage);
       };
     });
@@ -283,7 +283,7 @@ class Realtime extends React.Component<Props, State> {
     return new Promise(resolve => {
       const mapImage = new Image();
       mapImage.src = require('../assets/baoan.red.png');
-      mapImage.onload = function() {
+      mapImage.onload = function () {
         resolve(mapImage);
       };
     });
@@ -334,12 +334,12 @@ class Realtime extends React.Component<Props, State> {
           <div className="ele_bag">
             {!!item.lampCode
               ? item.lampCode.split(',').map((num, index) => {
-                  return (
-                    <span key={index} className="ele_bag_round">
-                      {num}
-                    </span>
-                  );
-                })
+                return (
+                  <span key={index} className="ele_bag_round">
+                    {num}
+                  </span>
+                );
+              })
               : ''}
           </div>
         </div>
@@ -608,7 +608,7 @@ class Realtime extends React.Component<Props, State> {
             normal: {
               show: true,
               position: 'insideRight',
-              formatter: function(params) {
+              formatter: function (params) {
                 if (params.value > 0) {
                   return params.value;
                 } else {
@@ -731,10 +731,10 @@ class Realtime extends React.Component<Props, State> {
                   未处理
                 </span>
               ) : (
-                <span style={{ marginLeft: '10px' }} className={styles.resolveed}>
-                  已处理
+                  <span style={{ marginLeft: '10px' }} className={styles.resolveed}>
+                    已处理
                 </span>
-              )}
+                )}
             </div>
           );
         },
@@ -863,7 +863,7 @@ class Realtime extends React.Component<Props, State> {
     );
   };
   render() {
-    const { mapImage, width, height } = this.state;
+    // const { mapImage, width, height } = this.state;
     const lamps = this.createLamps();
     const line = this.createLampLines();
 
@@ -926,24 +926,24 @@ class Realtime extends React.Component<Props, State> {
                   </div>
                 </div>
               ) : (
-                <div>
-                  <div className="right_ele_panel">
-                    <div>
-                      <div className="ele_text">
-                        <Title title="电子围栏" />
+                  <div>
+                    <div className="right_ele_panel">
+                      <div>
+                        <div className="ele_text">
+                          <Title title="电子围栏" />
+                        </div>
+                        <div className="ele_from"> {this.getEleFrom()} </div>
                       </div>
-                      <div className="ele_from"> {this.getEleFrom()} </div>
                     </div>
-                  </div>
 
-                  <div className="right_wraning_panel">
-                    <div className="ele_text">
-                      <Title title="告警信息" />
+                    <div className="right_wraning_panel">
+                      <div className="ele_text">
+                        <Title title="告警信息" />
+                      </div>
+                      <div className="ele_from">{this.createRouteCheckData()}</div>
                     </div>
-                    <div className="ele_from">{this.createRouteCheckData()}</div>
                   </div>
-                </div>
-              )}
+                )}
               <div className="middle_text">
                 <Breadcrumb>
                   <Breadcrumb.Item>

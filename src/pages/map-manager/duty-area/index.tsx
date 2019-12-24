@@ -51,6 +51,9 @@ const columns = [
     editable: true,
     // ellipsis: true,
     width: '15%',
+    render(value, item) {
+      return <span>{item.inspectionRouteName}</span>;
+    },
   },
   {
     title: '巡检开始时间',
@@ -74,7 +77,7 @@ const columns = [
     className: 'select_text',
     editable: true,
   },
-
+  //TODO:重复类型字段
   {
     title: '重复类型',
     dataIndex: 'repeatTypeName',
