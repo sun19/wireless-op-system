@@ -149,7 +149,7 @@ class LampsSettings extends React.Component<Props> {
       allAreas = [];
     }
     return getFieldDecorator('regionalId', { rules: [] })(
-      <Select className={publicStyles.select_text}>
+      <Select   getPopupContainer={triggerNode => triggerNode.parentElement} className={publicStyles.select_text}>
         {allAreas.map((area, index) => (
           <Option value={area.id} key={area.id}>
             {area.name}

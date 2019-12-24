@@ -103,7 +103,7 @@ class TaskAdd extends React.Component<Props, State> {
                 ],
                 initialValue: (route[0] && route[0].id) || undefined,
               })(
-                <Select placeholder="请选择巡更路线">
+                <Select   getPopupContainer={triggerNode => triggerNode.parentElement} placeholder="请选择巡更路线">
                   {route.map(item => (
                     <Option key={item.name} value={item.id}>
                       {item.name}
@@ -169,7 +169,7 @@ class TaskAdd extends React.Component<Props, State> {
                         ],
                         initialValue: '0',
                       })(
-                        <Select placeholder="请选择任务">
+                        <Select   getPopupContainer={triggerNode => triggerNode.parentElement} placeholder="请选择任务">
                           <Option value="0">巡更路线</Option>
                           <Option value="1">责任区</Option>
                           <Option value="2">禁止区</Option>

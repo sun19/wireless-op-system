@@ -31,7 +31,7 @@ class EditableCell extends React.Component<any> {
       this.props.className === 'select_text'
     ) {
       return (
-        <Select defaultValue={this.props.record[this.props.dataIndex]} style={{ width: 120 }} />
+        <Select   getPopupContainer={triggerNode => triggerNode.parentElement} defaultValue={this.props.record[this.props.dataIndex]} style={{ width: 120 }} />
       );
       {
         /* <Option value="1"> 男</Option>
@@ -130,16 +130,19 @@ export default class EditableTable extends React.Component<Props, State> {
                   style={{ marginRight: '8px' }}
                   onClick={this.onClick.bind(this, record)}
                 />
-                
-                <IconFont hidden={this.props.showDelete==false} type="icon-delete" onClick={this.onDelete.bind(this, record)} />
-                
-                <IconFont //注销按钮
-                  hidden={!(this.props.showCancellation==true)}
-                  style={{ marginLeft: '8px' }}
-                  type="icon-zhuxiao" 
-                  onClick={this.onCancellation.bind(this, record)}
+
+                <IconFont
+                  hidden={this.props.showDelete == false}
+                  type="icon-delete"
+                  onClick={this.onDelete.bind(this, record)}
                 />
 
+                <IconFont //注销按钮
+                  hidden={!(this.props.showCancellation == true)}
+                  style={{ marginLeft: '8px' }}
+                  type="icon-zhuxiao"
+                  onClick={this.onCancellation.bind(this, record)}
+                />
               </span>
             );
           },
@@ -165,14 +168,14 @@ export default class EditableTable extends React.Component<Props, State> {
         },
       ]);
     }
-    if (this.props.showManage){
+    if (this.props.showManage) {
       this.columns = this.columns.concat([
         {
           title: '操作',
           key: 'action',
           width: 100,
           render: (text, record) => (
-            <span style={{color:'#FF41D9'}} onClick={this.manage.bind(this, record)}>
+            <span style={{ color: '#FF41D9' }} onClick={this.manage.bind(this, record)}>
               处理
             </span>
           ),

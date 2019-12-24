@@ -49,8 +49,8 @@ interface State {
   stageScale: number;
   stageX: number;
   stageY: number;
-  warnModeName:string;
-  repeatTypeName:string;
+  warnModeName: string;
+  repeatTypeName: string;
 }
 const scaleBy = 1.01;
 
@@ -72,8 +72,8 @@ class AddPollingLine extends React.Component<Props, State> {
       stageScale: 1,
       stageX: 0,
       stageY: 0,
-      warnModeName:'',
-      repeatTypeName:""
+      warnModeName: '',
+      repeatTypeName: '',
     };
   }
   goBack = () => {
@@ -92,7 +92,11 @@ class AddPollingLine extends React.Component<Props, State> {
             },
           ],
         })(
-          <Select placeholder="告警方式"  onSelect={this.selectAlarmName.bind(this)}>
+          <Select
+            getPopupContainer={triggerNode => triggerNode.parentElement}
+            placeholder="告警方式"
+            onSelect={this.selectAlarmName.bind(this)}
+          >
             {warningTypes.map((item, index) => (
               <Option value={item.dictValue} key={item.dictName}>
                 {item.dictName}
@@ -104,14 +108,14 @@ class AddPollingLine extends React.Component<Props, State> {
     );
   };
 
-  selectAlarmName = (e,key) => {
+  selectAlarmName = (e, key) => {
     this.setState({
-      warnModeName:key.key
+      warnModeName: key.key,
     });
   };
-  selectRepeatName = (e,key) => {
+  selectRepeatName = (e, key) => {
     this.setState({
-      repeatTypeName:key.key
+      repeatTypeName: key.key,
     });
   };
 
@@ -228,7 +232,7 @@ class AddPollingLine extends React.Component<Props, State> {
     e.preventDefault();
     const { pollingLinesRecord } = this.props;
 
-    const { warnModeName ,repeatTypeName} = this.state;
+    const { warnModeName, repeatTypeName } = this.state;
 
     this.props.form.validateFields(async (err, values) => {
       const { startTime, endTime, ...props } = values;
@@ -239,8 +243,8 @@ class AddPollingLine extends React.Component<Props, State> {
         endTime: (values.endTime && values.endTime.format('YYYY-MM-DD HH:mm:ss').toString()) || '',
         inspectionRoute: values.inspectionRoute.join(','),
         type: 1,
-        warnModeName:warnModeName,
-        repeatTypeName:repeatTypeName
+        warnModeName: warnModeName,
+        repeatTypeName: repeatTypeName,
       };
 
       await addPollingLine(data);
@@ -319,7 +323,10 @@ class AddPollingLine extends React.Component<Props, State> {
                         },
                       ],
                     })(
-                      <Select placeholder="请选择地图名称">
+                      <Select
+                        getPopupContainer={triggerNode => triggerNode.parentElement}
+                        placeholder="请选择地图名称"
+                      >
                         {maps.map(item => (
                           <Option value={item.id} key={item.name}>
                             {item.name}
@@ -352,6 +359,7 @@ class AddPollingLine extends React.Component<Props, State> {
                       rules: [],
                     })(
                       <Select
+                        getPopupContainer={triggerNode => triggerNode.parentElement}
                         mode="multiple"
                         placeholder="请选择灯具，设置巡检路线"
                         onChange={this.onLampSelectChange}
@@ -401,13 +409,17 @@ class AddPollingLine extends React.Component<Props, State> {
                         },
                       ],
                     })(
-                      <Select placeholder="请选择重复类型" onSelect={this.selectRepeatName.bind(this)}>
-                      {repeatTypes.map(type => (
-                        <Option value={type.dictValue} key={type.dictName}>
-                          {type.dictName}
-                        </Option>
-                      ))}
-                    </Select>,
+                      <Select
+                        getPopupContainer={triggerNode => triggerNode.parentElement}
+                        placeholder="请选择重复类型"
+                        onSelect={this.selectRepeatName.bind(this)}
+                      >
+                        {repeatTypes.map(type => (
+                          <Option value={type.dictValue} key={type.dictName}>
+                            {type.dictName}
+                          </Option>
+                        ))}
+                      </Select>,
                     )}
                   </Form.Item>
                   <Form.Item className={styles.area_style} label="巡检名称">

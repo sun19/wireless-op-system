@@ -155,7 +155,7 @@ class TaskPlan extends React.Component<Props, State> {
           rules: [],
           // initialValue: '',
         })(
-          <Select placeholder="请选择任务" style={{ marginTop: '-5px' }}>
+          <Select   getPopupContainer={triggerNode => triggerNode.parentElement} placeholder="请选择任务" style={{ marginTop: '-5px' }}>
             <Option value="0">巡更路线</Option>
             <Option value="1">责任区</Option>
             <Option value="2">禁止区</Option>

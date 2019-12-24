@@ -326,7 +326,7 @@ class FencingSetting extends React.Component<Props, State> {
                           },
                         ],
                       })(
-                        <Select placeholder="请选择地图名称">
+                        <Select   getPopupContainer={triggerNode => triggerNode.parentElement} placeholder="请选择地图名称">
                           {maps.map(item => (
                             <Option value={item.id} key={item.name}>
                               {item.name}
@@ -347,7 +347,7 @@ class FencingSetting extends React.Component<Props, State> {
                           },
                         ],
                       })(
-                        <Select placeholder="请选择区域级别">
+                        <Select   getPopupContainer={triggerNode => triggerNode.parentElement} placeholder="请选择区域级别">
                           {levels.map(item => (
                             <Option value={item.id} key={item.name}>
                               {item.name}

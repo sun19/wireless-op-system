@@ -261,7 +261,7 @@ class halmpAdd extends React.Component<Props, State> {
                     {getFieldDecorator('regionalId', {
                       rules: [],
                     })(
-                      <Select placeholder="请选择区域">
+                      <Select   getPopupContainer={triggerNode => triggerNode.parentElement} placeholder="请选择区域">
                         {areas.map(item => (
                           <Option key={item.name} value={item.id}>
                             {item.name}
@@ -279,7 +279,7 @@ class halmpAdd extends React.Component<Props, State> {
                     {getFieldDecorator('entranceExit', {
                       rules: [],
                     })(
-                      <Select placeholder="请选择出入口">
+                      <Select   getPopupContainer={triggerNode => triggerNode.parentElement} placeholder="请选择出入口">
                         <Option value="0">出口</Option>
                         <Option value="1">入口</Option>
                       </Select>,
@@ -294,7 +294,7 @@ class halmpAdd extends React.Component<Props, State> {
                         },
                       ],
                     })(
-                      <Select placeholder="请选择地图名称">
+                      <Select   getPopupContainer={triggerNode => triggerNode.parentElement} placeholder="请选择地图名称">
                         {maps.map(item => (
                           <Option value={item.id} key={item.name}>
                             {item.name}

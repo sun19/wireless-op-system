@@ -105,7 +105,7 @@ class AreaSet extends React.Component<Props, State> {
       okText: '取消',
       okType: 'danger',
       cancelText: '确定',
-      onOk() { },
+      onOk() {},
       async onCancel() {
         let data = {
           id: item.id,
@@ -114,7 +114,6 @@ class AreaSet extends React.Component<Props, State> {
         //重新请求数据重绘
         self.getMapArea();
       },
- 
     });
   }
 
@@ -123,6 +122,7 @@ class AreaSet extends React.Component<Props, State> {
     if (areaLevels.length > 0) {
       return (
         <Select
+          getPopupContainer={triggerNode => triggerNode.parentElement}
           className={publicStyles.select_text}
           placeholder="请选择级别"
           onSelect={this.onLevelSelectChange}
@@ -138,6 +138,7 @@ class AreaSet extends React.Component<Props, State> {
     } else {
       return (
         <Select
+          getPopupContainer={triggerNode => triggerNode.parentElement}
           className={publicStyles.select_text}
           onSelect={this.onLevelSelectChange}
           value={this.state.level}

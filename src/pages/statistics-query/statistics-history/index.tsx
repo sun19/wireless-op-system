@@ -50,9 +50,9 @@ const columns = [
     dataIndex: 'onlineStatus',
     className: 'select_text',
     editable: true,
-    render: (item) => {
-      return ['在线', '离线'][item]
-    }
+    render: item => {
+      return ['在线', '离线'][item];
+    },
   },
   {
     title: '定位',
@@ -93,9 +93,9 @@ const columns = [
     title: '类型',
     dataIndex: 'type',
     editable: true,
-    render: (item) => {
-return ['内部', '外部'][item]
-    }
+    render: item => {
+      return ['内部', '外部'][item];
+    },
   },
 ];
 
@@ -198,7 +198,7 @@ class StatisticsHistory extends React.Component<Props, State> {
           <div className={styles.public_hight_40}>
             <Form layout="inline" onSubmit={this.search}>
               <Row justify="start" align="middle" style={{ paddingLeft: '39px' }} gutter={16}>
-                <FormItem label="信息牌"> 
+                <FormItem label="信息牌">
                   {getFieldDecorator(
                     'informationBoardName',
                     {},
@@ -219,16 +219,13 @@ class StatisticsHistory extends React.Component<Props, State> {
                     ],
                   })(
                     <Select
+                      getPopupContainer={triggerNode => triggerNode.parentElement}
                       // options={this.state.userTypes as OptionValue[]}
                       placeholder="请选择类型"
                       style={{ width: '210px' }}
                     >
-                      <Option value='0'>
-                       内部
-                      </Option>
-                      <Option value='1'>
-                    外部
-                      </Option>
+                      <Option value="0">内部</Option>
+                      <Option value="1">外部</Option>
                       {/* {this.state.userTypes.map(item => (
                         <Option value={item.key} key={item.value}>
                           {item.value}

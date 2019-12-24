@@ -227,7 +227,7 @@ class AddPollingPoint extends React.Component<Props, State> {
                       ],
                       initialValue: pollingPointsRecord.mapId,
                     })(
-                      <Select placeholder="请选择地图名称">
+                      <Select   getPopupContainer={triggerNode => triggerNode.parentElement} placeholder="请选择地图名称">
                         {maps.map(item => (
                           <Option value={item.id} key={item.name}>
                             {item.name}

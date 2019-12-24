@@ -10,7 +10,14 @@ import { connect } from 'dva';
 import { UmiComponentProps } from '@/common/type';
 import MainContent from '../components/MainContent';
 import { ICON_FONTS_URL } from '../../../config/constants';
-import { getInfoListParams, deleteInfo, exportIn, exportOut, cancellationInfo, getAllRegionData } from '../services';
+import {
+  getInfoListParams,
+  deleteInfo,
+  exportIn,
+  exportOut,
+  cancellationInfo,
+  getAllRegionData,
+} from '../services';
 import { getUserTypes } from '../../system-setting/services';
 import { DeleteInfo, CancellationInfo } from '../services/index.interfaces';
 
@@ -47,29 +54,33 @@ const columns = [
           overflow: 'hidden',
           whiteSpace: 'nowrap',
           textOverflow: 'ellipsis',
-          cursor: 'pointer'
-        }
-      }
+          cursor: 'pointer',
+        },
+      };
     },
-    render: (text) => <Tooltip className='tooltips' placement="topLeft" title={text}>{text}</Tooltip>,
+    render: text => (
+      <Tooltip className="tooltips" placement="topLeft" title={text}>
+        {text}
+      </Tooltip>
+    ),
   },
   {
     title: '状态',
     dataIndex: 'onlineStatus',
     className: 'select_text',
     editable: true,
-    render: (item) => {
-      return ['在线', '离线'][item]
-    }
+    render: item => {
+      return ['在线', '离线'][item];
+    },
   },
   {
     title: '注销状态',
     dataIndex: 'isCancel',
     className: 'select_text',
     editable: true,
-    render: (item) => {
-      return ['使用中', '注销'][item]
-    }
+    render: item => {
+      return ['使用中', '注销'][item];
+    },
   },
 
   {
@@ -84,11 +95,15 @@ const columns = [
           overflow: 'hidden',
           whiteSpace: 'nowrap',
           textOverflow: 'ellipsis',
-          cursor: 'pointer'
-        }
-      }
+          cursor: 'pointer',
+        },
+      };
     },
-    render: (text) => <Tooltip className='tooltips' placement="topLeft" title={text}>{text}</Tooltip>,
+    render: text => (
+      <Tooltip className="tooltips" placement="topLeft" title={text}>
+        {text}
+      </Tooltip>
+    ),
   },
   {
     title: '姓名',
@@ -150,9 +165,9 @@ const columns = [
     dataIndex: 'type',
     className: 'select_text',
     editable: true,
-    render: (item) => {
-      return ['内部', '外部'][item]
-    }
+    render: item => {
+      return ['内部', '外部'][item];
+    },
   },
   {
     title: '保密等级',
@@ -198,7 +213,7 @@ class SuperAdmin extends React.Component<Props, State> {
       pageNo: 1,
       hasData: true,
       allRegionData: [],
-      regionId:'',
+      regionId: '',
     };
   }
   onNameChange = (e: any) => {
@@ -226,7 +241,7 @@ class SuperAdmin extends React.Component<Props, State> {
       userName: '',
       name: '',
       type: '',
-      regionId:'',
+      regionId: '',
     });
     this.forceUpdate(() => {
       this.getInfoListData();
@@ -248,7 +263,7 @@ class SuperAdmin extends React.Component<Props, State> {
       okText: '取消',
       okType: 'danger',
       cancelText: '确定',
-      onOk() { },
+      onOk() {},
       async onCancel() {
         await deleteInfo({ id: item.id });
         //重新请求数据重绘
@@ -265,18 +280,14 @@ class SuperAdmin extends React.Component<Props, State> {
       okText: '取消',
       okType: 'danger',
       cancelText: '确定',
-      onOk() { },
+      onOk() {},
       async onCancel() {
-        await cancellationInfo({ 'id': item.id, 'isCancel': item.isCancel == 0 ? 1 : 0 });
+        await cancellationInfo({ id: item.id, isCancel: item.isCancel == 0 ? 1 : 0 });
         //重新请求数据重绘
         self.getInfoListData();
       },
     });
   }
-
-
-
-
 
   async componentDidMount() {
     const peopleType = await getUserTypes({});
@@ -287,7 +298,7 @@ class SuperAdmin extends React.Component<Props, State> {
       },
     });
     const allRegionData = await getAllRegionData();
-    this.setState({ allRegionData: allRegionData.result })
+    this.setState({ allRegionData: allRegionData.result });
     await this.getInfoListData();
   }
 
@@ -296,14 +307,13 @@ class SuperAdmin extends React.Component<Props, State> {
   }
 
   async getInfoListData() {
-    const { userName, name, type ,regionId} = this.state;
+    const { userName, name, type, regionId } = this.state;
     let data = {
       userName,
       name,
       type,
       regionId,
-
-    }
+    };
     const infoList = await getInfoListParams(data);
     this.props.dispatch({
       type: 'infoCardManager/update',
@@ -323,21 +333,16 @@ class SuperAdmin extends React.Component<Props, State> {
 
   setupUserType = () => {
     return (
-      <div
-        style={{ marginTop: '-3px' }}
-      >
+      <div style={{ marginTop: '-3px' }}>
         <Select
+          getPopupContainer={triggerNode => triggerNode.parentElement}
           placeholder="请选择类型"
           className={publicStyles.select_text}
           onChange={this.selectChange}
           value={this.state.type}
         >
-          <Option value='0'>
-            内部
-                      </Option>
-          <Option value='1'>
-            外部
-                      </Option>
+          <Option value="0">内部</Option>
+          <Option value="1">外部</Option>
         </Select>
       </div>
     );
@@ -346,26 +351,21 @@ class SuperAdmin extends React.Component<Props, State> {
   getAllRegion = () => {
     // console.log(this.state.allRegionData)
     return (
-      <div
-        style={{ marginTop: '-3px' }}
-      >
+      <div style={{ marginTop: '-3px' }}>
         <Select
+          getPopupContainer={triggerNode => triggerNode.parentElement}
           placeholder="请选择区域"
           className={publicStyles.select_text}
           onChange={this.regionIdChange}
           value={this.state.regionId}
         >
-          {
-            this.state.allRegionData.map((res, index) => {
-              return (
-                <Option value={res.id} key={index}>
-                  {res.name}
-                </Option>
-              )
-            }
-            )
-          }
-
+          {this.state.allRegionData.map((res, index) => {
+            return (
+              <Option value={res.id} key={index}>
+                {res.name}
+              </Option>
+            );
+          })}
         </Select>
       </div>
     );
@@ -442,8 +442,8 @@ class SuperAdmin extends React.Component<Props, State> {
             // deleteColumn={this.deleteColumn}
             cancellationColumn={this.cancellationColumn}
             total={total}
-          // showEdit={true}
-          // showCancellation={true}
+            // showEdit={true}
+            // showCancellation={true}
           />
         </Content>
       </div>
@@ -452,7 +452,7 @@ class SuperAdmin extends React.Component<Props, State> {
 }
 const mapState = ({ infoCardManager }) => {
   const resp = infoCardManager.customManager;
-  return { userList: resp, };
+  return { userList: resp };
 };
 
 export default connect(mapState)(SuperAdmin);

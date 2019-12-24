@@ -163,9 +163,9 @@ class FencingSetting extends React.Component<Props, State> {
       rules: [],
     })(
       <Select
+        getPopupContainer={triggerNode => triggerNode.parentElement}
         mode="multiple"
         placeholder="请选择关联人员"
-        //  style={{ width: '100%' }}
       >
         {users.map(user => (
           <Option key={user.id} value={user.id}>
@@ -222,9 +222,9 @@ class FencingSetting extends React.Component<Props, State> {
       rules: [],
     })(
       <Select
+        getPopupContainer={triggerNode => triggerNode.parentElement}
         mode="multiple"
         placeholder="请选择灯具设置围栏"
-        // style={{ width: '100%' }}
         onChange={this.onLampSelectChange}
       >
         {lampsType.map(lamp => (
@@ -297,7 +297,10 @@ class FencingSetting extends React.Component<Props, State> {
                         },
                       ],
                     })(
-                      <Select placeholder="请选择地图名称">
+                      <Select
+                        getPopupContainer={triggerNode => triggerNode.parentElement}
+                        placeholder="请选择地图名称"
+                      >
                         {maps.map(item => (
                           <Option value={item.id} key={item.name}>
                             {item.name}
@@ -323,7 +326,10 @@ class FencingSetting extends React.Component<Props, State> {
                         },
                       ],
                     })(
-                      <Select placeholder="请选择围栏类型">
+                      <Select
+                        getPopupContainer={triggerNode => triggerNode.parentElement}
+                        placeholder="请选择围栏类型"
+                      >
                         {fencingTypes.map(item => (
                           <Option value={item.id} key={item.name}>
                             {item.name}
@@ -340,7 +346,10 @@ class FencingSetting extends React.Component<Props, State> {
                         },
                       ],
                     })(
-                      <Select placeholder="请选择是否永久">
+                      <Select
+                        getPopupContainer={triggerNode => triggerNode.parentElement}
+                        placeholder="请选择是否永久"
+                      >
                         <Option value="0">是</Option>
                         <Option value="1">否</Option>
                       </Select>,
@@ -381,7 +390,10 @@ class FencingSetting extends React.Component<Props, State> {
                         },
                       ],
                     })(
-                      <Select placeholder="请选择级别">
+                      <Select
+                        getPopupContainer={triggerNode => triggerNode.parentElement}
+                        placeholder="请选择级别"
+                      >
                         {levels.map(item => (
                           <Option value={item.id} key={item.name}>
                             {item.name}
@@ -416,6 +428,7 @@ class FencingSetting extends React.Component<Props, State> {
                       ],
                     })(
                       <Select
+                        getPopupContainer={triggerNode => triggerNode.parentElement}
                         placeholder="请选择区域"
                         style={{ width: '5.25rem', backgroundSize: '5.25rem 0.4rem' }}
                         onSelect={this.areaSelectChange}
@@ -437,7 +450,10 @@ class FencingSetting extends React.Component<Props, State> {
                     {getFieldDecorator('warnModeId', {
                       rules: [],
                     })(
-                      <Select placeholder="请选择告警方式">
+                      <Select
+                        getPopupContainer={triggerNode => triggerNode.parentElement}
+                        placeholder="请选择告警方式"
+                      >
                         {warningTypes.map(type => (
                           <Option value={type.id} key={type.id}>
                             {type.name}

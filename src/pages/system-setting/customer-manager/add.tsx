@@ -162,7 +162,11 @@ class AddUser extends React.Component<Props, State> {
                         ],
                         initialValue: this.state.userTypes[0].key,
                       })(
-                        <Select style={{ width: '210px' }} className={styles.select_text}>
+                        <Select
+                          getPopupContainer={triggerNode => triggerNode.parentElement}
+                          style={{ width: '210px' }}
+                          className={styles.select_text}
+                        >
                           {this.state.userTypes.map(option => (
                             <Option value={option.key} key={option.key}>
                               {option.value}
@@ -183,6 +187,7 @@ class AddUser extends React.Component<Props, State> {
                         ],
                       })(
                         <Select
+                          getPopupContainer={triggerNode => triggerNode.parentElement}
                           // defaultValue={this.props.value}
                           style={{ width: '210px' }}
                           className={styles.select_text}

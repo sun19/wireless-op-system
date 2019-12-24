@@ -186,7 +186,7 @@ class SuperAdmin extends React.Component<Props, State> {
 
   // renderTypeOptions = () => {
   //   return (
-  //     <Select className={publicStyles.select_text} defaultValue={this.state.type[0].value}>
+  //     <Select   getPopupContainer={triggerNode => triggerNode.parentElement} className={publicStyles.select_text} defaultValue={this.state.type[0].value}>
   //       {this.state.type.map(item => (
   //         <Option value={item.value} key={item.value}>
   //           {item.label}
