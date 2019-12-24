@@ -17,6 +17,10 @@ import {
   LEFT_MENU_LIST,
   PEOPLE_MENUS,
   EDIT_MENUS,
+  GET_DEPARTMENT,
+  EDIT_DEPARTMENT,
+  DELECT_DEPARTMENT,
+  GET_DEPARTMENT_NAME
 
 } from '@/config/api';
 export async function getAllMap() {
@@ -91,4 +95,24 @@ export async function editMenues(params) {
 //   const resp = await request.post(EDIT_MENUS_NAME, { data: format(params) });
 //   return resp;
 // }
+// 获取组织
+export async function getDepartment() {
+  const resp = await request.get(GET_DEPARTMENT);
+  return resp;
+}
+// 编辑组织
+export async function editDepartment(params) {
+  const resp = await request.post(EDIT_DEPARTMENT, { data: format(params) });
+  return resp;
+}
 
+// 删除组织
+export async function delDepartment(params) {
+  const resp = await request.post(DELECT_DEPARTMENT, { data: format(params) });
+  return resp;
+}
+// GET_DEPARTMENT_NAME
+export async function getDepartmentName(params) {
+  const resp = await request.get(GET_DEPARTMENT_NAME ,{ params: params });
+  return resp;
+}
