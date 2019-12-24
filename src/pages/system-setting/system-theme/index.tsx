@@ -11,9 +11,7 @@ import MainContent from '../components/MainContent';
 import { UmiComponentProps } from '@/common/type';
 import { getDictNameByType, updateDictNameByType } from '../services';
 import publicStyles from '../index.less';
-
 const { Content } = Layout;
-
 type StateProps = ReturnType<typeof mapState>;
 type Props = StateProps & UmiComponentProps;
 interface State {
@@ -21,7 +19,6 @@ interface State {
   remark: string;
   value: number;
 }
-
 class SuperAdmin extends React.Component<Props, State> {
   constructor(props: any) {
     super(props);
@@ -68,25 +65,21 @@ class SuperAdmin extends React.Component<Props, State> {
       <div className={publicStyles.public_bg}>
         <Radio.Group name="radiogroup" onChange={this.onChange} value={this.state.value}>
           <Radio value={1}>
-            {' '}
             <div>
               <img className={publicStyles.radioBg} src={require('../../../assets/login/1.png')} />
             </div>
           </Radio>
           <Radio value={2}>
-            {' '}
             <div>
               <img className={publicStyles.radioBg} src={require('../../../assets/login/2.png')} />
             </div>
           </Radio>
           <Radio value={3}>
-            {' '}
             <div>
               <img className={publicStyles.radioBg} src={require('../../../assets/login/3.png')} />
             </div>
           </Radio>
           <Radio value={4}>
-            {' '}
             <div>
               <img className={publicStyles.radioBg} src={require('../../../assets/login/4.png')} />
             </div>
