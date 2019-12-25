@@ -38,6 +38,8 @@ interface State {
   stageScale: number;
   stageX: number;
   stageY: number;
+  warnModeName: string;
+  repeatTypeName: string;
 }
 const scaleBy = 1.01;
 
@@ -55,6 +57,8 @@ class Adduth extends React.Component<Props, State> {
       stageScale: 1,
       stageX: 0,
       stageY: 0,
+      warnModeName: '',
+      repeatTypeName: '',
     };
     this.onSearch = this.onSearch.bind(this);
   }
@@ -106,7 +110,16 @@ class Adduth extends React.Component<Props, State> {
       },
     });
   }
-
+  selectAlarmName = (e, key) => {
+    this.setState({
+      warnModeName: key.key,
+    });
+  };
+  selectRepeatName = (e, key) => {
+    this.setState({
+      repeatTypeName: key.key,
+    });
+  };
   dynamicLoadMapImage() {
     return new Promise(resolve => {
       const mapImage = new Image();
@@ -214,7 +227,7 @@ class Adduth extends React.Component<Props, State> {
         getPopupContainer={triggerNode => triggerNode.parentElement}
         mode="multiple"
         placeholder="请选择灯具设置围栏"
-        style={{ width: '100%' }}
+        style={{ width: '210px' }}
         onChange={this.onLampSelectChange}
       >
         {lampsType.map(lamp => (
@@ -228,6 +241,7 @@ class Adduth extends React.Component<Props, State> {
 
   async onSearch(e) {
     e.preventDefault();
+    const { repeatTypeName ,warnModeName} = this.state;
     this.props.form.validateFields(async (err, values) => {
       const { startTime, endTime, overrunTime, ...props } = values;
       const data = {
@@ -237,6 +251,8 @@ class Adduth extends React.Component<Props, State> {
         endTime: (values.endTime && values.endTime.format('YYYY-MM-DD HH:mm:ss').toString()) || '',
         overrunTime:
           (values.overrunTime && values.overrunTime.format('YYYY-MM-DD HH:mm:ss').toString()) || '',
+          repeatTypeName: repeatTypeName,
+          warnModeName: warnModeName,
       };
 
       await wraningTypeAdd(data);
@@ -386,9 +402,10 @@ class Adduth extends React.Component<Props, State> {
                       <Select
                         getPopupContainer={triggerNode => triggerNode.parentElement}
                         placeholder="请选择重复类型"
+                        onSelect={this.selectRepeatName.bind(this)}
                       >
                         {repeatTypes.map(type => (
-                          <Option value={type.dictValue} key={type.dictValue}>
+                          <Option value={type.dictValue} key={type.dictName}>
                             {type.dictName}
                           </Option>
                         ))}
@@ -406,9 +423,10 @@ class Adduth extends React.Component<Props, State> {
                       <Select
                         getPopupContainer={triggerNode => triggerNode.parentElement}
                         placeholder="请选择告警方式"
+                        onSelect={this.selectAlarmName.bind(this)}
                       >
                         {warningTypes.map(type => (
-                          <Option value={type.dictValue} key={type.dictValue}>
+                          <Option value={type.dictValue} key={type.dictName}>
                             {type.dictName}
                           </Option>
                         ))}
