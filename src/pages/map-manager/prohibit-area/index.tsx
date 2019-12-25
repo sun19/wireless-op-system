@@ -167,9 +167,12 @@ class PollingLine extends React.Component<Props, State> {
 
   onSearch = () => {
     const { pollingPointName } = this.state;
+
     this.getPollingLines({
       name: pollingPointName,
+      type: 2
     });
+
   };
 
   onClear = () => {

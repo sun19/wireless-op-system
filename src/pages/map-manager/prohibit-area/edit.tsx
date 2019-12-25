@@ -56,6 +56,7 @@ interface State {
 }
 const scaleBy = 1.01;
 
+
 class AddPollingLine extends React.Component<Props, State> {
   map: React.RefObject<HTMLDivElement>;
   constructor(props) {

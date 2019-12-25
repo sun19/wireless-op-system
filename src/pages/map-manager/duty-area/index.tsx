@@ -169,6 +169,7 @@ class PollingLine extends React.Component<Props, State> {
     const { pollingPointName } = this.state;
     this.getPollingLines({
       name: pollingPointName,
+      type: 1
     });
   };
 
