@@ -28,7 +28,7 @@ import {
 import { warningHistorySearch } from '../../warning-manager/services';
 import { queryFencingArea } from '../../map-manager/services';
 import { getAllFencingTypes } from '../../login/login.service';
-import request from 'umi-request';
+import request from '@/utils/request';
 
 import styles from './index.less';
 
@@ -115,6 +115,12 @@ class Realtime extends React.Component<Props, State> {
     }
     let lamps = await request.get(
       BASE_API_URL + '/jeecg-boot/intf/location/listByHistoryTrajectory',
+      {
+        params: {
+          pageSize: 999999,
+          pageNo: 1,
+        },
+      },
     );
     lamps = (lamps.result && lamps.result.records) || [];
     this.setState({

@@ -56,7 +56,13 @@ const columns = [
     render: (name, record) => {
       return (
         <div>
-          {record.whether == '1' ? ( <IconFont type="icon-correct" /> ) : record.whether == '0' ? (<IconFont type="icon-error" /> ) : ( '')}
+          {record.isFinish == '1' ? (
+            <IconFont type="icon-correct" />
+          ) : record.isFinish == '0' ? (
+            <IconFont type="icon-error" />
+          ) : (
+            ''
+          )}
         </div>
       );
     },

@@ -185,7 +185,12 @@ class historyAdd extends React.Component<Props, State> {
                   <Form.Item label="类型">
                     {getFieldDecorator('type', {
                       rules: [],
-                      initialValue: historyRecord.type,
+                      initialValue:
+                        historyRecord.type == '0'
+                          ? '内部'
+                          : historyRecord.type == '1'
+                          ? '外部'
+                          : '',
                     })(<Input placeholder="请输入类型" disabled={true} />)}
                   </Form.Item>
                 </Col>

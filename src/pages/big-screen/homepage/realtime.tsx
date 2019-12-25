@@ -28,7 +28,7 @@ import {
 import { warningHistorySearch } from '../../warning-manager/services';
 import { queryFencingArea } from '../../map-manager/services';
 import { getAllFencingTypes } from '../../login/login.service';
-import request from 'umi-request';
+import request from '@/utils/request';
 
 import styles from './index.less';
 
@@ -106,17 +106,23 @@ class Realtime extends React.Component<Props, State> {
     //   const { clientWidth } = this.map.current;
     //   const clientHeight = Math.floor((clientWidth * 1080) / 1920);
 
-      // this.showLine();
-      this.setState({
-        // mapImage,
-        icon: iconImage,
-        iconRed: iconRedImage,
-        // width: clientWidth,
-        // height: clientHeight,
-      });
+    // this.showLine();
+    this.setState({
+      // mapImage,
+      icon: iconImage,
+      iconRed: iconRedImage,
+      // width: clientWidth,
+      // height: clientHeight,
+    });
     // }
     let lamps = await request.get(
       BASE_API_URL + '/jeecg-boot/intf/location/listByHistoryTrajectory',
+      {
+        params: {
+          pageSize: 999999,
+          pageNo: 1,
+        },
+      },
     );
     lamps = (lamps.result && lamps.result.records) || [];
     this.setState({
@@ -274,7 +280,7 @@ class Realtime extends React.Component<Props, State> {
     return new Promise(resolve => {
       const mapImage = new Image();
       mapImage.src = require('../assets/baoan.png');
-      mapImage.onload = function () {
+      mapImage.onload = function() {
         resolve(mapImage);
       };
     });
@@ -283,7 +289,7 @@ class Realtime extends React.Component<Props, State> {
     return new Promise(resolve => {
       const mapImage = new Image();
       mapImage.src = require('../assets/baoan.red.png');
-      mapImage.onload = function () {
+      mapImage.onload = function() {
         resolve(mapImage);
       };
     });
@@ -334,12 +340,12 @@ class Realtime extends React.Component<Props, State> {
           <div className="ele_bag">
             {!!item.lampCode
               ? item.lampCode.split(',').map((num, index) => {
-                return (
-                  <span key={index} className="ele_bag_round">
-                    {num}
-                  </span>
-                );
-              })
+                  return (
+                    <span key={index} className="ele_bag_round">
+                      {num}
+                    </span>
+                  );
+                })
               : ''}
           </div>
         </div>
@@ -608,7 +614,7 @@ class Realtime extends React.Component<Props, State> {
             normal: {
               show: true,
               position: 'insideRight',
-              formatter: function (params) {
+              formatter: function(params) {
                 if (params.value > 0) {
                   return params.value;
                 } else {
@@ -731,10 +737,10 @@ class Realtime extends React.Component<Props, State> {
                   未处理
                 </span>
               ) : (
-                  <span style={{ marginLeft: '10px' }} className={styles.resolveed}>
-                    已处理
+                <span style={{ marginLeft: '10px' }} className={styles.resolveed}>
+                  已处理
                 </span>
-                )}
+              )}
             </div>
           );
         },
@@ -881,9 +887,6 @@ class Realtime extends React.Component<Props, State> {
               <div className={styles.map_manager} ref={this.map}>
                 <RealTime showLamps={this.state.showLamps} showHeatMap={this.state.showHeatMap} />
               </div>
-              <div className={styles.heatmapBtn} onClick={this.showHeatMap}>
-                热力图
-              </div>
             </Col>
             <Col span={4} className="right_panel">
               {this.state.showPeopleInfo == true ? (
@@ -926,26 +929,36 @@ class Realtime extends React.Component<Props, State> {
                   </div>
                 </div>
               ) : (
-                  <div>
-                    <div className="right_ele_panel">
-                      <div>
-                        <div className="ele_text">
-                          <Title title="电子围栏" />
-                        </div>
-                        <div className="ele_from"> {this.getEleFrom()} </div>
-                      </div>
-                    </div>
-
-                    <div className="right_wraning_panel">
+                <div>
+                  <div className="right_ele_panel">
+                    <div>
                       <div className="ele_text">
-                        <Title title="告警信息" />
+                        <Title title="电子围栏" />
                       </div>
-                      <div className="ele_from">{this.createRouteCheckData()}</div>
+                      <div className="ele_from"> {this.getEleFrom()} </div>
                     </div>
                   </div>
-                )}
+
+                  <div className="right_wraning_panel">
+                    <div className="ele_text">
+                      <Title title="告警信息" />
+                    </div>
+                    <div className="ele_from">{this.createRouteCheckData()}</div>
+                  </div>
+                </div>
+              )}
               <div className="middle_text">
                 <Breadcrumb>
+                  <Breadcrumb.Item>
+                    {' '}
+                    <div
+                      className={['text_panel', this.state.showHeatMap ? 'active' : null].join(' ')}
+                      onClick={this.showHeatMap}
+                    >
+                      {/* className={styles.heatmapBtn} */}
+                      热力图
+                    </div>
+                  </Breadcrumb.Item>
                   <Breadcrumb.Item>
                     {' '}
                     <div
