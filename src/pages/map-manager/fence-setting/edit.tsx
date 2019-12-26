@@ -87,6 +87,7 @@ class FencingSetting extends React.Component<Props, State> {
     const maps = await getAllMap();
     const fencingTypes = await getAllFencingTypes();
     let usersResp = await getAllUserInfo();
+    usersResp.result = usersResp.result || [];
     let users = [];
     for (let i = 0; i < usersResp.result.length; i++) {
       const dept = usersResp.result[i];
@@ -105,12 +106,12 @@ class FencingSetting extends React.Component<Props, State> {
       type: 'mapManager/update',
       payload: {
         warningTypes: warningTypes.records || [],
-        allMaps: maps.result,
-        fencingTypes: fencingTypes.result,
+        allMaps: maps.result || [],
+        fencingTypes: fencingTypes.result || [],
         users: users,
-        levels: levels.result,
-        areas: areas.result,
-        lampsType: lamps.result,
+        levels: levels.result || [],
+        areas: areas.result || [],
+        lampsType: lamps.result || [],
       },
     });
   }

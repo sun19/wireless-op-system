@@ -212,6 +212,10 @@ class FencingSetting extends React.Component<Props, State> {
       let { lamps } = this.state;
       lamps = lamps.filter(item => item.selected === true);
       lamps = lamps.map(item => item.id);
+      if (lamps.length === 0) {
+        message.warn('请先选择灯具');
+        return;
+      }
       const data = {
         operatTime: moment().format('YYYY-MM-DD HH:mm:ss'),
         lampIds: lamps.join(','),
@@ -228,6 +232,10 @@ class FencingSetting extends React.Component<Props, State> {
   onBack = () => {
     router.push('/map-manager/area-set');
   };
+
+  componentWillUnmount() {
+    message.destroy();
+  }
 
   render() {
     const { getFieldDecorator } = this.props.form;
