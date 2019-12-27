@@ -92,7 +92,7 @@ class FencingSetting extends React.Component<Props, State> {
     return new Promise(resolve => {
       const mapImage = new Image();
       mapImage.src = require('../../big-screen/assets/map.png');
-      mapImage.onload = function() {
+      mapImage.onload = function () {
         resolve(mapImage);
       };
     });
@@ -221,7 +221,7 @@ class FencingSetting extends React.Component<Props, State> {
       };
 
       let res = await updateMapArea(Object.assign(mapAreaRecord, data));
-      if (res.code === 0) {
+      if (res) {
         router.push('/map-manager/area-set');
       }
 
@@ -292,7 +292,8 @@ class FencingSetting extends React.Component<Props, State> {
                             message: '请选择区域级别',
                           },
                         ],
-                        initialValue: mapAreaRecord.regionalLevelId,
+                        // initialValue: mapAreaRecord.regionalLevelId,
+                        initialValue: mapAreaRecord.regionalLevelId&&mapAreaRecord.regionalLevelId||undefined,
                       })(
                         <Select
                           getPopupContainer={triggerNode => triggerNode.parentElement}

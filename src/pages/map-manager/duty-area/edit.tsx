@@ -183,7 +183,7 @@ class AddPollingLine extends React.Component<Props, State> {
       payload: {
         allMaps: maps.result,
         lamps: lamps.result,
-        repeatTypes: repeatTypes.records || [],
+        repeatTypes: repeatTypes && repeatTypes.records || [],
       },
     });
     let _lamps = lamps.result || {};

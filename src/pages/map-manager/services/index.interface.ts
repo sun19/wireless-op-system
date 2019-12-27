@@ -160,7 +160,7 @@ export interface GetPollingPointDetailParams {
 
 export interface GetPollingLineByNameParams extends Params {
   name?: string;
-  type: Number
+  type?: Number
 }
 
 export interface AddPollingLineParams {

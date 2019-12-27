@@ -32,7 +32,7 @@ type Props = StateProps & UmiComponentProps & FormProps;
 const columns = [
   {
     title: '信息牌编号',
-    dataIndex: 'informationBoardId',
+    dataIndex: 'informationBoardName',
     editable: true,
   },
   {

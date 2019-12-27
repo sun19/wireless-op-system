@@ -1,10 +1,10 @@
 // 信息牌列表
 export interface GetInfoListParams {
-  userName: string;
-  name: string;
-  type: string;
-  isCancel:string;
-  onlineStatus:string,
+  userName?: string;
+  name?: string;
+  type?: string;
+  isCancel?:string;
+  onlineStatus?:string,
   pageNo?: number;
   pageSize?: number;
   regionId?: string;
