@@ -3,7 +3,7 @@ import { Menu, Icon } from 'antd';
 import { connect } from 'dva';
 import router from 'umi/router';
 import * as _ from 'lodash';
-import {getLeftMenues } from '../pages/login/login.service';
+import { getLeftMenues } from '../pages/login/login.service';
 
 import { ICON_FONTS_URL } from '../config/constants';
 import Link from 'umi/link';
@@ -19,21 +19,19 @@ class LeftMenuList extends Component<any, any> {
   constructor(props) {
     super(props);
     this.state = {
-      menues:[]
-    }
-    this.getMenus()
-
+      menues: [],
+    };
+    this.getMenus();
   }
   async getMenus() {
-
     let user = {
       roleId: localStorage.getItem('userMessage'),
     };
     let data = await getLeftMenues(user);
     const current = localStorage.getItem('current');
     const openKeys = JSON.parse(localStorage.getItem('openKeys') || '[]');
-    this.setState({ menues: data.result})
-    this.setTitle(openKeys)
+    this.setState({ menues: data.result });
+    this.setTitle(openKeys);
     this.props.dispatch({
       type: 'menu/changeOpen',
       payload: {
@@ -43,10 +41,11 @@ class LeftMenuList extends Component<any, any> {
       },
     });
   }
-  setTitle=(key)=>{
+  setTitle = key => {
     let data = this.state.menues;
+    if (!data) return;
     const names = [];
-   getId(data);
+    getId(data);
     function getId(list) {
       for (let i = 0; i < list.length; i++) {
         const item = list[i];
@@ -70,18 +69,16 @@ class LeftMenuList extends Component<any, any> {
 
     // console.log(title)
 
-
     this.props.dispatch({
       type: 'menu/clickMenuItem',
       payload: {
         title: title,
       },
     });
-
-  }
+  };
   handleClick = value => {
     let key = value.keyPath;
-    this.setTitle(key)
+    this.setTitle(key);
     this.props.dispatch({
       type: 'menu/clickMenuItem',
       payload: {
@@ -103,7 +100,7 @@ class LeftMenuList extends Component<any, any> {
   };
 
   // componentWillMount() {
-   
+
   // }
   matchCurrentRouter = (menus, pathname) => {
     let { current = '', openKeys = [] } = this.props;
@@ -138,8 +135,6 @@ class LeftMenuList extends Component<any, any> {
     // console.log(menus)
     // console.log(rootKeys)
 
-
-
     return menus.map((leftMenuItem, index) => {
       return (
         <SubMenu
@@ -173,7 +168,8 @@ class LeftMenuList extends Component<any, any> {
                                 return (
                                   <Menu.Item key={lastChild.id}>
                                     <Link className={`${styles.menu_item}`} to={lastChild.path}>
-                               <span className={`${styles.red_item}`}/>{lastChild.name}
+                                      <span className={`${styles.red_item}`} />
+                                      {lastChild.name}
                                     </Link>
                                   </Menu.Item>
                                 );
@@ -183,10 +179,9 @@ class LeftMenuList extends Component<any, any> {
                         } else {
                           return (
                             <Menu.Item key={itemChild.id}>
-                            
-
                               <Link className={`${styles.menu_item}`} to={itemChild.path}>
-                                <span className={`${styles.red_item}`}/>{itemChild.name}
+                                <span className={`${styles.red_item}`} />
+                                {itemChild.name}
                               </Link>
                             </Menu.Item>
                           );
@@ -197,9 +192,9 @@ class LeftMenuList extends Component<any, any> {
                 } else {
                   return (
                     <Menu.Item key={item.id}>
-                
                       <Link className={`${styles.menu_item}`} to={item.path}>
-                        <span className={`${styles.red_item}`}/>{item.name}
+                        <span className={`${styles.red_item}`} />
+                        {item.name}
                       </Link>
                     </Menu.Item>
                   );

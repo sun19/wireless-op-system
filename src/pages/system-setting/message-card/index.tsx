@@ -122,14 +122,15 @@ class MessageCard extends React.Component<Props, State> {
     });
   };
   handleChangeComplete = e => {
-    const colorInfo = Object.assign({}, this.state.colorInfo);
-    colorInfo.color = e.hex;
-    this.setState({
-      colorInfo,
-    });
+    alert(e.hex);
+    // const colorInfo = Object.assign({}, this.state.colorInfo);
+    // colorInfo.color = e.hex;
+    //   this.setState({
+    //     colorInfo,
+    //   });
   };
   handleClick = () => {
-    this.setState({ displayColorPicker: !this.state.displayColorPicker });
+    // this.setState({ displayColorPicker: !this.state.displayColorPicker });
   };
 
   handleClose = () => {

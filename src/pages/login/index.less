@@ -98,6 +98,7 @@
   :global(.ant-radio-inner) {
     background: rgba(0, 0, 0, 0);
     border-color: rgba(0, 216, 255, 1);
+    border-right: 0px;
   }
   .login_main {
     width: 5rem;
@@ -108,12 +109,14 @@
       color: #00d4fa;
       background: rgba(0, 0, 0, 0);
       border-bottom: 1px solid #00d4fa;
+      padding-left: 35px;
+      border-right: 0px;
       border-radius: 0px;
       margin: 0.15rem 0px;
     }
     :global(.ant-form-item input.ant-input:focus) {
       box-shadow: 0 0 0 0px rgba(24, 144, 255, 0.2);
-
+      border-right: 0px;
       border-right-width: 0px !important;
       border-bottom: 1px solid #00d4fa;
     }
@@ -121,10 +124,12 @@
       box-shadow: 0 0 0 0px rgba(24, 144, 255, 0.2);
       border-right-width: 0px !important;
       border-bottom: 1px solid #00d4fa;
+      border-right: 0px;
     }
     :global(.has-error .ant-input-affix-wrapper input.ant-input:focus) {
       box-shadow: 0 0 0 0px rgba(24, 144, 255, 0.2);
       border-bottom: 1px solid #00d4fa;
+      border-right: 0px;
     }
     .login_button {
       font-size: 0.4rem;
@@ -210,5 +215,14 @@
       font-weight: 400;
       color: #29eb7a;
     }
+  }
+  .has-error .ant-input-affix-wrapper:hover .ant-input:not(.ant-input-disabled) {
+    border-right: 0px;
+  }
+  .ant-input-affix-wrapper::hover {
+    border-right: 0px;
+  }
+  .index__login_form___26nAe .index__login_main___21pQe .ant-form-item input.ant-input:hover {
+    border-right: 0px;
   }
 }

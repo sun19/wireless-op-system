@@ -52,13 +52,13 @@ class Navigation extends React.Component<Props, State> {
     });
   };
   gotoLamp = () => {
-    router.push('/big-screen/homepage/realtime');
+    router.push('/big-screen/homepage');
   };
   gotoHomepage = () => {
-    router.push('/big-screen/homepage/realtime');
+    router.push('/big-screen/homepage');
   };
   gotoRealTime = () => {
-    router.push('/big-screen/homepage/realtime');
+    router.push('/big-screen/homepage');
   };
   gotoDataview = () => {
     router.push('/big-screen/dataview');

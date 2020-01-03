@@ -24,6 +24,7 @@ const ignoreLayout = [
   '/big-screen/dataview',
   '/wireless-op-system/big-screen/homepage/lampshow',
   '/big-screen/homepage/lampshow',
+  '/',
 ];
 
 class BasicLayout extends React.Component<any, any> {

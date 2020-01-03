@@ -164,17 +164,13 @@ class NormalLoginForm extends React.Component<Props> {
             <Form.Item>
               {getFieldDecorator('username', {
                 rules: [{ required: true, message: '请输入登录名!' }],
-              })(<Input prefix={<IconFont type="icon-user" />} placeholder="  登录名" />)}
+              })(<Input prefix={<IconFont type="icon-user" />} placeholder="登录名" />)}
             </Form.Item>
             <Form.Item>
               {getFieldDecorator('password', {
                 rules: [{ required: true, message: '请输入密码!' }],
               })(
-                <Input
-                  prefix={<IconFont type="icon-key" />}
-                  type="password"
-                  placeholder="  密码"
-                />,
+                <Input prefix={<IconFont type="icon-key" />} type="password" placeholder="密码" />,
               )}
             </Form.Item>
             {this.state.message}

@@ -220,7 +220,7 @@ class SuperAdmin extends React.Component<Props, State> {
     });
   };
   gotoHomePage = () => {
-    router.push('/big-screen/homepage/realtime');
+    router.push('/big-screen/homepage');
   };
   selectChange = (e: any) => {
     this.setState({

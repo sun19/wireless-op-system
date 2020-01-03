@@ -230,7 +230,7 @@ export const LEFT_MENUS = [
             {
                 name: '人员定位',
                 key: '22',
-                path: '/big-screen/homepage/realtime',
+                path: '/big-screen/homepage',
             },
             {
                 name: '灯具展示',
