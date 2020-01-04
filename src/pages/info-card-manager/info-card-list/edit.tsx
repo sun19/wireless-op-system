@@ -187,7 +187,6 @@ class EditUser extends React.Component<Props, State> {
     const props = this.props;
     const { getFieldDecorator, getFieldsError } = this.props.form;
     const { infoCardList, allPosition } = this.props;
-
     const { departmentNumber } = this.state;
     return (
       <ContentBorder className={styles.auth_root}>
@@ -281,7 +280,7 @@ class EditUser extends React.Component<Props, State> {
                             message: '请选择部门',
                           },
                         ],
-                        initialValue: infoCardList.departmentId,
+                        initialValue: infoCardList.departmentId ? infoCardList.departmentId : '',
                       })(
                         <Select
                           getPopupContainer={triggerNode => triggerNode.parentElement}

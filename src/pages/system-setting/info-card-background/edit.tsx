@@ -7,7 +7,7 @@ import router from 'umi/router';
 import ContentBorder from '../../../components/ContentBorder';
 import { InputText, TreeNodeMenu } from '../components';
 import { ChromePicker } from 'react-color';
-import { updateUserType, updateSuperAdmin } from '../services';
+import { updateUserType, getCompanyNameList, updateSuperAdmin } from '../services';
 
 import styles from './index.less';
 import { LEFT_MENUS } from '../../../config/menus';
@@ -55,6 +55,8 @@ class EditSuperAdmin extends React.Component<Props, State> {
       selectedKeys: [],
       checkedKeys: [],
     };
+    const { superAdminRecord } = this.props;
+    this.state.colorInfo.color = superAdminRecord.dictName ? superAdminRecord.dictName : '#148dd8';
   }
   goBack = () => {
     this.props.form.resetFields();
@@ -74,7 +76,8 @@ class EditSuperAdmin extends React.Component<Props, State> {
       var dic = {};
       dic['dictName'] = this.state.colorInfo.color;
       dic['id'] = superAdminRecord.id;
-      const isSuccessed = await updateSuperAdmin(dic);
+      dic['type'] = 'boardBackground';
+      const isSuccessed = await getCompanyNameList(dic);
       if (isSuccessed) {
         setTimeout(() => router.push('/system-setting/info-card-background'), 1000);
       }
@@ -98,14 +101,9 @@ class EditSuperAdmin extends React.Component<Props, State> {
       colorInfo,
     });
   };
-  componentDidMount() {
-    const { superAdminRecord } = this.props;
-    this.state.colorInfo.color = superAdminRecord.dictName ? superAdminRecord.dictName : '#5eb4fe';
-  }
+  componentDidMount() {}
 
   render() {
-    const { superAdminRecord } = this.props;
-    const { getFieldDecorator } = this.props.form;
     return (
       <ContentBorder className={styles.auth_root}>
         <Form layout="inline" style={{ marginTop: '0.57rem' }} onSubmit={this.onSubmit}>

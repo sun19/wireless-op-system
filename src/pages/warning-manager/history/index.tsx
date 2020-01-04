@@ -49,7 +49,7 @@ const columns = [
   },
   {
     title: '告警方式',
-    dataIndex: 'warnModeName',
+    dataIndex: 'warnName',
     className: 'select_text',
     editable: true,
   },
@@ -72,7 +72,7 @@ const columns = [
 
 interface State {
   pageNo?: number;
-  warnModeName: string;
+  warnName: string;
   alarmStartTime: string;
   alarmEndTime: string;
 }
@@ -82,7 +82,7 @@ class WraningHistory extends React.Component<Props, State> {
     // this.updateData = this.updateData.bind(this);
     // this.deleteColumn = this.deleteColumn.bind(this);
     this.state = {
-      warnModeName: '',
+      warnName: '',
       alarmStartTime: '',
       alarmEndTime: '',
       pageNo: 1,
@@ -114,12 +114,14 @@ class WraningHistory extends React.Component<Props, State> {
   search = e => {
     e.preventDefault();
     this.props.form.validateFields(async (err, values) => {
-      const { alarmStartTime, alarmEndTime, ...props } = values
+      const { alarmStartTime, alarmEndTime, ...props } = values;
       const data = {
         ...props,
-        alarmStartTime: values.alarmStartTime ? values.alarmStartTime.format('YYYY-MM-DD HH:mm:ss') : '',
-        alarmEndTime: values.alarmEndTime ? values.alarmEndTime.format('YYYY-MM-DD HH:mm:ss') : ''
-      }
+        alarmStartTime: values.alarmStartTime
+          ? values.alarmStartTime.format('YYYY-MM-DD HH:mm:ss')
+          : '',
+        alarmEndTime: values.alarmEndTime ? values.alarmEndTime.format('YYYY-MM-DD HH:mm:ss') : '',
+      };
       this.getTaskListData(data);
     });
   };
@@ -152,26 +154,30 @@ class WraningHistory extends React.Component<Props, State> {
               >
                 <FormItem label="警告名称">
                   {getFieldDecorator(
-                    'warnModeName',
+                    'warnName',
                     {},
                   )(<Input className={publicStyles.input_text} placeholder="请输入警告名称" />)}
                 </FormItem>
                 <span className={publicStyles.authInner} style={{ paddingLeft: '39px' }}>
                   {/* <span className={publicStyles.timePicker}> */}
-                    <FormItem label="开始时间">
-                      {getFieldDecorator('alarmStartTime', {
-                      })(
-                        <DatePicker showTime={true} placeholder="请选择开始时间" />,
-                      )}
-                    </FormItem>
-                    <FormItem label="结束时间">
-                      {getFieldDecorator('alarmEndTime', {
-                        // initialValue: moment('12:08:23', 'HH:mm:ss'),
-                      })(
-                        <DatePicker showTime={true} format="YYYY-MM-DD HH:mm:ss" placeholder="请选择结束时间" />,
-                      )}
-                    </FormItem>
-                    {/* <FormItem label="警告标签">
+                  <FormItem label="开始时间">
+                    {getFieldDecorator(
+                      'alarmStartTime',
+                      {},
+                    )(<DatePicker showTime={true} placeholder="请选择开始时间" />)}
+                  </FormItem>
+                  <FormItem label="结束时间">
+                    {getFieldDecorator('alarmEndTime', {
+                      // initialValue: moment('12:08:23', 'HH:mm:ss'),
+                    })(
+                      <DatePicker
+                        showTime={true}
+                        format="YYYY-MM-DD HH:mm:ss"
+                        placeholder="请选择结束时间"
+                      />,
+                    )}
+                  </FormItem>
+                  {/* <FormItem label="警告标签">
                       {getFieldDecorator('alarmStartTime', {
                         initialValue: moment('12:08:23', 'HH:mm:ss'),
                       })(<TimePicker />)}

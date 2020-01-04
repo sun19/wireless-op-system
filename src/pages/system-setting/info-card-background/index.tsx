@@ -9,22 +9,33 @@ import * as _ from 'lodash';
 
 import MainContent from '../components/MainContent';
 import { UmiComponentProps } from '@/common/type';
-import {
-  getCompanyNameList,
-  updateSuperAdmin,
-
-} from '../services';
+import { getCompanyNameList, updateSuperAdmin } from '../services';
 import publicStyles from '../index.less';
 
 const { Content } = Layout;
 
-
 const columns = [
- 
   {
     title: '信息牌背景',
     dataIndex: 'dictName',
-    editable: true,
+    render: color => {
+      if (color === null) {
+        let nullData = '/';
+        return nullData;
+      } else {
+        return (
+          <span
+            // className={publicStyles.color_span}
+            style={{
+              width: '40px',
+              height: '20px',
+              display: 'inline-block',
+              background: color,
+            }}
+          />
+        );
+      }
+    },
   },
 ];
 
@@ -47,9 +58,8 @@ class SuperAdmin extends React.Component<Props, State> {
     this.updateData = this.updateData.bind(this);
   }
 
-
   async getSuperAdminList() {
-    const superAdmins = await getCompanyNameList({type:"boardBackground"});
+    const superAdmins = await getCompanyNameList({ type: 'boardBackground' });
     this.props.dispatch({
       type: 'systemSetting/update',
       payload: {
@@ -68,8 +78,6 @@ class SuperAdmin extends React.Component<Props, State> {
     router.push('/system-setting/info-card-background/edit');
   }
 
- 
-
   // onRemarkChange = e => {
   //   this.setState({ remark: e.target.value });
   // };
@@ -84,14 +92,12 @@ class SuperAdmin extends React.Component<Props, State> {
   //   uploadSuperAdmin();
   // };
 
- 
   componentDidMount() {
     this.getSuperAdminList();
   }
   componentwillUnmount() {
     message.destroy();
   }
-
 
   render() {
     let { superAdmin } = this.props;
@@ -109,7 +115,6 @@ class SuperAdmin extends React.Component<Props, State> {
     return (
       <div className={publicStyles.public_hight}>
         <Content className={publicStyles.bg}>
-        
           <MainContent
             columns={columns}
             data={records}
