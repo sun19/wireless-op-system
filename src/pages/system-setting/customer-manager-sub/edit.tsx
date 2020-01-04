@@ -117,7 +117,7 @@ class EditUser extends React.Component<Props, State> {
       <ContentBorder className={styles.add_root}>
         <Form layout="inline" style={{ marginTop: '0.57rem' }} onSubmit={this.handleSubmit}>
           <Row type="flex" justify="center" align="middle" className={styles.add}>
-            <Col span={12}>
+            <Col span={20}>
               <div className="add__inner--container">
                 <Row type="flex" justify="space-between">
                   <Col span={12}>
@@ -168,7 +168,11 @@ class EditUser extends React.Component<Props, State> {
                         rules: [],
                         initialValue: customManagerRecord.roleId,
                       })(
-                        <Select   getPopupContainer={triggerNode => triggerNode.parentElement} style={{ width: '210px' }} className={styles.select_text}>
+                        <Select
+                          getPopupContainer={triggerNode => triggerNode.parentElement}
+                          style={{ width: '210px' }}
+                          className={styles.select_text}
+                        >
                           {this.state.userTypes.map(option => (
                             <Option value={option['selectValue']} key={option.key}>
                               {option.value}
@@ -189,7 +193,11 @@ class EditUser extends React.Component<Props, State> {
                           },
                         ],
                       })(
-                        <Select   getPopupContainer={triggerNode => triggerNode.parentElement} style={{ width: '210px' }} className={styles.select_text}>
+                        <Select
+                          getPopupContainer={triggerNode => triggerNode.parentElement}
+                          style={{ width: '210px' }}
+                          className={styles.select_text}
+                        >
                           {defaultGenderType.map(option => (
                             <Option value={option.key} key={option.key}>
                               {option.value}

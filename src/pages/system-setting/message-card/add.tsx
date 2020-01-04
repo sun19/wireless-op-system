@@ -8,8 +8,7 @@ import { connect } from 'dva';
 import * as _ from 'lodash';
 import router from 'umi/router';
 
-
-import { WEBSOCKET ,BASE_API_URL} from '../../../config/constants';
+import { WEBSOCKET, BASE_API_URL } from '../../../config/constants';
 import ContentBorder from '../../../components/ContentBorder';
 import { UmiComponentProps } from '@/common/type';
 import { getAllPosition, getAllSecretLevels, getAllDepartment } from '@/pages/login/login.service';
@@ -30,7 +29,7 @@ interface State {
   cardNo?: string;
   realTimeData?: any;
   loading?: any;
-  imageUrl?:any;
+  imageUrl?: any;
 }
 function getBase64(img, callback) {
   const reader = new FileReader();
@@ -159,7 +158,7 @@ class AddDepa extends React.Component<Props, State> {
           onSubmit={this.handleSubmit}
         >
           <Row type="flex" justify="center" align="middle" className={styles.add}>
-            <Col span={12}>
+            <Col span={20}>
               <div className="auth__inner--container">
                 <Row type="flex" justify="space-between">
                   <Col span={12}>

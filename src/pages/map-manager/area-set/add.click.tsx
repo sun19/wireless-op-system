@@ -302,7 +302,7 @@ class FencingSetting extends React.Component<Props, State> {
       <ContentBorder className={styles.auth_root}>
         <Form layout="inline" style={{ marginTop: '0.57rem' }} onSubmit={this.onSubmit}>
           <Row type="flex" justify="center" align="middle" className={styles.add}>
-            <Col span={12}>
+            <Col span={20}>
               {/* <Col span={12}> */}
               <div className="add__inner--container">
                 <Row type="flex" justify="space-between">
@@ -326,7 +326,10 @@ class FencingSetting extends React.Component<Props, State> {
                           },
                         ],
                       })(
-                        <Select   getPopupContainer={triggerNode => triggerNode.parentElement} placeholder="请选择地图名称">
+                        <Select
+                          getPopupContainer={triggerNode => triggerNode.parentElement}
+                          placeholder="请选择地图名称"
+                        >
                           {maps.map(item => (
                             <Option value={item.id} key={item.name}>
                               {item.name}
@@ -347,7 +350,10 @@ class FencingSetting extends React.Component<Props, State> {
                           },
                         ],
                       })(
-                        <Select   getPopupContainer={triggerNode => triggerNode.parentElement} placeholder="请选择区域级别">
+                        <Select
+                          getPopupContainer={triggerNode => triggerNode.parentElement}
+                          placeholder="请选择区域级别"
+                        >
                           {levels.map(item => (
                             <Option value={item.id} key={item.name}>
                               {item.name}

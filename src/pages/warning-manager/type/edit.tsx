@@ -77,9 +77,7 @@ class EditType extends React.Component<Props, State> {
     const mapImage = await this.dynamicLoadMapImage();
     const iconImage = await this.dynamicLoadIconImage();
 
-
-    let {  typeRecord } = this.props;
-
+    let { typeRecord } = this.props;
 
     if (this.map.current) {
       const { clientWidth } = this.map.current;
@@ -94,13 +92,10 @@ class EditType extends React.Component<Props, State> {
     }
     this.initRequest();
 
-
     this.setState({
       warnModeName: typeRecord.warnModeName,
       repeatTypeName: typeRecord.repeatTypeName,
     });
-
-
   }
 
   async initRequest() {
@@ -135,8 +130,8 @@ class EditType extends React.Component<Props, State> {
         resolve(mapImage);
       };
     });
-  }  
-  
+  }
+
   selectAlarmName = (e, key) => {
     this.setState({
       warnModeName: key.key,
@@ -275,7 +270,7 @@ class EditType extends React.Component<Props, State> {
     e.preventDefault();
     const { typeRecord } = this.props;
 
-    const { repeatTypeName ,warnModeName} = this.state;
+    const { repeatTypeName, warnModeName } = this.state;
 
     this.props.form.validateFields(async (err, values) => {
       const { startTime, endTime, overrunTime, ...props } = values;
@@ -293,7 +288,7 @@ class EditType extends React.Component<Props, State> {
       router.push('/warning-manager/type');
     });
   }
-   
+
   onClear = () => {
     this.props.form.resetFields();
     router.push('/warning-manager/type');
@@ -333,11 +328,11 @@ class EditType extends React.Component<Props, State> {
                       initialValue: typeRecord.informationBoardName,
                     })(<Input placeholder="请输入关联标签" />)}
                   </Form.Item>
-                </Col>
+                  {/* </Col>
               </Row>
 
               <Row type="flex" justify="space-between">
-                <Col span={24}>
+                <Col span={24}> */}
                   <Form.Item label="开始时间">
                     {getFieldDecorator('startTime', {
                       rules: [],
@@ -376,11 +371,11 @@ class EditType extends React.Component<Props, State> {
                       initialValue: typeRecord.overrunNum,
                     })(<Input placeholder="请输入超限人数" />)}
                   </Form.Item>
-                </Col>
+                  {/* </Col>
               </Row>
 
               <Row type="flex" justify="space-between">
-                <Col span={24}>
+                <Col span={24}> */}
                   <Form.Item label="超限时间">
                     {getFieldDecorator('overrunTime', {
                       rules: [],
@@ -461,14 +456,14 @@ class EditType extends React.Component<Props, State> {
                 </Col>
               </Row>
               <Row type="flex" justify="center" style={{ marginTop: '0.35rem' }}>
-                <Col span={2}>
+                <Col span={4}>
                   <Form.Item className={styles.button_type}>
                     <Button className={styles.form_btn} htmlType="submit">
                       确认
                     </Button>
                   </Form.Item>
                 </Col>
-                <Col span={2} className={styles.select_padding_left}>
+                <Col span={4} className={styles.select_padding_left}>
                   <Form.Item>
                     <Button className={styles.form_btn} onClick={this.onClear}>
                       返回

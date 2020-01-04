@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Form, Row, Col, Button, Input, message, Select, Tree } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
@@ -48,8 +47,7 @@ class EditSuperAdmin extends React.Component<Props, State> {
       checkedKeys: [],
     };
   }
-  async componentDidMount() {
-  }
+  async componentDidMount() {}
   goBack = () => {
     this.props.form.resetFields();
     router.push('/system-setting/department-count');
@@ -66,7 +64,6 @@ class EditSuperAdmin extends React.Component<Props, State> {
   };
 
   onSubmit(e) {
-
     e.preventDefault();
     const { superAdminRecord } = this.props;
 
@@ -76,9 +73,9 @@ class EditSuperAdmin extends React.Component<Props, State> {
         return;
       }
 
-var dic = {}
-dic["dictName"] = values.dictName
-dic["id"] = superAdminRecord.id
+      var dic = {};
+      dic['dictName'] = values.dictName;
+      dic['id'] = superAdminRecord.id;
 
       const isSuccessed = await updateSuperAdmin(dic);
       if (isSuccessed) {
@@ -108,7 +105,7 @@ dic["id"] = superAdminRecord.id
       <ContentBorder className={styles.auth_root}>
         <Form layout="inline" style={{ marginTop: '0.57rem' }} onSubmit={this.onSubmit}>
           <Row type="flex" justify="center" align="middle" className={styles.add}>
-            <Col span={12}>
+            <Col span={20}>
               <div className="auth__inner--container">
                 <Row type="flex" justify="space-between">
                   <Col span={12}>

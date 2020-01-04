@@ -246,10 +246,10 @@ class FencingSetting extends React.Component<Props, State> {
         <Form layout="inline" style={{ marginTop: '0.57rem' }} onSubmit={this.onSubmit}>
           <Row type="flex" justify="center" align="middle" className={styles.add}>
             <Col span={20}>
-              {/* <Col span={12}> */}
+              {/*  <Col span={20}> */}
               <div className="add__inner--container">
                 <Row type="flex" justify="center">
-                  <Col span={8}>
+                  <Col span={10}>
                     <Form.Item label="区域名称">
                       {getFieldDecorator('regionName', {
                         rules: [
@@ -260,7 +260,7 @@ class FencingSetting extends React.Component<Props, State> {
                       })(<Input placeholder="请输入区域名称" />)}
                     </Form.Item>
                   </Col>
-                  <Col span={8}>
+                  <Col span={10}>
                     <Form.Item label="地图名称">
                       {getFieldDecorator('mapId', {
                         rules: [
@@ -284,7 +284,7 @@ class FencingSetting extends React.Component<Props, State> {
                   </Col>
                 </Row>
                 <Row type="flex" justify="center">
-                  <Col span={8}>
+                  <Col span={10}>
                     <Form.Item label="区域级别">
                       {getFieldDecorator('regionalLevelId', {
                         rules: [
@@ -306,7 +306,7 @@ class FencingSetting extends React.Component<Props, State> {
                       )}
                     </Form.Item>
                   </Col>
-                  <Col span={8} className={styles.text_areas}>
+                  <Col span={10} className={styles.text_areas}>
                     <Form.Item label="备注">
                       {getFieldDecorator('remark')(
                         <TextArea

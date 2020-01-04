@@ -2,7 +2,7 @@
  * title: 添加方式
  */
 import React from 'react';
-import { Form, Row, Col, Button, Input, Select, message, Upload, Icon} from 'antd';
+import { Form, Row, Col, Button, Input, Select, message, Upload, Icon } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import { connect } from 'dva';
 import * as _ from 'lodash';
@@ -25,7 +25,7 @@ type Props = StateProps & UmiComponentProps & FormProps;
 interface State {
   name?: string;
   cardNo?: string;
-  fileList?:any;
+  fileList?: any;
   loading?: any;
   imageUrl?: any;
 }
@@ -52,16 +52,15 @@ class EditAuth extends React.Component<Props> {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.state = {
-    
-       loading: false,
-      imageUrl:'',
-    }
+      loading: false,
+      imageUrl: '',
+    };
   }
   handleChange = info => {
     if (info.file.status === 'uploading') {
       this.setState({ loading: true });
       return;
-    } 
+    }
     if (info.file.status === 'done') {
       // Get this url from response in real world.
       getBase64(info.file.originFileObj, imageUrl =>
@@ -90,7 +89,10 @@ class EditAuth extends React.Component<Props> {
           ],
           initialValue: userInside.positionId ? userInside.positionId : '',
         })(
-          <Select   getPopupContainer={triggerNode => triggerNode.parentElement} placeholder="请选择职务">
+          <Select
+            getPopupContainer={triggerNode => triggerNode.parentElement}
+            placeholder="请选择职务"
+          >
             {allDuties &&
               allDuties.map((duty, index) => (
                 <Option value={duty.id} key={index}>
@@ -117,7 +119,10 @@ class EditAuth extends React.Component<Props> {
           ],
           initialValue: userInside.securityLevelId ? userInside.securityLevelId : '',
         })(
-          <Select   getPopupContainer={triggerNode => triggerNode.parentElement} placeholder="请选择保密等级">
+          <Select
+            getPopupContainer={triggerNode => triggerNode.parentElement}
+            placeholder="请选择保密等级"
+          >
             {allSecretLevel &&
               allSecretLevel.map((level, index) => (
                 <Option value={level.id} key={index}>
@@ -132,7 +137,7 @@ class EditAuth extends React.Component<Props> {
 
   async componentDidMount() {
     const { userInside, allPosition } = this.props;
-    this.setState({ imageUrl: userInside.imageUrl}) 
+    this.setState({ imageUrl: userInside.imageUrl });
     const dutiesResp = await getAllPosition();
     const secretsLevelsResp = await getAllSecretLevels();
     const allPositions = await getAllDepartment();
@@ -145,7 +150,6 @@ class EditAuth extends React.Component<Props> {
         allPosition: allPositions,
       },
     });
-
   }
 
   handleSubmit(e) {
@@ -156,7 +160,7 @@ class EditAuth extends React.Component<Props> {
         message.error('填写信息有误 ', values);
         return;
       }
-      values.deptUserCode !== 'undefined'? delete values.depaCode: ''
+      values.deptUserCode !== 'undefined' ? delete values.depaCode : '';
       const data = {
         isIn: '0',
         id: userInside.id,
@@ -190,7 +194,7 @@ class EditAuth extends React.Component<Props> {
           onSubmit={this.handleSubmit}
         >
           <Row type="flex" justify="center" align="middle" className={styles.add}>
-            <Col span={12}>
+            <Col span={20}>
               <div className="auth__inner--container">
                 <Row type="flex" justify="space-between">
                   <Col span={12}>
@@ -229,7 +233,10 @@ class EditAuth extends React.Component<Props> {
                         ],
                         initialValue: userInside.sex,
                       })(
-                        <Select   getPopupContainer={triggerNode => triggerNode.parentElement} placeholder="请选择性别">
+                        <Select
+                          getPopupContainer={triggerNode => triggerNode.parentElement}
+                          placeholder="请选择性别"
+                        >
                           <Option value="0">男</Option>
                           <Option value="1">女</Option>
                         </Select>,
@@ -273,7 +280,10 @@ class EditAuth extends React.Component<Props> {
                         ],
                         initialValue: userInside.departmentId ? userInside.departmentId : '',
                       })(
-                        <Select   getPopupContainer={triggerNode => triggerNode.parentElement} placeholder="请选择部门">
+                        <Select
+                          getPopupContainer={triggerNode => triggerNode.parentElement}
+                          placeholder="请选择部门"
+                        >
                           {allPosition &&
                             allPosition.map(option => (
                               <Option value={option.id} key={option.key}>
@@ -295,7 +305,7 @@ class EditAuth extends React.Component<Props> {
                           },
                         ],
                         initialValue: userInside.deptUserCode,
-                      })(<Input placeholder="请输入部门编号" readOnly={true}/>)}
+                      })(<Input placeholder="请输入部门编号" readOnly={true} />)}
                     </Form.Item>
                   </Col>
                   <Col span={12}>
@@ -323,7 +333,10 @@ class EditAuth extends React.Component<Props> {
                         ],
                         initialValue: userInside.type,
                       })(
-                        <Select   getPopupContainer={triggerNode => triggerNode.parentElement} placeholder="请选择在职状态">
+                        <Select
+                          getPopupContainer={triggerNode => triggerNode.parentElement}
+                          placeholder="请选择在职状态"
+                        >
                           <Option value="0">在职</Option>
                           <Option value="1">离职</Option>
                         </Select>,
@@ -344,11 +357,14 @@ class EditAuth extends React.Component<Props> {
                         beforeUpload={beforeUpload}
                         onChange={this.handleChange}
                       >
-                        {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
+                        {imageUrl ? (
+                          <img src={imageUrl} alt="avatar" style={{ width: '100%' }} />
+                        ) : (
+                          uploadButton
+                        )}
                       </Upload>
                     </Form.Item>
                   </Col>
-
                 </Row>
                 <Row type="flex" justify="center" style={{ marginTop: '0.35rem' }}>
                   <Col span={6}>

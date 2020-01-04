@@ -8,8 +8,7 @@ import { connect } from 'dva';
 import * as _ from 'lodash';
 import router from 'umi/router';
 
- 
-import { WEBSOCKET ,BASE_API_URL} from '../../../config/constants';
+import { WEBSOCKET, BASE_API_URL } from '../../../config/constants';
 import ContentBorder from '../../../components/ContentBorder';
 import { UmiComponentProps } from '@/common/type';
 import { getAllPosition, getAllSecretLevels, getAllDepartment } from '@/pages/login/login.service';
@@ -57,7 +56,10 @@ class UserAuths extends React.Component<Props, State> {
           ],
           // initialValue: (allDuties && allDuties[0] && allDuties[0].id) || '',
         })(
-          <Select   getPopupContainer={triggerNode => triggerNode.parentElement} placeholder="请选择职务">
+          <Select
+            getPopupContainer={triggerNode => triggerNode.parentElement}
+            placeholder="请选择职务"
+          >
             {allDuties &&
               allDuties.map((duty, index) => (
                 <Option value={duty.id} key={index}>
@@ -84,7 +86,10 @@ class UserAuths extends React.Component<Props, State> {
           ],
           // initialValue: (allSecretLevel && allSecretLevel[0] && allSecretLevel[0].id) || '',
         })(
-          <Select   getPopupContainer={triggerNode => triggerNode.parentElement} placeholder="请选择保密等级">
+          <Select
+            getPopupContainer={triggerNode => triggerNode.parentElement}
+            placeholder="请选择保密等级"
+          >
             {allSecretLevel &&
               allSecretLevel.map((level, index) => (
                 <Option value={level.id} key={index}>
@@ -189,7 +194,7 @@ class UserAuths extends React.Component<Props, State> {
           onSubmit={this.handleSubmit}
         >
           <Row type="flex" justify="center" align="middle" className={styles.add}>
-            <Col span={12}>
+            <Col span={20}>
               <div className="auth__inner--container">
                 <Row type="flex" justify="space-between">
                   <Col span={12}>
@@ -228,7 +233,10 @@ class UserAuths extends React.Component<Props, State> {
                         ],
                         initialValue: this.state.realTimeData.sex,
                       })(
-                        <Select   getPopupContainer={triggerNode => triggerNode.parentElement} placeholder="请选择性别">
+                        <Select
+                          getPopupContainer={triggerNode => triggerNode.parentElement}
+                          placeholder="请选择性别"
+                        >
                           <Option value="0">男</Option>
                           <Option value="1">女</Option>
                         </Select>,
@@ -271,7 +279,10 @@ class UserAuths extends React.Component<Props, State> {
                         ],
                         // initialValue: allPosition && allPosition[0] && allPosition[0].id,
                       })(
-                        <Select   getPopupContainer={triggerNode => triggerNode.parentElement} placeholder="请选择部门">
+                        <Select
+                          getPopupContainer={triggerNode => triggerNode.parentElement}
+                          placeholder="请选择部门"
+                        >
                           {allPosition &&
                             allPosition.map(option => (
                               <Option value={option.id} key={option.key}>
@@ -295,7 +306,10 @@ class UserAuths extends React.Component<Props, State> {
                         ],
                         // initialValue: '0',
                       })(
-                        <Select   getPopupContainer={triggerNode => triggerNode.parentElement} placeholder="请选择在职状态">
+                        <Select
+                          getPopupContainer={triggerNode => triggerNode.parentElement}
+                          placeholder="请选择在职状态"
+                        >
                           <Option value="0">在职</Option>
                           <Option value="1">离职</Option>
                         </Select>,

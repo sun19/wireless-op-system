@@ -39,8 +39,7 @@ class EditSuperAdmin extends React.Component<Props, State> {
       checkedKeys: [],
     };
   }
-  async componentDidMount() {
-  }
+  async componentDidMount() {}
   goBack = () => {
     this.props.form.resetFields();
     router.push('/system-setting/company-name');
@@ -53,7 +52,6 @@ class EditSuperAdmin extends React.Component<Props, State> {
   };
 
   onSubmit(e) {
-
     e.preventDefault();
     const { companyNameRecord } = this.props;
     this.props.form.validateFields(async (err, values) => {
@@ -89,7 +87,7 @@ class EditSuperAdmin extends React.Component<Props, State> {
       <ContentBorder className={styles.auth_root}>
         <Form layout="inline" style={{ marginTop: '0.57rem' }} onSubmit={this.onSubmit}>
           <Row type="flex" justify="center" align="middle" className={styles.add}>
-            <Col span={12}>
+            <Col span={20}>
               <div className="auth__inner--container">
                 <Row type="flex" justify="space-between">
                   <Col span={12}>
@@ -113,12 +111,16 @@ class EditSuperAdmin extends React.Component<Props, State> {
                       {getFieldDecorator('isShow', {
                         rules: [],
                         initialValue: companyNameRecord.isShow,
-                      })( 
-                        <Select   getPopupContainer={triggerNode => triggerNode.parentElement} style={{ width: '210px' }} className={styles.select_text}>
-                          <Option value='0' key='0'>
+                      })(
+                        <Select
+                          getPopupContainer={triggerNode => triggerNode.parentElement}
+                          style={{ width: '210px' }}
+                          className={styles.select_text}
+                        >
+                          <Option value="0" key="0">
                             显示
                           </Option>
-                          <Option value='1' key='1'>
+                          <Option value="1" key="1">
                             不显示
                           </Option>
                         </Select>,

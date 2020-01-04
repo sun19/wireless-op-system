@@ -362,11 +362,11 @@ class FencingSetting extends React.Component<Props, State> {
                       </Select>,
                     )}
                   </Form.Item>
-                </Col>
+                  {/* </Col>
               </Row>
 
               <Row type="flex" justify="space-between">
-                <Col span={24}>
+                <Col span={24}> */}
                   <Form.Item label="生效时间">
                     {getFieldDecorator('effectiveTime', {
                       rules: [],
@@ -504,14 +504,14 @@ class FencingSetting extends React.Component<Props, State> {
                 </Col>
               </Row>
               <Row type="flex" justify="center" style={{ marginTop: '0.35rem' }}>
-                <Col span={2}>
+                <Col span={4}>
                   <Form.Item className={styles.button_type}>
                     <Button className={styles.form_btn} htmlType="submit">
                       确认
                     </Button>
                   </Form.Item>
                 </Col>
-                <Col span={2} className={styles.select_padding_left}>
+                <Col span={4} className={styles.select_padding_left}>
                   <Form.Item>
                     <Button className={styles.form_btn} onClick={this.onBack}>
                       返回

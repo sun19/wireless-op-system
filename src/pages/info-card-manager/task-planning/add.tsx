@@ -13,7 +13,7 @@ import ContentBorder from '../../../components/ContentBorder';
 import { UmiComponentProps } from '@/common/type';
 
 import { getPollingLineByName } from '../../map-manager/services';
-import { addTaskList,getInfoListParams } from '../services';
+import { addTaskList, getInfoListParams } from '../services';
 
 import styles from './index.less';
 import { map_manager } from '../../../config/api/map-manager.config';
@@ -93,7 +93,7 @@ class TaskAdd extends React.Component<Props, State> {
     if (this.props.form.getFieldsValue().task === '0' && route.length >= 0) {
       return (
         <Row type="flex" justify="space-between">
-          <Col span={12}>
+          <Col span={20}>
             <Form.Item label="巡更路线">
               {getFieldDecorator('inspectionId', {
                 rules: [
@@ -103,7 +103,10 @@ class TaskAdd extends React.Component<Props, State> {
                 ],
                 initialValue: (route[0] && route[0].id) || undefined,
               })(
-                <Select   getPopupContainer={triggerNode => triggerNode.parentElement} placeholder="请选择巡更路线">
+                <Select
+                  getPopupContainer={triggerNode => triggerNode.parentElement}
+                  placeholder="请选择巡更路线"
+                >
                   {route.map(item => (
                     <Option key={item.name} value={item.id}>
                       {item.name}
@@ -127,7 +130,7 @@ class TaskAdd extends React.Component<Props, State> {
       type: 'commonState/update',
       payload: {
         route: route.result.records,
-        informationCardList:infoList.records ,
+        informationCardList: infoList.records,
       },
     });
   }
@@ -139,8 +142,7 @@ class TaskAdd extends React.Component<Props, State> {
     const props = this.props;
     const { getFieldDecorator, getFieldsError } = this.props.form;
 
-
-    const { informationCardList} = this.props;
+    const { informationCardList } = this.props;
 
     return (
       <ContentBorder className={styles.auth_root}>
@@ -151,7 +153,7 @@ class TaskAdd extends React.Component<Props, State> {
           onSubmit={this.handleSubmit}
         >
           <Row type="flex" justify="center" align="middle" className={styles.add}>
-            <Col span={12}>
+            <Col span={20}>
               <div className="auth__inner--container">
                 <Row type="flex" justify="space-between">
                   <Col span={12}>
@@ -165,18 +167,16 @@ class TaskAdd extends React.Component<Props, State> {
                           },
                         ],
                       })(
-                      
-
-                        <Select  placeholder="请选择信息牌"  >
+                        <Select placeholder="请选择信息牌">
                           {informationCardList &&
                             informationCardList.map(option => (
                               <Option value={option.id} key={option.id}>
                                 {option.name}
                               </Option>
                             ))}
-                        </Select>
-                      
-                      // <Input placeholder="请输入信息牌编号" />
+                        </Select>,
+
+                        // <Input placeholder="请输入信息牌编号" />
                       )}
                     </Form.Item>
                   </Col>
@@ -190,7 +190,10 @@ class TaskAdd extends React.Component<Props, State> {
                         ],
                         initialValue: '0',
                       })(
-                        <Select   getPopupContainer={triggerNode => triggerNode.parentElement} placeholder="请选择任务">
+                        <Select
+                          getPopupContainer={triggerNode => triggerNode.parentElement}
+                          placeholder="请选择任务"
+                        >
                           <Option value="0">巡更路线</Option>
                           <Option value="1">责任区</Option>
                           <Option value="2">禁止区</Option>
@@ -262,7 +265,7 @@ class TaskAdd extends React.Component<Props, State> {
 }
 const AddUserForm = Form.create<Props>({ name: 'add_user' })(TaskAdd);
 const mapState = ({ userManager, commonState }) => {
-  const { route ,informationCardList} = commonState;
+  const { route, informationCardList } = commonState;
   return {
     route,
     informationCardList,

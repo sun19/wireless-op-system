@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Form, Row, Col, Button, Input, message, Select, Tree } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
@@ -7,6 +6,7 @@ import router from 'umi/router';
 
 import ContentBorder from '../../../components/ContentBorder';
 import { InputText, TreeNodeMenu } from '../components';
+import { ChromePicker } from 'react-color';
 import { updateUserType, updateSuperAdmin } from '../services';
 
 import styles from './index.less';
@@ -15,7 +15,6 @@ import { LEFT_MENUS } from '../../../config/menus';
 const { TreeNode } = Tree;
 const { Option } = Select;
 const { TextArea } = Input;
-
 
 const defaultMenuNodes = LEFT_MENUS;
 
@@ -27,10 +26,17 @@ interface UserType {
   value?: string;
   roleId: string;
 }
-
+interface colorInfo {
+  color?: string;
+  id?: string;
+  key?: string;
+  name?: string;
+}
 interface State {
   userTypes: UserType[];
   expandedKeys: any;
+  colorInfo: colorInfo;
+  displayColorPicker: boolean;
   selectedKeys: any;
   checkedKeys: any;
   // autoExpandParent:boolean;
@@ -44,30 +50,18 @@ class EditSuperAdmin extends React.Component<Props, State> {
     this.state = {
       userTypes: [],
       expandedKeys: [],
+      displayColorPicker: false,
+      colorInfo: {},
       selectedKeys: [],
-      // autoExpandParent: true,
       checkedKeys: [],
     };
-  }
-  async componentDidMount() {
   }
   goBack = () => {
     this.props.form.resetFields();
     router.push('/system-setting/info-card-background');
-
-    // router.push('/system-setting/info-card-background/edit');
-  };
-  onSelect = (selectedKeys, info) => {
-    // console.log('onSelect', info);
-    this.setState({ selectedKeys });
-  };
-  onCheck = checkedKeys => {
-    // console.log('onCheck', checkedKeys);
-    this.setState({ checkedKeys });
   };
 
   onSubmit(e) {
-
     e.preventDefault();
     const { superAdminRecord } = this.props;
 
@@ -77,10 +71,9 @@ class EditSuperAdmin extends React.Component<Props, State> {
         return;
       }
 
-var dic = {}
-dic["dictName"] = values.dictName
-dic["id"] = superAdminRecord.id
-
+      var dic = {};
+      dic['dictName'] = this.state.colorInfo.color;
+      dic['id'] = superAdminRecord.id;
       const isSuccessed = await updateSuperAdmin(dic);
       if (isSuccessed) {
         setTimeout(() => router.push('/system-setting/info-card-background'), 1000);
@@ -91,17 +84,25 @@ dic["id"] = superAdminRecord.id
   onCancel() {
     router.push('/system-setting/info-card-background');
   }
-  renderTreeNodes = data =>
-    data.map(item => {
-      if (item.children) {
-        return (
-          <TreeNode title={item.name} key={item.path} dataRef={item}>
-            {this.renderTreeNodes(item.children)}
-          </TreeNode>
-        );
-      }
-      return <TreeNode title={item.name} key={item.path} />;
+
+  handleClick = () => {
+    this.setState({ displayColorPicker: !this.state.displayColorPicker });
+  };
+  handleClose = () => {
+    this.setState({ displayColorPicker: false });
+  };
+  handleChangeComplete = e => {
+    const colorInfo = Object.assign({}, this.state.colorInfo);
+    colorInfo.color = e.hex;
+    this.setState({
+      colorInfo,
     });
+  };
+  componentDidMount() {
+    const { superAdminRecord } = this.props;
+    this.state.colorInfo.color = superAdminRecord.dictName ? superAdminRecord.dictName : '#5eb4fe';
+  }
+
   render() {
     const { superAdminRecord } = this.props;
     const { getFieldDecorator } = this.props.form;
@@ -109,15 +110,50 @@ dic["id"] = superAdminRecord.id
       <ContentBorder className={styles.auth_root}>
         <Form layout="inline" style={{ marginTop: '0.57rem' }} onSubmit={this.onSubmit}>
           <Row type="flex" justify="center" align="middle" className={styles.add}>
-            <Col span={12}>
+            <Col span={20}>
               <div className="auth__inner--container">
                 <Row type="flex" justify="space-between">
                   <Col span={12}>
-                    <Form.Item label="信息牌背景">
+                    {/* <Form.Item label="信息牌背景">
                       {getFieldDecorator('dictName', {
                         rules: [],
                         initialValue: superAdminRecord.dictName,
                       })(<Input placeholder="请输入信息牌背景色" />)}
+                    </Form.Item>
+ */}
+
+                    <Form.Item label="信息牌背景">
+                      <div className={styles.color_pick}>
+                        <div>
+                          <div
+                            onClick={this.handleClick}
+                            className={styles.color_span}
+                            style={{
+                              background: this.state.colorInfo.color,
+                            }}
+                          />
+                          {/* Pick Color</div> */}
+                          {this.state.displayColorPicker ? (
+                            <div>
+                              <div
+                                style={{
+                                  position: 'fixed',
+                                  top: '0px',
+                                  right: '0px',
+                                  bottom: '0px',
+                                  left: '0px',
+                                }}
+                                onClick={this.handleClose}
+                              />
+                              <ChromePicker
+                                style={{ width: '400px' }}
+                                color={this.state.colorInfo.color}
+                                onChangeComplete={this.handleChangeComplete}
+                              />
+                            </div>
+                          ) : null}
+                        </div>
+                      </div>
                     </Form.Item>
                   </Col>
                 </Row>

@@ -1,10 +1,28 @@
 import React from 'react';
-import { Table, Form, Input, message, Modal, Badge, Menu, Dropdown, Button, Row, Col, Icon } from 'antd';
+import {
+  Table,
+  Form,
+  Input,
+  message,
+  Modal,
+  Badge,
+  Menu,
+  Dropdown,
+  Button,
+  Row,
+  Col,
+  Icon,
+} from 'antd';
 import OrgChart from 'react-orgchart';
 import { connect } from 'dva';
 import { FormComponentProps } from 'antd/lib/form';
 import { UmiComponentProps } from '@/common/type';
-import { getDepartmentName, getDepartment, delDepartment, editDepartment } from '@/pages/login/login.service';
+import {
+  getDepartmentName,
+  getDepartment,
+  delDepartment,
+  editDepartment,
+} from '@/pages/login/login.service';
 import { ICON_FONTS_URL } from '../../config/constants';
 import { GET_DEPARTMENT } from '@/config/api';
 const { confirm } = Modal;
@@ -23,7 +41,7 @@ interface State {
   addDialog?: boolean;
   node?: any;
 }
-interface FormProps extends FormComponentProps { }
+interface FormProps extends FormComponentProps {}
 type StateProps = ReturnType<typeof mapState>;
 type Props = StateProps & UmiComponentProps & FormProps;
 
@@ -40,50 +58,47 @@ class Organization extends React.Component<Props, State> {
       node: {},
     };
     // this.getData();
-
   }
-  handleOk = (e) => {
+  handleOk = e => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll(async (err, values) => {
       if (!err) {
-        let { name, children, ...props } = this.state.node
+        let { name, children, ...props } = this.state.node;
         let data = {
           ...props,
-          name: values.name
-        }
-        let resp = await editDepartment(data)
+          name: values.name,
+        };
+        let resp = await editDepartment(data);
         if (resp.success) {
           this.setState({
             visible: false,
           });
-          this.getDataName()
+          this.getDataName();
         }
-
       }
     });
   };
-  addOk = (e) => {
+  addOk = e => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll(async (err, values) => {
       // console.log(err)
       if (!err) {
-        let { name, children, id, parentId, ...propsData } = this.state.node
+        let { name, children, id, parentId, ...propsData } = this.state.node;
         let data = {
           ...propsData,
           parentId: id,
-          name: values.nameOptions
-        }
+          name: values.nameOptions,
+        };
         // console.log(data)
 
-        let resp = await editDepartment(data)
+        let resp = await editDepartment(data);
         // console.log(resp)
         if (resp.success) {
           this.setState({
             addDialog: false,
           });
-          this.getDataName()
+          this.getDataName();
         }
-
       }
     });
   };
@@ -100,19 +115,32 @@ class Organization extends React.Component<Props, State> {
   MyNodeComponent = ({ node }) => {
     if (node.parentId === '00000') {
       return (
-        <div className={styles.initechNode} >
+        <div className={styles.initechNode}>
           <span>{node.name}</span>
           <div>
-            <span className={styles.edit_icon} onClick={this.addDialog.bind(this, node)}><IconFont type="icon-plus" /></span></div>
+            <span className={styles.edit_icon} onClick={this.addDialog.bind(this, node)}>
+              <IconFont type="icon-plus" />
+            </span>
+          </div>
         </div>
-      )
+      );
     } else {
       return (
-        <div className={styles.initechNode} >
+        <div className={styles.initechNode}>
           <span>{node.name}</span>
-          <div>  <span className={styles.edit_icon} onClick={this.delectSpan.bind(this, node)}><IconFont type="icon-error1" /></span>
-            <span className={styles.edit_icon} onClick={this.addDialog.bind(this, node)}><IconFont type="icon-plus" /></span>
-            <span className={styles.edit_icon} onClick={this.showDialog.bind(this, node)}> <IconFont type="icon-edit1" /></span></div>
+          <div>
+            {' '}
+            <span className={styles.edit_icon} onClick={this.delectSpan.bind(this, node)}>
+              <IconFont type="icon-error1" />
+            </span>
+            <span className={styles.edit_icon} onClick={this.addDialog.bind(this, node)}>
+              <IconFont type="icon-plus" />
+            </span>
+            <span className={styles.edit_icon} onClick={this.showDialog.bind(this, node)}>
+              {' '}
+              <IconFont type="icon-edit1" />
+            </span>
+          </div>
         </div>
       );
     }
@@ -123,9 +151,9 @@ class Organization extends React.Component<Props, State> {
     });
     this.setState({
       addDialog: true,
-      node: name
+      node: name,
     });
-  }
+  };
   delectSpan = name => {
     let self = this;
     confirm({
@@ -134,32 +162,31 @@ class Organization extends React.Component<Props, State> {
       okText: '取消',
       okType: 'danger',
       cancelText: '确定',
-      onOk() { },
+      onOk() {},
       async onCancel() {
         await delDepartment({ id: name.id });
         //  //重新请求数据重绘
         self.getDataName();
       },
     });
-  }
+  };
   showDialog = name => {
     this.props.form.setFieldsValue({
       name: name.name,
     });
     this.setState({
       visible: true,
-      node: name
+      node: name,
     });
   };
   async componentDidMount() {
-    this.getDataName()
-
+    this.getDataName();
   }
   async getDataName() {
     let data = {
-      type: 'organization_name'
-    }
-    let name = await getDepartmentName(data)
+      type: 'organization_name',
+    };
+    let name = await getDepartmentName(data);
     this.getData(name);
   }
   async getData(name) {
@@ -170,16 +197,15 @@ class Organization extends React.Component<Props, State> {
     const resp = JSON.parse(menusStr);
     let data = {
       name: name,
-      id: "0",
-      deptCode: "cs",
-      parentId: "00000",
+      id: '0',
+      deptCode: 'cs',
+      parentId: '00000',
       sort: 1,
-      children: []
-    }
+      children: [],
+    };
     resp.map(res => {
-      data.children.push(res)
-
-    })
+      data.children.push(res);
+    });
     // console.log(data)
     // if(resp.result){
     this.setState({

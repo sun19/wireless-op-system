@@ -31,7 +31,7 @@ interface UserType {
   roleId: string;
 }
 
-interface FormProps extends FormComponentProps { }
+interface FormProps extends FormComponentProps {}
 type StateProps = ReturnType<typeof mapState>;
 type Props = StateProps & UmiComponentProps & FormProps;
 
@@ -63,8 +63,6 @@ class AddUsers extends React.Component<Props, State> {
       // userInfoList: [],
       departmentNumber: '',
     };
-
- 
   }
   setupDuties = () => {
     const { allDuties } = this.props;
@@ -76,7 +74,10 @@ class AddUsers extends React.Component<Props, State> {
           rules: [],
           initialValue: (currentIndex != null && currentUser.positionId) || undefined,
         })(
-          <Select   getPopupContainer={triggerNode => triggerNode.parentElement} placeholder="请选择职务">
+          <Select
+            getPopupContainer={triggerNode => triggerNode.parentElement}
+            placeholder="请选择职务"
+          >
             {allDuties &&
               allDuties.map((duty, index) => (
                 <Option value={duty.id} key={index}>
@@ -98,7 +99,10 @@ class AddUsers extends React.Component<Props, State> {
           rules: [],
           initialValue: currentIndex != null && currentUser.securityLevelId,
         })(
-          <Select   getPopupContainer={triggerNode => triggerNode.parentElement} placeholder="请选择保密等级">
+          <Select
+            getPopupContainer={triggerNode => triggerNode.parentElement}
+            placeholder="请选择保密等级"
+          >
             {allSecretLevel.map((level, index) => (
               <Option value={level.id} key={index}>
                 {level.name}
@@ -130,7 +134,6 @@ class AddUsers extends React.Component<Props, State> {
         enableTime: values.enableTime
           ? values.enableTime.format('YYYY-MM-DD HH:mm:ss').toString()
           : '',
-
       };
       const isSuccessed = await addInfoList(data);
       if (isSuccessed) {
@@ -142,7 +145,6 @@ class AddUsers extends React.Component<Props, State> {
   async componentDidMount() {
     // 校验并获取一组输入域的值与 Error，若 fieldNames 参数为空，则校验全部组件
     // this.props.form.validateFields();
-
 
     const dutiesResp = await getAllPosition();
     const secretsLevelsResp = await getAllSecretLevels();
@@ -163,14 +165,14 @@ class AddUsers extends React.Component<Props, State> {
         allDuties: dutiesResp.result,
         allSecretLevel: secretsLevelsResp.result,
         allPosition: allPositions.result.records,
-        userInfoList:userInfoList1,
-        userInfoNumber:userInfoNumber
+        userInfoList: userInfoList1,
+        userInfoNumber: userInfoNumber,
       },
     });
   }
   onSelectChange = (value, index) => {
     // const { userInfoList } = this.state;
-    const { allPosition , userInfoList } = this.props;
+    const { allPosition, userInfoList } = this.props;
     let currentIndex = undefined;
     userInfoList.map((item, index) => {
       if (item.name === value) {
@@ -205,9 +207,12 @@ class AddUsers extends React.Component<Props, State> {
       <Form.Item label="姓名">
         {getFieldDecorator('userName', {
           // rules: [],
-          rules: [{ required: true, message: "请选择一个用户!" }],
+          rules: [{ required: true, message: '请选择一个用户!' }],
         })(
-          <Select   getPopupContainer={triggerNode => triggerNode.parentElement} onSelect={this.onSelectChange}>
+          <Select
+            getPopupContainer={triggerNode => triggerNode.parentElement}
+            onSelect={this.onSelectChange}
+          >
             {userInfoList.map(user => {
               return (
                 <Option key={user.id} value={user.name}>
@@ -224,10 +229,8 @@ class AddUsers extends React.Component<Props, State> {
   render() {
     const props = this.props;
     const { getFieldDecorator, getFieldsError } = this.props.form;
-    const { allPosition ,userInfoNumber} = this.props;
+    const { allPosition, userInfoNumber } = this.props;
     const { currentIndex, currentUser, departmentNumber } = this.state;
-
-   
 
     return (
       <ContentBorder className={styles.auth_root}>
@@ -238,7 +241,7 @@ class AddUsers extends React.Component<Props, State> {
           onSubmit={this.handleSubmit}
         >
           <Row type="flex" justify="center" align="middle" className={styles.add}>
-            <Col span={12}>
+            <Col span={20}>
               <div className="auth__inner--container">
                 <Row type="flex" justify="space-between">
                   <Col span={12}>{this.setupSelectName()}</Col>
@@ -258,7 +261,10 @@ class AddUsers extends React.Component<Props, State> {
                         rules: [],
                         initialValue: (currentIndex != null && currentUser.sex) || undefined,
                       })(
-                        <Select   getPopupContainer={triggerNode => triggerNode.parentElement} placeholder="请选择性别">
+                        <Select
+                          getPopupContainer={triggerNode => triggerNode.parentElement}
+                          placeholder="请选择性别"
+                        >
                           <Option value="0">男</Option>
                           <Option value="1">女</Option>
                         </Select>,
@@ -283,11 +289,16 @@ class AddUsers extends React.Component<Props, State> {
                     </Form.Item>
                   </Col>
                   <Col span={12}>
-                    <Form.Item label="部门" >
+                    <Form.Item label="部门">
                       {getFieldDecorator('departmentId', {
-                        initialValue: (currentIndex != null && currentUser.departmentId) || undefined,
+                        initialValue:
+                          (currentIndex != null && currentUser.departmentId) || undefined,
                       })(
-                        <Select   getPopupContainer={triggerNode => triggerNode.parentElement} placeholder="请选择部门" onSelect={this.onSelectDepartmentChange}>
+                        <Select
+                          getPopupContainer={triggerNode => triggerNode.parentElement}
+                          placeholder="请选择部门"
+                          onSelect={this.onSelectDepartmentChange}
+                        >
                           {allPosition &&
                             allPosition.map(option => (
                               <Option value={option.id} key={option.deptCode}>
@@ -302,11 +313,11 @@ class AddUsers extends React.Component<Props, State> {
                 <Row type="flex" justify="space-between">
                   <Col span={12}>
                     <Form.Item label="信息牌编号">
-                    {getFieldDecorator('name', {
-                        initialValue: (userInfoNumber != null && (departmentNumber + userInfoNumber)) || undefined,
-                      })(
-                        <Input disabled={true} />
-                      )}
+                      {getFieldDecorator('name', {
+                        initialValue:
+                          (userInfoNumber != null && departmentNumber + userInfoNumber) ||
+                          undefined,
+                      })(<Input disabled={true} />)}
                     </Form.Item>
                   </Col>
                   <Col span={12}>
@@ -326,7 +337,10 @@ class AddUsers extends React.Component<Props, State> {
                         rules: [],
                         initialValue: currentIndex != null && currentUser.type,
                       })(
-                        <Select   getPopupContainer={triggerNode => triggerNode.parentElement} placeholder="请选择类型">
+                        <Select
+                          getPopupContainer={triggerNode => triggerNode.parentElement}
+                          placeholder="请选择类型"
+                        >
                           <Option value="0">内部</Option>
                           <Option value="1">外部</Option>
                         </Select>,
@@ -341,7 +355,10 @@ class AddUsers extends React.Component<Props, State> {
                         rules: [],
                         initialValue: currentIndex != null && currentUser.type,
                       })(
-                        <Select   getPopupContainer={triggerNode => triggerNode.parentElement} placeholder="请选择在职状态">
+                        <Select
+                          getPopupContainer={triggerNode => triggerNode.parentElement}
+                          placeholder="请选择在职状态"
+                        >
                           <Option value="0">在职</Option>
                           <Option value="1">离职</Option>
                         </Select>,
@@ -361,13 +378,9 @@ class AddUsers extends React.Component<Props, State> {
                   </Col>
                   <Col span={12}>
                     <Form.Item label="启用时间">
-                      {getFieldDecorator(
-                        'enableTime',
-                        {
-                          initialValue: moment(),
-
-                        },
-                      )(<DatePicker showTime={true} placeholder="请选择开始时间" />)}
+                      {getFieldDecorator('enableTime', {
+                        initialValue: moment(),
+                      })(<DatePicker showTime={true} placeholder="请选择开始时间" />)}
                     </Form.Item>
                   </Col>
                 </Row>
@@ -411,13 +424,13 @@ class AddUsers extends React.Component<Props, State> {
 }
 const AddUserForm = Form.create<Props>({ name: 'add_user' })(AddUsers);
 const mapState = ({ userManager, commonState }) => {
-  const { allDuties, allSecretLevel, allPosition,userInfoList,userInfoNumber } = commonState;
+  const { allDuties, allSecretLevel, allPosition, userInfoList, userInfoNumber } = commonState;
   return {
     allDuties: allDuties,
     allPosition: allPosition,
     allSecretLevel: allSecretLevel,
-    userInfoList:userInfoList,
-    userInfoNumber:userInfoNumber
+    userInfoList: userInfoList,
+    userInfoNumber: userInfoNumber,
   };
 };
 export default connect(mapState)(AddUserForm);

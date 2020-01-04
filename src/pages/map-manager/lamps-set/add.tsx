@@ -240,7 +240,7 @@ class halmpAdd extends React.Component<Props, State> {
                       rules: [],
                     })(
                       <Input
-                        style={{ width: '1rem', backgroundSize: '1rem 0.4rem' }}
+                        style={{ width: '1rem', backgroundSize: '1rem 40px' }}
                         placeholder="横坐标"
                         disabled={true}
                       />,
@@ -251,7 +251,7 @@ class halmpAdd extends React.Component<Props, State> {
                       rules: [],
                     })(
                       <Input
-                        style={{ width: '1rem', backgroundSize: '1rem 0.4rem' }}
+                        style={{ width: '1rem', backgroundSize: '1rem 40px' }}
                         placeholder="纵坐标"
                         disabled={true}
                       />,
@@ -261,7 +261,10 @@ class halmpAdd extends React.Component<Props, State> {
                     {getFieldDecorator('regionalId', {
                       rules: [],
                     })(
-                      <Select   getPopupContainer={triggerNode => triggerNode.parentElement} placeholder="请选择区域">
+                      <Select
+                        getPopupContainer={triggerNode => triggerNode.parentElement}
+                        placeholder="请选择区域"
+                      >
                         {areas.map(item => (
                           <Option key={item.name} value={item.id}>
                             {item.name}
@@ -270,16 +273,19 @@ class halmpAdd extends React.Component<Props, State> {
                       </Select>,
                     )}
                   </Form.Item>
-                </Col>
-              </Row>
+                  {/* </Col> */}
+                  {/* </Row> */}
 
-              <Row type="flex" justify="space-between">
-                <Col span={24}>
+                  {/* <Row type="flex" justify="space-between"> */}
+                  {/* <Col span={24}> */}
                   <Form.Item label="出入口" className={styles.area_style}>
                     {getFieldDecorator('entranceExit', {
                       rules: [],
                     })(
-                      <Select   getPopupContainer={triggerNode => triggerNode.parentElement} placeholder="请选择出入口">
+                      <Select
+                        getPopupContainer={triggerNode => triggerNode.parentElement}
+                        placeholder="请选择出入口"
+                      >
                         <Option value="0">出口</Option>
                         <Option value="1">入口</Option>
                       </Select>,
@@ -294,7 +300,10 @@ class halmpAdd extends React.Component<Props, State> {
                         },
                       ],
                     })(
-                      <Select   getPopupContainer={triggerNode => triggerNode.parentElement} placeholder="请选择地图名称">
+                      <Select
+                        getPopupContainer={triggerNode => triggerNode.parentElement}
+                        placeholder="请选择地图名称"
+                      >
                         {maps.map(item => (
                           <Option value={item.id} key={item.name}>
                             {item.name}
@@ -303,7 +312,7 @@ class halmpAdd extends React.Component<Props, State> {
                       </Select>,
                     )}
                   </Form.Item>
-                  <Form.Item className={styles.area_style} label="备注">
+                  <Form.Item className={styles.area_label} label="备注">
                     {getFieldDecorator('remark', {
                       rules: [
                         {
@@ -313,7 +322,7 @@ class halmpAdd extends React.Component<Props, State> {
                     })(
                       <Input
                         placeholder="请输入备注"
-                        style={{ width: '8.6rem', backgroundSize: '8.6rem 0.4rem' }}
+                        style={{ width: '8.6rem', backgroundSize: '8.6rem 40px' }}
                       />,
                     )}
                   </Form.Item>
@@ -356,15 +365,16 @@ class halmpAdd extends React.Component<Props, State> {
                   </div>
                 </Col>
               </Row>
+
               <Row type="flex" justify="center" style={{ marginTop: '0.35rem' }}>
-                <Col span={2}>
+                <Col span={4}>
                   <Form.Item className={styles.button_type}>
                     <Button className={styles.form_btn} htmlType="submit">
                       确认
                     </Button>
                   </Form.Item>
                 </Col>
-                <Col span={2} className={styles.select_padding_left}>
+                <Col span={4} className={styles.select_padding_left}>
                   <Form.Item>
                     <Button className={styles.form_btn} onClick={this.goBack}>
                       返回

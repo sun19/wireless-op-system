@@ -395,11 +395,11 @@ class AddPollingLine extends React.Component<Props, State> {
                       />,
                     )}
                   </Form.Item>
-                </Col>
+                  {/* </Col>
               </Row>
 
               <Row type="flex" justify="space-between">
-                <Col span={24}>
+                <Col span={24}> */}
                   {this.setupAlarmSelect()}
                   <Form.Item label="重复类型">
                     {getFieldDecorator('repeatType', {
@@ -489,14 +489,14 @@ class AddPollingLine extends React.Component<Props, State> {
                 </Col>
               </Row>
               <Row type="flex" justify="center" style={{ marginTop: '0.35rem' }}>
-                <Col span={2}>
+                <Col span={4}>
                   <Form.Item className={styles.button_type}>
                     <Button className={styles.form_btn} htmlType="submit">
                       确认
                     </Button>
                   </Form.Item>
                 </Col>
-                <Col span={2} className={styles.select_padding_left}>
+                <Col span={4} className={styles.select_padding_left}>
                   <Form.Item>
                     <Button className={styles.form_btn} onClick={this.goBack}>
                       返回

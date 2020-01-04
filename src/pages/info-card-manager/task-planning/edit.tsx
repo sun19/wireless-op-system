@@ -14,9 +14,7 @@ import ContentBorder from '../../../components/ContentBorder';
 import { UmiComponentProps } from '@/common/type';
 
 import { getPollingLineByName } from '../../map-manager/services';
-import { TaskListEdit , getInfoListParams } from '../services';
-
-
+import { TaskListEdit, getInfoListParams } from '../services';
 
 import styles from './index.less';
 
@@ -97,14 +95,12 @@ class TaskEdit extends React.Component<Props, State> {
   getRoute() {
     const { editData } = this.props;
 
-    
-    
     const { getFieldDecorator, getFieldsError } = this.props.form;
     const { route } = this.props;
     if (this.props.form.getFieldsValue().task === '0' && route.length > 0) {
       return (
         <Row type="flex" justify="space-between">
-          <Col span={12}>
+          <Col span={20}>
             <Form.Item label="巡更路线">
               {getFieldDecorator('inspectionId', {
                 rules: [
@@ -112,9 +108,12 @@ class TaskEdit extends React.Component<Props, State> {
                     message: '请选择巡更路线',
                   },
                 ],
-                initialValue: editData.inspectionId&&editData.inspectionId||undefined,
+                initialValue: (editData.inspectionId && editData.inspectionId) || undefined,
               })(
-                <Select   getPopupContainer={triggerNode => triggerNode.parentElement} placeholder="请选择巡更路线">
+                <Select
+                  getPopupContainer={triggerNode => triggerNode.parentElement}
+                  placeholder="请选择巡更路线"
+                >
                   {route.map(item => (
                     <Option value={item.id}>{item.name}</Option>
                   ))}
@@ -133,7 +132,7 @@ class TaskEdit extends React.Component<Props, State> {
       type: 'commonState/update',
       payload: {
         route: route.result.records,
-        informationCardList:infoList.records ,
+        informationCardList: infoList.records,
       },
     });
   }
@@ -142,7 +141,7 @@ class TaskEdit extends React.Component<Props, State> {
   }
   render() {
     const { getFieldDecorator, getFieldsError } = this.props.form;
-    const { editData ,informationCardList} = this.props;
+    const { editData, informationCardList } = this.props;
 
     return (
       <ContentBorder className={styles.auth_root}>
@@ -153,7 +152,7 @@ class TaskEdit extends React.Component<Props, State> {
           onSubmit={this.handleSubmit}
         >
           <Row type="flex" justify="center" align="middle" className={styles.add}>
-            <Col span={12}>
+            <Col span={20}>
               <div className="auth__inner--container">
                 <Row type="flex" justify="space-between">
                   <Col span={12}>
@@ -167,24 +166,16 @@ class TaskEdit extends React.Component<Props, State> {
                         ],
                         initialValue: editData.informationBoardId,
                       })(
-                      
-
-
-                        <Select  placeholder="请选择信息牌"  >
+                        <Select placeholder="请选择信息牌">
                           {informationCardList &&
                             informationCardList.map(option => (
                               <Option value={option.id} key={option.id}>
                                 {option.name}
                               </Option>
                             ))}
-                        </Select>
-                      
-                      
-                      
-                      // <Input placeholder="请输入信息牌编号" />
-                      
-                      
-                      
+                        </Select>,
+
+                        // <Input placeholder="请输入信息牌编号" />
                       )}
                     </Form.Item>
                   </Col>
@@ -198,7 +189,10 @@ class TaskEdit extends React.Component<Props, State> {
                         ],
                         initialValue: editData.task,
                       })(
-                        <Select   getPopupContainer={triggerNode => triggerNode.parentElement} placeholder="请选择任务">
+                        <Select
+                          getPopupContainer={triggerNode => triggerNode.parentElement}
+                          placeholder="请选择任务"
+                        >
                           <Option value="0" key="1">
                             巡更路线
                           </Option>
@@ -275,7 +269,7 @@ class TaskEdit extends React.Component<Props, State> {
 }
 const AddUserForm = Form.create<Props>({ name: 'add_user' })(TaskEdit);
 const mapState = ({ userManager, commonState, infoCardManager }) => {
-  const { route ,informationCardList} = commonState;
+  const { route, informationCardList } = commonState;
   return {
     route,
     editData: infoCardManager.editData,

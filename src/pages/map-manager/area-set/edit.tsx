@@ -92,7 +92,7 @@ class FencingSetting extends React.Component<Props, State> {
     return new Promise(resolve => {
       const mapImage = new Image();
       mapImage.src = require('../../big-screen/assets/map.png');
-      mapImage.onload = function () {
+      mapImage.onload = function() {
         resolve(mapImage);
       };
     });
@@ -247,7 +247,7 @@ class FencingSetting extends React.Component<Props, State> {
               {/* <Col span={12}> */}
               <div className="add__inner--container">
                 <Row type="flex" justify="center">
-                  <Col span={8}>
+                  <Col span={10}>
                     <Form.Item label="区域名称">
                       {getFieldDecorator('regionName', {
                         rules: [
@@ -259,7 +259,7 @@ class FencingSetting extends React.Component<Props, State> {
                       })(<Input placeholder="请输入区域名称" />)}
                     </Form.Item>
                   </Col>
-                  <Col span={8}>
+                  <Col span={10}>
                     <Form.Item label="地图名称">
                       {getFieldDecorator('mapId', {
                         rules: [
@@ -284,7 +284,7 @@ class FencingSetting extends React.Component<Props, State> {
                   </Col>
                 </Row>
                 <Row type="flex" justify="center">
-                  <Col span={8}>
+                  <Col span={10}>
                     <Form.Item label="区域级别">
                       {getFieldDecorator('regionalLevelId', {
                         rules: [
@@ -293,7 +293,9 @@ class FencingSetting extends React.Component<Props, State> {
                           },
                         ],
                         // initialValue: mapAreaRecord.regionalLevelId,
-                        initialValue: mapAreaRecord.regionalLevelId&&mapAreaRecord.regionalLevelId||undefined,
+                        initialValue:
+                          (mapAreaRecord.regionalLevelId && mapAreaRecord.regionalLevelId) ||
+                          undefined,
                       })(
                         <Select
                           getPopupContainer={triggerNode => triggerNode.parentElement}
@@ -308,7 +310,7 @@ class FencingSetting extends React.Component<Props, State> {
                       )}
                     </Form.Item>
                   </Col>
-                  <Col span={8} className={styles.text_areas}>
+                  <Col span={10} className={styles.text_areas}>
                     <Form.Item label="备注">
                       {getFieldDecorator('remark', {
                         rules: [],

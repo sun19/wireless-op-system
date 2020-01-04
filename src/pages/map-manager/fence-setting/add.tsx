@@ -355,11 +355,11 @@ class FencingSetting extends React.Component<Props, State> {
                       </Select>,
                     )}
                   </Form.Item>
-                </Col>
+                  {/* </Col>
               </Row>
 
               <Row type="flex" justify="space-between">
-                <Col span={24}>
+                <Col span={24}> */}
                   <Form.Item label="生效时间">
                     {getFieldDecorator('effectiveTime', {
                       rules: [],
@@ -411,41 +411,19 @@ class FencingSetting extends React.Component<Props, State> {
                       ],
                     })(<Input placeholder="请输入最大人员数量" />)}
                   </Form.Item>
-                </Col>
+                  {/* </Col>
               </Row>
               <Row type="flex" justify="space-between">
-                <Col span={24}>
+                <Col span={24}> */}
                   <Form.Item label="关联人员">{this.setupRelationPeople()}</Form.Item>
 
                   <Form.Item label="围栏设置">{this.setupShowLamps()}</Form.Item>
 
-                  <Form.Item className={styles.area_style} label="区域">
-                    {getFieldDecorator('regionalId', {
-                      rules: [
-                        {
-                          message: '请选择区域',
-                        },
-                      ],
-                    })(
-                      <Select
-                        getPopupContainer={triggerNode => triggerNode.parentElement}
-                        placeholder="请选择区域"
-                        style={{ width: '5.25rem', backgroundSize: '5.25rem 0.4rem' }}
-                        onSelect={this.areaSelectChange}
-                      >
-                        {areas.map(item => (
-                          <Option key={item.name} value={item.id}>
-                            {item.name}
-                          </Option>
-                        ))}
-                      </Select>,
-                    )}
-                  </Form.Item>
-                </Col>
+                  {/* </Col>
               </Row>
 
               <Row type="flex" justify="space-between">
-                <Col span={24}>
+                <Col span={24}> */}
                   <Form.Item label="告警类型" className={styles.area_style}>
                     {getFieldDecorator('warnModeId', {
                       rules: [],
@@ -457,6 +435,28 @@ class FencingSetting extends React.Component<Props, State> {
                         {warningTypes.map(type => (
                           <Option value={type.id} key={type.id}>
                             {type.name}
+                          </Option>
+                        ))}
+                      </Select>,
+                    )}
+                  </Form.Item>
+                  <Form.Item className={styles.area_style} style={{ width: '6rem' }} label="区域">
+                    {getFieldDecorator('regionalId', {
+                      rules: [
+                        {
+                          message: '请选择区域',
+                        },
+                      ],
+                    })(
+                      <Select
+                        getPopupContainer={triggerNode => triggerNode.parentElement}
+                        placeholder="请选择区域"
+                        // style={{ width: '5.25rem', backgroundSize: '5.25rem 40px' }}
+                        onSelect={this.areaSelectChange}
+                      >
+                        {areas.map(item => (
+                          <Option key={item.name} value={item.id}>
+                            {item.name}
                           </Option>
                         ))}
                       </Select>,
@@ -493,7 +493,7 @@ class FencingSetting extends React.Component<Props, State> {
               </Row>
 
               <Row type="flex" justify="center" style={{ marginTop: '0.35rem' }}>
-                <Col span={2}>
+                <Col span={4}>
                   <Form.Item className={styles.button_type}>
                     <Button className={styles.form_btn} htmlType="submit">
                       确认

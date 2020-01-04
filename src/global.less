@@ -12,33 +12,32 @@ body {
 :global(.ant-menu-submenu-open.ant-menu-submenu-inline
     > .ant-menu-submenu-title
     .ant-menu-submenu-arrow::before) {
-  background-image: linear-gradient(to right,#00D8FF,#00D8FF);
+  background-image: linear-gradient(to right, #00d8ff, #00d8ff);
 }
-:global( .ant-menu-submenu-inline > .ant-menu-submenu-title i.ant-menu-submenu-arrow::before){
-  background:#00D8FF;
-
+:global(.ant-menu-submenu-inline > .ant-menu-submenu-title i.ant-menu-submenu-arrow::before) {
+  background: #00d8ff;
 }
-:global(.ant-menu-submenu-inline > .ant-menu-submenu-title i.ant-menu-submenu-arrow::after){
-  background:#00D8FF;
+:global(.ant-menu-submenu-inline > .ant-menu-submenu-title i.ant-menu-submenu-arrow::after) {
+  background: #00d8ff;
 }
 :global(.ant-menu-submenu-open.ant-menu-submenu-inline
     > .ant-menu-submenu-title
     .ant-menu-submenu-arrow::after) {
-  background-image: linear-gradient(to right,#00D8FF, #00D8FF);
+  background-image: linear-gradient(to right, #00d8ff, #00d8ff);
 }
 
 :global(.ant-menu-submenu-open.ant-menu-submenu-inline
     > .ant-menu-submenu-title:hover
     .ant-menu-submenu-arrow::before) {
-  background-image: linear-gradient(to right,#fff,#fff);
+  background-image: linear-gradient(to right, #fff, #fff);
 }
 
 :global(.ant-menu-submenu-open.ant-menu-submenu-inline
     > .ant-menu-submenu-title:hover
     .ant-menu-submenu-arrow::after) {
-  background-image: linear-gradient(to right,#fff, #fff);
+  background-image: linear-gradient(to right, #fff, #fff);
 }
- 
+
 .fade-enter {
   opacity: 0;
   z-index: 1;
@@ -50,6 +49,7 @@ body {
 }
 .ant-form-item-control-wrapper {
   .ant-form-item-control {
+    line-height: 30px;
     .ant-form-item-children {
       input {
         background: url(./assets/shared/文本.png);
@@ -64,7 +64,7 @@ body {
         height: 40px;
         background: url(./assets/shared/文本.png);
         border-width: 0;
-        background-size:210px 40px;
+        background-size: 210px 40px;
         color: rgba(255, 255, 255, 0.8);
         .ant-select-selection.ant-select-selection--single {
           height: 40px;
@@ -107,58 +107,71 @@ body {
     }
   }
 }
- 
-:global(.ant-table-tbody tr){
+
+:global(.ant-table-tbody tr) {
   font-size: 17px;
-  font-weight: 500;;
-
+  font-weight: 500;
 }
- 
-:global(.ant-pagination-total-text){
+:global(.ant-form-inline .ant-form-item) {
+  margin-bottom: 8px !important;
+}
+:global(.ant-pagination-total-text) {
   font-size: 15px;
 }
-:global(.ant-btn.ant-btn-sm){
-
+:global(.ant-btn.ant-btn-sm) {
   font-size: 15px;
 }
-:global(.ant-pagination-item ){
+:global(.ant-pagination-item) {
   font-size: 15px;
+}
+:global(.ant-pagination.mini .ant-pagination-options-quick-jumper input) {
+  color: white;
+}
+:global(.ant-pagination.mini .ant-pagination-total-text) {
+  font-size: 24px;
+}
 
-}
-:global(.ant-pagination.mini .ant-pagination-options-quick-jumper input){
-  color:white
-}
-:global(.ant-pagination.mini .ant-pagination-total-text){
-  font-size:24px;
-}
- 
- .ant-tooltip .ant-tooltip-content .ant-tooltip-inner{
-     color: #fff;
+.ant-tooltip .ant-tooltip-content .ant-tooltip-inner {
+  color: #fff;
   text-align: center;
-  font-size:20px;
- }
- .ant-modal-content .ant-modal-body .ant-modal-confirm-body-wrapper .ant-modal-confirm-btns .ant-btn{
-       background: #ff4d4f;
-        border:1px solid #ff4d4f;
+  font-size: 20px;
+}
+.ant-modal-content
+  .ant-modal-body
+  .ant-modal-confirm-body-wrapper
+  .ant-modal-confirm-btns
+  .ant-btn {
+  background: #ff4d4f;
+  border: 1px solid #ff4d4f;
 
-    color: white;
-  
-
- }
-    .ant-modal-content .ant-modal-body .ant-modal-confirm-body-wrapper .ant-modal-confirm-btns .ant-btn:hover{
-        background: #ff4d50cb;
-      border:1px solid #ff4d50cb;
-    }
-  .ant-modal-content .ant-modal-body .ant-modal-confirm-body-wrapper .ant-modal-confirm-btns .ant-btn.ant-btn-danger{
-    border-color: #d9d9d9;
-    color: black;
-    background:none;
-  }  .ant-modal-content .ant-modal-body .ant-modal-confirm-body-wrapper .ant-modal-confirm-btns .ant-btn.ant-btn-danger:hover{
-    border-color:#ff4d50cb;
-    color: black;
-    background:none;
-  }
-  .ant-tree-title{
-    font-size: 20px;
-  }
-  
+  color: white;
+}
+.ant-modal-content
+  .ant-modal-body
+  .ant-modal-confirm-body-wrapper
+  .ant-modal-confirm-btns
+  .ant-btn:hover {
+  background: #ff4d50cb;
+  border: 1px solid #ff4d50cb;
+}
+.ant-modal-content
+  .ant-modal-body
+  .ant-modal-confirm-body-wrapper
+  .ant-modal-confirm-btns
+  .ant-btn.ant-btn-danger {
+  border-color: #d9d9d9;
+  color: black;
+  background: none;
+}
+.ant-modal-content
+  .ant-modal-body
+  .ant-modal-confirm-body-wrapper
+  .ant-modal-confirm-btns
+  .ant-btn.ant-btn-danger:hover {
+  border-color: #ff4d50cb;
+  color: black;
+  background: none;
+}
+.ant-tree-title {
+  font-size: 20px;
+}

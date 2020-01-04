@@ -145,7 +145,7 @@ class EditUserAuth extends React.Component<Props, State> {
       <ContentBorder className={styles.auth_root}>
         <Form layout="inline" style={{ marginTop: '0.57rem' }} onSubmit={this.onSubmit}>
           <Row type="flex" justify="center" align="middle" className={styles.add}>
-            <Col span={12}>
+            <Col span={20}>
               <div className="auth__inner--container  auth_people">
                 <Row type="flex" justify="space-between">
                   <Col span={12}>

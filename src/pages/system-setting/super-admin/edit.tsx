@@ -50,8 +50,7 @@ class EditSuperAdmin extends React.Component<Props, State> {
       checkedKeys: [],
     };
   }
-  async componentDidMount() {
-  }
+  async componentDidMount() {}
   goBack = () => {
     this.props.form.resetFields();
     router.push('/system-setting/super-admin');
@@ -66,7 +65,6 @@ class EditSuperAdmin extends React.Component<Props, State> {
   };
 
   onSubmit(e) {
-
     e.preventDefault();
     const { superAdminRecord } = this.props;
     this.props.form.validateFields(async (err, values) => {
@@ -102,7 +100,7 @@ class EditSuperAdmin extends React.Component<Props, State> {
       <ContentBorder className={styles.auth_root}>
         <Form layout="inline" style={{ marginTop: '0.57rem' }} onSubmit={this.onSubmit}>
           <Row type="flex" justify="center" align="middle" className={styles.add}>
-            <Col span={12}>
+            <Col span={20}>
               <div className="auth__inner--container">
                 <Row type="flex" justify="space-between">
                   <Col span={12}>

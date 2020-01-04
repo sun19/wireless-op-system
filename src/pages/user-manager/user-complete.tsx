@@ -27,12 +27,9 @@ class UserComplete extends React.Component<FormProps, any> {
   async componentDidMount() {
     const userInfo = JSON.parse(localStorage.getItem('usepass'));
     const { username, roleId } = userInfo;
-    const editInfo = await request.get(
-      BASE_API_URL+'/jeecg-boot/intf/location/listUser',
-      {
-        params: { loginName: username, userType: roleId },
-      },
-    );
+    const editInfo = await request.get(BASE_API_URL + '/jeecg-boot/intf/location/listUser', {
+      params: { loginName: username, userType: roleId },
+    });
     let records = (editInfo.result && editInfo.result.records) || [];
     const record = records.filter(item => item.loginName === username)[0];
     if (!record) return;
@@ -49,7 +46,7 @@ class UserComplete extends React.Component<FormProps, any> {
         return;
       }
       const req = Object.assign({}, record, values);
-      updateUserInfo(req)
+      updateUserInfo(req);
       // .then(resp => {
       //   setTimeout(() => router.go(-1), 1000);
       // });
@@ -70,7 +67,7 @@ class UserComplete extends React.Component<FormProps, any> {
           onSubmit={this.handleSubmit}
         >
           <Row type="flex" justify="center" align="middle" className={styles.add}>
-            <Col span={12}>
+            <Col span={20}>
               <div className="auth__inner--container">
                 <Row type="flex" justify="space-between">
                   <Col span={12}>
@@ -112,7 +109,10 @@ class UserComplete extends React.Component<FormProps, any> {
                         ],
                         initialValue: record.sex,
                       })(
-                        <Select   getPopupContainer={triggerNode => triggerNode.parentElement} placeholder="请选择性别">
+                        <Select
+                          getPopupContainer={triggerNode => triggerNode.parentElement}
+                          placeholder="请选择性别"
+                        >
                           <Option value="0">男</Option>
                           <Option value="1">女</Option>
                         </Select>,
@@ -129,7 +129,7 @@ class UserComplete extends React.Component<FormProps, any> {
                       </Button>
                     </Form.Item>
                   </Col>
-                  <Col span={6} className={styles.select_padding_left}/>>
+                  <Col span={6} className={styles.select_padding_left} />>
                 </Row>
               </div>
             </Col>

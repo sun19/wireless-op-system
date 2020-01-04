@@ -58,7 +58,7 @@ class EditUser extends React.Component<Props, State> {
     this.state = {
       userTypes: [],
 
-  departmentNumber: ''
+      departmentNumber: '',
     };
   }
   setupDuties = () => {
@@ -75,7 +75,10 @@ class EditUser extends React.Component<Props, State> {
           ],
           initialValue: infoCardList.positionId,
         })(
-          <Select   getPopupContainer={triggerNode => triggerNode.parentElement} placeholder="请选择职务">
+          <Select
+            getPopupContainer={triggerNode => triggerNode.parentElement}
+            placeholder="请选择职务"
+          >
             {allDuties.map((duty, index) => (
               <Option value={duty.id} key={index}>
                 {duty.name}
@@ -100,7 +103,10 @@ class EditUser extends React.Component<Props, State> {
           ],
           initialValue: infoCardList.securityLevelId,
         })(
-          <Select   getPopupContainer={triggerNode => triggerNode.parentElement} placeholder="请选择保密等级">
+          <Select
+            getPopupContainer={triggerNode => triggerNode.parentElement}
+            placeholder="请选择保密等级"
+          >
             {allSecretLevel &&
               allSecretLevel.map((level, index) => (
                 <Option value={level.id} key={index}>
@@ -182,7 +188,7 @@ class EditUser extends React.Component<Props, State> {
     const { getFieldDecorator, getFieldsError } = this.props.form;
     const { infoCardList, allPosition } = this.props;
 
-    const {  departmentNumber } = this.state;
+    const { departmentNumber } = this.state;
     return (
       <ContentBorder className={styles.auth_root}>
         <Form
@@ -192,7 +198,7 @@ class EditUser extends React.Component<Props, State> {
           onSubmit={this.handleSubmit}
         >
           <Row type="flex" justify="center" align="middle" className={styles.add}>
-            <Col span={12}>
+            <Col span={20}>
               <div className="auth__inner--container">
                 <Row type="flex" justify="space-between">
                   <Col span={12}>
@@ -200,7 +206,7 @@ class EditUser extends React.Component<Props, State> {
                       {getFieldDecorator('userName', {
                         rules: [],
                         initialValue: infoCardList.userName,
-                      })(<Input readOnly={true}  />)}
+                      })(<Input readOnly={true} />)}
                     </Form.Item>
                   </Col>
                   <Col span={12}>
@@ -229,7 +235,10 @@ class EditUser extends React.Component<Props, State> {
                         ],
                         initialValue: infoCardList.sex,
                       })(
-                        <Select   getPopupContainer={triggerNode => triggerNode.parentElement} placeholder="请选择性别">
+                        <Select
+                          getPopupContainer={triggerNode => triggerNode.parentElement}
+                          placeholder="请选择性别"
+                        >
                           <Option value="0">男</Option>
                           <Option value="1">女</Option>
                         </Select>,
@@ -274,7 +283,11 @@ class EditUser extends React.Component<Props, State> {
                         ],
                         initialValue: infoCardList.departmentId,
                       })(
-                        <Select   getPopupContainer={triggerNode => triggerNode.parentElement} placeholder="请选择部门" onSelect={this.onSelectDepartmentChange} >
+                        <Select
+                          getPopupContainer={triggerNode => triggerNode.parentElement}
+                          placeholder="请选择部门"
+                          onSelect={this.onSelectDepartmentChange}
+                        >
                           {allPosition &&
                             allPosition.map(option => (
                               <Option value={option.id} key={option.deptCode}>
@@ -289,19 +302,18 @@ class EditUser extends React.Component<Props, State> {
                 <Row type="flex" justify="space-between">
                   <Col span={12}>
                     <Form.Item label="人员编号">
-                    {getFieldDecorator('userCode', {
+                      {getFieldDecorator('userCode', {
                         initialValue: infoCardList.userCode,
-                      })(
-                        <Input readOnly={true} />
-                      )}
+                      })(<Input readOnly={true} />)}
                     </Form.Item>
                   </Col>
                   <Col span={12}>
                     <Form.Item label="部门编号">
                       {getFieldDecorator('dictCode', {
                         rules: [],
-                        initialValue:(departmentNumber != null && departmentNumber) || infoCardList.dictCode,
-                      })(<Input readOnly={true}   />)}
+                        initialValue:
+                          (departmentNumber != null && departmentNumber) || infoCardList.dictCode,
+                      })(<Input readOnly={true} />)}
                     </Form.Item>
                   </Col>
                 </Row>
@@ -317,7 +329,10 @@ class EditUser extends React.Component<Props, State> {
                         ],
                         initialValue: infoCardList.type,
                       })(
-                        <Select   getPopupContainer={triggerNode => triggerNode.parentElement} placeholder="请选择类型">
+                        <Select
+                          getPopupContainer={triggerNode => triggerNode.parentElement}
+                          placeholder="请选择类型"
+                        >
                           <Option value="0">内部</Option>
                           <Option value="1">外部</Option>
                         </Select>,
@@ -337,7 +352,10 @@ class EditUser extends React.Component<Props, State> {
                         ],
                         initialValue: infoCardList.incumbency,
                       })(
-                        <Select   getPopupContainer={triggerNode => triggerNode.parentElement} placeholder="请选择在职状态">
+                        <Select
+                          getPopupContainer={triggerNode => triggerNode.parentElement}
+                          placeholder="请选择在职状态"
+                        >
                           <Option value="0">在职</Option>
                           <Option value="1">离职</Option>
                         </Select>,

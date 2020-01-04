@@ -156,13 +156,13 @@ class RouteInspectList extends React.Component<Props> {
               >
                 <FormItem label="巡检路线">
                   {getFieldDecorator(
-                    'inspectionRoute',
+                    'routeName',
                     {},
                   )(<Input className={publicStyles.input_text} placeholder="请输入巡检路线" />)}
                 </FormItem>
                 <FormItem label="巡检人员">
                   {getFieldDecorator(
-                    'createId',
+                    'userName',
                     {},
                   )(<Input className={publicStyles.input_text} placeholder="请输入巡检人员" />)}
                 </FormItem>

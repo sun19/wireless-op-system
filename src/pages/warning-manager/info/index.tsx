@@ -2,7 +2,7 @@
  * title: 应用 > 告警信息
  */
 import React from 'react';
-import { Layout, Modal,Form, Input, Row, Col, TimePicker, Button, DatePicker,Icon } from 'antd';
+import { Layout, Modal, Form, Input, Row, Col, TimePicker, Button, DatePicker, Icon } from 'antd';
 import * as _ from 'lodash';
 import router from 'umi/router';
 import { connect } from 'dva';
@@ -88,12 +88,11 @@ class WraningInfo extends React.Component<Props, State> {
     });
   }
   manage(data, item) {
-      this.props.dispatch({
-        type: 'warningManager/update',
-        payload: { dataSource: data },
-      });
+    this.props.dispatch({
+      type: 'warningManager/update',
+      payload: { dataSource: data },
+    });
     router.push('/warning-manager/info/manage');
-
   }
   // // 删除
   // async deleteColumn(item: DelTaskList) {
@@ -106,12 +105,16 @@ class WraningInfo extends React.Component<Props, State> {
   search = e => {
     e.preventDefault();
     this.props.form.validateFields(async (err, values) => {
-      const { alarmStartTime, alarmEndTime, ...props } = values
+      const { alarmStartTime, alarmEndTime, ...props } = values;
       const data = {
         ...props,
-        alarmStartTime: values.alarmStartTime ? values.alarmStartTime.format('YYYY-MM-DD HH:mm:ss').toString() : '',
-        alarmEndTime: values.alarmEndTime ? values.alarmEndTime.format('YYYY-MM-DD HH:mm:ss').toString() : ''
-      }
+        alarmStartTime: values.alarmStartTime
+          ? values.alarmStartTime.format('YYYY-MM-DD HH:mm:ss').toString()
+          : '',
+        alarmEndTime: values.alarmEndTime
+          ? values.alarmEndTime.format('YYYY-MM-DD HH:mm:ss').toString()
+          : '',
+      };
       this.getTaskListData(data);
     });
   };
@@ -146,19 +149,23 @@ class WraningInfo extends React.Component<Props, State> {
                 </FormItem>
                 <span className={publicStyles.authInner} style={{ paddingLeft: '39px' }}>
                   {/* <span className={publicStyles.timePicker}> */}
-                    <FormItem label="开始时间">
-                      {getFieldDecorator('alarmStartTime', {
-                      })(
-                        <DatePicker showTime={true} placeholder="请选择开始时间" />,
-                      )}
-                    </FormItem>
-                    <FormItem label="结束时间">
-                      {getFieldDecorator('alarmEndTime', {
-                        // initialValue: moment('12:08:23', 'HH:mm:ss'),
-                      })(
-                        <DatePicker showTime={true} format="YYYY-MM-DD HH:mm:ss" placeholder="请选择结束时间" />,
-                      )}
-                    </FormItem>
+                  <FormItem label="开始时间">
+                    {getFieldDecorator(
+                      'alarmStartTime',
+                      {},
+                    )(<DatePicker showTime={true} placeholder="请选择开始时间" />)}
+                  </FormItem>
+                  <FormItem label="结束时间">
+                    {getFieldDecorator('alarmEndTime', {
+                      // initialValue: moment('12:08:23', 'HH:mm:ss'),
+                    })(
+                      <DatePicker
+                        showTime={true}
+                        format="YYYY-MM-DD HH:mm:ss"
+                        placeholder="请选择结束时间"
+                      />,
+                    )}
+                  </FormItem>
                   {/* </span> */}
                 </span>
                 <span className={publicStyles.button_type}>
@@ -188,7 +195,6 @@ class WraningInfo extends React.Component<Props, State> {
             total={total}
             showManage={true}
             manage={this.manage}
-            
           />
         </Content>
       </div>

@@ -77,7 +77,7 @@ class TaskAdd extends React.Component<Props, State> {
       <ContentBorder className={styles.auth_root}>
         <Form layout="inline" labelAlign="right" style={{ marginTop: '0.57rem' }}>
           <Row type="flex" justify="center" align="middle" className={styles.add}>
-            <Col span={12}>
+            <Col span={20}>
               <div className="auth__inner--container">
                 <Row type="flex" justify="space-between">
                   <Col span={12}>
