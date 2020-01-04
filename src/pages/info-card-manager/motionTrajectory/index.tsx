@@ -326,7 +326,7 @@ class SuperAdmin extends React.Component<Props, State> {
           value={this.state.onlineState}
         >
           <Option value="0"> 在线 </Option>
-          <Option value="1"> 不在线 </Option>
+          <Option value="1"> 离线 </Option>
         </Select>
       </div>
     );

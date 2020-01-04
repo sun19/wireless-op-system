@@ -32,7 +32,7 @@ type Props = StateProps & UmiComponentProps & FormProps;
 const columns = [
   {
     title: '信息牌编号',
-    dataIndex: 'informationBoardName',
+    dataIndex: 'informationBoardId',
     editable: true,
   },
   {
@@ -155,7 +155,11 @@ class TaskPlan extends React.Component<Props, State> {
           rules: [],
           // initialValue: '',
         })(
-          <Select   getPopupContainer={triggerNode => triggerNode.parentElement} placeholder="请选择任务" style={{ marginTop: '-5px' }}>
+          <Select
+            getPopupContainer={triggerNode => triggerNode.parentElement}
+            placeholder="请选择任务"
+            style={{ marginTop: '-5px' }}
+          >
             <Option value="0">巡更路线</Option>
             <Option value="1">责任区</Option>
             <Option value="2">禁止区</Option>
@@ -193,7 +197,7 @@ class TaskPlan extends React.Component<Props, State> {
                 </FormItem> */}
                 <FormItem label="信息牌">
                   {getFieldDecorator(
-                    'informationBoardName',
+                    'informationBoardId',
                     {},
                   )(<Input className={publicStyles.input_text} placeholder="信息牌编号" />)}
                 </FormItem>
