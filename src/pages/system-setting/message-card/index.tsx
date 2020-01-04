@@ -42,15 +42,19 @@ const columns = [
     className: 'select_text',
     editable: true,
     render: color => {
-      // console.log(color)
-      return (
-        <span
-          className={styles.color_span}
-          style={{
-            background: color,
-          }}
-        />
-      );
+      if (color === null) {
+        let nullData = '/';
+        return nullData;
+      } else {
+        return (
+          <span
+            className={styles.color_span}
+            style={{
+              background: color,
+            }}
+          />
+        );
+      }
     },
   },
 ];
@@ -105,7 +109,7 @@ class MessageCard extends React.Component<Props, State> {
     const { color, ...props } = this.state.cardMessage;
     const data = {
       ...props,
-      color: this.state.colorInfo.color,
+      color: this.state.colorInfo.color ? this.state.colorInfo.color : '#5eb4fe',
     };
     updateMessageCard(data).then(() => {
       this.getBuList();
@@ -122,15 +126,14 @@ class MessageCard extends React.Component<Props, State> {
     });
   };
   handleChangeComplete = e => {
-    alert(e.hex);
-    // const colorInfo = Object.assign({}, this.state.colorInfo);
-    // colorInfo.color = e.hex;
-    //   this.setState({
-    //     colorInfo,
-    //   });
+    const colorInfo = Object.assign({}, this.state.colorInfo);
+    colorInfo.color = e.hex;
+    this.setState({
+      colorInfo,
+    });
   };
   handleClick = () => {
-    // this.setState({ displayColorPicker: !this.state.displayColorPicker });
+    this.setState({ displayColorPicker: !this.state.displayColorPicker });
   };
 
   handleClose = () => {
@@ -249,7 +252,11 @@ class MessageCard extends React.Component<Props, State> {
                     <div
                       onClick={this.handleClick}
                       className={styles.color_span}
-                      style={{ background: this.state.colorInfo.color }}
+                      style={{
+                        background: this.state.colorInfo.color
+                          ? this.state.colorInfo.color
+                          : '#5eb4fe',
+                      }}
                     />
                     {/* Pick Color</div> */}
                     {this.state.displayColorPicker ? (
@@ -266,7 +273,9 @@ class MessageCard extends React.Component<Props, State> {
                         />
                         <ChromePicker
                           style={{ width: '400px' }}
-                          color={this.state.colorInfo.color}
+                          color={
+                            this.state.colorInfo.color ? this.state.colorInfo.color : '#5eb4fe'
+                          }
                           onChangeComplete={this.handleChangeComplete}
                         />
                       </div>
