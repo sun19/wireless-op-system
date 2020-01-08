@@ -43,6 +43,7 @@ interface State {
 interface Props {
   [key: string]: any;
   showLamps: boolean;
+  filterLampIds: string[] | null;
 }
 interface InfoCard {
   x: number;
@@ -123,7 +124,7 @@ class MapManager extends React.Component<Props, State> {
     lamps = lamps.map(item => ({
       x: +item.xcoordinate,
       y: +item.ycoordinate,
-      id: item.key,
+      id: item.id,
     }));
     areas = areas.map(item => ({
       ...item,
@@ -329,7 +330,12 @@ class MapManager extends React.Component<Props, State> {
   createLamps() {
     const { showLamps } = this.props;
     if (!showLamps) return;
-    const lamps = this.state.lamps;
+    let lamps = this.state.lamps;
+    if (this.props.filterLampIds !== null) {
+      lamps = lamps.filter(item => {
+        return this.props.filterLampIds.indexOf(item.id) !== -1;
+      });
+    }
     return lamps.map((lamp, index) => (
       <CircleLayer x={lamp.x - 4} y={lamp.y - 4} radius={8} fill="red" key={index} />
     ));

@@ -24,6 +24,7 @@ import {
   getSecretLevelPeopleCount,
   getWarnTypeByTime,
   getInnerStayTime,
+  getLampByFenceId,
 } from '../services';
 import { warningHistorySearch } from '../../warning-manager/services';
 import { queryFencingArea } from '../../map-manager/services';
@@ -44,10 +45,11 @@ interface State {
   stageX: number;
   stageY: number;
   showPeopleInfo: boolean;
-  currentIndex: boolean;
+  currentIndex: number;
   showLamps: boolean;
   showHeatMap: boolean;
   dataStr?: string;
+  filterLampIds: string[] | null;
 }
 type StateProps = ReturnType<typeof mapState>;
 type Props = StateProps & UmiComponentProps;
@@ -76,9 +78,12 @@ const scaleBy = 1.01;
 
 class Realtime extends React.Component<Props, State> {
   map: React.RefObject<HTMLDivElement>;
+  fencingBox: React.RefObject<HTMLDivElement>;
+  onFencingOutSideClickInConstructor: any;
   constructor(props) {
     super(props);
     this.map = React.createRef<HTMLDivElement>();
+    this.fencingBox = React.createRef<HTMLDivElement>();
     this.state = {
       // mapImage: null,
       icon: null,
@@ -90,15 +95,21 @@ class Realtime extends React.Component<Props, State> {
       stageX: 0,
       stageY: 0,
       showPeopleInfo: false,
-      currentIndex: true,
+      currentIndex: -1,
       ajaxLamps: [],
       dataStr: '2019-11-15',
       showLamps: false,
       showHeatMap: false,
+      filterLampIds: null,
+    };
+    const self = this;
+    this.onFencingOutSideClickInConstructor = e => {
+      this.onFencingOutSideClick(e, self);
     };
   }
   //异步加载图片，保证渲染到canvas上时是已经OK的
   async componentDidMount() {
+    document.addEventListener('click', this.onFencingOutSideClickInConstructor);
     // const mapImage = await this.dynamicLoadMapImage();
     const iconImage = await this.dynamicLoadIconImage();
     const iconRedImage = await this.dynamicLoadIconRedImage();
@@ -189,10 +200,10 @@ class Realtime extends React.Component<Props, State> {
   }
 
   selectShowA = () => {
-    this.setState({ showPeopleInfo: true, currentIndex: false, showLamps: true });
+    this.setState({ showPeopleInfo: true, currentIndex: 2, showLamps: true });
   };
   selectShow = () => {
-    this.setState({ showPeopleInfo: false, currentIndex: true, showLamps: false });
+    this.setState({ showPeopleInfo: false, currentIndex: 1, showLamps: false });
   };
 
   showLine() {
@@ -318,7 +329,31 @@ class Realtime extends React.Component<Props, State> {
   showHeatMap = () => {
     this.setState({
       showHeatMap: !this.state.showHeatMap,
+      currentIndex: 0,
     });
+  };
+  onClickEleFrom = e => {
+    const currentTarget = e.currentTarget;
+    const obj = currentTarget.getAttribute('data-lampcode');
+    const id = JSON.parse(obj).lampId;
+    this.setState({
+      filterLampIds: id.split(','),
+      showLamps: true,
+    });
+  };
+  onFencingOutSideClick = (e, ctx) => {
+    const target = e.target;
+    if (
+      ctx &&
+      ctx.fencingBox &&
+      ctx.fencingBox.current &&
+      !ctx.fencingBox.current.contains(target)
+    ) {
+      ctx.setState({
+        filterLampIds: null,
+        showLamps: false,
+      });
+    }
   };
   //电子围栏
   getEleFrom = () => {
@@ -326,14 +361,18 @@ class Realtime extends React.Component<Props, State> {
     const { eleTypeInfo } = this.props;
     if (eleFenceInfo.length === 0) return null;
     const { records } = eleFenceInfo;
-    // console.log(records)
     const data = records.map((item, index) => {
       // const type = _.find(eleTypeInfo, { id: item.type });
       // if (!type) {
       //   return null;
       // }
       return (
-        <div className="flex_outer" key={index}>
+        <div
+          className="flex_outer"
+          key={index}
+          onClick={this.onClickEleFrom}
+          data-lampcode={JSON.stringify(item)}
+        >
           <div className="ele_title_top">
             <div className="ele_title">{item.name}</div>
           </div>
@@ -885,7 +924,11 @@ class Realtime extends React.Component<Props, State> {
             </Col>
             <Col span={16} className="middle_panel">
               <div className={styles.map_manager} ref={this.map}>
-                <RealTime showLamps={this.state.showLamps} showHeatMap={this.state.showHeatMap} />
+                <RealTime
+                  showLamps={this.state.showLamps}
+                  showHeatMap={this.state.showHeatMap}
+                  filterLampIds={this.state.filterLampIds}
+                />
               </div>
             </Col>
             <Col span={4} className="right_panel">
@@ -930,7 +973,7 @@ class Realtime extends React.Component<Props, State> {
                 </div>
               ) : (
                 <div>
-                  <div className="right_ele_panel">
+                  <div className="right_ele_panel" ref={this.fencingBox}>
                     <div>
                       <div className="ele_text">
                         <Title title="电子围栏" />
@@ -952,7 +995,10 @@ class Realtime extends React.Component<Props, State> {
                   <Breadcrumb.Item>
                     {' '}
                     <div
-                      className={['text_panel', this.state.showHeatMap ? 'active' : null].join(' ')}
+                      className={[
+                        'text_panel',
+                        this.state.showHeatMap && this.state.currentIndex === 0 ? 'active' : null,
+                      ].join(' ')}
                       onClick={this.showHeatMap}
                     >
                       {/* className={styles.heatmapBtn} */}
@@ -962,9 +1008,10 @@ class Realtime extends React.Component<Props, State> {
                   <Breadcrumb.Item>
                     {' '}
                     <div
-                      className={['text_panel', this.state.currentIndex ? 'active' : null].join(
-                        ' ',
-                      )}
+                      className={[
+                        'text_panel',
+                        this.state.currentIndex === 1 ? 'active' : null,
+                      ].join(' ')}
                       onClick={this.selectShow}
                     >
                       人员信息
@@ -974,9 +1021,10 @@ class Realtime extends React.Component<Props, State> {
                   <Breadcrumb.Item>
                     {' '}
                     <div
-                      className={['text_panel', !this.state.currentIndex ? 'active' : null].join(
-                        ' ',
-                      )}
+                      className={[
+                        'text_panel',
+                        this.state.currentIndex === 2 ? 'active' : null,
+                      ].join(' ')}
                       onClick={this.selectShowA}
                     >
                       灯具显示

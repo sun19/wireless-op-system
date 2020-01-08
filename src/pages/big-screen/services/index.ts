@@ -11,7 +11,7 @@ import {
   BIG_SCREEN_ROUTING_TRACK,
   BIG_SCREEN_SECRET_LEVEL_PEOPLE_COUNT,
   BIG_SCREEN_WARN_TYPE_BY_TIME,
-  BIG_SCREEN_WARNING_INFO,
+  BIG_SCREEN_GET_LAMP_BY_ID,
   BIG_SCREEN_STAY_TIME,
 } from '@/config/api';
 import { GetWarnTypeByTimeParams } from './index.interface';
@@ -59,5 +59,12 @@ export async function getInnerOrOuterPeopleCount() {
 //  获取大屏停留时长
 export async function getInnerStayTime() {
   const resp = await request.get(BIG_SCREEN_STAY_TIME);
+  return resp;
+}
+
+export async function getLampByFenceId(params: {
+  id: string
+}) {
+  const resp = await request.get(BIG_SCREEN_GET_LAMP_BY_ID, { params });
   return resp;
 }

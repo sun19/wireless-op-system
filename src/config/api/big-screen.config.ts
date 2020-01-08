@@ -76,3 +76,9 @@ export const BIG_SCREEN_GET_LIST_LAMP = `${BASE_API_URL}/jeecg-boot/intf/locatio
  * 根据信息牌`infomation`获取详细信息
  */
 export const BIG_SCREEN_GET_INFO_BOARD = `${BASE_API_URL}/jeecg-boot/intf/location/queryByNumberInformationBoard`;
+
+
+/**
+ * 根据电子围栏id获取灯具信息
+ */
+export const BIG_SCREEN_GET_LAMP_BY_ID = `${BASE_API_URL}/jeecg-boot/intf/location/queryElectronicFenceById`;
