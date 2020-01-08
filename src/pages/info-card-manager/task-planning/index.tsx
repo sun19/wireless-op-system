@@ -32,7 +32,7 @@ type Props = StateProps & UmiComponentProps & FormProps;
 const columns = [
   {
     title: '信息牌编号',
-    dataIndex: 'informationBoardId',
+    dataIndex: 'informationBoardName',
     editable: true,
   },
   {
@@ -197,7 +197,7 @@ class TaskPlan extends React.Component<Props, State> {
                 </FormItem> */}
                 <FormItem label="信息牌">
                   {getFieldDecorator(
-                    'informationBoardId',
+                    'informationBoardName',
                     {},
                   )(<Input className={publicStyles.input_text} placeholder="信息牌编号" />)}
                 </FormItem>

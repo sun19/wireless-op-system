@@ -328,10 +328,10 @@ class Realtime extends React.Component<Props, State> {
     const { records } = eleFenceInfo;
     // console.log(records)
     const data = records.map((item, index) => {
-      const type = _.find(eleTypeInfo, { id: item.type });
-      if (!type) {
-        return null;
-      }
+      // const type = _.find(eleTypeInfo, { id: item.type });
+      // if (!type) {
+      //   return null;
+      // }
       return (
         <div className="flex_outer" key={index}>
           <div className="ele_title_top">

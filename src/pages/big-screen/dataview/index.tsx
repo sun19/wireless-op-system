@@ -834,7 +834,7 @@ class DataView extends Component<any, State> {
     return (
       <Table
         columns={columns}
-        dataSource={records.result || []}
+        dataSource={records || []}
         size="small"
         pagination={false}
         fixed={true}
