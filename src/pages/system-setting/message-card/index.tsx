@@ -226,6 +226,7 @@ class MessageCard extends React.Component<Props, State> {
             </Row>
           </Form>
           <MainContent
+            scroll={{ y: 240 }} 
             columns={columns}
             data={records}
             total={total}
