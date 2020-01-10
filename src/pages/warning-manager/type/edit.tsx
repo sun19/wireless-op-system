@@ -321,18 +321,14 @@ class EditType extends React.Component<Props, State> {
                     })(<Input placeholder="请输入告警名称" />)}
                   </Form.Item>
                   <Form.Item label="所属地图">{this.setupMapSelect()}</Form.Item>
-                  <Form.Item label="区域选择">{this.setupAreaSelect()}</Form.Item>
+                  {/* <Form.Item label="区域选择">{this.setupAreaSelect()}</Form.Item>
                   <Form.Item label="关联标签">
                     {getFieldDecorator('informationBoardId', {
                       rules: [],
                       initialValue: typeRecord.informationBoardName,
                     })(<Input placeholder="请输入关联标签" />)}
                   </Form.Item>
-                  {/* </Col>
-              </Row>
-
-              <Row type="flex" justify="space-between">
-                <Col span={24}> */}
+        
                   <Form.Item label="开始时间">
                     {getFieldDecorator('startTime', {
                       rules: [],
@@ -371,11 +367,6 @@ class EditType extends React.Component<Props, State> {
                       initialValue: typeRecord.overrunNum,
                     })(<Input placeholder="请输入超限人数" />)}
                   </Form.Item>
-                  {/* </Col>
-              </Row>
-
-              <Row type="flex" justify="space-between">
-                <Col span={24}> */}
                   <Form.Item label="超限时间">
                     {getFieldDecorator('overrunTime', {
                       rules: [],
@@ -406,7 +397,7 @@ class EditType extends React.Component<Props, State> {
                         ))}
                       </Select>,
                     )}
-                  </Form.Item>
+                  </Form.Item> */}
                   <Form.Item label="告警方式" className={styles.area_style}>
                     {getFieldDecorator('warnMode', {
                       rules: [],

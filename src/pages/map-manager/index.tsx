@@ -595,23 +595,23 @@ class MapManager extends React.Component<Props, State> {
                 itemLayout="horizontal"
                 dataSource={[
                   {
-                    title: '信息牌编号',
+                    title: '信息牌编号:',
                     name: 'name',
                   },
                   {
-                    title: '姓名',
+                    title: '姓名:',
                     name: 'userName',
                   },
                   {
-                    title: '部门',
+                    title: '部门:',
                     name: 'departmentName',
                   },
                   {
-                    title: '人员类型',
+                    title: '人员类型:',
                     name: 'type',
                   },
                   {
-                    title: '保密等级',
+                    title: '保密等级:',
                     name: 'securityLevelName',
                   },
                 ]}

@@ -208,7 +208,7 @@ class EditUser extends React.Component<Props, State> {
                       })(<Input readOnly={true} />)}
                     </Form.Item>
                   </Col>
-                  <Col span={12}>
+                  {/* <Col span={12}>
                     <Form.Item label="身份证号">
                       {getFieldDecorator('cardNo', {
                         rules: [
@@ -271,7 +271,7 @@ class EditUser extends React.Component<Props, State> {
                         initialValue: infoCardList.phone,
                       })(<Input placeholder="请输入联系方式" />)}
                     </Form.Item>
-                  </Col>
+                  </Col> */}
                   <Col span={12}>
                     <Form.Item label="部门">
                       {getFieldDecorator('departmentId', {
@@ -317,7 +317,7 @@ class EditUser extends React.Component<Props, State> {
                   </Col>
                 </Row>
                 <Row type="flex" justify="space-between">
-                  <Col span={12}>{this.setupDuties()}</Col>
+                  {/* <Col span={12}>{this.setupDuties()}</Col> */}
                   <Col span={12}>
                     <Form.Item label="类型">
                       {getFieldDecorator('type', {
@@ -338,8 +338,8 @@ class EditUser extends React.Component<Props, State> {
                       )}
                     </Form.Item>
                   </Col>
-                </Row>
-                <Row type="flex" justify="space-between">
+                {/* </Row> */}
+                {/* <Row type="flex" justify="space-between">
                   <Col span={12}>
                     <Form.Item label="在职状态">
                       {getFieldDecorator('incumbency', {
@@ -362,8 +362,8 @@ class EditUser extends React.Component<Props, State> {
                     </Form.Item>
                   </Col>
                   <Col span={12}>{this.setupAllSecretLevel()}</Col>
-                </Row>
-                <Row type="flex" justify="space-between">
+                </Row> */}
+                {/* <Row type="flex" justify="space-between"> */}
                   <Col span={12}>
                     <Form.Item label="信息牌编号">
                       {getFieldDecorator('name', {
@@ -372,15 +372,15 @@ class EditUser extends React.Component<Props, State> {
                       })(<Input readOnly={true} />)}
                     </Form.Item>
                   </Col>
-                  <Col span={12}>
+                  {/* <Col span={12}>
                     <Form.Item label="启用时间">
                       {getFieldDecorator('enableTime', {
                         initialValue: moment(infoCardList.enableTime),
                       })(<DatePicker showTime={true} placeholder="请选择开始时间" />)}
                     </Form.Item>
-                  </Col>
+                  </Col> */}
                 </Row>
-                <Row type="flex" justify="space-between">
+                {/* <Row type="flex" justify="space-between">
                   <Col span={24} className="textarea">
                     <Form.Item label="备注">
                       {getFieldDecorator('remark')(
@@ -388,7 +388,7 @@ class EditUser extends React.Component<Props, State> {
                       )}
                     </Form.Item>
                   </Col>
-                </Row>
+                </Row> */}
                 <Row type="flex" justify="center" style={{ marginTop: '0.35rem' }}>
                   <Col span={6}>
                     <Form.Item className={styles.button_type}>

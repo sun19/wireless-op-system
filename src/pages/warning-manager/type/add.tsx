@@ -317,8 +317,8 @@ class Adduth extends React.Component<Props, State> {
                     })(<Input placeholder="请输入告警名称" />)}
                   </Form.Item>
                   <Form.Item label="所属地图">{this.setupMapSelect()}</Form.Item>
-                  <Form.Item label="区域选择">{this.setupAreaSelect()}</Form.Item>
-                  <Form.Item label="关联标签">
+                  {/*<Form.Item label="区域选择">{this.setupAreaSelect()}</Form.Item>
+                   <Form.Item label="关联标签">
                     {getFieldDecorator('informationBoardName', {
                       rules: [
                         {
@@ -327,11 +327,7 @@ class Adduth extends React.Component<Props, State> {
                       ],
                     })(<Input placeholder="请输入关联标签" />)}
                   </Form.Item>
-                  {/* </Col>
-              </Row>
-
-              <Row type="flex" justify="space-between">
-                <Col span={24}> */}
+  
                   <Form.Item label="开始时间">
                     {getFieldDecorator('startTime', {
                       rules: [],
@@ -374,11 +370,7 @@ class Adduth extends React.Component<Props, State> {
                       ],
                     })(<Input placeholder="请输入超限人数" />)}
                   </Form.Item>
-                  {/* </Col>
-              </Row>
-
-              <Row type="flex" justify="space-between">
-                <Col span={24}> */}
+      
                   <Form.Item label="超限时间">
                     {getFieldDecorator('overrunTime', {
                       rules: [],
@@ -390,7 +382,7 @@ class Adduth extends React.Component<Props, State> {
                         onChange={this.stringifyTime}
                       />,
                     )}
-                  </Form.Item>
+                  </Form.Item> */}
                   <Form.Item label="重复类型">
                     {getFieldDecorator('repeatType', {
                       rules: [
@@ -433,7 +425,7 @@ class Adduth extends React.Component<Props, State> {
                       </Select>,
                     )}
                   </Form.Item>
-                  <Form.Item label="关联灯具">{this.setupShowLamps()}</Form.Item>
+                  {/* <Form.Item label="关联灯具">{this.setupShowLamps()}</Form.Item> */}
                 </Col>
               </Row>
 
