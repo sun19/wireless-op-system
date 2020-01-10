@@ -147,7 +147,7 @@ class Organization extends React.Component<Props, State> {
   };
   addDialog = name => {
     this.props.form.setFieldsValue({
-      name: name.name,
+      nameOptions: '',
     });
     this.setState({
       addDialog: true,

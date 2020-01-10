@@ -112,6 +112,7 @@ class SuperAdmin extends React.Component<Props, State> {
       <div className={publicStyles.public_hight}>
         <Content className={publicStyles.bg}>
           <MainContent
+          
             columns={columns}
             data={records}
             total={total}

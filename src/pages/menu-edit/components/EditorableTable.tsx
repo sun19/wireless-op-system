@@ -248,6 +248,7 @@ export default class EditableTable extends React.Component<Props, State> {
     return (
       <EditableContext.Provider value={this.props.form}>
         <Table
+          scroll={{ y: 400 }} 
           className="editor_table--root"
           components={components}
           bordered={false}
