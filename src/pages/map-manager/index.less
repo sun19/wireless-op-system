@@ -290,15 +290,28 @@
       }
       .ant-card-body {
         max-height: 2.5rem;
-        overflow-y: scroll;
+        // overflow-y: scroll;
         .ant-list-split {
           .ant-list-item {
-            .ant-list-item-meta-title {
-              color: #5ea1c8;
+            .ant-list-item-meta-content {
+              display: flex;
+              .ant-list-item-meta-title {
+                color: #5ea1c8;
+                width: 80px;
+                text-align: right;
+              }
+              .ant-list-item-meta-description {
+                color: white;
+                margin-left: 10px;
+              }
             }
-            .ant-list-item-meta-description {
-              color: #5ea1c8;
-            }
+
+            // .ant-list-item-meta-title {
+            //   color: #5ea1c8;
+            // }
+            // .ant-list-item-meta-description {
+            //   color: #5ea1c8;
+            // }
             border: 0px;
           }
         }

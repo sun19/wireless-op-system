@@ -39,42 +39,42 @@ const columns = [
     // className: 'select_text',
     editable: true,
   },
-  {
-    title: '区域选择',
-    dataIndex: 'regionalName',
-    // className: 'select_text',
-    editable: true,
-  },
-  {
-    title: '关联标签',
-    dataIndex: 'informationBoardName',
-    editable: true,
-  },
-  {
-    title: '开始时间',
-    width: '20%',
-    dataIndex: 'startTime',
-  },
-  {
-    title: '结束时间',
-    width: '20%',
-    dataIndex: 'endTime',
-  },
+  // {
+  //   title: '区域选择',
+  //   dataIndex: 'regionalName',
+  //   // className: 'select_text',
+  //   editable: true,
+  // },
+  // {
+  //   title: '关联标签',
+  //   dataIndex: 'informationBoardName',
+  //   editable: true,
+  // },
+  // {
+  //   title: '开始时间',
+  //   width: '20%',
+  //   dataIndex: 'startTime',
+  // },
+  // {
+  //   title: '结束时间',
+  //   width: '20%',
+  //   dataIndex: 'endTime',
+  // },
 
-  {
-    title: '聚集半径(m)',
-    dataIndex: 'aggregateRadius',
-    editable: true,
-  },
-  {
-    title: '超限人数',
-    dataIndex: 'overrunNum',
-    editable: true,
-  },
-  {
-    title: '超限时间',
-    dataIndex: 'overrunTime',
-  },
+  // {
+  //   title: '聚集半径(m)',
+  //   dataIndex: 'aggregateRadius',
+  //   editable: true,
+  // },
+  // {
+  //   title: '超限人数',
+  //   dataIndex: 'overrunNum',
+  //   editable: true,
+  // },
+  // {
+  //   title: '超限时间',
+  //   dataIndex: 'overrunTime',
+  // },
   {
     title: '重复类型',
     dataIndex: 'repeatTypeName',

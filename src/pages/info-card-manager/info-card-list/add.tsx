@@ -245,16 +245,15 @@ class AddUsers extends React.Component<Props, State> {
               <div className="auth__inner--container">
                 <Row type="flex" justify="space-between">
                   <Col span={12}>{this.setupSelectName()}</Col>
-                  <Col span={12}>
+                  {/* <Col span={12}>
                     <Form.Item label="身份证号">
                       {getFieldDecorator('cardNo', {
-                        // rules: [],
                         initialValue: (currentIndex != null && currentUser.cardNo) || undefined,
                       })(<Input placeholder="请输入身份证号" />)}
                     </Form.Item>
-                  </Col>
-                </Row>
-                <Row type="flex" justify="space-between">
+                  </Col> */}
+                {/* </Row> */}
+                {/* <Row type="flex" justify="space-between">
                   <Col span={12}>
                     <Form.Item label="性别">
                       {getFieldDecorator('sex', {
@@ -279,15 +278,15 @@ class AddUsers extends React.Component<Props, State> {
                       })(<Input placeholder="请输入家庭住址" />)}
                     </Form.Item>
                   </Col>
-                </Row>
-                <Row type="flex" justify="space-between">
-                  <Col span={12}>
+                </Row> */}
+                {/* <Row type="flex" justify="space-between"> */}
+                  {/* <Col span={12}>
                     <Form.Item label="联系方式">
                       {getFieldDecorator('phone', {
                         initialValue: (currentIndex != null && currentUser.phone) || undefined,
                       })(<Input placeholder="请输入联系方式" />)}
                     </Form.Item>
-                  </Col>
+                  </Col> */}
                   <Col span={12}>
                     <Form.Item label="部门">
                       {getFieldDecorator('departmentId', {
@@ -330,7 +329,7 @@ class AddUsers extends React.Component<Props, State> {
                   </Col>
                 </Row>
                 <Row type="flex" justify="space-between">
-                  <Col span={12}>{this.setupDuties()}</Col>
+                  {/* <Col span={12}>{this.setupDuties()}</Col> */}
                   <Col span={12}>
                     <Form.Item label="类型">
                       {getFieldDecorator('type', {
@@ -347,8 +346,8 @@ class AddUsers extends React.Component<Props, State> {
                       )}
                     </Form.Item>
                   </Col>
-                </Row>
-                <Row type="flex" justify="space-between">
+                {/* </Row> */}
+                {/* <Row type="flex" justify="space-between">
                   <Col span={12}>
                     <Form.Item label="在职状态">
                       {getFieldDecorator('incumbency', {
@@ -366,8 +365,8 @@ class AddUsers extends React.Component<Props, State> {
                     </Form.Item>
                   </Col>
                   <Col span={12}>{this.setupAllSecretLevel()}</Col>
-                </Row>
-                <Row type="flex" justify="space-between">
+                </Row> */}
+                {/* <Row type="flex" justify="space-between"> */}
                   <Col span={12}>
                     <Form.Item label="人员编号">
                       {getFieldDecorator('userCode', {
@@ -376,15 +375,15 @@ class AddUsers extends React.Component<Props, State> {
                       })(<Input disabled={true} />)}
                     </Form.Item>
                   </Col>
-                  <Col span={12}>
+                  {/* <Col span={12}>
                     <Form.Item label="启用时间">
                       {getFieldDecorator('enableTime', {
                         initialValue: moment(),
                       })(<DatePicker showTime={true} placeholder="请选择开始时间" />)}
                     </Form.Item>
-                  </Col>
+                  </Col> */}
                 </Row>
-                <Row type="flex" justify="space-between">
+                {/* <Row type="flex" justify="space-between">
                   <Col span={24} className="textarea">
                     <Form.Item label="备注">
                       {getFieldDecorator('remark', {
@@ -393,7 +392,7 @@ class AddUsers extends React.Component<Props, State> {
                       })(<TextArea autoSize={{ minRows: 6, maxRows: 8 }} />)}
                     </Form.Item>
                   </Col>
-                </Row>
+                </Row> */}
                 <Row type="flex" justify="center" style={{ marginTop: '0.35rem' }}>
                   <Col span={6}>
                     <Form.Item className={styles.button_type}>
