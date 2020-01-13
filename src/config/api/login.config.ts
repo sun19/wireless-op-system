@@ -20,6 +20,8 @@ export const EDIT_DEPARTMENT = `${BASE_API_URL}/jeecg-boot/intf/location/saveDep
 export const DELECT_DEPARTMENT = `${BASE_API_URL}/jeecg-boot/intf/location/deleteDepartment`;
 // 组织头名
 export const GET_DEPARTMENT_NAME = `${BASE_API_URL}/jeecg-boot/intf/location/getDictNameByType`;
-
-
+export const GET_FIRST_NAME = `${BASE_API_URL}/jeecg-boot/intf/location/getDictNameByType?type=title_first`;
+export const GET_SECOND_NAME = `${BASE_API_URL}/jeecg-boot/intf/location/getDictNameByType?type=title_second`;
+// http://139.129.229.99:8086/jeecg-boot/intf/location/getDictNameByType?type=title_first
+    
 
