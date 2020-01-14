@@ -111,4 +111,5 @@ export interface ThemeType {
 }
 export interface Theme {
   type?: string;
+  name?: string;
 }

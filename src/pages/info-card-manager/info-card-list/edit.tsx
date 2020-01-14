@@ -200,6 +200,9 @@ class EditUser extends React.Component<Props, State> {
             <Col span={20}>
               <div className="auth__inner--container">
                 <Row type="flex" justify="space-between">
+
+
+                
                   <Col span={12}>
                     <Form.Item label="姓名">
                       {getFieldDecorator('userName', {
@@ -208,6 +211,12 @@ class EditUser extends React.Component<Props, State> {
                       })(<Input readOnly={true} />)}
                     </Form.Item>
                   </Col>
+
+
+                  
+
+
+
                   {/* <Col span={12}>
                     <Form.Item label="身份证号">
                       {getFieldDecorator('cardNo', {
@@ -272,6 +281,7 @@ class EditUser extends React.Component<Props, State> {
                       })(<Input placeholder="请输入联系方式" />)}
                     </Form.Item>
                   </Col> */}
+                  {infoCardList.temPorary==0&&
                   <Col span={12}>
                     <Form.Item label="部门">
                       {getFieldDecorator('departmentId', {
@@ -297,6 +307,7 @@ class EditUser extends React.Component<Props, State> {
                       )}
                     </Form.Item>
                   </Col>
+  }
                 </Row>
                 <Row type="flex" justify="space-between">
                   <Col span={12}>
@@ -306,6 +317,8 @@ class EditUser extends React.Component<Props, State> {
                       })(<Input readOnly={true} />)}
                     </Form.Item>
                   </Col>
+                 {infoCardList.temPorary==0&&
+
                   <Col span={12}>
                     <Form.Item label="部门编号">
                       {getFieldDecorator('dictCode', {
@@ -315,9 +328,12 @@ class EditUser extends React.Component<Props, State> {
                       })(<Input readOnly={true} />)}
                     </Form.Item>
                   </Col>
+                  }
+
                 </Row>
                 <Row type="flex" justify="space-between">
                   {/* <Col span={12}>{this.setupDuties()}</Col> */}
+                  {infoCardList.temPorary==0&&
                   <Col span={12}>
                     <Form.Item label="类型">
                       {getFieldDecorator('type', {
@@ -338,6 +354,7 @@ class EditUser extends React.Component<Props, State> {
                       )}
                     </Form.Item>
                   </Col>
+  }
                 {/* </Row> */}
                 {/* <Row type="flex" justify="space-between">
                   <Col span={12}>
@@ -389,7 +406,10 @@ class EditUser extends React.Component<Props, State> {
                     </Form.Item>
                   </Col>
                 </Row> */}
+
+
                 <Row type="flex" justify="center" style={{ marginTop: '0.35rem' }}>
+                {infoCardList.temPorary==0&&
                   <Col span={6}>
                     <Form.Item className={styles.button_type}>
                       <Button
@@ -401,6 +421,7 @@ class EditUser extends React.Component<Props, State> {
                       </Button>
                     </Form.Item>
                   </Col>
+  }
                   <Col span={6} className={styles.select_padding_left}>
                     <Form.Item>
                       <Button className={styles.form_btn} onClick={this.goBack}>
@@ -409,6 +430,7 @@ class EditUser extends React.Component<Props, State> {
                     </Form.Item>
                   </Col>
                 </Row>
+  
               </div>
             </Col>
           </Row>

@@ -17,7 +17,7 @@ import SelectText from '../components/SelectText';
 import { OptionValue } from '../components/SelectText';
 import { getAllRoles } from '../../system-setting/services';
 import { getAllPosition, getAllSecretLevels, getAllDepartment } from '@/pages/login/login.service';
-import { addInfoList } from '../services';
+import { addInfoList, addInfoList_t } from '../services';
 import request from '@/utils/request';
 
 import styles from './index.less';
@@ -31,7 +31,7 @@ interface UserType {
   roleId: string;
 }
 
-interface FormProps extends FormComponentProps {}
+interface FormProps extends FormComponentProps { }
 type StateProps = ReturnType<typeof mapState>;
 type Props = StateProps & UmiComponentProps & FormProps;
 
@@ -50,6 +50,7 @@ interface State {
   currentUser?: any;
   // userInfoNumber?: number;
   departmentNumber?: string;
+  temporary?: string;
 }
 function hasErrors(fieldsError) {
   return Object.keys(fieldsError).some(field => fieldsError[field]);
@@ -62,6 +63,7 @@ class AddUsers extends React.Component<Props, State> {
       // userTypes: [],
       // userInfoList: [],
       departmentNumber: '',
+      temporary: "0",
     };
   }
   setupDuties = () => {
@@ -135,11 +137,27 @@ class AddUsers extends React.Component<Props, State> {
           ? values.enableTime.format('YYYY-MM-DD HH:mm:ss').toString()
           : '',
       };
-      const isSuccessed = await addInfoList(data);
-      if (isSuccessed) {
-        message.success('添加成功!', 1000);
-        setTimeout(() => router.push('/info-card-manager/info-card-list'), 1000);
+
+      if (this.state.temporary == "0") {
+        const  isSuccessed = await addInfoList(data);
+        if (isSuccessed) {
+          message.success('添加成功!', 1000);
+          setTimeout(() => router.push('/info-card-manager/info-card-list'), 1000);
+        }
+      } else {
+        //临时信息牌添加
+        const  isSuccessed = await addInfoList_t(data);
+        if (isSuccessed) {
+          message.success('添加成功!', 1000);
+          setTimeout(() => router.push('/info-card-manager/info-card-list'), 1000);
+        }
       }
+
+
+
+
+
+   
     });
   }
   async componentDidMount() {
@@ -200,6 +218,28 @@ class AddUsers extends React.Component<Props, State> {
     });
   };
 
+  onSelectTemporary = (value, key) => {
+
+
+
+    // e.preventDefault();
+
+
+
+    // console.log(key.key)
+    // console.log(this.state.temporary)
+
+    if (key.key != this.state.temporary) {
+      this.props.form.resetFields(["userName"])
+    }
+
+    this.setState({
+      temporary: key.key,
+    });
+
+
+  };
+
   setupSelectName = () => {
     const { userInfoList } = this.props;
     const { getFieldDecorator } = this.props.form;
@@ -207,7 +247,7 @@ class AddUsers extends React.Component<Props, State> {
       <Form.Item label="姓名">
         {getFieldDecorator('userName', {
           // rules: [],
-          rules: [{ required: true, message: '请选择一个用户!' }],
+          // rules: [{ required: true, message: '请选择一个用户!' }],
         })(
           <Select
             getPopupContainer={triggerNode => triggerNode.parentElement}
@@ -230,7 +270,7 @@ class AddUsers extends React.Component<Props, State> {
     const props = this.props;
     const { getFieldDecorator, getFieldsError } = this.props.form;
     const { allPosition, userInfoNumber } = this.props;
-    const { currentIndex, currentUser, departmentNumber } = this.state;
+    const { currentIndex, currentUser, departmentNumber, temporary } = this.state;
 
     return (
       <ContentBorder className={styles.auth_root}>
@@ -243,8 +283,46 @@ class AddUsers extends React.Component<Props, State> {
           <Row type="flex" justify="center" align="middle" className={styles.add}>
             <Col span={20}>
               <div className="auth__inner--container">
+
                 <Row type="flex" justify="space-between">
-                  <Col span={12}>{this.setupSelectName()}</Col>
+                  <Col span={12}>
+                    <Form.Item label="是否临时">
+                      {getFieldDecorator('sex', {
+                        rules: [],
+                        initialValue: temporary,
+                      })(
+                        <Select
+                          // getPopupContainer={triggerNode => triggerNode.parentElement}
+                          placeholder="请选择"
+                          onSelect={this.onSelectTemporary}
+                        >
+                          <Option value="0" key='0'>否</Option>
+                          <Option value="1" key='1'>是</Option>
+                        </Select>,
+                      )}
+                    </Form.Item>
+                  </Col>
+           
+
+                  {temporary == "0" &&
+                    <Col span={12}>{this.setupSelectName()}</Col>
+                  }
+                  {temporary == "1" &&
+                    <Col span={12}>
+                      <Form.Item label="姓名">
+                        {getFieldDecorator('userName', {
+                          rules: [],
+                        })(<Input />)}
+                      </Form.Item>
+                    </Col>
+                  }
+     </Row>
+
+   
+     {/* {temporary == "0" &&  */}
+     {temporary == "0" && <Row type="flex" justify="space-between">
+
+
                   {/* <Col span={12}>
                     <Form.Item label="身份证号">
                       {getFieldDecorator('cardNo', {
@@ -252,8 +330,8 @@ class AddUsers extends React.Component<Props, State> {
                       })(<Input placeholder="请输入身份证号" />)}
                     </Form.Item>
                   </Col> */}
-                {/* </Row> */}
-                {/* <Row type="flex" justify="space-between">
+                  {/* </Row> */}
+                  {/* <Row type="flex" justify="space-between">
                   <Col span={12}>
                     <Form.Item label="性别">
                       {getFieldDecorator('sex', {
@@ -279,7 +357,7 @@ class AddUsers extends React.Component<Props, State> {
                     </Form.Item>
                   </Col>
                 </Row> */}
-                {/* <Row type="flex" justify="space-between"> */}
+                  {/* <Row type="flex" justify="space-between"> */}
                   {/* <Col span={12}>
                     <Form.Item label="联系方式">
                       {getFieldDecorator('phone', {
@@ -308,7 +386,17 @@ class AddUsers extends React.Component<Props, State> {
                       )}
                     </Form.Item>
                   </Col>
-                </Row>
+                  <Col span={12}>
+                    <Form.Item label="部门编号">
+                      {getFieldDecorator('dictCode', {
+                        rules: [],
+                        initialValue: (departmentNumber != null && departmentNumber) || undefined,
+                      })(<Input disabled={true} />)}
+                    </Form.Item>
+                  </Col>
+                </Row>}
+
+
                 <Row type="flex" justify="space-between">
                   <Col span={12}>
                     <Form.Item label="信息牌编号">
@@ -320,15 +408,18 @@ class AddUsers extends React.Component<Props, State> {
                     </Form.Item>
                   </Col>
                   <Col span={12}>
-                    <Form.Item label="部门编号">
-                      {getFieldDecorator('dictCode', {
+                    <Form.Item label="人员编号">
+                      {getFieldDecorator('userCode', {
                         rules: [],
-                        initialValue: (departmentNumber != null && departmentNumber) || undefined,
+                        initialValue: (userInfoNumber != null && userInfoNumber) || undefined,
                       })(<Input disabled={true} />)}
                     </Form.Item>
                   </Col>
                 </Row>
-                <Row type="flex" justify="space-between">
+
+                    
+
+                {temporary == "0" &&<Row type="flex" justify="space-between">
                   {/* <Col span={12}>{this.setupDuties()}</Col> */}
                   <Col span={12}>
                     <Form.Item label="类型">
@@ -346,8 +437,8 @@ class AddUsers extends React.Component<Props, State> {
                       )}
                     </Form.Item>
                   </Col>
-                {/* </Row> */}
-                {/* <Row type="flex" justify="space-between">
+                  {/* </Row> */}
+                  {/* <Row type="flex" justify="space-between">
                   <Col span={12}>
                     <Form.Item label="在职状态">
                       {getFieldDecorator('incumbency', {
@@ -366,15 +457,8 @@ class AddUsers extends React.Component<Props, State> {
                   </Col>
                   <Col span={12}>{this.setupAllSecretLevel()}</Col>
                 </Row> */}
-                {/* <Row type="flex" justify="space-between"> */}
-                  <Col span={12}>
-                    <Form.Item label="人员编号">
-                      {getFieldDecorator('userCode', {
-                        rules: [],
-                        initialValue: (userInfoNumber != null && userInfoNumber) || undefined,
-                      })(<Input disabled={true} />)}
-                    </Form.Item>
-                  </Col>
+                  {/* <Row type="flex" justify="space-between"> */}
+           
                   {/* <Col span={12}>
                     <Form.Item label="启用时间">
                       {getFieldDecorator('enableTime', {
@@ -382,7 +466,7 @@ class AddUsers extends React.Component<Props, State> {
                       })(<DatePicker showTime={true} placeholder="请选择开始时间" />)}
                     </Form.Item>
                   </Col> */}
-                </Row>
+                </Row>}
                 {/* <Row type="flex" justify="space-between">
                   <Col span={24} className="textarea">
                     <Form.Item label="备注">

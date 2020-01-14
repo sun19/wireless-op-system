@@ -7,6 +7,12 @@ import { UmiComponentProps } from '@/common/type';
 import { getDepartmentName, getDepartment, delDepartment, editDepartment, getFirstName, getsecondName } from '@/pages/login/login.service';
 import { ICON_FONTS_URL } from '../../config/constants';
 import { GET_DEPARTMENT } from '@/config/api';
+
+
+// @/pages/system-setting/system-theme/index.tsx
+
+import { getDictNameByType, updateDictNameByType } from '../system-setting/services';
+
 const { confirm } = Modal;
 const IconFont = Icon.createFromIconfontCN({ scriptUrl: ICON_FONTS_URL });
 
@@ -43,6 +49,10 @@ class Organization extends React.Component<Props,
     // this.getData();
   }
   headOk = e => {
+
+
+   
+
     e.preventDefault();
     this.props.form.validateFieldsAndScroll(async (err, values) => {
       if (!err) {
@@ -51,15 +61,40 @@ class Organization extends React.Component<Props,
           children,
           ...props
         } = this.state.node;
+ 
+       
+
         let data = {
           ...props,
           name: values.name
         };
-        // let resp = await editDepartment(data);
-        // if (resp.success) {
-        //   this.setState({ visible: false });
-        //   this.getDataName();
-        // }
+
+        let param = {}
+        if (data.deptCode == "cs0") {
+          param={
+            "name":data.name,
+            "type":"organization_name"
+          }
+        }
+        if (data.deptCode == "cs1") {
+          param={
+            "name":data.name,
+            "type":"title_first"
+          }
+        }
+        if (data.deptCode == "cs2") {
+          param={
+            "name":data.name,
+            "type":"title_second"
+          }
+        }
+
+        let resp = await updateDictNameByType(param);
+
+        if (resp.success) {
+          this.setState({ headVisible: false });
+          this.getDataName();
+        }
       }
     });
   }
@@ -74,6 +109,8 @@ class Organization extends React.Component<Props,
     this.setState({ headVisible: true, node: name });
   };
   handleOk = e => {
+
+
     e.preventDefault();
     this.props.form.validateFieldsAndScroll(async (err, values) => {
       if (!err) {
@@ -239,15 +276,15 @@ class Organization extends React.Component<Props,
     let data = {
       name: name,
       id: '00000',
-      deptCode: 'cs',
+      deptCode: 'cs0',
       parentId: '000001',
       sort: 1,
       children: [
         {
           name: firstName,
           id: '111111',
-          deptCode: 'cs',
-          parentId: '00000',
+          deptCode: 'cs1',
+          parentId: '000001',
           sort: 1
         }, {
           name: '',
@@ -259,8 +296,8 @@ class Organization extends React.Component<Props,
         }, {
           name: secondName,
           id: '111112',
-          deptCode: 'cs',
-          parentId: '00000',
+          deptCode: 'cs2',
+          parentId: '000001',
           sort: 1
         }
       ]

@@ -20,6 +20,9 @@ export const GET_INFO_DETIAL =
 // 信息牌添加
 export const ADD_INFO_LIST =
   `${BASE_API_URL}/jeecg-boot/intf/location/addInformationBoard`;
+  // 信息牌添加(临时信息牌)
+  export const ADD_INFO_LIST_t =
+    `${BASE_API_URL}/jeecg-boot/intf/location/addInformationBoardisIn`;
 // 编辑
 export const EDIT_INFO_LIST =
   `${BASE_API_URL}/jeecg-boot/intf/location/updateInformationBoard`;

@@ -6,6 +6,7 @@ import {
   DEL_INFO_LIST,
   GET_INFO_DETIAL,
   ADD_INFO_LIST,
+  ADD_INFO_LIST_t,
   EXPORT_INFO_IN,
   EXPORT_INFO_OUT,
   EDIT_INFO_LIST,
@@ -76,6 +77,18 @@ export async function addInfoList(data: AddInfoList) {
   });
   return resp.success === true && resp.code === 200;
 }
+// 信息牌添加(临时信息牌)
+export async function addInfoList_t(data: AddInfoList) {
+  const resp = await request.post(ADD_INFO_LIST_t, {
+    // headers: { 'Content-Type': 'application/json;charset=utf-8' },
+    data: format(data),
+  });
+  return resp.success === true && resp.code === 200;
+}
+
+
+
+
 // 信息牌编辑
 export async function editInfoList(data: AddInfoList) {
   const resp = await request.post(EDIT_INFO_LIST, { data: format(data) });
