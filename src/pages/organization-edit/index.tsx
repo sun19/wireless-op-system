@@ -4,10 +4,16 @@ import OrgChart from 'react-orgchart';
 import { connect } from 'dva';
 import { FormComponentProps } from 'antd/lib/form';
 import { UmiComponentProps } from '@/common/type';
-import { getDepartmentName, getDepartment, delDepartment, editDepartment, getFirstName, getsecondName } from '@/pages/login/login.service';
+import {
+  getDepartmentName,
+  getDepartment,
+  delDepartment,
+  editDepartment,
+  getFirstName,
+  getsecondName,
+} from '@/pages/login/login.service';
 import { ICON_FONTS_URL } from '../../config/constants';
 import { GET_DEPARTMENT } from '@/config/api';
-
 
 // @/pages/system-setting/system-theme/index.tsx
 
@@ -28,12 +34,11 @@ interface State {
   headVisible?: boolean;
   node?: any;
 }
-interface FormProps extends FormComponentProps { }
+interface FormProps extends FormComponentProps {}
 type StateProps = ReturnType<typeof mapState>;
 type Props = StateProps & UmiComponentProps & FormProps;
 
-class Organization extends React.Component<Props,
-  State> {
+class Organization extends React.Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -44,49 +49,39 @@ class Organization extends React.Component<Props,
       editName: false,
       fatherValue: '',
       nameValue: '',
-      node: {}
+      node: {},
     };
     // this.getData();
   }
   headOk = e => {
-
-
-   
-
     e.preventDefault();
     this.props.form.validateFieldsAndScroll(async (err, values) => {
       if (!err) {
-        let {
-          name,
-          children,
-          ...props
-        } = this.state.node;
- 
-       
+        let { name, children, ...props } = this.state.node;
 
         let data = {
           ...props,
-          name: values.name
+          name: values.name,
         };
 
-        let param = {}
-        if (data.deptCode == "cs0") {
-          param={
-            "name":data.name,
-            "type":"organization_name"
-          }
+        let param = {};
+        if (data.deptCode == 'cs0') {
+          param = {
+            name: data.name,
+            type: 'organization_name',
+          };
         }
-        if (data.deptCode == "cs1") {
-          param={
-            "name":data.name,
-            "type":"title_first"
-          }
+        if (data.deptCode == 'cs1') {
+          param = {
+            name: data.name,
+            type: 'title_first',
+          };
         }
-        if (data.deptCode == "cs2") {
-          param={
-            "name":data.name,
-            "type":"title_second"
-          }
+        if (data.deptCode == 'cs2') {
+          param = {
+            name: data.name,
+            type: 'title_second',
+          };
         }
 
         let resp = await updateDictNameByType(param);
@@ -97,31 +92,23 @@ class Organization extends React.Component<Props,
         }
       }
     });
-  }
+  };
   headCancel = e => {
     this.setState({ headVisible: false });
   };
   showHeadDialog = name => {
-    this
-      .props
-      .form
-      .setFieldsValue({ name: name.name});
+    this.props.form.setFieldsValue({ name: name.name });
     this.setState({ headVisible: true, node: name });
   };
   handleOk = e => {
-
-
     e.preventDefault();
     this.props.form.validateFieldsAndScroll(async (err, values) => {
       if (!err) {
-        let {
-          name,
-          children,
-          ...props
-        } = this.state.node;
+        let { name, children, ...props } = this.state.node;
         let data = {
           ...props,
-          name: values.name
+          name: values.name,
+          sort: values.sort,
         };
         let resp = await editDepartment(data);
         if (resp.success) {
@@ -133,34 +120,24 @@ class Organization extends React.Component<Props,
   };
   addOk = e => {
     e.preventDefault();
-    this
-      .props
-      .form
-      .validateFieldsAndScroll(async (err, values) => {
-        // console.log(err)
-        if (!err) {
-          let {
-            name,
-            children,
-            id,
-            parentId,
-            ...propsData
-          } = this.state.node;
-          let data = {
-            ...propsData,
-            parentId: id,
-            name: values.nameOptions
-          };
-          // console.log(data)
+    this.props.form.validateFieldsAndScroll(async (err, values) => {
+      if (!err) {
+        let { name, children, id, parentId, ...propsData } = this.state.node;
+        let data = {
+          ...propsData,
+          parentId: id,
+          name: values.nameOptions,
+        };
+        // console.log(data)
 
-          let resp = await editDepartment(data);
-          // console.log(resp)
-          if (resp.success) {
-            this.setState({ addDialog: false });
-            this.getDataName();
-          }
+        let resp = await editDepartment(data);
+        // console.log(resp)
+        if (resp.success) {
+          this.setState({ addDialog: false });
+          this.getDataName();
         }
-      });
+      }
+    });
   };
   handleCancel = e => {
     this.setState({ visible: false });
@@ -171,10 +148,7 @@ class Organization extends React.Component<Props,
   MyNodeComponent = ({ node }) => {
     if (node.parentId === '00000') {
       return (
-        <div
-          className={node.name === ''
-            ? styles.initechNodeType
-            : styles.initechNode}>
+        <div className={node.name === '' ? styles.initechNodeType : styles.initechNode}>
           <span>{node.name}</span>
         </div>
       );
@@ -183,11 +157,7 @@ class Organization extends React.Component<Props,
         <div className={styles.initechNode}>
           <span>{node.name}</span>
           <div>
-            <span
-              className={styles.edit_icon}
-              onClick={this
-                .showHeadDialog
-                .bind(this, node)}>
+            <span className={styles.edit_icon} onClick={this.showHeadDialog.bind(this, node)}>
               <IconFont type="icon-edit1" />
             </span>
           </div>
@@ -198,25 +168,13 @@ class Organization extends React.Component<Props,
         <div className={styles.initechNode}>
           <span>{node.name}</span>
           <div>
-            <span
-              className={styles.edit_icon}
-              onClick={this
-                .delectSpan
-                .bind(this, node)}>
+            <span className={styles.edit_icon} onClick={this.delectSpan.bind(this, node)}>
               <IconFont type="icon-error1" />
             </span>
-            <span
-              className={styles.edit_icon}
-              onClick={this
-                .addDialog
-                .bind(this, node)}>
+            <span className={styles.edit_icon} onClick={this.addDialog.bind(this, node)}>
               <IconFont type="icon-plus" />
             </span>
-            <span
-              className={styles.edit_icon}
-              onClick={this
-                .showDialog
-                .bind(this, node)}>
+            <span className={styles.edit_icon} onClick={this.showDialog.bind(this, node)}>
               <IconFont type="icon-edit1" />
             </span>
           </div>
@@ -225,10 +183,7 @@ class Organization extends React.Component<Props,
     }
   };
   addDialog = name => {
-    this
-      .props
-      .form
-      .setFieldsValue({ nameOptions: '' });
+    this.props.form.setFieldsValue({ nameOptions: '' });
     this.setState({ addDialog: true, node: name });
   };
   delectSpan = name => {
@@ -239,19 +194,16 @@ class Organization extends React.Component<Props,
       okText: '取消',
       okType: 'danger',
       cancelText: '确定',
-      onOk() { },
+      onOk() {},
       async onCancel() {
         await delDepartment({ id: name.id });
         //  //重新请求数据重绘
         self.getDataName();
-      }
+      },
     });
   };
   showDialog = name => {
-    this
-      .props
-      .form
-      .setFieldsValue({ name: name.name, sort: name.sort });
+    this.props.form.setFieldsValue({ name: name.name, sort: name.sort });
     this.setState({ visible: true, node: name });
   };
   async componentDidMount() {
@@ -259,7 +211,7 @@ class Organization extends React.Component<Props,
   }
   async getDataName() {
     let data = {
-      type: 'organization_name'
+      type: 'organization_name',
     };
     let name = await getDepartmentName(data);
     this.getData(name);
@@ -270,9 +222,9 @@ class Organization extends React.Component<Props,
     let menusStr = JSON.stringify(menus);
     menusStr = menusStr.replace(/child/g, 'children');
     const resp = JSON.parse(menusStr);
-    let firstName = await getFirstName()
+    let firstName = await getFirstName();
 
-    let secondName = await getsecondName()
+    let secondName = await getsecondName();
     let data = {
       name: name,
       id: '00000',
@@ -285,28 +237,27 @@ class Organization extends React.Component<Props,
           id: '111111',
           deptCode: 'cs1',
           parentId: '000001',
-          sort: 1
-        }, {
+          sort: 1,
+        },
+        {
           name: '',
           id: '0',
           deptCode: 'cs',
           parentId: '00000',
           sort: 1,
-          children: []
-        }, {
+          children: [],
+        },
+        {
           name: secondName,
           id: '111112',
           deptCode: 'cs2',
           parentId: '000001',
-          sort: 1
-        }
-      ]
+          sort: 1,
+        },
+      ],
     };
     resp.map(res => {
-      data
-        .children[1]
-        .children
-        .push(res);
+      data.children[1].children.push(res);
     });
     this.setState({ allMenus: data });
   }
@@ -315,11 +266,11 @@ class Organization extends React.Component<Props,
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: {
-        span: 10
+        span: 10,
       },
       wrapperCol: {
-        span: 18
-      }
+        span: 18,
+      },
     };
     return (
       <div id={styles.initechOrgChart}>
@@ -329,7 +280,8 @@ class Organization extends React.Component<Props,
           visible={this.state.headVisible}
           onOk={this.headOk}
           onCancel={this.headCancel}
-          width={700}>
+          width={700}
+        >
           <Form.Item {...formItemLayout} label="组织名称">
             {getFieldDecorator('name', { rules: [] })(<Input />)}
           </Form.Item>
@@ -339,7 +291,8 @@ class Organization extends React.Component<Props,
           visible={this.state.visible}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
-          width={700}>
+          width={700}
+        >
           <Form.Item {...formItemLayout} label="组织名称">
             {getFieldDecorator('name', { rules: [] })(<Input />)}
           </Form.Item>
@@ -352,7 +305,8 @@ class Organization extends React.Component<Props,
           visible={this.state.addDialog}
           onOk={this.addOk}
           onCancel={this.addCancel}
-          width={700}>
+          width={700}
+        >
           <Form.Item {...formItemLayout} label="组织名称">
             {getFieldDecorator('nameOptions', { rules: [] })(<Input />)}
           </Form.Item>
@@ -365,7 +319,7 @@ class Organization extends React.Component<Props,
 const AddUserForm = Form.create<Props>({ name: 'add_user' })(Organization);
 const mapState = ({ menu, router }) => ({
   ...menu,
-  router
+  router,
 });
 
 export default connect(mapState)(AddUserForm);
