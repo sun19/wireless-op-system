@@ -20,7 +20,9 @@ import {
   GET_DEPARTMENT,
   EDIT_DEPARTMENT,
   DELECT_DEPARTMENT,
-  GET_DEPARTMENT_NAME
+  GET_DEPARTMENT_NAME,
+  GET_FIRST_NAME,
+  GET_SECOND_NAME
 
 } from '@/config/api';
 export async function getAllMap() {
@@ -115,4 +117,15 @@ export async function delDepartment(params) {
 export async function getDepartmentName(params) {
   const resp = await request.get(GET_DEPARTMENT_NAME ,{ params: params });
   return resp;
+}
+// http://139.129.229.99:8086/jeecg-boot/intf/location/getDictNameByType?type=title_first
+// firstName
+export async function getFirstName() {
+  const resp = await request.get(GET_FIRST_NAME );
+  return resp;
+}
+// secondName
+export async function getsecondName() {
+const resp = await request.get(GET_SECOND_NAME );
+return resp;
 }
