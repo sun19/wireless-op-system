@@ -7,9 +7,11 @@ export const WEBSOCKET = 'ws://47.96.112.31:8086';
 
 
 
-// export const BASE_API_URL = 'http://192.168.0.190:8086';
-// export const WEBSOCKET = 'ws://192.168.0.190:8086';
+// export const BASE_API_URL = 'http://192.168.0.188:8086';
+// export const WEBSOCKET = 'ws://192.168.0.188:8086';
 
 
 // export const BASE_API_URL = 'http://localhost:8086';
 // export const WEBSOCKET = 'ws://localhost:8086';
+
+
