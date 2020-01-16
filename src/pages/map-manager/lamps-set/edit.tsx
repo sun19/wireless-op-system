@@ -330,21 +330,31 @@ class halmpAdd extends React.Component<Props, State> {
               <Row className={styles.line_style}>
                 <Col className={styles.img_type} span={24}>
                   <div style={{ width: '100%', height: '100%' }} ref={this.map}>
-                    <Stage width={this.state.width} height={this.state.height} draggable={false}>
+                    <Stage
+                      width={this.state.width}
+                      height={this.state.height}
+                      draggable={true}
+                      onWheel={this.onWheel}
+                      scaleX={this.state.stageScale}
+                      scaleY={this.state.stageScale}
+                      x={this.state.stageX}
+                      y={this.state.stageY}
+                      onClick={this.mapClick}
+                    >
                       <Layer>
                         <ImageLayer
                           image={this.state.mapImage}
-                          // x={0}
-                          // y={0}
+                          x={0}
+                          y={0}
                           width={this.state.width}
                           height={this.state.height}
-                          draggable={true}
-                          onWheel={this.onWheel}
-                          scaleX={this.state.stageScale}
-                          scaleY={this.state.stageScale}
-                          x={this.state.stageX}
-                          y={this.state.stageY}
-                          onClick={this.mapClick}
+                          // draggable={true}
+                          // onWheel={this.onWheel}
+                          // scaleX={this.state.stageScale}
+                          // scaleY={this.state.stageScale}
+                          // x={this.state.stageX}
+                          // y={this.state.stageY}
+                          // onClick={this.mapClick}
                         />
                         {this.setupCircle()}
                       </Layer>
