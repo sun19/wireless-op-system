@@ -113,8 +113,16 @@ class MapManager extends React.Component<Props, State> {
     const mapImage = await this.dynamicLoadMapImage();
     const iconImage = await this.dynamicLoadIconImage();
     if (!this.map.current) return;
-    const { clientWidth } = this.map.current;
-    const clientHeight = Math.floor((clientWidth * 1080) / 1920);
+    // const { clientWidth } = this.map.current;
+    // const clientHeight = Math.floor((clientWidth * 1080) / 1920) ;
+    //大屏地图换成长图
+    const  clientHeight  = this.map.current.clientHeight -50;
+    const clientWidth = Math.floor((clientHeight * 1080) / 1920) ;
+ 
+
+
+
+
 
     //获取区域名称,区域坐标
     let areas = await getRegionList();
