@@ -213,7 +213,7 @@ class SuperAdmin extends React.Component<Props, State> {
       pageNo: 1,
       hasData: true,
       allRegionData: [],
-      regionId: '',
+      regionId: undefined,
     };
   }
   onNameChange = (e: any) => {

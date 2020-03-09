@@ -57,7 +57,7 @@ const columns = [
   },
   {
     title: '巡检开始时间',
-    width: '20%',
+    width: '17%',
     dataIndex: 'startTime',
     editable: true,
     render:(item)=>{
@@ -66,7 +66,7 @@ const columns = [
   },
   {
     title: '巡检结束时间',
-    width: '20%',
+    width: '17%',
     dataIndex: 'endTime',
     editable: true,
     render: (item) => {

@@ -58,6 +58,7 @@ const columns = [
   {
     title: '巡检开始时间',
     dataIndex: 'startTime',
+    width: '17%',
     editable: true,
     render: item => {
       return <span className={publicStyles.time_start_bac}>{item ? item : '/'}</span>;
@@ -66,6 +67,7 @@ const columns = [
   {
     title: '巡检结束时间',
     dataIndex: 'endTime',
+    width: '17%',
     editable: true,
     render: item => {
       return <span className={publicStyles.time_end_bac}>{item ? item : '/'}</span>;

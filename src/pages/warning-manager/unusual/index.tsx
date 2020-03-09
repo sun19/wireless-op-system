@@ -78,7 +78,7 @@ class WraningType extends React.Component<Props, State> {
     // this.deleteColumn = this.deleteColumn.bind(this);
     this.getwarningTypeList = this.getwarningTypeList.bind(this);
     this.state = {
-      type: '',
+      type: undefined,
     };
   }
   async componentDidMount() {
