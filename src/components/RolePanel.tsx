@@ -32,7 +32,7 @@ class RolePanel extends React.Component<Props, State> {
       ...userData,
     };
     // ?username=${data.username}&password=${data.password}&roleId=${data.roleId}
-    // const resp = await request(`http://139.129.229.99:8086/jeecg-boot//intf/location/logout`, {
+    // const resp = await request(`http://47.96.112.31:8086/jeecg-boot//intf/location/logout`, {
     const resp = await request(`${BASE_API_URL}/jeecg-boot//intf/location/logout`, {
       method: 'GET',
       headers: { 'X-Access-Token': token },

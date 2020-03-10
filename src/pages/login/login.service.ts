@@ -115,17 +115,17 @@ export async function delDepartment(params) {
 }
 // GET_DEPARTMENT_NAME
 export async function getDepartmentName(params) {
-  const resp = await request.get(GET_DEPARTMENT_NAME ,{ params: params });
+  const resp = await request.get(GET_DEPARTMENT_NAME, { params: params });
   return resp;
 }
-// http://139.129.229.99:8086/jeecg-boot/intf/location/getDictNameByType?type=title_first
+// http://47.96.112.31:8086/jeecg-boot/intf/location/getDictNameByType?type=title_first
 // firstName
 export async function getFirstName() {
-  const resp = await request.get(GET_FIRST_NAME );
+  const resp = await request.get(GET_FIRST_NAME);
   return resp;
 }
 // secondName
 export async function getsecondName() {
-const resp = await request.get(GET_SECOND_NAME );
-return resp;
+  const resp = await request.get(GET_SECOND_NAME);
+  return resp;
 }

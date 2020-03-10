@@ -93,7 +93,7 @@ class AddDepa extends React.Component<Props, State> {
         allSecretLevel: secretsLevelsResp.result,
       },
     });
-    request.get('http://139.129.229.99:8086/jeecg-boot/intf/location/executeUserCard?status=true');
+    request.get('http://47.96.112.31:8086/jeecg-boot/intf/location/executeUserCard?status=true');
     // this.connectWs();
   }
   UNSAFE_componentWillReceiveProps(nextProps) {
@@ -114,7 +114,7 @@ class AddDepa extends React.Component<Props, State> {
 
   componentWillUnmount() {
     this.ws && this.ws.close();
-    request.get('http://139.129.229.99:8086/jeecg-boot/intf/location/executeUserCard?status=false');
+    request.get('http://47.96.112.31:8086/jeecg-boot/intf/location/executeUserCard?status=false');
   }
 
   handleSubmit(e) {

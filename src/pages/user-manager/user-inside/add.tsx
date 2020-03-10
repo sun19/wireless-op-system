@@ -151,7 +151,7 @@ class UserAuths extends React.Component<Props, State> {
         allSecretLevel: secretsLevelsResp.result,
       },
     });
-    request.get('http://139.129.229.99:8086/jeecg-boot/intf/location/executeUserCard?status=true');
+    request.get('http://47.96.112.31:8086/jeecg-boot/intf/location/executeUserCard?status=true');
     // this.connectWs();
   }
   UNSAFE_componentWillReceiveProps(nextProps) {
@@ -170,9 +170,9 @@ class UserAuths extends React.Component<Props, State> {
     });
   }
   connectWs() {
-    this.ws = new WebSocket('ws://139.129.229.99:8086/jeecg-boot/websocket/1');
+    this.ws = new WebSocket('ws://47.96.112.31:8086/jeecg-boot/websocket/1');
     this.ws.onopen = () => {
-      request.get('http://139.129.229.99:8086/jeecg-boot/intf/location/executeUserCard?status=true');
+      request.get('http://47.96.112.31:8086/jeecg-boot/intf/location/executeUserCard?status=true');
     };
     this.ws.onmessage = evt => {
       let msgText = JSON.parse(evt.data);
@@ -196,7 +196,7 @@ class UserAuths extends React.Component<Props, State> {
 
   componentWillUnmount() {
     this.ws && this.ws.close();
-    request.get('http://139.129.229.99:8086/jeecg-boot/intf/location/executeUserCard?status=false');
+    request.get('http://47.96.112.31:8086/jeecg-boot/intf/location/executeUserCard?status=false');
   }
 
   handleSubmit(e) {
