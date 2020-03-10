@@ -110,7 +110,7 @@ class Adduth extends React.Component<Props, State> {
   dynamicLoadMapImage() {
     return new Promise(resolve => {
       const mapImage = new Image();
-      mapImage.src = require('../../big-screen/assets/map.png');
+      mapImage.src = require('../../big-screen/assets/地图2.png');
       mapImage.onload = function() {
         resolve(mapImage);
       };
