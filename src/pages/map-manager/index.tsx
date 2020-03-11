@@ -74,7 +74,7 @@ const defaultLamps = [
 const scaleBy = 1.01;
 //间隔时间
 //相隔`MAX_SHOW_DURATION`时间后仍无数据推送，清除信息牌。
-const MAX_SHOW_DURATION = 5000;
+const MAX_SHOW_DURATION = 3000;
 
 class MapManager extends React.Component<Props, State> {
   map: React.RefObject<HTMLDivElement>;
@@ -474,9 +474,19 @@ class MapManager extends React.Component<Props, State> {
   }
 
   renderInfoItem = item => {
+
+    var name = this.state.infoDetail[item.name]
+    if(item.name == "type") {
+      if(name==0) {
+        name = "内部"
+      }
+      if(name==1) {
+        name = "外部"
+      }
+    }
     return (
       <List.Item>
-        <List.Item.Meta title={item.title} description={this.state.infoDetail[item.name]} />
+        <List.Item.Meta title={item.title} description={name} />
       </List.Item>
     );
   };
@@ -600,7 +610,7 @@ class MapManager extends React.Component<Props, State> {
                 itemLayout="horizontal"
                 dataSource={[
                   {
-                    title: '信息牌编号:',
+                    title: '信息牌:',
                     name: 'name',
                   },
                   {
