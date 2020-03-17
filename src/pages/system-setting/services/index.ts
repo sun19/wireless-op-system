@@ -23,7 +23,9 @@ import {
   GET_DICT_NAME_TYPE,
   GET_COMPANY_NAME,
   SET_COMPANY_NAME,
-  UPDATE_DICT_NAME_TYPE
+  UPDATE_DICT_NAME_TYPE,
+  GET_SUBMODEL,
+  UPDATE_SUBMODEL
 
 } from '@/config/api';
 import {
@@ -133,8 +135,8 @@ export async function deleteMessageCard(params: DeleteMessageCardParams) {
   return resp.success === true && resp.code === 200;
 }
 //字典表`isShow`传0
-export async function getSuperAdminList(params: GetSuperAdminListParams) {
-  const resp = await request.get(GET_SUPER_ADMIN_LIST, { params: params });
+export async function getSuperAdminList() {
+  const resp = await request.get(GET_SUPER_ADMIN_LIST);
   return resp.result;
 }
 
@@ -188,6 +190,14 @@ export async function updateDictNameByType(params: Theme) {
   const resp = await request.post(UPDATE_DICT_NAME_TYPE, { params });
   return resp;
 }
+// 修改信息牌
+export async function updateSubmodel(params: Theme) {
+  // const resp = await request.post(UPDATE_SUBMODEL, { params });
+  // const resp = await request.post(UPDATE_SUBMODEL, { data: format(params) });
+  request.post(EDIT_MENUS, { data: format(params) });
+  return resp;
+}
+
 // 企业名称
 export async function getCompanyName(params: ThemeType) {
   const resp = await request.get(GET_COMPANY_NAME, { params });
@@ -197,4 +207,9 @@ export async function getCompanyName(params: ThemeType) {
 export async function setCompanyName(params: CompanyName) {
   const resp = await request.post(SET_COMPANY_NAME, { params });
   return resp;
+}
+// 信息牌背景设置
+export async function getSubModel() {
+  const resp = await request.get(GET_SUBMODEL);
+  return resp.result;
 }

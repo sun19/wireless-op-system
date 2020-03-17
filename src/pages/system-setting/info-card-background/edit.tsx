@@ -3,14 +3,17 @@ import { Form, Row, Col, Button, Input, message, Select, Tree } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import { connect } from 'dva';
 import router from 'umi/router';
+import request, { format } from '@/utils/request';
+import { BASE_API_URL } from '@/config/constants';
 
 import ContentBorder from '../../../components/ContentBorder';
 import { InputText, TreeNodeMenu } from '../components';
 import { ChromePicker } from 'react-color';
-import { updateUserType, getCompanyNameList, updateSuperAdmin } from '../services';
+import { updateUserType, getCompanyNameList, updateSuperAdmin, updateSubmodel } from '../services';
 
 import styles from './index.less';
 import { LEFT_MENUS } from '../../../config/menus';
+import type from '@/pages/warning-manager/type';
 
 const { TreeNode } = Tree;
 const { Option } = Select;
@@ -72,12 +75,19 @@ class EditSuperAdmin extends React.Component<Props, State> {
         message.error('填写信息有误', values);
         return;
       }
-
-      var dic = {};
-      dic['dictName'] = this.state.colorInfo.color;
+      var reg = /^[0-9]*$/ 
+      if(!reg.test(values.height) || !reg.test(values.width) || !reg.test(values.font)){
+        message.error('只能填写数字哦~', values);
+        return
+      }
+      var dic ={}
+      dic['height'] = parseInt(values.height);
+      dic['width'] = parseInt(values.width);
+      dic['font'] = parseInt(values.font);
       dic['id'] = superAdminRecord.id;
-      dic['type'] = 'boardBackground';
-      const isSuccessed = await getCompanyNameList(dic);
+      const isSuccessed = request.post( BASE_API_URL + '/jeecg-boot/intf/location/updateSubModel',
+        {data: dic, headers: {"Content-Type":"application/json"}}
+      )
       if (isSuccessed) {
         setTimeout(() => router.push('/system-setting/info-card-background'), 1000);
       }
@@ -104,6 +114,8 @@ class EditSuperAdmin extends React.Component<Props, State> {
   componentDidMount() {}
 
   render() {
+    const { superAdminRecord } = this.props;
+    const { getFieldDecorator } = this.props.form;
     return (
       <ContentBorder className={styles.auth_root}>
         <Form layout="inline" style={{ marginTop: '0.57rem' }} onSubmit={this.onSubmit}>
@@ -111,47 +123,28 @@ class EditSuperAdmin extends React.Component<Props, State> {
             <Col span={20}>
               <div className="auth__inner--container">
                 <Row type="flex" justify="space-between">
-                  <Col span={12}>
-                    {/* <Form.Item label="信息牌背景">
-                      {getFieldDecorator('dictName', {
+                  <Col span={20}>
+                    <Form.Item label="宽">
+                    {getFieldDecorator('width', {
                         rules: [],
-                        initialValue: superAdminRecord.dictName,
-                      })(<Input placeholder="请输入信息牌背景色" />)}
+                        initialValue: superAdminRecord.width,
+                      })(<Input placeholder="请输入宽" />)}
                     </Form.Item>
- */}
-
-                    <Form.Item label="信息牌背景">
-                      <div className={styles.color_pick}>
-                        <div>
-                          <div
-                            onClick={this.handleClick}
-                            className={styles.color_span}
-                            style={{
-                              background: this.state.colorInfo.color,
-                            }}
-                          />
-                          {/* Pick Color</div> */}
-                          {this.state.displayColorPicker ? (
-                            <div>
-                              <div
-                                style={{
-                                  position: 'fixed',
-                                  top: '0px',
-                                  right: '0px',
-                                  bottom: '0px',
-                                  left: '0px',
-                                }}
-                                onClick={this.handleClose}
-                              />
-                              <ChromePicker
-                                style={{ width: '400px' }}
-                                color={this.state.colorInfo.color}
-                                onChangeComplete={this.handleChangeComplete}
-                              />
-                            </div>
-                          ) : null}
-                        </div>
-                      </div>
+                  </Col>
+                  <Col span={20}>
+                    <Form.Item label="高">
+                    {getFieldDecorator('height', {
+                        rules: [],
+                        initialValue: superAdminRecord.height,
+                      })(<Input placeholder="请输入高" />)}
+                    </Form.Item>
+                  </Col>
+                  <Col span={20}>
+                    <Form.Item label="字号">
+                    {getFieldDecorator('font', {
+                        rules: [],
+                        initialValue: superAdminRecord.font,
+                      })(<Input placeholder="请输入字号" />)}
                     </Form.Item>
                   </Col>
                 </Row>
