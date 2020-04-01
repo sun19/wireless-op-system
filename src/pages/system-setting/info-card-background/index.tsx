@@ -9,34 +9,50 @@ import * as _ from 'lodash';
 
 import MainContent from '../components/MainContent';
 import { UmiComponentProps } from '@/common/type';
-import { getCompanyNameList, updateSuperAdmin } from '../services';
+import { getCompanyNameList, updateSuperAdmin, getSubModel } from '../services';
 import publicStyles from '../index.less';
 
 const { Content } = Layout;
 
 const columns = [
-  {
-    title: '信息牌背景',
-    dataIndex: 'dictName',
-    render: color => {
-      if (color === null) {
-        let nullData = '/';
-        return nullData;
-      } else {
-        return (
-          <span
-            // className={publicStyles.color_span}
-            style={{
-              width: '40px',
-              height: '20px',
-              display: 'inline-block',
-              background: color,
-            }}
-          />
-        );
-      }
-    },
-  },
+  // {
+  //   title: '信息牌背景',
+  //   dataIndex: 'dictName',
+  //   render: color => {
+  //     if (color === null) {
+  //       let nullData = '/';
+  //       return nullData;
+  //     } else {
+  //       return (
+  //         <span
+  //           // className={publicStyles.color_span}
+  //           style={{
+  //             width: '40px',
+  //             height: '20px',
+  //             display: 'inline-block',
+  //             background: color,
+  //           }}
+  //         />
+  //       );
+  //     }
+  //   },
+  // },{
+   {
+    title: '宽',
+    dataIndex: 'width',
+    className: 'select_text',
+    editable: true,
+  },{
+    title: '高',
+    dataIndex: 'height',
+    className: 'select_text',
+    editable: true,
+  },{
+    title: '字号',
+    dataIndex: 'font',
+    className: 'select_text',
+    editable: true,
+  }
 ];
 
 type StateProps = ReturnType<typeof mapState>;
@@ -59,7 +75,8 @@ class SuperAdmin extends React.Component<Props, State> {
   }
 
   async getSuperAdminList() {
-    const superAdmins = await getCompanyNameList({ type: 'boardBackground' });
+    // const superAdmins = await getCompanyNameList({ type: 'boardBackground' });
+    const superAdmins = await getSubModel();
     this.props.dispatch({
       type: 'systemSetting/update',
       payload: {
@@ -101,24 +118,15 @@ class SuperAdmin extends React.Component<Props, State> {
 
   render() {
     let { superAdmin } = this.props;
-    if (_.isEmpty(superAdmin)) {
-      superAdmin = {
-        records: [],
-        total: 0,
-      };
-    }
-    let { records, total } = superAdmin;
-    records = records.map(item => {
-      return _.assign(item, { key: item.id });
-    });
-
+    let records = []
+    records.push(superAdmin)
     return (
       <div className={publicStyles.public_hight}>
         <Content className={publicStyles.bg}>
-          <MainContent
+          <MainContent className={publicStyles.tableStyle}
             columns={columns}
             data={records}
-            total={total}
+            total={records.length}
             updateData={this.updateData}
             showEdit={true}
             showDelete={false}

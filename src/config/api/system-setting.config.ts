@@ -112,4 +112,7 @@ export const UPDATE_DICT_NAME_TYPE = `${BASE_API_URL}/jeecg-boot/intf/location/u
 export const GET_COMPANY_NAME = `${BASE_API_URL}/jeecg-boot/intf/location/getCompany`;
 //企业设置
 export const SET_COMPANY_NAME = `${BASE_API_URL}/jeecg-boot/intf/location/updateCompany`;
+// 信息牌背景设置
+export const GET_SUBMODEL = `${BASE_API_URL}/jeecg-boot/intf/location/getSubModel`;
+export const UPDATE_SUBMODEL = `${BASE_API_URL}/jeecg-boot/intf/location/updateSubModel`;
 
