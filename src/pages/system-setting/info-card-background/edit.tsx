@@ -56,7 +56,7 @@ class EditSuperAdmin extends React.Component<Props, State> {
       displayColorPicker: false,
       colorInfo: {},
       selectedKeys: [],
-      checkedKeys: [],
+      checkedKeys: []
     };
     const { superAdminRecord } = this.props;
     this.state.colorInfo.color = superAdminRecord.dictName ? superAdminRecord.dictName : '#148dd8';
@@ -75,16 +75,20 @@ class EditSuperAdmin extends React.Component<Props, State> {
         message.error('填写信息有误', values);
         return;
       }
-      var reg = /^[0-9]*$/ 
-      if(!reg.test(values.height) || !reg.test(values.width) || !reg.test(values.font)){
-        message.error('只能填写数字哦~', values);
-        return
-      }
+      // var reg = /^[0-9]*$/ 
+      // if(!reg.test(values.height) || !reg.test(values.width) || !reg.test(values.font)){
+      //   message.error('只能填写数字哦~', values);
+      //   return
+      // }
+      let flagMap = { '中文': '0','英文':'1'}
+      let flagMap1 = { '常规':'0','粗体':'1','斜体':'2'}
+     
       var dic ={}
-      dic['height'] = parseInt(values.height);
-      dic['width'] = parseInt(values.width);
-      dic['font'] = parseInt(values.font);
-      dic['id'] = superAdminRecord.id;
+      dic['nfontSize'] = parseInt(values.nfontSize)
+      dic['nFontSize'] =values.pszFontName
+      dic['type'] = flagMap[values.type]
+      dic['nFontStyle'] = parseInt(flagMap1[values.nfontStyle])
+      dic['id'] = parseInt(superAdminRecord.id)
       const isSuccessed = request.post( BASE_API_URL + '/jeecg-boot/intf/location/updateSubModel',
         {data: dic, headers: {"Content-Type":"application/json"}}
       )
@@ -124,27 +128,35 @@ class EditSuperAdmin extends React.Component<Props, State> {
               <div className="auth__inner--container">
                 <Row type="flex" justify="space-between">
                   <Col span={20}>
-                    <Form.Item label="宽">
-                    {getFieldDecorator('width', {
+                    <Form.Item label="类型">
+                    {getFieldDecorator('type', {
                         rules: [],
-                        initialValue: superAdminRecord.width,
-                      })(<Input placeholder="请输入宽" />)}
-                    </Form.Item>
-                  </Col>
-                  <Col span={20}>
-                    <Form.Item label="高">
-                    {getFieldDecorator('height', {
-                        rules: [],
-                        initialValue: superAdminRecord.height,
-                      })(<Input placeholder="请输入高" />)}
+                        initialValue: superAdminRecord.type,
+                      })(<Input placeholder="请输入类型" />)}
                     </Form.Item>
                   </Col>
                   <Col span={20}>
                     <Form.Item label="字号">
-                    {getFieldDecorator('font', {
+                    {getFieldDecorator('nfontSize', {
                         rules: [],
-                        initialValue: superAdminRecord.font,
+                        initialValue: superAdminRecord.nfontSize,
                       })(<Input placeholder="请输入字号" />)}
+                    </Form.Item>
+                  </Col>
+                  <Col span={20}>
+                    <Form.Item label="字体">
+                    {getFieldDecorator('pszFontName', {
+                        rules: [],
+                        initialValue: superAdminRecord.pszFontName,
+                      })(<Input placeholder="请输入字体" />)}
+                    </Form.Item>
+                  </Col>
+                  <Col span={20}>
+                    <Form.Item label="字形">
+                    {getFieldDecorator('nfontStyle', {
+                        rules: [],
+                        initialValue: superAdminRecord.nfontStyle,
+                      })(<Input placeholder="请输入字形" />)}
                     </Form.Item>
                   </Col>
                 </Row>

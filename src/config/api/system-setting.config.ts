@@ -113,6 +113,7 @@ export const GET_COMPANY_NAME = `${BASE_API_URL}/jeecg-boot/intf/location/getCom
 //企业设置
 export const SET_COMPANY_NAME = `${BASE_API_URL}/jeecg-boot/intf/location/updateCompany`;
 // 信息牌背景设置
-export const GET_SUBMODEL = `${BASE_API_URL}/jeecg-boot/intf/location/getSubModel`;
+export const GET_SUBMODEL = `${BASE_API_URL}/jeecg-boot/intf/location/listSubModel`;
 export const UPDATE_SUBMODEL = `${BASE_API_URL}/jeecg-boot/intf/location/updateSubModel`;
+export const UPLOAD_IMG = `${BASE_API_URL}/jeecg-boot/intf/location/uploadImg`;
 

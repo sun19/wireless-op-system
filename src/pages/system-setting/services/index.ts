@@ -25,7 +25,8 @@ import {
   SET_COMPANY_NAME,
   UPDATE_DICT_NAME_TYPE,
   GET_SUBMODEL,
-  UPDATE_SUBMODEL
+  UPDATE_SUBMODEL,
+  UPLOAD_IMG
 
 } from '@/config/api';
 import {
@@ -46,7 +47,8 @@ import {
   CompanyName,
   AddDepartmentParams,
   ThemeType,
-  Theme
+  Theme,
+  File
 } from './index.interfaces';
 
 export async function getUserList(params: GetUserListParams) {
@@ -211,5 +213,10 @@ export async function setCompanyName(params: CompanyName) {
 // 信息牌背景设置
 export async function getSubModel() {
   const resp = await request.get(GET_SUBMODEL);
+  return resp.result;
+}
+//图片转点阵
+export async function uploadImg(params: File) {
+  const resp = await request.post(UPLOAD_IMG);
   return resp.result;
 }

@@ -38,20 +38,33 @@ const columns = [
   //   },
   // },{
    {
-    title: '宽',
-    dataIndex: 'width',
+    title: '类型',
+    dataIndex: 'type',
     className: 'select_text',
     editable: true,
-  },{
-    title: '高',
-    dataIndex: 'height',
-    className: 'select_text',
-    editable: true,
+    render: text => {
+      const flagMap = { 0: '中文',1: '英文'}
+      return <span>{flagMap && flagMap[text] || '保密'}</span>
+    }
   },{
     title: '字号',
-    dataIndex: 'font',
+    dataIndex: 'nfontSize',
     className: 'select_text',
     editable: true,
+  },{
+    title: '字体',
+    dataIndex: 'pszFontName',
+    className: 'select_text',
+    editable: true,
+  },{
+    title: '字型',
+    dataIndex: 'nfontStyle',
+    className: 'select_text',
+    editable: true,
+    render: text => {
+      const flagMap = { 0: '常规',1: '粗体',2: '斜体'}
+      return <span>{flagMap && flagMap[text] || ' '}</span>
+    }
   }
 ];
 
@@ -86,6 +99,10 @@ class SuperAdmin extends React.Component<Props, State> {
   }
 
   async updateData(data, item) {
+    let flagMap = { 0: '中文',1: '英文'}
+    let flagMap1 = { 0: '常规',1: '粗体',2: '斜体'}
+    data.type = flagMap[data.type]
+    data.nfontStyle = flagMap1[data.nfontStyle]
     this.props.dispatch({
       type: 'systemSetting/update',
       payload: {
@@ -118,8 +135,8 @@ class SuperAdmin extends React.Component<Props, State> {
 
   render() {
     let { superAdmin } = this.props;
-    let records = []
-    records.push(superAdmin)
+    let records = superAdmin
+    // records.push(superAdmin)
     return (
       <div className={publicStyles.public_hight}>
         <Content className={publicStyles.bg}>
