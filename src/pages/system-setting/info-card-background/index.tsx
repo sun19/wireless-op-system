@@ -9,34 +9,63 @@ import * as _ from 'lodash';
 
 import MainContent from '../components/MainContent';
 import { UmiComponentProps } from '@/common/type';
-import { getCompanyNameList, updateSuperAdmin } from '../services';
+import { getCompanyNameList, updateSuperAdmin, getSubModel } from '../services';
 import publicStyles from '../index.less';
 
 const { Content } = Layout;
 
 const columns = [
-  {
-    title: '信息牌背景',
-    dataIndex: 'dictName',
-    render: color => {
-      if (color === null) {
-        let nullData = '/';
-        return nullData;
-      } else {
-        return (
-          <span
-            // className={publicStyles.color_span}
-            style={{
-              width: '40px',
-              height: '20px',
-              display: 'inline-block',
-              background: color,
-            }}
-          />
-        );
-      }
-    },
-  },
+  // {
+  //   title: '信息牌背景',
+  //   dataIndex: 'dictName',
+  //   render: color => {
+  //     if (color === null) {
+  //       let nullData = '/';
+  //       return nullData;
+  //     } else {
+  //       return (
+  //         <span
+  //           // className={publicStyles.color_span}
+  //           style={{
+  //             width: '40px',
+  //             height: '20px',
+  //             display: 'inline-block',
+  //             background: color,
+  //           }}
+  //         />
+  //       );
+  //     }
+  //   },
+  // },{
+   {
+    title: '类型',
+    dataIndex: 'type',
+    className: 'select_text',
+    editable: true,
+    render: text => {
+      const flagMap = { 0: '中文',1: '英文'}
+      return <span>{flagMap && flagMap[text] || '保密'}</span>
+    }
+  },{
+    title: '字号',
+    dataIndex: 'nfontSize',
+    className: 'select_text',
+    editable: true,
+  },{
+    title: '字体',
+    dataIndex: 'pszFontName',
+    className: 'select_text',
+    editable: true,
+  },{
+    title: '字型',
+    dataIndex: 'nfontStyle',
+    className: 'select_text',
+    editable: true,
+    render: text => {
+      const flagMap = { 0: '常规',1: '粗体',2: '斜体'}
+      return <span>{flagMap && flagMap[text] || ' '}</span>
+    }
+  }
 ];
 
 type StateProps = ReturnType<typeof mapState>;
@@ -59,7 +88,8 @@ class SuperAdmin extends React.Component<Props, State> {
   }
 
   async getSuperAdminList() {
-    const superAdmins = await getCompanyNameList({ type: 'boardBackground' });
+    // const superAdmins = await getCompanyNameList({ type: 'boardBackground' });
+    const superAdmins = await getSubModel();
     this.props.dispatch({
       type: 'systemSetting/update',
       payload: {
@@ -69,6 +99,10 @@ class SuperAdmin extends React.Component<Props, State> {
   }
 
   async updateData(data, item) {
+    let flagMap = { 0: '中文',1: '英文'}
+    let flagMap1 = { 0: '常规',1: '粗体',2: '斜体'}
+    data.type = flagMap[data.type]
+    data.nfontStyle = flagMap1[data.nfontStyle]
     this.props.dispatch({
       type: 'systemSetting/update',
       payload: {
@@ -101,24 +135,15 @@ class SuperAdmin extends React.Component<Props, State> {
 
   render() {
     let { superAdmin } = this.props;
-    if (_.isEmpty(superAdmin)) {
-      superAdmin = {
-        records: [],
-        total: 0,
-      };
-    }
-    let { records, total } = superAdmin;
-    records = records.map(item => {
-      return _.assign(item, { key: item.id });
-    });
-
+    let records = superAdmin
+    // records.push(superAdmin)
     return (
       <div className={publicStyles.public_hight}>
         <Content className={publicStyles.bg}>
-          <MainContent
+          <MainContent className={publicStyles.tableStyle}
             columns={columns}
             data={records}
-            total={total}
+            total={records.length}
             updateData={this.updateData}
             showEdit={true}
             showDelete={false}
