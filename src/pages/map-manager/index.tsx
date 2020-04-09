@@ -180,9 +180,9 @@ class MapManager extends React.Component<Props, State> {
     let msgInfo = nextProps.wsInfo;
     if (msgInfo.msgType != '0') return;
 
-    if (this.timer) {
-      clearTimeout(this.timer);
-    }
+    // if (this.timer) {
+    //   clearTimeout(this.timer);
+    // }
     let msgText = msgInfo.msgTxt || [];
 
     msgText = this.serializeInfoCard(msgText);
@@ -242,12 +242,12 @@ class MapManager extends React.Component<Props, State> {
       }
     });
     //间隔`MAX_SHOW_DURATION`时间，仍无点位推送，清除信息牌
-    this.timer = setTimeout(() => {
-      this.setState({
-        infoCards: [],
-        heatmaps: [],
-      });
-    }, MAX_SHOW_DURATION);
+    // this.timer = setTimeout(() => {
+    //   this.setState({
+    //     infoCards: [],
+    //     heatmaps: [],
+    //   });
+    // }, MAX_SHOW_DURATION);
   }
   /**
    * 序列化ws推送过来的信息牌数据，使其满足展示要求
@@ -474,14 +474,13 @@ class MapManager extends React.Component<Props, State> {
   }
 
   renderInfoItem = item => {
-
-    var name = this.state.infoDetail[item.name]
-    if(item.name == "type") {
-      if(name==0) {
-        name = "内部"
+    var name = this.state.infoDetail[item.name];
+    if (item.name == 'type') {
+      if (name == 0) {
+        name = '内部';
       }
-      if(name==1) {
-        name = "外部"
+      if (name == 1) {
+        name = '外部';
       }
     }
     return (
