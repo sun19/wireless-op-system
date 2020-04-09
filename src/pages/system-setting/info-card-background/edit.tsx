@@ -84,8 +84,8 @@ class EditSuperAdmin extends React.Component<Props, State> {
       let flagMap1 = { '常规':'0','粗体':'1','斜体':'2'}
      
       var dic ={}
-      dic['nfontSize'] = parseInt(values.nfontSize)
-      dic['nFontSize'] =values.pszFontName
+      dic['pszFontName'] = values.pszFontName
+      dic['nFontSize'] = parseInt(values.nfontSize)
       dic['type'] = flagMap[values.type]
       dic['nFontStyle'] = parseInt(flagMap1[values.nfontStyle])
       dic['id'] = parseInt(superAdminRecord.id)
