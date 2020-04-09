@@ -76,6 +76,8 @@ const scaleBy = 1.01;
 //相隔`MAX_SHOW_DURATION`时间后仍无数据推送，清除信息牌。
 const MAX_SHOW_DURATION = 3000;
 
+let GLOBAL_WS_MSG = {};
+
 class MapManager extends React.Component<Props, State> {
   map: React.RefObject<HTMLDivElement>;
   ws: WebSocket;
@@ -186,6 +188,12 @@ class MapManager extends React.Component<Props, State> {
     let msgText = msgInfo.msgTxt || [];
 
     msgText = this.serializeInfoCard(msgText);
+    // 存储到全局
+    GLOBAL_WS_MSG = Object.assign(GLOBAL_WS_MSG, msgText);
+    // 获取全局里的`value`值
+    msgText = Object.values(GLOBAL_WS_MSG);
+    // 过滤所有需要展示的
+    msgText = msgText.filter(v => v.isShow == '0');
 
     //接受全量模式
     if (this.state.mode === 'all') {
@@ -253,20 +261,23 @@ class MapManager extends React.Component<Props, State> {
    * 序列化ws推送过来的信息牌数据，使其满足展示要求
    */
   serializeInfoCard = (msgText: any[]) => {
-    let infoCards = [];
+    let infoCards = {};
     if (msgText) {
       for (let i = 0; i < msgText.length; i++) {
         const lampWithInfoCards = msgText[i];
         const information = lampWithInfoCards.information;
         for (let j = 0; j < information.length; j++) {
-          infoCards.push({
-            ycoordinate: +lampWithInfoCards.ycoordinate[j],
-            color: lampWithInfoCards.color[j],
-            value: lampWithInfoCards.value,
-            key: lampWithInfoCards.key,
-            xcoordinate: +lampWithInfoCards.xcoordinate[j],
-            information: lampWithInfoCards.information[j],
-            id: lampWithInfoCards.information[j],
+          Object.assign(infoCards, {
+            [lampWithInfoCards.information[j]]: {
+              ycoordinate: +lampWithInfoCards.ycoordinate[j],
+              color: lampWithInfoCards.color[j],
+              value: lampWithInfoCards.value,
+              key: lampWithInfoCards.key,
+              xcoordinate: +lampWithInfoCards.xcoordinate[j],
+              information: lampWithInfoCards.information[j],
+              id: lampWithInfoCards.information[j],
+              isShow: lampWithInfoCards.isShow[j],
+            },
           });
         }
       }
